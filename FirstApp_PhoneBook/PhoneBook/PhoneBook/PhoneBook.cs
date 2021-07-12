@@ -45,10 +45,7 @@ namespace PhoneBook
         {
             Console.WriteLine("All contacts:");
 
-            foreach (Contact contact in _contactMap.Values)
-            {
-                Console.WriteLine(contact.ToString());
-            }
+            DisplayContactsDetails(_contactMap.Values);
         }
 
         public void FindContactByPhoneNumber(string phoneNumber)
@@ -58,14 +55,19 @@ namespace PhoneBook
             if (foundContacts.Length > 0)
             {
                 Console.WriteLine("Contacts found:");
-                foreach (Contact contact in foundContacts)
-                {
-                    Console.WriteLine(contact.ToString());
-                }
+                DisplayContactsDetails(foundContacts);
             }
             else
             {
                 Console.WriteLine("Contact not found");
+            }
+        }
+
+        private static void DisplayContactsDetails(IEnumerable<Contact> contacts)
+        {
+            foreach (Contact contact in contacts)
+            {
+                Console.WriteLine(contact.ToString());
             }
         }
 
