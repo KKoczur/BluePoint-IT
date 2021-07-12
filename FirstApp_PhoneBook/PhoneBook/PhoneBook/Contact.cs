@@ -15,7 +15,6 @@ namespace PhoneBook
         public string Name { get; set; }
         public string PhoneNumber { get; set; }
 
-
         public override string ToString() => $"Name: {Name}, Phone: {PhoneNumber}";
 
     }

@@ -9,8 +9,8 @@ namespace PhoneBook
         static void Main(string[] args)
         {
             var phoneBook = new PhoneBook();
-            phoneBook.AddContact(new Contact("Bill", "12345678"));
-            phoneBook.AddContact(new Contact("Tom", "87654321"));
+            phoneBook.AddContact(new Contact("Bill", "123456789"));
+            phoneBook.AddContact(new Contact("Tom", "987654321"));
             Console.WriteLine();
 
 
@@ -28,7 +28,10 @@ namespace PhoneBook
                         Console.WriteLine("Set phone number of contact");
                         string phoneNumber = Console.ReadLine();
 
-                        phoneBook.AddContact(new Contact(userName, phoneNumber));
+                        if (!phoneBook.AddContact(new Contact(userName, phoneNumber)))
+                        {
+                            Console.WriteLine("User has not been added");
+                        }
                         break;
 
 
@@ -51,6 +54,15 @@ namespace PhoneBook
                         phoneBook.FindContactByName(inputName);
 
                         break;
+
+                    case MenuOption.Remove:
+
+                        Console.WriteLine("Set phone number of contact to be deleted");
+                        string userToBeDeletedPhoneNumber = Console.ReadLine();
+                        phoneBook.DeleteContactByNumber(userToBeDeletedPhoneNumber);
+
+                        break;
+
                     default:
                         Console.WriteLine("Unknown option");
                         break;
@@ -82,7 +94,8 @@ namespace PhoneBook
             Console.WriteLine("2 -> Find a contact by phone number");
             Console.WriteLine("3 -> Display all contacts");
             Console.WriteLine("4 -> Find a contact by name");
-            Console.WriteLine("5 -> Exit");
+            Console.WriteLine("5 -> Delete contact");
+            Console.WriteLine("6 -> Exit");
             Console.WriteLine(" *** Menu ***");
             Console.WriteLine();
         }

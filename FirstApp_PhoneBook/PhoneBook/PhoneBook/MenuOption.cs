@@ -11,7 +11,8 @@ namespace PhoneBook
         FindByNumber =2,
         DisplayAll =3,
         FindByName =4,
-        Exit =5,
-        Unknown =6
+        Remove =5,
+        Exit =6,
+        Unknown =7
     }
 }
