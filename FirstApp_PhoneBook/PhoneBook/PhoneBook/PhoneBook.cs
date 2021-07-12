@@ -8,7 +8,7 @@ namespace PhoneBook
 {
     class PhoneBook
     {
-        private Dictionary<string, Contact> _contactMap  = new Dictionary<string, Contact>();
+        private readonly Dictionary<string, Contact> _contactMap  = new Dictionary<string, Contact>();
 
         public bool AddContact(Contact contact)
         {
@@ -21,19 +21,19 @@ namespace PhoneBook
             {
                 if (_contactMap.ContainsKey(contact.Name))
                 {
-                    Console.WriteLine($"Contact {contact.ToString()} already exists.");
+                    Console.WriteLine($"Contact {contact} already exists.");
                     return false;
                 }
                 else
                 {
                     if (_contactMap.TryAdd(contact.Name, contact))
                     {
-                        Console.WriteLine($"Added contact: {contact.ToString()}");
+                        Console.WriteLine($"Added contact: {contact}");
                         return true;
                     }
                     else
                     {
-                        Console.WriteLine($"Contact: {contact.ToString()} cannot be added");
+                        Console.WriteLine($"Contact: {contact} cannot be added");
                         return false;
                     }
 
@@ -63,14 +63,6 @@ namespace PhoneBook
             }
         }
 
-        private static void DisplayContactsDetails(IEnumerable<Contact> contacts)
-        {
-            foreach (Contact contact in contacts)
-            {
-                Console.WriteLine(contact.ToString());
-            }
-        }
-
         public void FindContactByName (string name)
         {
             if (_contactMap.ContainsKey(name))
@@ -83,6 +75,15 @@ namespace PhoneBook
             {
                 Console.WriteLine("Contact not found");
              }
+        }
+
+        
+        static void DisplayContactsDetails(IEnumerable<Contact> contacts)
+        {
+            foreach (Contact contact in contacts)
+            {
+                Console.WriteLine(contact.ToString());
+            }
         }
     }
 }
