@@ -9,18 +9,15 @@ namespace NegativeChecker
         {
             Console.WriteLine("Set number");
             string userInput = Console.ReadLine();
-
-            bool isNegative = TryParseToNegativeInt(userInput, out int? negaiveNumberValue);
-
-            if (isNegative)
+            int? negaiveNumberValue;
+            while (!TryParseToNegativeInt(userInput, out negaiveNumberValue))
             {
-                Console.WriteLine($"Number {negaiveNumberValue} is negtive.");
-            }
-            else
-            {
-                Console.WriteLine($"Number is positive");
+                Console.WriteLine("Set number");
+                userInput = Console.ReadLine();
+
             }
 
+            Console.WriteLine($"Number {negaiveNumberValue} is negtive.");
 
         }
 
