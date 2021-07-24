@@ -5,7 +5,7 @@ using System.Text;
 using System.Windows.Forms;
 using System.Text.RegularExpressions;
 
-namespace UplookLogViewer
+namespace StatlookLogViewer
 {
     class Linia
     {
@@ -82,8 +82,8 @@ namespace UplookLogViewer
                     string tmp_NazwaGrupy = null;
                     string myHourTime = null;
                     DictionaryLog SlownikErrors = new DictionaryLog();
-                    Deskryptor[] ListaBledow = SlownikErrors.GetListOfErrors();
-                    foreach (Deskryptor Des in m_Headers.uplook_Deskryptor)
+                    Descriptor[] ListaBledow = SlownikErrors.GetListOfErrors();
+                    foreach (Descriptor Des in m_Headers.uplook_Deskryptor)
                     {
                         if (Des.Name == tmp_Header)
                         {
@@ -122,7 +122,7 @@ namespace UplookLogViewer
                         }
                         else
                         {
-                            foreach (Deskryptor des in ListaBledow)
+                            foreach (Descriptor des in ListaBledow)
                             {
                                 if (tmp_Value.Contains(des.Name))
                                 {
@@ -147,8 +147,8 @@ namespace UplookLogViewer
                 string tmp_NazwaGrupy = null;
                 string myHourTime = null;
                 DictionaryLog SlownikErrors = new DictionaryLog();
-                Deskryptor[] ListaBledow = SlownikErrors.GetListOfErrors();
-                foreach (Deskryptor Des in m_Headers.usm_Deskryptor)
+                Descriptor[] ListaBledow = SlownikErrors.GetListOfErrors();
+                foreach (Descriptor Des in m_Headers.usm_Deskryptor)
                 {
                     if (Des.Name == tmp_Header)
                     {
@@ -181,7 +181,7 @@ namespace UplookLogViewer
                         }
                         else
                         {
-                            foreach (Deskryptor des in ListaBledow)
+                            foreach (Descriptor des in ListaBledow)
                             {
                                 if (tmp_Value.Contains(des.Name))
                                 {

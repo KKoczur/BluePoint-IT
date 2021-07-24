@@ -1,4 +1,4 @@
-﻿namespace UplookLogViewer
+﻿namespace StatlookLogViewer
 {
     partial class Options
     {
@@ -35,7 +35,7 @@
             this.buttonOptionsCancel = new System.Windows.Forms.Button();
             this.splitContainerOptions = new System.Windows.Forms.SplitContainer();
             this.treeViewOptions = new System.Windows.Forms.TreeView();
-            this.oCatalogs = new UplookLogViewer.OCatalogs();
+            this.oCatalogs = new StatlookLogViewer.OCatalogs();
             ((System.ComponentModel.ISupportInitialize)(this.splitContainerOptions)).BeginInit();
             this.splitContainerOptions.Panel1.SuspendLayout();
             this.splitContainerOptions.Panel2.SuspendLayout();

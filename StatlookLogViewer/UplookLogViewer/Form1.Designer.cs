@@ -1,4 +1,4 @@
-﻿namespace UplookLogViewer
+﻿namespace StatlookLogViewer
 {
 	partial class uplookMainForm
 	{
@@ -192,7 +192,7 @@
             // 
             // openFileToolStripMenuItem
             // 
-            this.openFileToolStripMenuItem.Image = global::UplookLogViewer.Properties.Resources.files_add_16;
+            this.openFileToolStripMenuItem.Image = global::StatlookLogViewer.Properties.Resources.files_add_16;
             this.openFileToolStripMenuItem.Name = "openFileToolStripMenuItem";
             this.openFileToolStripMenuItem.ShortcutKeys = ((System.Windows.Forms.Keys)((System.Windows.Forms.Keys.Control | System.Windows.Forms.Keys.O)));
             this.openFileToolStripMenuItem.Size = new System.Drawing.Size(208, 22);
@@ -207,7 +207,7 @@
             // closeToolStripMenuItem1
             // 
             this.closeToolStripMenuItem1.Enabled = false;
-            this.closeToolStripMenuItem1.Image = global::UplookLogViewer.Properties.Resources.close_16;
+            this.closeToolStripMenuItem1.Image = global::StatlookLogViewer.Properties.Resources.close_16;
             this.closeToolStripMenuItem1.Name = "closeToolStripMenuItem1";
             this.closeToolStripMenuItem1.Size = new System.Drawing.Size(208, 22);
             this.closeToolStripMenuItem1.Text = "Close page";
@@ -236,7 +236,7 @@
             // 
             // exitToolStripMenuItem1
             // 
-            this.exitToolStripMenuItem1.Image = global::UplookLogViewer.Properties.Resources.close2_16;
+            this.exitToolStripMenuItem1.Image = global::StatlookLogViewer.Properties.Resources.close2_16;
             this.exitToolStripMenuItem1.Name = "exitToolStripMenuItem1";
             this.exitToolStripMenuItem1.ShortcutKeys = ((System.Windows.Forms.Keys)((System.Windows.Forms.Keys.Alt | System.Windows.Forms.Keys.F4)));
             this.exitToolStripMenuItem1.Size = new System.Drawing.Size(208, 22);
@@ -258,7 +258,7 @@
             // 
             // refreshToolStripMenuItem
             // 
-            this.refreshToolStripMenuItem.Image = global::UplookLogViewer.Properties.Resources.refresh_16;
+            this.refreshToolStripMenuItem.Image = global::StatlookLogViewer.Properties.Resources.refresh_16;
             this.refreshToolStripMenuItem.Name = "refreshToolStripMenuItem";
             this.refreshToolStripMenuItem.Size = new System.Drawing.Size(147, 22);
             this.refreshToolStripMenuItem.Text = "Refresh";
@@ -272,7 +272,7 @@
             // toolStripMenuItemGeneral
             // 
             this.toolStripMenuItemGeneral.Enabled = false;
-            this.toolStripMenuItemGeneral.Image = global::UplookLogViewer.Properties.Resources.insert_table_16;
+            this.toolStripMenuItemGeneral.Image = global::StatlookLogViewer.Properties.Resources.insert_table_16;
             this.toolStripMenuItemGeneral.Name = "toolStripMenuItemGeneral";
             this.toolStripMenuItemGeneral.Size = new System.Drawing.Size(147, 22);
             this.toolStripMenuItemGeneral.Text = "Show column";
@@ -280,7 +280,7 @@
             // ToolStripMenuItemUplook
             // 
             this.ToolStripMenuItemUplook.Enabled = false;
-            this.ToolStripMenuItemUplook.Image = global::UplookLogViewer.Properties.Resources.insert_table_16;
+            this.ToolStripMenuItemUplook.Image = global::StatlookLogViewer.Properties.Resources.insert_table_16;
             this.ToolStripMenuItemUplook.Name = "ToolStripMenuItemUplook";
             this.ToolStripMenuItemUplook.Size = new System.Drawing.Size(147, 22);
             this.ToolStripMenuItemUplook.Text = "Show column";
@@ -290,7 +290,7 @@
             // ToolStripMenuItemUSM
             // 
             this.ToolStripMenuItemUSM.Enabled = false;
-            this.ToolStripMenuItemUSM.Image = global::UplookLogViewer.Properties.Resources.insert_table_16;
+            this.ToolStripMenuItemUSM.Image = global::StatlookLogViewer.Properties.Resources.insert_table_16;
             this.ToolStripMenuItemUSM.Name = "ToolStripMenuItemUSM";
             this.ToolStripMenuItemUSM.Size = new System.Drawing.Size(147, 22);
             this.ToolStripMenuItemUSM.Text = "Show column";
@@ -303,7 +303,7 @@
             this.zwinToolStripMenuItem,
             this.rozwinWszystkieToolStripMenuItem});
             this.grupyToolStripMenuItem.Enabled = false;
-            this.grupyToolStripMenuItem.Image = global::UplookLogViewer.Properties.Resources.folder_16;
+            this.grupyToolStripMenuItem.Image = global::StatlookLogViewer.Properties.Resources.folder_16;
             this.grupyToolStripMenuItem.Name = "grupyToolStripMenuItem";
             this.grupyToolStripMenuItem.Size = new System.Drawing.Size(147, 22);
             this.grupyToolStripMenuItem.Text = "Groups";
@@ -311,7 +311,7 @@
             // zwinToolStripMenuItem
             // 
             this.zwinToolStripMenuItem.Enabled = false;
-            this.zwinToolStripMenuItem.Image = global::UplookLogViewer.Properties.Resources.arrow_next_16;
+            this.zwinToolStripMenuItem.Image = global::StatlookLogViewer.Properties.Resources.arrow_next_16;
             this.zwinToolStripMenuItem.Name = "zwinToolStripMenuItem";
             this.zwinToolStripMenuItem.Size = new System.Drawing.Size(141, 22);
             this.zwinToolStripMenuItem.Text = "Collapsed all";
@@ -320,7 +320,7 @@
             // rozwinWszystkieToolStripMenuItem
             // 
             this.rozwinWszystkieToolStripMenuItem.Enabled = false;
-            this.rozwinWszystkieToolStripMenuItem.Image = global::UplookLogViewer.Properties.Resources.arrow_down_16;
+            this.rozwinWszystkieToolStripMenuItem.Image = global::StatlookLogViewer.Properties.Resources.arrow_down_16;
             this.rozwinWszystkieToolStripMenuItem.Name = "rozwinWszystkieToolStripMenuItem";
             this.rozwinWszystkieToolStripMenuItem.Size = new System.Drawing.Size(141, 22);
             this.rozwinWszystkieToolStripMenuItem.Text = "Normal all";
@@ -336,7 +336,7 @@
             // 
             // analizeToolStripMenuItem2
             // 
-            this.analizeToolStripMenuItem2.Image = global::UplookLogViewer.Properties.Resources.info_16;
+            this.analizeToolStripMenuItem2.Image = global::StatlookLogViewer.Properties.Resources.info_16;
             this.analizeToolStripMenuItem2.Name = "analizeToolStripMenuItem2";
             this.analizeToolStripMenuItem2.Size = new System.Drawing.Size(152, 22);
             this.analizeToolStripMenuItem2.Text = "Options";
@@ -452,7 +452,7 @@
             // 
             // toolStripButton2
             // 
-            this.toolStripButton2.Image = global::UplookLogViewer.Properties.Resources.files_add_16;
+            this.toolStripButton2.Image = global::StatlookLogViewer.Properties.Resources.files_add_16;
             this.toolStripButton2.ImageTransparentColor = System.Drawing.Color.Magenta;
             this.toolStripButton2.Name = "toolStripButton2";
             this.toolStripButton2.Size = new System.Drawing.Size(40, 47);
@@ -469,7 +469,7 @@
             // toolStripButtonCollapsedAll
             // 
             this.toolStripButtonCollapsedAll.Enabled = false;
-            this.toolStripButtonCollapsedAll.Image = global::UplookLogViewer.Properties.Resources.arrow_next_16;
+            this.toolStripButtonCollapsedAll.Image = global::StatlookLogViewer.Properties.Resources.arrow_next_16;
             this.toolStripButtonCollapsedAll.ImageTransparentColor = System.Drawing.Color.Magenta;
             this.toolStripButtonCollapsedAll.Name = "toolStripButtonCollapsedAll";
             this.toolStripButtonCollapsedAll.Size = new System.Drawing.Size(63, 47);
@@ -480,7 +480,7 @@
             // toolStripButtonNormalAll
             // 
             this.toolStripButtonNormalAll.Enabled = false;
-            this.toolStripButtonNormalAll.Image = global::UplookLogViewer.Properties.Resources.arrow_down_16;
+            this.toolStripButtonNormalAll.Image = global::StatlookLogViewer.Properties.Resources.arrow_down_16;
             this.toolStripButtonNormalAll.ImageTransparentColor = System.Drawing.Color.Magenta;
             this.toolStripButtonNormalAll.Name = "toolStripButtonNormalAll";
             this.toolStripButtonNormalAll.Size = new System.Drawing.Size(51, 47);
@@ -496,7 +496,7 @@
             // toolStripButtonClose
             // 
             this.toolStripButtonClose.Enabled = false;
-            this.toolStripButtonClose.Image = global::UplookLogViewer.Properties.Resources.close_16;
+            this.toolStripButtonClose.Image = global::StatlookLogViewer.Properties.Resources.close_16;
             this.toolStripButtonClose.ImageTransparentColor = System.Drawing.Color.Magenta;
             this.toolStripButtonClose.Name = "toolStripButtonClose";
             this.toolStripButtonClose.Size = new System.Drawing.Size(40, 47);
@@ -511,7 +511,7 @@
             // 
             // toolStripButton3
             // 
-            this.toolStripButton3.Image = global::UplookLogViewer.Properties.Resources.close2_16;
+            this.toolStripButton3.Image = global::StatlookLogViewer.Properties.Resources.close2_16;
             this.toolStripButton3.ImageTransparentColor = System.Drawing.Color.Magenta;
             this.toolStripButton3.Name = "toolStripButton3";
             this.toolStripButton3.Size = new System.Drawing.Size(29, 47);
@@ -576,7 +576,7 @@
             // toolStripButtonIcon
             // 
             this.toolStripButtonIcon.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Image;
-            this.toolStripButtonIcon.Image = global::UplookLogViewer.Properties.Resources.ok_16;
+            this.toolStripButtonIcon.Image = global::StatlookLogViewer.Properties.Resources.ok_16;
             this.toolStripButtonIcon.ImageTransparentColor = System.Drawing.Color.Magenta;
             this.toolStripButtonIcon.Name = "toolStripButtonIcon";
             this.toolStripButtonIcon.Size = new System.Drawing.Size(23, 21);
@@ -640,7 +640,7 @@
             // 
             // toolStripMenuItemOpenFile
             // 
-            this.toolStripMenuItemOpenFile.Image = global::UplookLogViewer.Properties.Resources.files_add_16;
+            this.toolStripMenuItemOpenFile.Image = global::StatlookLogViewer.Properties.Resources.files_add_16;
             this.toolStripMenuItemOpenFile.Name = "toolStripMenuItemOpenFile";
             this.toolStripMenuItemOpenFile.Size = new System.Drawing.Size(238, 22);
             this.toolStripMenuItemOpenFile.Text = "Open file";
@@ -648,7 +648,7 @@
             // 
             // toolStripMenuItemDeleteFile
             // 
-            this.toolStripMenuItemDeleteFile.Image = global::UplookLogViewer.Properties.Resources.less_16;
+            this.toolStripMenuItemDeleteFile.Image = global::StatlookLogViewer.Properties.Resources.less_16;
             this.toolStripMenuItemDeleteFile.Name = "toolStripMenuItemDeleteFile";
             this.toolStripMenuItemDeleteFile.Size = new System.Drawing.Size(238, 22);
             this.toolStripMenuItemDeleteFile.Text = "Delete file";
@@ -687,7 +687,7 @@
             // 
             // openContainFolderToolStripMenuItem
             // 
-            this.openContainFolderToolStripMenuItem.Image = global::UplookLogViewer.Properties.Resources.folder_16;
+            this.openContainFolderToolStripMenuItem.Image = global::StatlookLogViewer.Properties.Resources.folder_16;
             this.openContainFolderToolStripMenuItem.Name = "openContainFolderToolStripMenuItem";
             this.openContainFolderToolStripMenuItem.Size = new System.Drawing.Size(238, 22);
             this.openContainFolderToolStripMenuItem.Text = "Open contain folder";
@@ -711,7 +711,7 @@
             // 
             // toolStripMenuItemClose
             // 
-            this.toolStripMenuItemClose.Image = global::UplookLogViewer.Properties.Resources.close_16;
+            this.toolStripMenuItemClose.Image = global::StatlookLogViewer.Properties.Resources.close_16;
             this.toolStripMenuItemClose.Name = "toolStripMenuItemClose";
             this.toolStripMenuItemClose.Size = new System.Drawing.Size(238, 22);
             this.toolStripMenuItemClose.Text = "Close page";
@@ -731,7 +731,7 @@
             // 
             // toolStripMenuItem7
             // 
-            this.toolStripMenuItem7.Image = global::UplookLogViewer.Properties.Resources.less_16;
+            this.toolStripMenuItem7.Image = global::StatlookLogViewer.Properties.Resources.less_16;
             this.toolStripMenuItem7.Name = "toolStripMenuItem7";
             this.toolStripMenuItem7.Size = new System.Drawing.Size(238, 22);
             this.toolStripMenuItem7.Text = "Delete file";
@@ -770,7 +770,7 @@
             // 
             // toolStripMenuItem3
             // 
-            this.toolStripMenuItem3.Image = global::UplookLogViewer.Properties.Resources.folder_16;
+            this.toolStripMenuItem3.Image = global::StatlookLogViewer.Properties.Resources.folder_16;
             this.toolStripMenuItem3.Name = "toolStripMenuItem3";
             this.toolStripMenuItem3.Size = new System.Drawing.Size(238, 22);
             this.toolStripMenuItem3.Text = "Open contain folder";
@@ -810,7 +810,7 @@
             // 
             // openToolStripMenuItem
             // 
-            this.openToolStripMenuItem.Image = global::UplookLogViewer.Properties.Resources.files_add_16;
+            this.openToolStripMenuItem.Image = global::StatlookLogViewer.Properties.Resources.files_add_16;
             this.openToolStripMenuItem.Name = "openToolStripMenuItem";
             this.openToolStripMenuItem.Size = new System.Drawing.Size(152, 22);
             this.openToolStripMenuItem.Text = "Open File";
@@ -819,7 +819,7 @@
             // 
             this.toolStripButton1.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Stretch;
             this.toolStripButton1.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Image;
-            this.toolStripButton1.Image = global::UplookLogViewer.Properties.Resources.files_add_16;
+            this.toolStripButton1.Image = global::StatlookLogViewer.Properties.Resources.files_add_16;
             this.toolStripButton1.ImageTransparentColor = System.Drawing.Color.Magenta;
             this.toolStripButton1.Name = "toolStripButton1";
             this.toolStripButton1.Size = new System.Drawing.Size(23, 39);

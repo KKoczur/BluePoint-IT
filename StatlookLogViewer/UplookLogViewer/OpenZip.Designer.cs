@@ -1,4 +1,4 @@
-﻿namespace UplookLogViewer
+﻿namespace StatlookLogViewer
 {
     partial class OpenZip
     {

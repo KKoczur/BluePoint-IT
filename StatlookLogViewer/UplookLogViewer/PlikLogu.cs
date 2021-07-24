@@ -11,7 +11,7 @@ using System.IO;
 using ListViewGroupCollapse;
 using Yoramo.GuiLib;
 
-namespace UplookLogViewer
+namespace StatlookLogViewer
 {
     class PlikLogu
     {

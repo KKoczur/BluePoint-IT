@@ -11,7 +11,7 @@ using System.IO;
 using ListViewGroupCollapse;
 using Yoramo.GuiLib;
 
-namespace UplookLogViewer
+namespace StatlookLogViewer
 {
     public class NewPage:TabPage
     {
@@ -50,16 +50,16 @@ namespace UplookLogViewer
                 // Read the configuration object from a file
                 config = Configuration.Deserialize("config.xml");
             }
-            Deskryptor[] udes = config.UReadHeaders();
+            Descriptor[] udes = config.UReadHeaders();
             int j = 0;
-            foreach (Deskryptor d in udes)
+            foreach (Descriptor d in udes)
             {
                 show_uplook[j] = d.Show;
                 j++;
             }
-            Deskryptor[] usmdes = config.USMReadHeaders();
+            Descriptor[] usmdes = config.USMReadHeaders();
             int k = 0;
-            foreach (Deskryptor d in usmdes)
+            foreach (Descriptor d in usmdes)
             {
                 show_usm[k] = d.Show;
                 k++;

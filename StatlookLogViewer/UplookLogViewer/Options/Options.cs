@@ -9,7 +9,7 @@ using System.Windows.Forms;
 using System.IO;
 
 
-namespace UplookLogViewer
+namespace StatlookLogViewer
 {
     public partial class Options : Form
     {

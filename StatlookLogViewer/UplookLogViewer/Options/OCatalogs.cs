@@ -7,7 +7,7 @@ using System.Linq;
 using System.Text;
 using System.Windows.Forms;
 
-namespace UplookLogViewer
+namespace StatlookLogViewer
 {
     public partial class OCatalogs : UserControl
     {

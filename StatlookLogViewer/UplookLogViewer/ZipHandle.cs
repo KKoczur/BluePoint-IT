@@ -1,6 +1,6 @@
 ﻿using ICSharpCode.SharpZipLib.Zip;
 
-namespace UplookLogViewer
+namespace StatlookLogViewer
 {
     public class ZipHandle
     {

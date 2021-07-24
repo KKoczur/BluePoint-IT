@@ -4,7 +4,7 @@ using System.Collections.Generic;
 using System.Text;
 using System.Windows.Forms;
 
-namespace UplookLogViewer
+namespace StatlookLogViewer
 {
     public class IntegerComparer : IComparer
     {

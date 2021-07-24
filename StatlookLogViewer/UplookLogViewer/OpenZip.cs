@@ -10,7 +10,7 @@ using System.Collections;
 using System.IO;
 using Ionic.Zip;
 
-namespace UplookLogViewer
+namespace StatlookLogViewer
 {
     public partial class OpenZip : Form
     {

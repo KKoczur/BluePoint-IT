@@ -6,7 +6,7 @@ using System.IO;
 using System.Xml;
 using System.Xml.Serialization;
 
-namespace UplookLogViewer
+namespace StatlookLogViewer
 {
     [Serializable]
     public class Configuration
@@ -17,7 +17,7 @@ namespace UplookLogViewer
       string _UserDirectory;
       string _FileExtensions;
       string _uplook_Headers;
-      string _show_uplook;  
+      string _show_statlook;  
       string _usm_Headers;
       string _show_usm;
 
@@ -67,7 +67,7 @@ namespace UplookLogViewer
           _UserDirectory = "C:\\Users\\Karol\\Desktop\\Logs\\";
           _FileExtensions= "*.log;*.zip";
           _uplook_Headers = "Date; Logger:; Type:; PID/TID:; Thread ID:; Description:; Exception:;   Message:;   Method:;   Stack:";
-          _show_uplook = "false;true;true;true;true;true;true;true;true;true";
+          _show_statlook = "false;true;true;true;true;true;true;true;true;true";
           _usm_Headers = "Date; Code:; Type:; Session:; PID/TID:; Description:";
           _show_usm = "false;false;true;false;false;true;";
 
@@ -157,8 +157,8 @@ namespace UplookLogViewer
       }
       public string show_uplook
       {
-          get { return _show_uplook; }
-          set { _show_uplook = value; }
+          get { return _show_statlook; }
+          set { _show_statlook = value; }
       }
       public string usm_Headers
       {
@@ -172,102 +172,102 @@ namespace UplookLogViewer
       }
 
       #region HeadersOfUplook
-      public string uDate
+      public string UDate
       {
           get { return _uDate; }
           set { _uDate = value; }
       }
-      public string uLogger
+      public string ULogger
       {
           get { return _uLogger; }
           set { _uLogger = value; }
       }
-      public string uType
+      public string UType
       {
           get { return _uType; }
           set { _uType = value; }
       }
-      public string uProcess
+      public string UProcess
       {
           get { return _uProcess; }
           set { _uProcess = value; }
       }
-      public string uThread
+      public string UThread
       {
           get { return _uThread; }
           set { _uThread = value; }
       }
-      public string uDescription
+      public string UDescription
       {
           get { return _uDescription; }
           set { _uDescription = value; }
       }
-      public string uException
+      public string UException
       {
           get { return _uException; }
           set { _uException = value; }
       }
-      public string uMessage
+      public string UMessage
       {
           get { return _uMessage; }
           set { _uMessage = value; }
       }
-      public string uMethod
+      public string UMethod
       {
           get { return _uMethod; }
           set { _uMethod = value; }
       }
-      public string uStack
+      public string UStack
       {
           get { return _uStack; }
           set { _uStack = value; }
       }
-      public bool uDateVisible
+      public bool UDateVisible
       {
           get { return _uDateVisible; }
           set { _uDateVisible = value; }
       }
-      public bool uLoggerVisible
+      public bool ULoggerVisible
       {
           get { return _uLoggerVisible; }
           set { _uLoggerVisible = value; }
       }
-      public bool uTypeVisible
+      public bool UTypeVisible
       {
           get { return _uTypeVisible; }
           set { _uTypeVisible = value; }
       }
-      public bool uProcessVisible
+      public bool UProcessVisible
       {
           get { return _uProcessVisible; }
           set { _uProcessVisible = value; }
       }
-      public bool uThreadVisible
+      public bool UThreadVisible
       {
           get { return _uThreadVisible; }
           set { _uThreadVisible = value; }
       }
-      public bool uDescriptionVisible
+      public bool UDescriptionVisible
       {
           get { return _uDescriptionVisible; }
           set { _uDescriptionVisible = value; }
       }
-      public bool uExceptionVisible
+      public bool UExceptionVisible
       {
           get { return _uExceptionVisible; }
           set { _uExceptionVisible = value; }
       }
-      public bool uMessageVisible
+      public bool UMessageVisible
       {
           get { return _uMessageVisible; }
           set { _uMessageVisible = value; }
       }
-      public bool uMethodVisible
+      public bool UMethodVisible
       {
           get { return _uMethodVisible; }
           set { _uMethodVisible = value; }
       }
-      public bool uStackVisible
+      public bool UStackVisible
       {
           get { return _uStackVisible; }
           set { _uStackVisible = value; }
@@ -337,30 +337,30 @@ namespace UplookLogViewer
         }
       #endregion HeadersOfUsm
 
-      public Deskryptor[] UReadHeaders()
+      public Descriptor[] UReadHeaders()
       {
-          Deskryptor[] uD = new Deskryptor[10];
-          uD[0] = new Deskryptor("uDate", uDate, uDateVisible);
-          uD[1] = new Deskryptor("uLogger", uLogger, uLoggerVisible);
-          uD[2] = new Deskryptor("uType", uType, uTypeVisible);
-          uD[3] = new Deskryptor("uProcess", uProcess, uProcessVisible);
-          uD[4] = new Deskryptor("uThread", uThread, uThreadVisible);
-          uD[5] = new Deskryptor("uDescription", uDescription, uDescriptionVisible);
-          uD[6] = new Deskryptor("uException", uException, uExceptionVisible);
-          uD[7] = new Deskryptor("uMessage", uMessage, uMessageVisible);
-          uD[8] = new Deskryptor("uMethod", uMethod, uMethodVisible);
-          uD[9] = new Deskryptor("uStack", uStack, uStackVisible);
+          Descriptor[] uD = new Descriptor[10];
+          uD[0] = new Descriptor("uDate", UDate, UDateVisible);
+          uD[1] = new Descriptor("uLogger", ULogger, ULoggerVisible);
+          uD[2] = new Descriptor("uType", UType, UTypeVisible);
+          uD[3] = new Descriptor("uProcess", UProcess, UProcessVisible);
+          uD[4] = new Descriptor("uThread", UThread, UThreadVisible);
+          uD[5] = new Descriptor("uDescription", UDescription, UDescriptionVisible);
+          uD[6] = new Descriptor("uException", UException, UExceptionVisible);
+          uD[7] = new Descriptor("uMessage", UMessage, UMessageVisible);
+          uD[8] = new Descriptor("uMethod", UMethod, UMethodVisible);
+          uD[9] = new Descriptor("uStack", UStack, UStackVisible);
           return uD;
       }
-      public Deskryptor[] USMReadHeaders()
+      public Descriptor[] USMReadHeaders()
       {
-          Deskryptor[] usmD = new Deskryptor[6];
-          usmD[0] = new Deskryptor("usmDate", usmDate, usmDateVisible);
-          usmD[1] = new Deskryptor("usmCode", usmCode, usmCodeVisible);
-          usmD[2] = new Deskryptor("usmType", usmType, usmTypeVisible);
-          usmD[3] = new Deskryptor("usmSession", usmSession, usmSessionVisible);
-          usmD[4] = new Deskryptor("usmProcess", usmProcess, usmProcessVisible);
-          usmD[5] = new Deskryptor("usmDescription", usmDescription, usmDescriptionVisible);
+          Descriptor[] usmD = new Descriptor[6];
+          usmD[0] = new Descriptor("usmDate", usmDate, usmDateVisible);
+          usmD[1] = new Descriptor("usmCode", usmCode, usmCodeVisible);
+          usmD[2] = new Descriptor("usmType", usmType, usmTypeVisible);
+          usmD[3] = new Descriptor("usmSession", usmSession, usmSessionVisible);
+          usmD[4] = new Descriptor("usmProcess", usmProcess, usmProcessVisible);
+          usmD[5] = new Descriptor("usmDescription", usmDescription, usmDescriptionVisible);
           return usmD;
       }
 
@@ -373,39 +373,39 @@ namespace UplookLogViewer
           //else 
 		  if(NameOfHeder=="uLogger")
           {
-              uLoggerVisible=Show;
+              ULoggerVisible=Show;
           }
           else if(NameOfHeder=="uType")
           {
-              uTypeVisible=Show;
+              UTypeVisible=Show;
           }
           else if(NameOfHeder=="uProcess")
           {
-              uProcessVisible=Show;
+              UProcessVisible=Show;
           }
           else if(NameOfHeder=="uThread")
           {
-              uThreadVisible=Show;
+              UThreadVisible=Show;
           }
           else if (NameOfHeder=="uDescription")
           {
-              uDescriptionVisible=Show;
+              UDescriptionVisible=Show;
           }
           else if (NameOfHeder=="uException")
           {
-              uExceptionVisible=Show;
+              UExceptionVisible=Show;
           }
           else if (NameOfHeder=="uMessage")
           {
-              uMessageVisible=Show;
+              UMessageVisible=Show;
           }
           else if (NameOfHeder=="uMethod")
           {
-              uMethodVisible=Show;
+              UMethodVisible=Show;
           }
           else if (NameOfHeder=="uStack")
           {
-              uStackVisible=Show;
+              UStackVisible=Show;
           }
 
       }

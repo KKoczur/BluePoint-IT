@@ -4,7 +4,7 @@ using System.Collections;
 using System.Windows.Forms;
 using ICSharpCode.SharpZipLib.Zip;
 
-namespace UplookLogViewer
+namespace StatlookLogViewer
 {
     public static class ZipUtil
     {

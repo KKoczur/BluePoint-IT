@@ -13,7 +13,7 @@ using Yoramo.GuiLib;
 using Ionic.Zip;
 
 
-namespace UplookLogViewer
+namespace StatlookLogViewer
 {
 
 	public partial class uplookMainForm : Form
@@ -22,7 +22,7 @@ namespace UplookLogViewer
         /// 
         /// </summary>
         #region Zmienne
-        private UplookLogViewer.ListViewColumnSorter lvwColumnSorter;
+        private StatlookLogViewer.ListViewColumnSorter lvwColumnSorter;
 	    public string OSVersion=null;
 	    public string LogDirectory = null;
         public string USMDirectory = null;
@@ -54,16 +54,16 @@ namespace UplookLogViewer
                 // Read the configuration object from a file
             config = Configuration.Deserialize("config.xml");
             }
-            Deskryptor[] udes = config.UReadHeaders();
+            Descriptor[] udes = config.UReadHeaders();
             int j = 0;
-            foreach (Deskryptor d in udes)
+            foreach (Descriptor d in udes)
             {
                 show_uplook[j]= d.Show;
                 j++;
             }
-            Deskryptor[] usmdes = config.USMReadHeaders();
+            Descriptor[] usmdes = config.USMReadHeaders();
             int k = 0;
-            foreach (Deskryptor d in usmdes)
+            foreach (Descriptor d in usmdes)
             {
                 show_usm[k] = d.Show;
                 k++;
@@ -187,7 +187,7 @@ namespace UplookLogViewer
                             plikInfo.SubItems.Add(FileSize(pliki[i].Length,false));
                             plikInfo.SubItems.Add(pliki[i].DirectoryName);
                             listViewFiles.Items.Add(plikInfo);
-                            toolStripButtonIcon.Image = global::UplookLogViewer.Properties.Resources.ok_16;
+                            toolStripButtonIcon.Image = global::StatlookLogViewer.Properties.Resources.ok_16;
                             toolStripStatusReady.Text = "Ready";
                         }
                     }
@@ -244,7 +244,7 @@ namespace UplookLogViewer
                             plikInfo.SubItems.Add(FileSize(pliki[i-1].Length,true));
                             plikInfo.SubItems.Add(pliki[i - 1].DirectoryName);
                             listViewFiles.Items.Add(plikInfo);
-                            toolStripButtonIcon.Image = global::UplookLogViewer.Properties.Resources.ok_16;
+                            toolStripButtonIcon.Image = global::StatlookLogViewer.Properties.Resources.ok_16;
                             toolStripStatusReady.Text = "Ready";
                         }
                     }
@@ -586,7 +586,7 @@ namespace UplookLogViewer
                     }
                 }
                 FileInfo OpisPliku = new FileInfo(TabC.SelectedTab.Tag.ToString());
-                toolStripButtonIcon.Image = global::UplookLogViewer.Properties.Resources.ok_16;
+                toolStripButtonIcon.Image = global::StatlookLogViewer.Properties.Resources.ok_16;
                 toolStripStatusReady.Text = OpisPliku.FullName;
                 toolStripSeparator_1.Visible = true;
                 toolStripLabelCreationTime.Text = OpisPliku.LastWriteTime.ToString();
@@ -1161,11 +1161,11 @@ namespace UplookLogViewer
         private void ToolStripMenuItemUplook_DropDownItemClicked(object sender, ToolStripItemClickedEventArgs e)
         {
             ToolStripMenuItem t = (ToolStripMenuItem)e.ClickedItem;
-            Deskryptor[] udes = config.UReadHeaders();
+            Descriptor[] udes = config.UReadHeaders();
             if (t.CheckState == System.Windows.Forms.CheckState.Checked)
             {
                 t.CheckState =System.Windows.Forms.CheckState.Unchecked;
-                foreach (Deskryptor ud in udes)
+                foreach (Descriptor ud in udes)
                 {
                     if (t.Name == ud.Name)
                     {
@@ -1177,7 +1177,7 @@ namespace UplookLogViewer
             else
             {
                 t.CheckState = System.Windows.Forms.CheckState.Checked;
-                foreach (Deskryptor ud in udes)
+                foreach (Descriptor ud in udes)
                 {
                     if (t.Name == ud.Name)
                     {
@@ -1206,11 +1206,11 @@ namespace UplookLogViewer
         private void ToolStripMenuItemUSM_DropDownItemClicked(object sender, ToolStripItemClickedEventArgs e)
         {
             ToolStripMenuItem t = (ToolStripMenuItem)e.ClickedItem;
-            Deskryptor[] usmdes = config.USMReadHeaders();
+            Descriptor[] usmdes = config.USMReadHeaders();
             if (t.CheckState == System.Windows.Forms.CheckState.Checked)
             {
                 t.CheckState = System.Windows.Forms.CheckState.Unchecked;
-                foreach (Deskryptor usmd in usmdes)
+                foreach (Descriptor usmd in usmdes)
                 {
                     if (t.Name == usmd.Name)
                     {
@@ -1222,7 +1222,7 @@ namespace UplookLogViewer
             else
             {
                 t.CheckState = System.Windows.Forms.CheckState.Checked;
-                foreach (Deskryptor usmd in usmdes)
+                foreach (Descriptor usmd in usmdes)
                 {
                     if (t.Name == usmd.Name)
                     {

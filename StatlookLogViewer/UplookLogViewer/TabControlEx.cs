@@ -27,7 +27,7 @@ namespace Yoramo.GuiLib
                 r.Height = 16;
                 Brush b = new SolidBrush(Color.Blue);
                 Font f = new Font(this.Font, FontStyle.Bold);
-                e.Graphics.DrawImage(UplookLogViewer.Properties.Resources.info_16, r);
+                e.Graphics.DrawImage(StatlookLogViewer.Properties.Resources.info_16, r);
                 string titel = this.TabPages[e.Index].Text.Substring(6, TabPages[e.Index].Text.Length - 6);
                 e.Graphics.DrawString(titel, f, b, new PointF(r.X + 16, r.Y));
             }
@@ -41,7 +41,7 @@ namespace Yoramo.GuiLib
                 Brush b1 = new SolidBrush(Color.Red);
                 Brush b2 = new SolidBrush(Color.Black);
                 Pen p = new Pen(b1);
-                e.Graphics.DrawImage(UplookLogViewer.Properties.Resources.close_16, r);
+                e.Graphics.DrawImage(StatlookLogViewer.Properties.Resources.close_16, r);
                 //e.Graphics.DrawLine(p, r.X, r.Y, r.X + r.Width, r.Y + r.Height);
                 //e.Graphics.DrawLine(p, r.X + r.Width, r.Y, r.X, r.Y + r.Height);
 

@@ -55,7 +55,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Configuration.cs" />
-    <Compile Include="Deskryptor.cs" />
+    <Compile Include="Descriptor.cs" />
     <Compile Include="DictionaryLog.cs" />
     <Compile Include="FolderZipper.cs" />
     <Compile Include="Headers.cs" />
@@ -121,7 +121,6 @@
       <DependentUpon>Resources.resx</DependentUpon>
       <DesignTime>True</DesignTime>
     </Compile>
-    <None Include="ClassDiagram1.cd" />
     <None Include="Properties\Settings.settings">
       <Generator>SettingsSingleFileGenerator</Generator>
       <LastGenOutput>Settings.Designer.cs</LastGenOutput>

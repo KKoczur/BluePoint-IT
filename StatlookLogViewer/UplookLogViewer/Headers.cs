@@ -4,7 +4,7 @@ using System.Linq;
 using System.Text;
 using System.IO; 
 
-namespace UplookLogViewer
+namespace StatlookLogViewer
 {
     class Headers
     {
@@ -17,8 +17,8 @@ namespace UplookLogViewer
         private string m_uplook_Break = "----------------------------------------";
         private string m_usm_Date = "Date";
         private string m_usm_Break = "----------------------------------------";
-        private Deskryptor[] m_Zbior_uplook_Deskryptors = new Deskryptor[10];
-        private Deskryptor[] m_Zbior_usm_Deskryptors = new Deskryptor[6];
+        private Descriptor[] m_Zbior_uplook_Deskryptors = new Descriptor[10];
+        private Descriptor[] m_Zbior_usm_Deskryptors = new Descriptor[6];
         #endregion Zmienne
 
         #region Konstruktory
@@ -51,12 +51,12 @@ namespace UplookLogViewer
             //Utworzenie zbioru deskryptorów uplook
             for (int i = 0; i < m_uplook_Headers.Length; i++)
             {
-                m_Zbior_uplook_Deskryptors[i] = new Deskryptor(m_uplook_Headers[i]);
+                m_Zbior_uplook_Deskryptors[i] = new Descriptor(m_uplook_Headers[i]);
             }
             //Utworzenie zbioru deskryptorów usm
             for (int i = 0; i < m_usm_Headers.Length; i++)
             {
-                m_Zbior_usm_Deskryptors[i] = new Deskryptor(m_usm_Headers[i]);
+                m_Zbior_usm_Deskryptors[i] = new Descriptor(m_usm_Headers[i]);
             }
         }
 
@@ -64,7 +64,7 @@ namespace UplookLogViewer
 
         #region Wlasciowsci
 
-        public Deskryptor[] uplook_Deskryptor
+        public Descriptor[] uplook_Deskryptor
         {
             get
             {
@@ -97,7 +97,7 @@ namespace UplookLogViewer
             }
         }
 
-        public Deskryptor[] usm_Deskryptor
+        public Descriptor[] usm_Deskryptor
         {
             get
             {

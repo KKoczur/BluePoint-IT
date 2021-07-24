@@ -8,7 +8,7 @@
 // </auto-generated>
 //------------------------------------------------------------------------------
 
-namespace UplookLogViewer.Properties {
+namespace StatlookLogViewer.Properties {
     using System;
     
     
