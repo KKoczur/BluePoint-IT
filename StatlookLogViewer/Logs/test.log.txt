@@ -1,0 +1,44 @@
+----------------------------------------
+2011.07.28 13:01:04.496
+ Logger:             Uplook.Master.UI.FrmMain [Void CurrentDomain_UnhandledException(System.Object, System.UnhandledExceptionEventArgs)]
+ Type:               Error
+ Process ID:         2720
+ Thread ID:          10
+ Description:        Unhandled exception
+
+ Exception:          System.Exception
+   Message:          Obiekt Graphics nie mo¿e zostaæ utworzony z obrazu, który ma format pikseli indeksowanych.
+   Method:           System.Drawing.Graphics FromImage(System.Drawing.Image)
+   Stack:               w System.Drawing.Graphics.FromImage(Image image)
+   w Uplook.Tools.Graphics.ImageDataConverter.ImageResize(Image original, Size newSize, Boolean keepAspectRatio, Boolean allowGrow)
+   w Uplook.Master.Shared.SettingsUI.SettingsNavigator.set_NavBarGroups(NavBarGroup[] value)
+   w Uplook.Master.AppSettings.AppSettingsForm..ctor(PluginsManager pluginsManager, String[] allowedItems)
+   w Uplook.Master.UI.FrmMain.ShowSystemSettingsDialog(String[] allowedItems)
+   w Uplook.Master.UI.FrmMain.cmdSettings_ItemClick(Object sender, ItemClickEventArgs e)
+   w DevExpress.XtraBars.BarItem.OnClick(BarItemLink link)
+   w DevExpress.XtraBars.BarBaseButtonItem.OnClick(BarItemLink link)
+   w DevExpress.XtraBars.BarItemLink.OnLinkClick()
+   w DevExpress.XtraBars.BarItemLink.OnLinkAction(BarLinkAction action, Object actionArgs)
+   w DevExpress.XtraBars.BarButtonItemLink.OnLinkAction(BarLinkAction action, Object actionArgs)
+   w DevExpress.XtraBars.BarItemLink.OnLinkActionCore(BarLinkAction action, Object actionArgs)
+   w DevExpress.XtraBars.ViewInfo.BarSelectionInfo.ClickLink(BarItemLink link)
+   w DevExpress.XtraBars.ViewInfo.BarSelectionInfo.UnPressLink(BarItemLink link)
+   w DevExpress.XtraBars.Controls.CustomLinksControl.OnMouseUp(MouseEventArgs e)
+   w System.Windows.Forms.Control.WmMouseUp(Message& m, MouseButtons button, Int32 clicks)
+   w System.Windows.Forms.Control.WndProc(Message& m)
+   w System.Windows.Forms.Control.ControlNativeWindow.OnMessage(Message& m)
+   w System.Windows.Forms.Control.ControlNativeWindow.WndProc(Message& m)
+   w System.Windows.Forms.NativeWindow.DebuggableCallback(IntPtr hWnd, Int32 msg, IntPtr wparam, IntPtr lparam)
+   w System.Windows.Forms.UnsafeNativeMethods.DispatchMessageW(MSG& msg)
+   w System.Windows.Forms.Application.ComponentManager.System.Windows.Forms.UnsafeNativeMethods.IMsoComponentManager.FPushMessageLoop(Int32 dwComponentID, Int32 reason, Int32 pvLoopData)
+   w System.Windows.Forms.Application.ThreadContext.RunMessageLoopInner(Int32 reason, ApplicationContext context)
+   w System.Windows.Forms.Application.ThreadContext.RunMessageLoop(Int32 reason, ApplicationContext context)
+   w System.Windows.Forms.Application.Run(Form mainForm)
+   w Uplook.Master.Program.Main()
+   w System.AppDomain._nExecuteAssembly(Assembly assembly, String[] args)
+   w System.AppDomain.ExecuteAssembly(String assemblyFile, Evidence assemblySecurity, String[] args)
+   w Microsoft.VisualStudio.HostingProcess.HostProc.RunUsersAssembly()
+   w System.Threading.ThreadHelper.ThreadStart_Context(Object state)
+   w System.Threading.ExecutionContext.Run(ExecutionContext executionContext, ContextCallback callback, Object state)
+   w System.Threading.ThreadHelper.ThreadStart()
+----------------------------------------
