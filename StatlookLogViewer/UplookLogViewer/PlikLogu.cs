@@ -133,7 +133,7 @@ namespace StatlookLogViewer
                     line = line.Substring(0, line.IndexOf(";"));
                     
                     //Dodanie do pojedynczej linii wartości kolumny: Date
-                    NowaLinia.Dodaj(NowaLinia.Headers.uplook_Date, line, numer);
+                    NowaLinia.AddLine(NowaLinia.Headers.uplook_Date, line, numer);
                     DateTime tmp = DateTime.Parse(line);
                     MyHourTime = tmp.Hour.ToString();
                     ListViewGroup tmp_Group = new ListViewGroup(NowaLinia.GroupName, HorizontalAlignment.Left);
@@ -170,7 +170,7 @@ namespace StatlookLogViewer
                             line = line.Remove(0, choose_Headers[i].Length);
                             line = line.TrimStart();
                             line = line.Substring(0, line.IndexOf(";"));
-                            NowaLinia.Dodaj(choose_Headers[i], line, numer);
+                            NowaLinia.AddLine(choose_Headers[i], line, numer);
                             break;
                          }
                      }

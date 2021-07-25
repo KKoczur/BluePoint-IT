@@ -70,7 +70,7 @@ namespace StatlookLogViewer
 
         #region Metody
 
-        public void Dodaj(string Header, string Value, int numer)
+        public void AddLine(string Header, string Value, int numer)
         {
             string tmp_Header= Header;
             string tmp_Value= Value;

@@ -64,71 +64,21 @@ namespace StatlookLogViewer
 
         #region Wlasciowsci
 
-        public Descriptor[] uplook_Deskryptor
-        {
-            get
-            {
-                return m_Zbior_uplook_Deskryptors;
-            }
+        public Descriptor[] uplook_Deskryptor => m_Zbior_uplook_Deskryptors;
 
-        }
+        public string[] uplook_Headers => m_uplook_Headers;
 
-        public string[] uplook_Headers
-        {
-            get
-            {
-                return m_uplook_Headers;
-            }
-        }
+        public string uplook_Break => m_uplook_Break;
 
-        public string uplook_Break
-        {
-            get
-            {
-                return m_uplook_Break;
-            }
-        }
+        public string uplook_Date => m_uplook_Date;
 
-        public string uplook_Date
-        {
-            get
-            {
-                return m_uplook_Date;
-            }
-        }
+        public Descriptor[] usm_Deskryptor => m_Zbior_usm_Deskryptors;
 
-        public Descriptor[] usm_Deskryptor
-        {
-            get
-            {
-                return m_Zbior_usm_Deskryptors;
-            }
+        public string[] usm_Headers => m_usm_Headers;
 
-        }
+        public string usm_Break => m_usm_Break;
 
-        public string[] usm_Headers
-        {
-            get
-            {
-                return m_usm_Headers;
-            }
-        }
-
-        public string usm_Break
-        {
-            get
-            {
-                return m_usm_Break;
-            }
-        }
-
-        public string usm_Date
-        {
-            get
-            {
-                return m_usm_Date;
-            }
-        }
+        public string usm_Date => m_usm_Date;
 
         #endregion Wlasciowsci
 

@@ -13,20 +13,18 @@ namespace StatlookLogViewer
 {
     public partial class Options : Form
     {
-        /// <summary> Zmienne
-        /// 
-        /// </summary>
-        #region Zmienne
+        #region Members
+
         //private OCatalogs PanelCatalogs;
-        private Configuration config;
+        private readonly Configuration config;
         // Create a new configuration object
         // and initialize some variables
-        public Configuration c = new Configuration();
-        private string OSVersion;
-        private string LogDirectory;
-        private string USMDirectory;
+        private Configuration c = new Configuration();
+        private readonly string _osVersion;
+        private readonly string _logMap;
+        private readonly string _usmMap;
 
-        #endregion Zmienne
+        #endregion Members
 
         public Options()
         {
@@ -44,9 +42,9 @@ namespace StatlookLogViewer
                 // Read the configuration object from a file
                 config = Configuration.Deserialize("config.xml");
             }
-        OSVersion = System.Environment.OSVersion.Version.Major.ToString();
-	    LogDirectory = System.Environment.GetFolderPath(Environment.SpecialFolder.CommonApplicationData) + config.AplusCLogDirectory;
-        USMDirectory = System.Environment.GetFolderPath(Environment.SpecialFolder.CommonApplicationData) + config.AplusCUSMDirectory;
+        _osVersion = System.Environment.OSVersion.Version.Major.ToString();
+	    _logMap = System.Environment.GetFolderPath(Environment.SpecialFolder.CommonApplicationData) + config.AplusCLogDirectory;
+        _usmMap = System.Environment.GetFolderPath(Environment.SpecialFolder.CommonApplicationData) + config.AplusCUSMDirectory;
         InitializeComponent();
 
         }
@@ -64,9 +62,9 @@ namespace StatlookLogViewer
             {
                 this.oCatalogs.Dock = System.Windows.Forms.DockStyle.Fill;
                 TextBox txUplook = (TextBox)(oCatalogs.Controls.Find("textBoxUplookCatalog", true))[0];
-                txUplook.Text = LogDirectory;
+                txUplook.Text = _logMap;
                 TextBox txUsm = (TextBox)(oCatalogs.Controls.Find("textBoxUSMCatalog", true))[0];
-                txUsm.Text = USMDirectory;
+                txUsm.Text = _usmMap;
                 TextBox txUser= (TextBox)(oCatalogs.Controls.Find("textBoxUserCatalog",true))[0];
                 txUser.Text = config.UserDirectory;
                 oCatalogs.Visible = true;
