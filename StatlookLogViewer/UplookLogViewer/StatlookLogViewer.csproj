@@ -71,6 +71,7 @@
     <Compile Include="ListViewExtended.cs">
       <SubType>Component</SubType>
     </Compile>
+    <Compile Include="LogType.cs" />
     <Compile Include="NewPage.cs">
       <SubType>Component</SubType>
     </Compile>

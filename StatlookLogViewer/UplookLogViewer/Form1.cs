@@ -1075,7 +1075,7 @@ namespace StatlookLogViewer
                 PlikLogu plik = new PlikLogu();
                 NewPage nowaKarta = plik.analizeUplookLog(SafeFileName, FileName, dataUtworzenia, uplookDeskryptor);
 
-                if (nowaKarta.typRaportu.Equals("uplook"))
+                if (nowaKarta.TypeOfReport.Equals("uplook"))
                 {
                     ToolStripMenuItemUplook.Enabled = true;
                     ToolStripMenuItemUplook.Visible = true;
@@ -1102,7 +1102,7 @@ namespace StatlookLogViewer
                     }
                     
                 }
-                if (nowaKarta.typRaportu.Equals("usm"))
+                if (nowaKarta.TypeOfReport.Equals("usm"))
                 {
                     ToolStripMenuItemUplook.Visible = false;
                     ToolStripMenuItemUSM.Enabled = true;
@@ -1133,9 +1133,9 @@ namespace StatlookLogViewer
                 }
 
 
-                tabControlMain.Controls.Add(nowaKarta.nowaZakladka);
-                tabControlMain.SelectTab(nowaKarta.nowaZakladka);
-                ShowColumns(nowaKarta.nowaLista, nowaKarta.typRaportu);
+                tabControlMain.Controls.Add(nowaKarta.NewTabPage);
+                tabControlMain.SelectTab(nowaKarta.NewTabPage);
+                ShowColumns(nowaKarta.ListViewExtended, nowaKarta.TypeOfReport);
                 //Aktywownie menu grupowania 
                 grupyToolStripMenuItem.Enabled = true;
                 zwinToolStripMenuItem.Enabled = true;

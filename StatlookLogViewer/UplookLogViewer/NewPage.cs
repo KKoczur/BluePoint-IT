@@ -10,16 +10,14 @@ using System.Windows.Forms;
 using System.IO;
 using ListViewGroupCollapse;
 using Yoramo.GuiLib;
+using UplookLogViewer;
 
 namespace StatlookLogViewer
 {
     public class NewPage:TabPage
     {
-        private ListViewColumnSorter lvwColumnSorter = new ListViewColumnSorter();
-        private TabPage m_nowaZakladka = new TabPage();
-        private ListViewExtended m_nowaLista = new ListViewExtended();
-        private enum _rodzaj : int { uplook, usm };
-        private string m_typRaportu;
+        private const string CONFIG_FILE_NAME = "config.xml";
+        private readonly ListViewColumnSorter lvwColumnSorter = new ListViewColumnSorter();
         private bool[] show_uplook=new bool[10];
         private bool[] show_usm=new bool[6];
 
@@ -28,35 +26,47 @@ namespace StatlookLogViewer
         {
 
         }
-        //Tworzy nowa zakładkę
-        public NewPage(int index, string name, string Fullname, string[] NazwaKolumny, string dataUtworzenia, int rodzajLogu)
-        {
 
+        /// <summary>
+        /// Create new page
+        /// </summary>
+        /// <param name="index">Index</param>
+        /// <param name="name">Page name</param>
+        /// <param name="Fullname">Page fullname</param>
+        /// <param name="columnNames">Column names</param>
+        /// <param name="createdDate">Creaded date</param>
+        /// <param name="typeOfLog">Type of log</param>
+        public NewPage(int index, string name, string Fullname, string[] columnNames, string createdDate, LogType typeOfLog)
+        {
             Configuration config;
-            if (!File.Exists("config.xml"))
+
+            if (!File.Exists(CONFIG_FILE_NAME))
             {
                 // Create a new configuration object
                 // and initialize some variables
                 Configuration c = new Configuration();
 
                 // Serialize the configuration object to a file
-                Configuration.Serialize("config.xml", c);
+                Configuration.Serialize(CONFIG_FILE_NAME, c);
 
                 // Read the configuration object from a file
-                config = Configuration.Deserialize("config.xml");
+                config = Configuration.Deserialize(CONFIG_FILE_NAME);
             }
             else
             {
                 // Read the configuration object from a file
-                config = Configuration.Deserialize("config.xml");
+                config = Configuration.Deserialize(CONFIG_FILE_NAME);
             }
+
             Descriptor[] udes = config.UReadHeaders();
+
             int j = 0;
             foreach (Descriptor d in udes)
             {
                 show_uplook[j] = d.Show;
                 j++;
             }
+
             Descriptor[] usmdes = config.USMReadHeaders();
             int k = 0;
             foreach (Descriptor d in usmdes)
@@ -66,85 +76,74 @@ namespace StatlookLogViewer
             }
             
 
-            m_nowaLista.ListViewItemSorter = lvwColumnSorter;
+            ListViewExtended.ListViewItemSorter = lvwColumnSorter;
 
-            for (int i = 0; i < NazwaKolumny.Length; i++)
+            for (int i = 0; i < columnNames.Length; i++)
             {
-                m_nowaLista.Columns.Add(NazwaKolumny[i], 0);
+                ListViewExtended.Columns.Add(columnNames[i], 0);
             }
-            m_nowaLista.Dock = System.Windows.Forms.DockStyle.Fill;
-            m_nowaLista.GridLines = true;
-            m_nowaLista.Location = new System.Drawing.Point(3, 3);
-            m_nowaLista.Name = name;
-            m_nowaLista.Size = new System.Drawing.Size(988, 604);
-            m_nowaLista.TabIndex = index;
-            m_nowaLista.UseCompatibleStateImageBehavior = false;
-            m_nowaLista.View = System.Windows.Forms.View.Details;
-            m_nowaLista.GridLines = true;
-            m_nowaLista.FullRowSelect = true;
-            m_nowaLista.ListViewItemSorter = null;
-            m_nowaLista.SetGroupState(ListViewGroupState.Collapsible);
-            m_nowaLista.ColumnClick += new System.Windows.Forms.ColumnClickEventHandler(listViewFiles_ColumnClick);
-            switch (rodzajLogu)
+
+            ListViewExtended.Dock = System.Windows.Forms.DockStyle.Fill;
+            ListViewExtended.GridLines = true;
+            ListViewExtended.Location = new System.Drawing.Point(3, 3);
+            ListViewExtended.Name = name;
+            ListViewExtended.Size = new System.Drawing.Size(988, 604);
+            ListViewExtended.TabIndex = index;
+            ListViewExtended.UseCompatibleStateImageBehavior = false;
+            ListViewExtended.View = System.Windows.Forms.View.Details;
+            ListViewExtended.GridLines = true;
+            ListViewExtended.FullRowSelect = true;
+            ListViewExtended.ListViewItemSorter = null;
+            ListViewExtended.SetGroupState(ListViewGroupState.Collapsible);
+            ListViewExtended.ColumnClick += new System.Windows.Forms.ColumnClickEventHandler(listViewFiles_ColumnClick);
+
+            switch (typeOfLog)
             {
-                case 0:
-                {
-                    sprawdzenieWidocznoscikolumn(m_nowaLista,show_uplook);
-                    nowaZakladka.Tag = "uplook";
+                case LogType.Statlook:
+                    {
+                        sprawdzenieWidocznoscikolumn(ListViewExtended, show_uplook);
+                        NewTabPage.Tag = "uplook";
+                        break;
+                    }
+                case LogType.Usm:
+                    {
+                        sprawdzenieWidocznoscikolumn(ListViewExtended, show_usm);
+                        NewTabPage.Tag = "usm";
+                        break;
+                    }
+
+                default:
                     break;
-                }
-                case 1:
-                {
-                    sprawdzenieWidocznoscikolumn(m_nowaLista, show_usm);
-                    nowaZakladka.Tag = "usm";
-                    break;
-                }
             }
 
             // 
             // TabPages
             // 
-            nowaZakladka.Location = new System.Drawing.Point(4, 22);
-            nowaZakladka.Name = name;
-            nowaZakladka.Padding = new System.Windows.Forms.Padding(3);
-            nowaZakladka.Size = new System.Drawing.Size(994, 610);
-            nowaZakladka.TabIndex = index;
-            nowaZakladka.Text = "      " + name;
-            nowaZakladka.UseVisualStyleBackColor = true;
-            nowaZakladka.ToolTipText = Fullname;
-            nowaZakladka.Tag = Fullname;
-            nowaZakladka.Controls.Add(m_nowaLista);
+            NewTabPage.Location = new System.Drawing.Point(4, 22);
+            NewTabPage.Name = name;
+            NewTabPage.Padding = new System.Windows.Forms.Padding(3);
+            NewTabPage.Size = new System.Drawing.Size(994, 610);
+            NewTabPage.TabIndex = index;
+            NewTabPage.Text = "      " + name;
+            NewTabPage.UseVisualStyleBackColor = true;
+            NewTabPage.ToolTipText = Fullname;
+            NewTabPage.Tag = Fullname;
+            NewTabPage.Controls.Add(ListViewExtended);
         }
 
-        #region Wlasciwosci
+        #region Properties
 
-        public TabPage nowaZakladka
-        {
-            get
-            {
-                return m_nowaZakladka;
-            }
-        }
+        public TabPage NewTabPage { get; } = new TabPage();
 
-        public ListViewExtended nowaLista
-        {
-            get
-            {
-                return m_nowaLista;
-            }
-        }
+        public ListViewExtended ListViewExtended { get; } = new ListViewExtended();
 
-        public string typRaportu
-        {
-            get { return m_typRaportu;}
-            set { m_typRaportu = value;}
-        }
+        public string TypeOfReport { get; set; }
 
-        #endregion Wlasciwosci
+        #endregion Properties
 
         private void listViewFiles_ColumnClick(object sender, ColumnClickEventArgs e)
         {
-            m_nowaLista.BeginUpdate();
+            ListViewExtended.BeginUpdate();
             if (e.Column == lvwColumnSorter.SortColumn)
             {
                 // Reverse the current sort direction for this column.
@@ -168,25 +167,23 @@ namespace StatlookLogViewer
             }
             //lvwColumnSorter.Order = SortOrder.None;
             // Call the sort method to manually sort the column based on the ListViewItemComparer implementation.
-            m_nowaLista.Sort();
-            m_nowaLista.EndUpdate();
+            ListViewExtended.Sort();
+            ListViewExtended.EndUpdate();
         }
 
-        private void sprawdzenieWidocznoscikolumn(ListView ListViewTmp, bool[] show)
+        private void sprawdzenieWidocznoscikolumn(ListView listView, bool[] show)
         {
             // Loop through and size each column header to fit the column header text.
 
-                        int j = 0;
-                        foreach (ColumnHeader ch in ListViewTmp.Columns)
-                        {
-                            if (show[j])
-                                ch.Width = -2;
-                            else
-                                ch.Width = 0;
-                            j++;
-                        }
-
-
+            int j = 0;
+            foreach (ColumnHeader ch in listView.Columns)
+            {
+                if (show[j])
+                    ch.Width = -2;
+                else
+                    ch.Width = 0;
+                j++;
+            }
 
         }
     }

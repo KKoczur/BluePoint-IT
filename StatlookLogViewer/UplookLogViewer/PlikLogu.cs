@@ -10,6 +10,7 @@ using System.Windows.Forms;
 using System.IO;
 using ListViewGroupCollapse;
 using Yoramo.GuiLib;
+using UplookLogViewer;
 
 namespace StatlookLogViewer
 {
@@ -22,9 +23,8 @@ namespace StatlookLogViewer
         private Linia m_Linia = new Linia();
         private List <ListViewItem> m_ListViewItem = new List<ListViewItem>(); 
         private ArrayList m_ListViewGroup = new ArrayList();
-        private enum _rodzaj :int {uplook,usm};
         private string typRaportu;
-        private int rodzajLogu;
+        private LogType _typeOfLog;
         private NewPage nowaKarta= new NewPage();
         //private Headers uplookDeskryptor;
 
@@ -87,8 +87,8 @@ namespace StatlookLogViewer
                 {
                     m_ListOfHeaders.Add(uplookDeskryptor.uplook_Headers[i]);
                     numer = 1;
-                    rodzajLogu=(int)_rodzaj.uplook;
-                    typRaportu = _rodzaj.uplook.ToString();
+                    _typeOfLog=(int)LogType.Statlook;
+                    typRaportu = LogType.Statlook.ToString();
                 }
 
                          
@@ -99,8 +99,8 @@ namespace StatlookLogViewer
                 {
                     m_ListOfHeaders.Add(uplookDeskryptor.usm_Headers[i]);
                     numer = 2;
-                    rodzajLogu = (int)_rodzaj.usm;
-                    typRaportu = _rodzaj.usm.ToString();
+                    _typeOfLog = LogType.Usm;
+                    typRaportu = LogType.Usm.ToString();
                 }
 
              }
@@ -108,9 +108,12 @@ namespace StatlookLogViewer
              {
              }
              choose_Headers = m_ListOfHeaders.ToArray();
-             nowaKarta = new NewPage(0, FileName, SafeFileName, choose_Headers, dataUtworzenia,rodzajLogu);
-             nowaKarta.typRaportu = typRaportu;
-             ListViewExtended ListViewTmp = nowaKarta.nowaLista;
+            nowaKarta = new NewPage(0, FileName, SafeFileName, choose_Headers, dataUtworzenia, _typeOfLog)
+            {
+                TypeOfReport = typRaportu
+            };
+
+            ListViewExtended ListViewTmp = nowaKarta.ListViewExtended;
              
             //Otwarcie pliku po raz drugi do odczytu danych
              StreamReader plikFirstAnalize_Sec = new StreamReader(SafeFileName, UTF8Encoding.Default);
