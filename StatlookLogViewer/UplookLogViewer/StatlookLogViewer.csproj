@@ -1,158 +1,42 @@
-﻿<?xml version="1.0" encoding="utf-8"?>
-<Project ToolsVersion="4.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+﻿<Project Sdk="Microsoft.NET.Sdk.WindowsDesktop">
   <PropertyGroup>
-    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
-    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
-    <ProductVersion>9.0.30729</ProductVersion>
-    <SchemaVersion>2.0</SchemaVersion>
-    <ProjectGuid>{F8868E61-999B-4087-9136-F6F9CD1E0532}</ProjectGuid>
+    <TargetFramework>netcoreapp3.1</TargetFramework>
     <OutputType>WinExe</OutputType>
-    <AppDesignerFolder>Properties</AppDesignerFolder>
     <RootNamespace>UplookLogViewer</RootNamespace>
     <AssemblyName>UplookLogViewer</AssemblyName>
-    <TargetFrameworkVersion>v4.0</TargetFrameworkVersion>
-    <FileAlignment>512</FileAlignment>
     <ApplicationIcon>Resources\UplookLogo.ico</ApplicationIcon>
-    <FileUpgradeFlags>
-    </FileUpgradeFlags>
-    <UpgradeBackupLocation>
-    </UpgradeBackupLocation>
-    <OldToolsVersion>3.5</OldToolsVersion>
-  </PropertyGroup>
-  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
-    <DebugSymbols>true</DebugSymbols>
-    <DebugType>full</DebugType>
-    <Optimize>false</Optimize>
-    <OutputPath>bin\Debug\</OutputPath>
-    <DefineConstants>DEBUG;TRACE</DefineConstants>
-    <ErrorReport>prompt</ErrorReport>
-    <WarningLevel>4</WarningLevel>
-  </PropertyGroup>
-  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
-    <DebugType>pdbonly</DebugType>
-    <Optimize>true</Optimize>
-    <OutputPath>bin\Release\</OutputPath>
-    <DefineConstants>TRACE</DefineConstants>
-    <ErrorReport>prompt</ErrorReport>
-    <WarningLevel>4</WarningLevel>
+    <GenerateAssemblyInfo>false</GenerateAssemblyInfo>
+    <UseWindowsForms>true</UseWindowsForms>
   </PropertyGroup>
   <ItemGroup>
-    <Reference Include="DotNetZip, Version=1.15.0.0, Culture=neutral, PublicKeyToken=6583c7c814667745, processorArchitecture=MSIL">
-      <HintPath>..\packages\DotNetZip.1.15.0\lib\net40\DotNetZip.dll</HintPath>
-    </Reference>
     <Reference Include="ICSharpCode.SharpZipLib, Version=0.86.0.518, Culture=neutral, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
       <HintPath>..\..\..\C#\Biblioteki\SharpZipLib_0860_Bin\netcf-20\ICSharpCode.SharpZipLib.dll</HintPath>
     </Reference>
-    <Reference Include="System" />
-    <Reference Include="System.Data" />
-    <Reference Include="System.Deployment" />
-    <Reference Include="System.DirectoryServices" />
-    <Reference Include="System.Drawing" />
-    <Reference Include="System.Windows.Forms" />
-    <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Configuration.cs" />
-    <Compile Include="Descriptor.cs" />
-    <Compile Include="DictionaryLog.cs" />
-    <Compile Include="FolderZipper.cs" />
-    <Compile Include="Headers.cs" />
-    <Compile Include="Form1.cs">
-      <SubType>Form</SubType>
-    </Compile>
-    <Compile Include="Form1.Designer.cs">
-      <DependentUpon>Form1.cs</DependentUpon>
-    </Compile>
-    <Compile Include="IntegerComparer.cs" />
-    <Compile Include="Linia.cs" />
-    <Compile Include="ListViewColumnSorter.cs" />
-    <Compile Include="ListViewExtended.cs">
+    <Compile Update="ListViewExtended.cs">
       <SubType>Component</SubType>
     </Compile>
-    <Compile Include="LogType.cs" />
-    <Compile Include="NewPage.cs">
+    <Compile Update="NewPage.cs">
       <SubType>Component</SubType>
     </Compile>
-    <Compile Include="OpenZip.cs">
-      <SubType>Form</SubType>
-    </Compile>
-    <Compile Include="OpenZip.Designer.cs">
-      <DependentUpon>OpenZip.cs</DependentUpon>
-    </Compile>
-    <Compile Include="Options\OCatalogs.cs">
+    <Compile Update="Options\OCatalogs.cs">
       <SubType>UserControl</SubType>
     </Compile>
-    <Compile Include="Options\OCatalogs.Designer.cs">
-      <DependentUpon>OCatalogs.cs</DependentUpon>
-    </Compile>
-    <Compile Include="Options\Options.cs">
-      <SubType>Form</SubType>
-    </Compile>
-    <Compile Include="Options\Options.Designer.cs">
-      <DependentUpon>Options.cs</DependentUpon>
-    </Compile>
-    <Compile Include="PlikLogu.cs" />
-    <Compile Include="Program.cs" />
-    <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="TabControlEx.cs">
+    <Compile Update="TabControlEx.cs">
       <SubType>Component</SubType>
-    </Compile>
-    <Compile Include="ZipHandle.cs" />
-    <EmbeddedResource Include="Form1.resx">
-      <DependentUpon>Form1.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="OpenZip.resx">
-      <DependentUpon>OpenZip.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="Options\OCatalogs.resx">
-      <DependentUpon>OCatalogs.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="Options\Options.resx">
-      <DependentUpon>Options.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="Properties\Resources.resx">
-      <Generator>ResXFileCodeGenerator</Generator>
-      <LastGenOutput>Resources.Designer.cs</LastGenOutput>
-      <SubType>Designer</SubType>
-    </EmbeddedResource>
-    <Compile Include="Properties\Resources.Designer.cs">
-      <AutoGen>True</AutoGen>
-      <DependentUpon>Resources.resx</DependentUpon>
-      <DesignTime>True</DesignTime>
-    </Compile>
-    <None Include="packages.config" />
-    <None Include="Properties\Settings.settings">
-      <Generator>SettingsSingleFileGenerator</Generator>
-      <LastGenOutput>Settings.Designer.cs</LastGenOutput>
-    </None>
-    <Compile Include="Properties\Settings.Designer.cs">
-      <AutoGen>True</AutoGen>
-      <DependentUpon>Settings.settings</DependentUpon>
-      <DesignTimeSharedInput>True</DesignTimeSharedInput>
     </Compile>
   </ItemGroup>
   <ItemGroup>
-    <None Include="Resources\close_16.png" />
-    <None Include="Resources\arrow_next_16.png" />
-    <None Include="Resources\arrow_down_16.png" />
-    <None Include="Resources\close2_16.png" />
     <Content Include="Resources\files_add_16.png" />
-    <None Include="Resources\info_16.png" />
-    <None Include="Resources\less_16.png" />
-    <None Include="Resources\folder_16.png" />
-    <None Include="Resources\insert_table_16.png" />
-    <None Include="Resources\ok_16.png" />
-    <None Include="Resources\refresh_16.png" />
     <Content Include="Resources\UplookLogo.ico" />
   </ItemGroup>
-  <ItemGroup />
-  <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
-  <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
-       Other similar extension points exist, see Microsoft.Common.targets.
-  <Target Name="BeforeBuild">
-  </Target>
-  <Target Name="AfterBuild">
-  </Target>
-  -->
+  <ItemGroup>
+    <PackageReference Include="System.DirectoryServices" Version="5.0.0" />
+  </ItemGroup>
+  <ItemGroup>
+    <PackageReference Include="DotNetZip" Version="1.15.0" />
+    <PackageReference Include="ICSharpCode.SharpZipLib.dll" Version="0.85.4.369" />
+  </ItemGroup>
 </Project>
