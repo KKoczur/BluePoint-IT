@@ -51,12 +51,12 @@ namespace StatlookLogViewer
             //Utworzenie zbioru deskryptorów uplook
             for (int i = 0; i < m_uplook_Headers.Length; i++)
             {
-                m_Zbior_uplook_Deskryptors[i] = new Descriptor(m_uplook_Headers[i]);
+                m_Zbior_uplook_Deskryptors[i] = new Descriptor(LogType.Statlook, m_uplook_Headers[i]);
             }
             //Utworzenie zbioru deskryptorów usm
             for (int i = 0; i < m_usm_Headers.Length; i++)
             {
-                m_Zbior_usm_Deskryptors[i] = new Descriptor(m_usm_Headers[i]);
+                m_Zbior_usm_Deskryptors[i] = new Descriptor(LogType.Usm, m_usm_Headers[i]);
             }
         }
 

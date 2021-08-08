@@ -5,19 +5,20 @@ namespace StatlookLogViewer
     {
         #region Constructors
 
-        public Descriptor(string name)
+        public Descriptor(LogType logType, string name)
         {
+            LogType = logType;
             Name = name;
         }
 
-        public Descriptor(string name, string value)
-            :this(name)
+        public Descriptor(LogType logType,string name, string value)
+            :this(logType, name)
         {
             Value = value;
         }
 
-        public Descriptor(string name, string value,bool show)
-            :this (name, value)
+        public Descriptor(LogType logType, string name, string value,bool show)
+            :this (logType, name, value)
         {
             Show = show;
         }
@@ -25,6 +26,8 @@ namespace StatlookLogViewer
         #endregion Constructors
 
         #region Properties
+
+        public LogType LogType { get; set; }
 
         /// <summary>
         /// Name of descriptor

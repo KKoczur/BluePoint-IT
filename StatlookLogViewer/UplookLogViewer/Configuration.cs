@@ -127,31 +127,33 @@ namespace StatlookLogViewer
 
         public Descriptor[] GetStatlookHeaders()
         {
+            LogType logType = LogType.Statlook;
             var result = new List<Descriptor>()
             {
-                new Descriptor("uDate", UDate, UDateVisible),
-                new Descriptor("uLogger", ULogger, ULoggerVisible),
-                new Descriptor("uType", UType, UTypeVisible),
-                new Descriptor("uProcess", UProcess, UProcessVisible),
-                new Descriptor("uThread", UThread, UThreadVisible),
-                new Descriptor("uDescription", UDescription, UDescriptionVisible),
-                new Descriptor("uException", UException, UExceptionVisible),
-                new Descriptor("uMessage", UMessage, UMessageVisible),
-                new Descriptor("uMethod", UMethod, UMethodVisible),
-                new Descriptor("uStack", UStack, UStackVisible)
+                new Descriptor(logType,"uDate", UDate, UDateVisible),
+                new Descriptor(logType,"uLogger", ULogger, ULoggerVisible),
+                new Descriptor(logType,"uType", UType, UTypeVisible),
+                new Descriptor(logType,"uProcess", UProcess, UProcessVisible),
+                new Descriptor(logType,"uThread", UThread, UThreadVisible),
+                new Descriptor(logType,"uDescription", UDescription, UDescriptionVisible),
+                new Descriptor(logType,"uException", UException, UExceptionVisible),
+                new Descriptor(logType,"uMessage", UMessage, UMessageVisible),
+                new Descriptor(logType,"uMethod", UMethod, UMethodVisible),
+                new Descriptor(logType,"uStack", UStack, UStackVisible)
             };
 
           return result.ToArray();
       }
       public Descriptor[] GetUsmHeaders()
       {
+            LogType logType = LogType.Usm;
           Descriptor[] usmD = new Descriptor[6];
-          usmD[0] = new Descriptor("usmDate", UsmDate, UsmDateVisible);
-          usmD[1] = new Descriptor("usmCode", usmCode, UsmCodeVisible);
-          usmD[2] = new Descriptor("usmType", UsmType, UsmTypeVisible);
-          usmD[3] = new Descriptor("usmSession", UsmSession, UsmSessionVisible);
-          usmD[4] = new Descriptor("usmProcess", UsmProcess, UsmProcessVisible);
-          usmD[5] = new Descriptor("usmDescription", UsmDescription, UsmDescriptionVisible);
+          usmD[0] = new Descriptor(logType, "usmDate", UsmDate, UsmDateVisible);
+          usmD[1] = new Descriptor(logType, "usmCode", usmCode, UsmCodeVisible);
+          usmD[2] = new Descriptor(logType, "usmType", UsmType, UsmTypeVisible);
+          usmD[3] = new Descriptor(logType, "usmSession", UsmSession, UsmSessionVisible);
+          usmD[4] = new Descriptor(logType, "usmProcess", UsmProcess, UsmProcessVisible);
+          usmD[5] = new Descriptor(logType, "usmDescription", UsmDescription, UsmDescriptionVisible);
           return usmD;
       }
 

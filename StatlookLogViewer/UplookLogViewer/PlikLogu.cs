@@ -10,7 +10,6 @@ using System.Windows.Forms;
 using System.IO;
 using ListViewGroupCollapse;
 using Yoramo.GuiLib;
-using UplookLogViewer;
 
 namespace StatlookLogViewer
 {
