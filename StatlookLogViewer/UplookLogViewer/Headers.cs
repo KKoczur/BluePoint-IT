@@ -45,8 +45,8 @@ namespace StatlookLogViewer
                 config = Configuration.Deserialize("config.xml");
             }
 
-            m_uplook_Headers = config.uplook_Headers.Split(new char[] { ';' });
-            m_usm_Headers = config.usm_Headers.Split(new char[] { ';' });
+            m_uplook_Headers = config.Uplook_Headers.Split(new char[] { ';' });
+            m_usm_Headers = config.Usm_Headers.Split(new char[] { ';' });
 
             //Utworzenie zbioru deskryptorów uplook
             for (int i = 0; i < m_uplook_Headers.Length; i++)

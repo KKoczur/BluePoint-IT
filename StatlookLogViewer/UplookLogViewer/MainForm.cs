@@ -54,14 +54,14 @@ namespace StatlookLogViewer
                 // Read the configuration object from a file
             config = Configuration.Deserialize("config.xml");
             }
-            Descriptor[] udes = config.UReadHeaders();
+            Descriptor[] udes = config.GetStatlookHeaders();
             int j = 0;
             foreach (Descriptor d in udes)
             {
                 show_uplook[j]= d.Show;
                 j++;
             }
-            Descriptor[] usmdes = config.USMReadHeaders();
+            Descriptor[] usmdes = config.GetUsmHeaders();
             int k = 0;
             foreach (Descriptor d in usmdes)
             {
@@ -1161,7 +1161,7 @@ namespace StatlookLogViewer
         private void ToolStripMenuItemUplook_DropDownItemClicked(object sender, ToolStripItemClickedEventArgs e)
         {
             ToolStripMenuItem t = (ToolStripMenuItem)e.ClickedItem;
-            Descriptor[] udes = config.UReadHeaders();
+            Descriptor[] udes = config.GetStatlookHeaders();
             if (t.CheckState == System.Windows.Forms.CheckState.Checked)
             {
                 t.CheckState =System.Windows.Forms.CheckState.Unchecked;
@@ -1206,7 +1206,7 @@ namespace StatlookLogViewer
         private void ToolStripMenuItemUSM_DropDownItemClicked(object sender, ToolStripItemClickedEventArgs e)
         {
             ToolStripMenuItem t = (ToolStripMenuItem)e.ClickedItem;
-            Descriptor[] usmdes = config.USMReadHeaders();
+            Descriptor[] usmdes = config.GetUsmHeaders();
             if (t.CheckState == System.Windows.Forms.CheckState.Checked)
             {
                 t.CheckState = System.Windows.Forms.CheckState.Unchecked;

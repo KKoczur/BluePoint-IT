@@ -58,7 +58,7 @@ namespace StatlookLogViewer
                 config = Configuration.Deserialize(CONFIG_FILE_NAME);
             }
 
-            Descriptor[] udes = config.UReadHeaders();
+            Descriptor[] udes = config.GetStatlookHeaders();
 
             int j = 0;
             foreach (Descriptor d in udes)
@@ -67,7 +67,7 @@ namespace StatlookLogViewer
                 j++;
             }
 
-            Descriptor[] usmdes = config.USMReadHeaders();
+            Descriptor[] usmdes = config.GetUsmHeaders();
             int k = 0;
             foreach (Descriptor d in usmdes)
             {
