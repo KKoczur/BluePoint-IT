@@ -9,7 +9,7 @@ namespace StatlookLogViewer
     {
         #region Members
 
-        private List<Descriptor> _descriptors = new List<Descriptor>();
+        private readonly List<Descriptor> _descriptors = new List<Descriptor>();
 
         #endregion Members
 
@@ -31,7 +31,7 @@ namespace StatlookLogViewer
 
         public Descriptor GetHeaderByKeyName(string keyName) => _descriptors.Where(item => item.KeyName == keyName).FirstOrDefault();
 
-        Descriptor[] CreateStatlookHeaders()
+        private Descriptor[] CreateStatlookHeaders()
         {
             const LogType logType = LogType.Statlook;
 

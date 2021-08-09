@@ -1,72 +1,31 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
 using System.Windows.Forms;
 using System.Text.RegularExpressions;
 
 namespace StatlookLogViewer
 {
-    class Linia
+    internal class Linia
     {
-        #region Zmienne
 
-        private int m_NumerLinii;
-        private Headers m_Headers = new Headers();
-        private string m_GroupName;
-        private ListViewItem m_ListViewItem = new ListViewItem();
-        private ListViewGroup m_ListViewGroup = new ListViewGroup();
+        #region Members
 
-        #endregion Zmienne
+        private string _groupName;
 
-        #region Konstruktory
+        private ListViewGroup _listViewGroup = new ListViewGroup();
 
-        public Linia()
-        {
-        }
+        #endregion Members
 
-        #endregion Konstruktory 
+        #region Properties
 
-        #region Wlasciwosci
+        public int NumerLinii { set; get; }
 
-        public int NumerLinii
-        {
-            set
-            {
-                m_NumerLinii = value;
-            }
-            get
-            {
-                return m_NumerLinii;
-            }
-        }
+        public Headers Headers { get; } = new Headers();
 
-        public Headers Headers
-        {
-            get
-            {
-                return m_Headers;
-            }
-        }
+        public string GroupName => _groupName;
 
-        public string GroupName
-        {
-            get
-            {
-                return m_GroupName;
-            }
-        }
+        public ListViewItem ListViewItem { get; } = new ListViewItem();
 
-        public ListViewItem ListViewItem
-        {
-            get
-            {
-                return m_ListViewItem;
-            }
-
-        }
-
-        #endregion Wlasciowsci
+        #endregion Properties
 
         #region Metody
 
@@ -74,51 +33,55 @@ namespace StatlookLogViewer
         {
             string tmp_Header= Header;
             string tmp_Value= Value;
+
             switch (numer)
             {
                 #region uplook_Log
+
                 case 1:
                 {
                     string tmp_NazwaGrupy = null;
                     string myHourTime = null;
                     DictionaryLog SlownikErrors = new DictionaryLog();
+
                     Descriptor[] ListaBledow = SlownikErrors.GetListOfAllErrors();
-                    foreach (Descriptor Des in m_Headers.uplook_Deskryptor)
+
+                    foreach (Descriptor Des in Headers.uplook_Deskryptor)
                     {
                         if (Des.KeyName == tmp_Header)
                         {
-                            if (tmp_Header == m_Headers.uplook_Date)
+                            if (tmp_Header == Headers.uplook_Date)
                             {
                                 DateTime tmp_DateTime = DateTime.Parse(tmp_Value);
                                 myHourTime = tmp_DateTime.Hour.ToString();
                                 //Określenie nazwę grupy do której ma należeć linia
                                 if (myHourTime.Length < 2)
                                 {
-                                    tmp_NazwaGrupy = "0" + myHourTime.ToString() + ":00-" + "0" + myHourTime.ToString() + ":59";
+                                    tmp_NazwaGrupy = "0" + myHourTime + ":00-" + "0" + myHourTime + ":59";
                                 }
                                 else
                                 {
-                                    tmp_NazwaGrupy = myHourTime.ToString() + ":00-" + myHourTime.ToString() + ":59";
+                                    tmp_NazwaGrupy = myHourTime + ":00-" + myHourTime + ":59";
                                 }
-                                m_GroupName = tmp_NazwaGrupy;
-                                m_ListViewItem.Text = tmp_Value;
-                                m_ListViewGroup = new ListViewGroup(m_GroupName, HorizontalAlignment.Left);
-                                m_ListViewItem.Group = m_ListViewGroup;
-                                m_ListViewItem.Group.Name = m_GroupName; /**/
-                                m_ListViewItem.Group.Header = m_GroupName;
+                                _groupName = tmp_NazwaGrupy;
+                                    ListViewItem.Text = tmp_Value;
+                                _listViewGroup = new ListViewGroup(_groupName, HorizontalAlignment.Left);
+                                    ListViewItem.Group = _listViewGroup;
+                                    ListViewItem.Group.Name = _groupName; /**/
+                                    ListViewItem.Group.Header = _groupName;
                                 Des.HeaderText = tmp_Value;
                                 break;
                             }
-                            /*if (tmp_Value.Contains("Error"))
-                            {
-                                m_ListViewItem.UseItemStyleForSubItems = false;
-                                m_ListViewItem.SubItems.Add(tmp_Value, System.Drawing.Color.Red, System.Drawing.Color.White, new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(238))));
-                            }*/
-                            m_ListViewItem.SubItems.Add(tmp_Value);
+                                /*if (tmp_Value.Contains("Error"))
+                                {
+                                    m_ListViewItem.UseItemStyleForSubItems = false;
+                                    m_ListViewItem.SubItems.Add(tmp_Value, System.Drawing.Color.Red, System.Drawing.Color.White, new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(238))));
+                                }*/
+                                ListViewItem.SubItems.Add(tmp_Value);
                             
                         if (Regex.IsMatch(tmp_Value, @"(?<NR_1>\d{1})\.(?<NR_2>\d{1})\.(?<NR_3>\d{1})\b został uruchomiony.") || Regex.IsMatch(tmp_Value, @"(?<NR_1>\d{1})\.(?<NR_2>\d{1})\.(?<NR_3>\d{1})\b started"))
                         {
-                            m_ListViewItem.Group.Header = m_ListViewItem.Group.Name + " (" + tmp_Value + ")"; /**/
+                                    ListViewItem.Group.Header = ListViewItem.Group.Name + " (" + tmp_Value + ")"; /**/
                         }
                         else
                         {
@@ -126,9 +89,9 @@ namespace StatlookLogViewer
                             {
                                 if (tmp_Value.Contains(des.KeyName))
                                 {
-                                    if (!m_ListViewItem.Group.Header.Contains(des.HeaderText))
+                                    if (!ListViewItem.Group.Header.Contains(des.HeaderText))
                                     {
-                                        m_ListViewItem.Group.Header += " ( " + des.HeaderText + " )";
+                                                ListViewItem.Group.Header += " ( " + des.HeaderText + " )";
                                     }
                                 }
                             }
@@ -148,36 +111,36 @@ namespace StatlookLogViewer
                 string myHourTime = null;
                 DictionaryLog SlownikErrors = new DictionaryLog();
                 Descriptor[] ListaBledow = SlownikErrors.GetListOfAllErrors();
-                foreach (Descriptor Des in m_Headers.usm_Deskryptor)
+                foreach (Descriptor Des in Headers.usm_Deskryptor)
                 {
                     if (Des.KeyName == tmp_Header)
                     {
-                        if (tmp_Header == m_Headers.uplook_Date)
+                        if (tmp_Header == Headers.uplook_Date)
                         {
                             DateTime tmp_DateTime = DateTime.Parse(tmp_Value);
                             myHourTime = tmp_DateTime.Hour.ToString();
                             //Określenie nazwę grupy do której ma należeć linia
                             if (myHourTime.Length < 2)
                             {
-                                tmp_NazwaGrupy = "0" + myHourTime.ToString() + ":00-" + "0" + myHourTime.ToString() + ":59";
+                                tmp_NazwaGrupy = "0" + myHourTime + ":00-" + "0" + myHourTime + ":59";
                             }
                             else
                             {
-                                tmp_NazwaGrupy = myHourTime.ToString() + ":00-" + myHourTime.ToString() + ":59";
+                                tmp_NazwaGrupy = myHourTime + ":00-" + myHourTime + ":59";
                             }
-                            m_GroupName = tmp_NazwaGrupy;
-                            m_ListViewItem.Text = tmp_Value;
-                            m_ListViewGroup = new ListViewGroup(m_GroupName, HorizontalAlignment.Left);
-                            m_ListViewItem.Group = m_ListViewGroup;
-                            m_ListViewItem.Group.Name = m_GroupName; /**/
-                            m_ListViewItem.Group.Header = m_GroupName;
+                            _groupName = tmp_NazwaGrupy;
+                                    ListViewItem.Text = tmp_Value;
+                            _listViewGroup = new ListViewGroup(_groupName, HorizontalAlignment.Left);
+                                    ListViewItem.Group = _listViewGroup;
+                                    ListViewItem.Group.Name = _groupName; /**/
+                                    ListViewItem.Group.Header = _groupName;
                             Des.HeaderText = tmp_Value;
                             break;
                         }
-                        m_ListViewItem.SubItems.Add(tmp_Value);
+                                ListViewItem.SubItems.Add(tmp_Value);
                         if (Regex.IsMatch(tmp_Value, @"(?<NR_1>\d{1})\.(?<NR_2>\d{1})\.(?<NR_3>\d{1})\b został uruchomiony.") || Regex.IsMatch(tmp_Value, @"(?<NR_1>\d{1})\.(?<NR_2>\d{1})\.(?<NR_3>\d{1})\b started"))
                         {
-                            m_ListViewItem.Group.Header = m_ListViewItem.Group.Name + " (" + tmp_Value + ")"; /**/
+                                    ListViewItem.Group.Header = ListViewItem.Group.Name + " (" + tmp_Value + ")"; /**/
                         }
                         else
                         {
@@ -185,9 +148,9 @@ namespace StatlookLogViewer
                             {
                                 if (tmp_Value.Contains(des.KeyName))
                                 {
-                                    if (!m_ListViewItem.Group.Header.Contains(des.HeaderText))
+                                    if (!ListViewItem.Group.Header.Contains(des.HeaderText))
                                     {
-                                        m_ListViewItem.Group.Header += " ( " + des.HeaderText + " )";
+                                                ListViewItem.Group.Header += " ( " + des.HeaderText + " )";
                                     }
                                 }
                             }

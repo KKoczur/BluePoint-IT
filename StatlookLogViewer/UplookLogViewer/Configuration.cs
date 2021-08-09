@@ -55,7 +55,6 @@ namespace StatlookLogViewer
 
         public DescriptorCollection DescriptorCollection { get; set; }
 
-        public string Version { get; set; } = "1.0.1";
         public string StatlookLogDirectory { get; set; } = "\\Statlook\\Logs\\";
         public string StatlookUsmLogDirectory { get; set; }= "\\Statlook\\Logs\\";
         public string UserDirectory { get; set; } = "C:\\Users\\Karol\\Desktop\\Logs\\";

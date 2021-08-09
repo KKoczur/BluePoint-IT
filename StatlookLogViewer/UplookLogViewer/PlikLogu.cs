@@ -1,61 +1,39 @@
 ﻿using System;
 using System.Collections;
 using System.Collections.Generic;
-using System.ComponentModel;
-using System.Data;
-using System.Drawing;
 using System.Text;
 using System.Text.RegularExpressions;
 using System.Windows.Forms;
 using System.IO;
 using ListViewGroupCollapse;
-using Yoramo.GuiLib;
 
 namespace StatlookLogViewer
 {
     class PlikLogu
     {
-        #region Zmienne
+        #region Members
 
         private ArrayList m_ZbiorLinii = new ArrayList();
         private ArrayList m_Grupy = new ArrayList();
-        private Linia m_Linia = new Linia();
         private List <ListViewItem> m_ListViewItem = new List<ListViewItem>(); 
-        private ArrayList m_ListViewGroup = new ArrayList();
-        private string typRaportu;
         private LogType _typeOfLog;
-        private NewPage nowaKarta= new NewPage();
+        private NewPage _newPage= new NewPage();
         //private Headers uplookDeskryptor;
 
-        #endregion Zmienne
-
-        #region Konstruktory
-
-        public PlikLogu()
-        {
-            //uplookDeskryptor = _uplookDeskryptor;
-        }
-
-        #endregion Konstruktory
+        #endregion Members
 
         #region Metody
 
-        public void DodajLinie(Linia tmp_Linia)
+        public void AddLine(Linia line)
         {
-            m_ZbiorLinii.Add(tmp_Linia);
-            m_Grupy.Add(tmp_Linia.GroupName);
-            m_ListViewItem.Add(tmp_Linia.ListViewItem);
+            m_ZbiorLinii.Add(line);
+            m_Grupy.Add(line.GroupName);
+            m_ListViewItem.Add(line.ListViewItem);
         }
 
-        public int IloscLinii()
-        {
-            return m_ZbiorLinii.Count;
-        }
+        public int LineCount() => m_ZbiorLinii.Count;
 
-        public ListViewItem[] GetListViewItem()
-        {
-            return m_ListViewItem.ToArray();
-        }
+        public ListViewItem[] GetListViewItem() => m_ListViewItem.ToArray();
 
         public NewPage analizeUplookLog(string SafeFileName, string FileName, string dataUtworzenia, Headers _uplookDeskryptor)
         {
@@ -64,11 +42,12 @@ namespace StatlookLogViewer
             string allData=null;
             StreamReader plikFirstAnalize;
             StreamReader plikAnalize;
+
             //NewPage nowaKarta;
             try
             {
-              plikFirstAnalize = new StreamReader(SafeFileName, UTF8Encoding.Default);
-              plikAnalize = new StreamReader(SafeFileName, UTF8Encoding.Default);
+              plikFirstAnalize = new StreamReader(SafeFileName, Encoding.Default);
+              plikAnalize = new StreamReader(SafeFileName, Encoding.Default);
               allData = plikAnalize.ReadToEnd();
               plikAnalize.Close();
             }
@@ -77,7 +56,8 @@ namespace StatlookLogViewer
                 MessageBox.Show("Error: Could not read file from disk. Original error: " + ex.Message);
             }
 
-            List<String> m_ListOfHeaders = new List<String>();
+            var m_ListOfHeaders = new List<String>();
+
             int numer = 0;
             if(allData.Contains(uplookDeskryptor.uplook_Headers[1]))
             {
@@ -86,7 +66,6 @@ namespace StatlookLogViewer
                     m_ListOfHeaders.Add(uplookDeskryptor.uplook_Headers[i]);
                     numer = 1;
                     _typeOfLog=(int)LogType.Statlook;
-                    typRaportu = LogType.Statlook.ToString();
                 }
 
                          
@@ -98,7 +77,6 @@ namespace StatlookLogViewer
                     m_ListOfHeaders.Add(uplookDeskryptor.usm_Headers[i]);
                     numer = 2;
                     _typeOfLog = LogType.Usm;
-                    typRaportu = LogType.Usm.ToString();
                 }
 
              }
@@ -106,12 +84,13 @@ namespace StatlookLogViewer
              {
              }
              choose_Headers = m_ListOfHeaders.ToArray();
-            nowaKarta = new NewPage(0, FileName, SafeFileName, choose_Headers, dataUtworzenia, _typeOfLog)
+
+            _newPage = new NewPage(0, FileName, SafeFileName, choose_Headers, dataUtworzenia, _typeOfLog)
             {
-                TypeOfReport = typRaportu
+                TypeOfReport = _typeOfLog.ToString()
             };
 
-            ListViewExtended ListViewTmp = nowaKarta.ListViewExtended;
+            ListViewExtended ListViewTmp = _newPage.ListViewExtended;
              
             //Otwarcie pliku po raz drugi do odczytu danych
              StreamReader plikFirstAnalize_Sec = new StreamReader(SafeFileName, UTF8Encoding.Default);
@@ -181,7 +160,7 @@ namespace StatlookLogViewer
                  else if (line.StartsWith(uplookDeskryptor.uplook_Break))
                  {
                     //Dodanie pojedynczej linii do pliku wynikowego analizy 
-                    PlikLogu.DodajLinie(NowaLinia);
+                    PlikLogu.AddLine(NowaLinia);
                  }
 
             }
@@ -194,7 +173,8 @@ namespace StatlookLogViewer
             ListViewTmp.Items.AddRange(PlikLogu.GetListViewItem());
             ListViewTmp.EndUpdate();        
             ListViewTmp.ResumeLayout();
-            return nowaKarta;
+
+            return _newPage;
         }
 
         #endregion Metody
