@@ -13,44 +13,9 @@ namespace StatlookLogViewer
       /// </summary>
       public Configuration()
       {
-            #region HeadersOfUplook
-            UDate = "Date";
-            ULogger = " Logger:";
-            UType = " Type:";
-            UProcess = " Process ID:";
-            UThread = " Thread ID:";
-            UDescription = " Description:";
-            UException = " Exception:";
-            UMessage = "   Message:";
-            UMethod = "   Method:";
-            UStack = "   Stack:";
-            UDateVisible = true;
-            ULoggerVisible = true;
-            UTypeVisible = true;
-            UProcessVisible = true;
-            UThreadVisible = true;
-            UDescriptionVisible = true;
-            UExceptionVisible = true;
-            UMessageVisible = true;
-            UMethodVisible = true;
-            UStackVisible = true;
-            #endregion HeadersOfUplook
-
-            #region HeadersOfUsm
-            UsmDate = "Date";
-            usmCode = " Code:";
-            UsmType = " Type:";
-            UsmSession = " Session:";
-            UsmProcess = " Process ID:";
-            UsmDescription = " Description:";
-            UsmDateVisible = true;
-            UsmCodeVisible = true;
-            UsmTypeVisible = true;
-            UsmSessionVisible = true;
-            UsmProcessVisible = true;
-            UsmDescriptionVisible = true;
-          #endregion HeadersOfUsm
+           DescriptorCollection = new DescriptorCollection();
       }
+
       public static void Serialize(string file, Configuration c)
       {
          XmlSerializer xs = new XmlSerializer(c.GetType());
@@ -77,18 +42,10 @@ namespace StatlookLogViewer
         public string Usm_Headers { get; set; } = "Date; Code:; Type:; Session:; PID/TID:; Description:";
         public string Show_usm { get; set; } = "false;false;true;false;false;true;";
 
+        public DescriptorCollection DescriptorCollection { get; set; } 
+
         #region HeadersOfUplook
-        public string UDate { get; set; }
-        public string ULogger { get; set; }
-        public string UType { get; set; }
-        public string UProcess { get; set; }
-        public string UThread { get; set; }
-        public string UDescription { get; set; }
-        public string UException { get; set; }
-        public string UMessage { get; set; }
-        public string UMethod { get; set; }
-        public string UStack { get; set; }
-        public bool UDateVisible { get; set; }
+
         public bool ULoggerVisible { get; set; }
         public bool UTypeVisible { get; set; }
         public bool UProcessVisible { get; set; }
@@ -101,13 +58,6 @@ namespace StatlookLogViewer
         #endregion HeadersOfUplook
 
         #region HeadersOfUsm
-        public string UsmDate { get; set; }
-        public string usmCode { get; set; }
-        public string UsmType { get; set; }
-        public string UsmSession { get; set; }
-        public string UsmProcess { get; set; }
-        public string UsmDescription { get; set; }
-        public bool UsmDateVisible { get; set; }
         public bool UsmCodeVisible { get; set; }
         public bool UsmTypeVisible { get; set; }
         public bool UsmSessionVisible { get; set; }
@@ -116,37 +66,11 @@ namespace StatlookLogViewer
 
         #endregion HeadersOfUsm
 
-        public Descriptor[] GetStatlookHeaders()
-        {
-            var logType = LogType.Statlook;
-            var result = new List<Descriptor>()
-            {
-                new Descriptor(logType,"uDate", UDate, UDateVisible),
-                new Descriptor(logType,"uLogger", ULogger, ULoggerVisible),
-                new Descriptor(logType,"uType", UType, UTypeVisible),
-                new Descriptor(logType,"uProcess", UProcess, UProcessVisible),
-                new Descriptor(logType,"uThread", UThread, UThreadVisible),
-                new Descriptor(logType,"uDescription", UDescription, UDescriptionVisible),
-                new Descriptor(logType,"uException", UException, UExceptionVisible),
-                new Descriptor(logType,"uMessage", UMessage, UMessageVisible),
-                new Descriptor(logType,"uMethod", UMethod, UMethodVisible),
-                new Descriptor(logType,"uStack", UStack, UStackVisible)
-            };
 
-          return result.ToArray();
-      }
-      public Descriptor[] GetUsmHeaders()
-      {
-           var logType = LogType.Usm;
-          Descriptor[] usmD = new Descriptor[6];
-          usmD[0] = new Descriptor(logType, "usmDate", UsmDate, UsmDateVisible);
-          usmD[1] = new Descriptor(logType, "usmCode", usmCode, UsmCodeVisible);
-          usmD[2] = new Descriptor(logType, "usmType", UsmType, UsmTypeVisible);
-          usmD[3] = new Descriptor(logType, "usmSession", UsmSession, UsmSessionVisible);
-          usmD[4] = new Descriptor(logType, "usmProcess", UsmProcess, UsmProcessVisible);
-          usmD[5] = new Descriptor(logType, "usmDescription", UsmDescription, UsmDescriptionVisible);
-          return usmD;
-      }
+        public Descriptor[] GetStatlookHeaders() => DescriptorCollection.GetStatlookHeaders();
+
+        public Descriptor[] GetUsmHeaders() => DescriptorCollection.GetUsmHeaders();
+
 
       public void uShow(string NameOfHeder,bool Show)
       {

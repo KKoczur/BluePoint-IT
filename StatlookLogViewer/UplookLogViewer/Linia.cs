@@ -85,7 +85,7 @@ namespace StatlookLogViewer
                     Descriptor[] ListaBledow = SlownikErrors.GetListOfAllErrors();
                     foreach (Descriptor Des in m_Headers.uplook_Deskryptor)
                     {
-                        if (Des.Name == tmp_Header)
+                        if (Des.KeyName == tmp_Header)
                         {
                             if (tmp_Header == m_Headers.uplook_Date)
                             {
@@ -106,7 +106,7 @@ namespace StatlookLogViewer
                                 m_ListViewItem.Group = m_ListViewGroup;
                                 m_ListViewItem.Group.Name = m_GroupName; /**/
                                 m_ListViewItem.Group.Header = m_GroupName;
-                                Des.Value = tmp_Value;
+                                Des.HeaderText = tmp_Value;
                                 break;
                             }
                             /*if (tmp_Value.Contains("Error"))
@@ -124,16 +124,16 @@ namespace StatlookLogViewer
                         {
                             foreach (Descriptor des in ListaBledow)
                             {
-                                if (tmp_Value.Contains(des.Name))
+                                if (tmp_Value.Contains(des.KeyName))
                                 {
-                                    if (!m_ListViewItem.Group.Header.Contains(des.Value))
+                                    if (!m_ListViewItem.Group.Header.Contains(des.HeaderText))
                                     {
-                                        m_ListViewItem.Group.Header += " ( " + des.Value + " )";
+                                        m_ListViewItem.Group.Header += " ( " + des.HeaderText + " )";
                                     }
                                 }
                             }
                         }
-                        Des.Value = tmp_Value;
+                        Des.HeaderText = tmp_Value;
                         break;
                     }
                     }
@@ -150,7 +150,7 @@ namespace StatlookLogViewer
                 Descriptor[] ListaBledow = SlownikErrors.GetListOfAllErrors();
                 foreach (Descriptor Des in m_Headers.usm_Deskryptor)
                 {
-                    if (Des.Name == tmp_Header)
+                    if (Des.KeyName == tmp_Header)
                     {
                         if (tmp_Header == m_Headers.uplook_Date)
                         {
@@ -171,7 +171,7 @@ namespace StatlookLogViewer
                             m_ListViewItem.Group = m_ListViewGroup;
                             m_ListViewItem.Group.Name = m_GroupName; /**/
                             m_ListViewItem.Group.Header = m_GroupName;
-                            Des.Value = tmp_Value;
+                            Des.HeaderText = tmp_Value;
                             break;
                         }
                         m_ListViewItem.SubItems.Add(tmp_Value);
@@ -183,16 +183,16 @@ namespace StatlookLogViewer
                         {
                             foreach (Descriptor des in ListaBledow)
                             {
-                                if (tmp_Value.Contains(des.Name))
+                                if (tmp_Value.Contains(des.KeyName))
                                 {
-                                    if (!m_ListViewItem.Group.Header.Contains(des.Value))
+                                    if (!m_ListViewItem.Group.Header.Contains(des.HeaderText))
                                     {
-                                        m_ListViewItem.Group.Header += " ( " + des.Value + " )";
+                                        m_ListViewItem.Group.Header += " ( " + des.HeaderText + " )";
                                     }
                                 }
                             }
                         }
-                        Des.Value = tmp_Value;
+                        Des.HeaderText = tmp_Value;
                         break;
                     }
                 }

@@ -5,20 +5,20 @@ namespace StatlookLogViewer
     {
         #region Constructors
 
-        public Descriptor(LogType logType, string name)
+        public Descriptor(LogType logType, string keyName)
         {
             LogType = logType;
-            Name = name;
+            KeyName = keyName;
         }
 
-        public Descriptor(LogType logType,string name, string value)
-            :this(logType, name)
+        public Descriptor(LogType logType, string keyName, string headerText)
+            :this(logType, keyName)
         {
-            Value = value;
+            HeaderText = headerText;
         }
 
-        public Descriptor(LogType logType, string name, string value,bool show)
-            :this (logType, name, value)
+        public Descriptor(LogType logType, string keyName, string headerText, bool show)
+            :this (logType, keyName, headerText)
         {
             Show = show;
         }
@@ -30,14 +30,14 @@ namespace StatlookLogViewer
         public LogType LogType { get; set; }
 
         /// <summary>
-        /// Name of descriptor
+        /// Key name of descriptor
         /// </summary>
-        public string Name { set; get; }
+        public string KeyName { set; get; }
 
         /// <summary>
-        /// Value of descriptor
+        /// Header of descriptor
         /// </summary>
-        public string Value { set; get; }
+        public string HeaderText { set; get; }
 
         /// <summary>
         /// Need to show

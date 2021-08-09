@@ -27,6 +27,7 @@ namespace StatlookLogViewer
         {
 
             Configuration config;
+
             if (!File.Exists("config.xml"))
             {
                 // Create a new configuration object

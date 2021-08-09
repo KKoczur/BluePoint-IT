@@ -95,9 +95,9 @@ namespace StatlookLogViewer
             {
                 viewMenuItem.CheckState = System.Windows.Forms.CheckState.Unchecked;
             }
-            viewMenuItem.Name = udes[i].Name; 
+            viewMenuItem.Name = udes[i].KeyName; 
             viewMenuItem.Size = new System.Drawing.Size(152, 22);
-            viewMenuItem.Text =udes[i].Value;
+            viewMenuItem.Text =udes[i].HeaderText;
             ToolStripMenuItemUplook.DropDownItems.Add(viewMenuItem);
             }
 
@@ -113,9 +113,9 @@ namespace StatlookLogViewer
                 {
                     viewMenuItem.CheckState = System.Windows.Forms.CheckState.Unchecked;
                 }
-                viewMenuItem.Name = usmdes[i].Name;
+                viewMenuItem.Name = usmdes[i].KeyName;
                 viewMenuItem.Size = new System.Drawing.Size(152, 22);
-                viewMenuItem.Text = usmdes[i].Value;
+                viewMenuItem.Text = usmdes[i].HeaderText;
                 ToolStripMenuItemUSM.DropDownItems.Add(viewMenuItem);
             }
 
@@ -1167,10 +1167,10 @@ namespace StatlookLogViewer
                 t.CheckState =System.Windows.Forms.CheckState.Unchecked;
                 foreach (Descriptor ud in udes)
                 {
-                    if (t.Name == ud.Name)
+                    if (t.Name == ud.KeyName)
                     {
                         ud.Show = false;
-                        config.uShow(ud.Name, false);
+                        config.uShow(ud.KeyName, false);
                     }
                 }
             }
@@ -1179,10 +1179,10 @@ namespace StatlookLogViewer
                 t.CheckState = System.Windows.Forms.CheckState.Checked;
                 foreach (Descriptor ud in udes)
                 {
-                    if (t.Name == ud.Name)
+                    if (t.Name == ud.KeyName)
                     {
                         ud.Show = true;
-                        config.uShow(ud.Name, true);
+                        config.uShow(ud.KeyName, true);
                     }
                 }
             }
@@ -1212,10 +1212,10 @@ namespace StatlookLogViewer
                 t.CheckState = System.Windows.Forms.CheckState.Unchecked;
                 foreach (Descriptor usmd in usmdes)
                 {
-                    if (t.Name == usmd.Name)
+                    if (t.Name == usmd.KeyName)
                     {
                         usmd.Show = false;
-                        config.usmShow(usmd.Name, false);
+                        config.usmShow(usmd.KeyName, false);
                     }
                 }
             }
@@ -1224,10 +1224,10 @@ namespace StatlookLogViewer
                 t.CheckState = System.Windows.Forms.CheckState.Checked;
                 foreach (Descriptor usmd in usmdes)
                 {
-                    if (t.Name == usmd.Name)
+                    if (t.Name == usmd.KeyName)
                     {
                         usmd.Show = true;
-                        config.usmShow(usmd.Name, true);
+                        config.usmShow(usmd.KeyName, true);
                     }
                 }
             }
