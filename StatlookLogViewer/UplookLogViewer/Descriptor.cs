@@ -44,6 +44,7 @@ namespace StatlookLogViewer
         /// </summary>
         public bool Show { set; get; }
 
+
         #endregion Properties
 
     }

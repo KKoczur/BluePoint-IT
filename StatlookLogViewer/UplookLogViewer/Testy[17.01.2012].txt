@@ -1,2 +1,0 @@
-*data pliku umieszczona na dolnym pasku nie jest wlaœciwa (bie¿¹ca a nie data ostatniej modyfikacji)
-*wyszukiwanie zbyt wolne( Zmieniæ zakres z 500 na 250)

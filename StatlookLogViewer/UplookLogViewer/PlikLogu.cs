@@ -54,8 +54,7 @@ namespace StatlookLogViewer
 
         public ListViewItem[] GetListViewItem()
         {
-            ListViewItem[] tmp_Array = m_ListViewItem.ToArray();
-            return tmp_Array;
+            return m_ListViewItem.ToArray();
         }
 
         public NewPage analizeUplookLog(string SafeFileName, string FileName, string dataUtworzenia, Headers _uplookDeskryptor)

@@ -29,6 +29,8 @@ namespace StatlookLogViewer
 
         public Descriptor[] GetUsmHeaders() => _descriptors.Where(item => item.LogType == LogType.Usm).ToArray();
 
+        public Descriptor GetHeaderByKeyName(string keyName) => _descriptors.Where(item => item.KeyName == keyName).FirstOrDefault();
+
         Descriptor[] CreateStatlookHeaders()
         {
             const LogType logType = LogType.Statlook;

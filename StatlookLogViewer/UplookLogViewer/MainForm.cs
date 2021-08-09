@@ -1170,7 +1170,7 @@ namespace StatlookLogViewer
                     if (t.Name == ud.KeyName)
                     {
                         ud.Show = false;
-                        config.uShow(ud.KeyName, false);
+                        config.SetHeaderVisibility(ud.KeyName, false);
                     }
                 }
             }
@@ -1182,7 +1182,7 @@ namespace StatlookLogViewer
                     if (t.Name == ud.KeyName)
                     {
                         ud.Show = true;
-                        config.uShow(ud.KeyName, true);
+                        config.SetHeaderVisibility(ud.KeyName, true);
                     }
                 }
             }
@@ -1215,7 +1215,7 @@ namespace StatlookLogViewer
                     if (t.Name == usmd.KeyName)
                     {
                         usmd.Show = false;
-                        config.usmShow(usmd.KeyName, false);
+                        config.SetHeaderVisibility(usmd.KeyName, false);
                     }
                 }
             }
@@ -1227,7 +1227,7 @@ namespace StatlookLogViewer
                     if (t.Name == usmd.KeyName)
                     {
                         usmd.Show = true;
-                        config.usmShow(usmd.KeyName, true);
+                        config.SetHeaderVisibility(usmd.KeyName, true);
                     }
                 }
             }
