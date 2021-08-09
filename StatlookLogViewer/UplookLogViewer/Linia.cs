@@ -82,7 +82,7 @@ namespace StatlookLogViewer
                     string tmp_NazwaGrupy = null;
                     string myHourTime = null;
                     DictionaryLog SlownikErrors = new DictionaryLog();
-                    Descriptor[] ListaBledow = SlownikErrors.GetListOfErrors();
+                    Descriptor[] ListaBledow = SlownikErrors.GetListOfAllErrors();
                     foreach (Descriptor Des in m_Headers.uplook_Deskryptor)
                     {
                         if (Des.Name == tmp_Header)
@@ -147,7 +147,7 @@ namespace StatlookLogViewer
                 string tmp_NazwaGrupy = null;
                 string myHourTime = null;
                 DictionaryLog SlownikErrors = new DictionaryLog();
-                Descriptor[] ListaBledow = SlownikErrors.GetListOfErrors();
+                Descriptor[] ListaBledow = SlownikErrors.GetListOfAllErrors();
                 foreach (Descriptor Des in m_Headers.usm_Deskryptor)
                 {
                     if (Des.Name == tmp_Header)

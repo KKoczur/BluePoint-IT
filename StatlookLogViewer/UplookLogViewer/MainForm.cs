@@ -72,10 +72,10 @@ namespace StatlookLogViewer
             //show_usm = config.show_usm.Split(new char[] { ';' });
             //Przypisanie wartości zmiennym
 			OSVersion = System.Environment.OSVersion.Version.Major.ToString();
-			LogDirectory = System.Environment.GetFolderPath(Environment.SpecialFolder.CommonApplicationData) + config.AplusCLogDirectory;
-            USMDirectory = System.Environment.GetFolderPath(Environment.SpecialFolder.CommonApplicationData) + config.AplusCUSMDirectory;
+			LogDirectory = System.Environment.GetFolderPath(Environment.SpecialFolder.CommonApplicationData) + config.StatlookLogDirectory;
+            USMDirectory = System.Environment.GetFolderPath(Environment.SpecialFolder.CommonApplicationData) + config.StatlookUsmLogDirectory;
             UserDirectory = config.UserDirectory;
-            extensions= config.FileExtensions.Split(new char[] { ';' });
+            extensions= config.LogFileExtensions.Split(new char[] { ';' });
 
             InitializeComponent();
             

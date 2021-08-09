@@ -43,8 +43,8 @@ namespace StatlookLogViewer
                 config = Configuration.Deserialize("config.xml");
             }
         _osVersion = System.Environment.OSVersion.Version.Major.ToString();
-	    _logMap = System.Environment.GetFolderPath(Environment.SpecialFolder.CommonApplicationData) + config.AplusCLogDirectory;
-        _usmMap = System.Environment.GetFolderPath(Environment.SpecialFolder.CommonApplicationData) + config.AplusCUSMDirectory;
+	    _logMap = System.Environment.GetFolderPath(Environment.SpecialFolder.CommonApplicationData) + config.StatlookLogDirectory;
+        _usmMap = System.Environment.GetFolderPath(Environment.SpecialFolder.CommonApplicationData) + config.StatlookUsmLogDirectory;
         InitializeComponent();
 
         }

@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.IO;
+using System.Xml.Serialization;
 
 namespace StatlookLogViewer
 {
@@ -12,16 +13,6 @@ namespace StatlookLogViewer
       /// </summary>
       public Configuration()
       {
-            Version = "1.0.1";
-            AplusCLogDirectory = "\\Statlook\\Logs\\";
-            AplusCUSMDirectory = "\\Statlook\\Logs\\";
-            UserDirectory = "C:\\Users\\Karol\\Desktop\\Logs\\";
-            FileExtensions = "*.log;*.zip";
-            Uplook_Headers = "Date; Logger:; Type:; PID/TID:; Thread ID:; Description:; Exception:;   Message:;   Method:;   Stack:";
-            Show_uplook = "false;true;true;true;true;true;true;true;true;true";
-            Usm_Headers = "Date; Code:; Type:; Session:; PID/TID:; Description:";
-            Show_usm = "false;false;true;false;false;true;";
-
             #region HeadersOfUplook
             UDate = "Date";
             ULogger = " Logger:";
@@ -62,7 +53,7 @@ namespace StatlookLogViewer
       }
       public static void Serialize(string file, Configuration c)
       {
-         System.Xml.Serialization.XmlSerializer xs = new System.Xml.Serialization.XmlSerializer(c.GetType());
+         XmlSerializer xs = new XmlSerializer(c.GetType());
          StreamWriter writer = File.CreateText(file);
          xs.Serialize(writer, c);
          writer.Flush();
@@ -70,21 +61,21 @@ namespace StatlookLogViewer
       }
       public static Configuration Deserialize(string file)
       {
-         System.Xml.Serialization.XmlSerializer xs = new System.Xml.Serialization.XmlSerializer(typeof(Configuration));
+         XmlSerializer xs = new XmlSerializer(typeof(Configuration));
          StreamReader reader = File.OpenText(file);
          Configuration c = (Configuration)xs.Deserialize(reader);
          reader.Close();
          return c;
       }
-        public string Version { get; set; }
-        public string AplusCLogDirectory { get; set; }
-        public string AplusCUSMDirectory { get; set; }
-        public string UserDirectory { get; set; }
-        public string FileExtensions { get; set; }
-        public string Uplook_Headers { get; set; }
-        public string Show_uplook { get; set; }
-        public string Usm_Headers { get; set; }
-        public string Show_usm { get; set; }
+        public string Version { get; set; } = "1.0.1";
+        public string StatlookLogDirectory { get; set; } = "\\Statlook\\Logs\\";
+        public string StatlookUsmLogDirectory { get; set; }= "\\Statlook\\Logs\\";
+        public string UserDirectory { get; set; } = "C:\\Users\\Karol\\Desktop\\Logs\\";
+        public string LogFileExtensions { get; set; } = "*.log;*.zip";
+        public string StatlookHeaders { get; set; } = "Date; Logger:; Type:; PID/TID:; Thread ID:; Description:; Exception:;   Message:;   Method:;   Stack:";
+        public string Show_uplook { get; set; } = "false;true;true;true;true;true;true;true;true;true";
+        public string Usm_Headers { get; set; } = "Date; Code:; Type:; Session:; PID/TID:; Description:";
+        public string Show_usm { get; set; } = "false;false;true;false;false;true;";
 
         #region HeadersOfUplook
         public string UDate { get; set; }
@@ -127,7 +118,7 @@ namespace StatlookLogViewer
 
         public Descriptor[] GetStatlookHeaders()
         {
-            LogType logType = LogType.Statlook;
+            var logType = LogType.Statlook;
             var result = new List<Descriptor>()
             {
                 new Descriptor(logType,"uDate", UDate, UDateVisible),
@@ -146,7 +137,7 @@ namespace StatlookLogViewer
       }
       public Descriptor[] GetUsmHeaders()
       {
-            LogType logType = LogType.Usm;
+           var logType = LogType.Usm;
           Descriptor[] usmD = new Descriptor[6];
           usmD[0] = new Descriptor(logType, "usmDate", UsmDate, UsmDateVisible);
           usmD[1] = new Descriptor(logType, "usmCode", usmCode, UsmCodeVisible);
