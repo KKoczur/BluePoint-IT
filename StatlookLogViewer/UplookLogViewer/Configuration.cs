@@ -1,5 +1,6 @@
 ﻿using System;
 using System.IO;
+using System.Linq;
 using System.Xml.Serialization;
 
 namespace StatlookLogViewer
@@ -41,6 +42,8 @@ namespace StatlookLogViewer
 
         public Descriptor[] GetStatlookHeaders() => DescriptorCollection.GetStatlookHeaders();
 
+        public string GetStatlookTextHeaders() => string.Join (";", DescriptorCollection.GetStatlookHeaders().Select(item => item.HeaderText));
+
         public Descriptor[] GetUsmHeaders() => DescriptorCollection.GetUsmHeaders();
 
         public void SetHeaderVisibility(string headerKeyName, bool needToShow)
@@ -59,7 +62,7 @@ namespace StatlookLogViewer
         public string StatlookUsmLogDirectory { get; set; }= "\\Statlook\\Logs\\";
         public string UserDirectory { get; set; } = "C:\\Users\\Karol\\Desktop\\Logs\\";
         public string LogFileExtensions { get; set; } = "*.log;*.zip";
-        public string StatlookHeaders { get; set; } = "Date; Logger:; Type:; PID/TID:; Thread ID:; Description:; Exception:;   Message:;   Method:;   Stack:";
+
         public string Show_uplook { get; set; } = "false;true;true;true;true;true;true;true;true;true";
         public string Usm_Headers { get; set; } = "Date; Code:; Type:; Session:; PID/TID:; Description:";
         public string Show_usm { get; set; } = "false;false;true;false;false;true;";

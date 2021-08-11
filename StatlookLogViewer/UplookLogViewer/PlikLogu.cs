@@ -43,7 +43,6 @@ namespace StatlookLogViewer
             StreamReader plikFirstAnalize;
             StreamReader plikAnalize;
 
-            //NewPage nowaKarta;
             try
             {
               plikFirstAnalize = new StreamReader(SafeFileName, Encoding.Default);
@@ -59,6 +58,7 @@ namespace StatlookLogViewer
             var m_ListOfHeaders = new List<String>();
 
             int numer = 0;
+
             if(allData.Contains(uplookDeskryptor.uplook_Headers[1]))
             {
                 for (int i = 0; i < uplookDeskryptor.uplook_Headers.Length; i++)
@@ -80,9 +80,7 @@ namespace StatlookLogViewer
                 }
 
              }
-             else
-             {
-             }
+
              choose_Headers = m_ListOfHeaders.ToArray();
 
             _newPage = new NewPage(0, FileName, SafeFileName, choose_Headers, dataUtworzenia, _typeOfLog)
@@ -92,30 +90,30 @@ namespace StatlookLogViewer
 
             ListViewExtended ListViewTmp = _newPage.ListViewExtended;
              
-            //Otwarcie pliku po raz drugi do odczytu danych
-             StreamReader plikFirstAnalize_Sec = new StreamReader(SafeFileName, UTF8Encoding.Default);
              StreamReader plikAnalize_Sec = new StreamReader(SafeFileName, UTF8Encoding.Default);
-             string line = null;
-             string MyHourTime = null;
-            
+
             //Utworzenie obiektu przechowującego zbiór linii przetworzonych pliku logu 
             PlikLogu PlikLogu = new PlikLogu();
             Linia NowaLinia = new Linia();
+
+            string line;
+
             #region pętla
+
             while ((line = plikAnalize_Sec.ReadLine()) != null)
             {
                 //Wyrażenie regularne do sprawdzenia czy wpis logu nie zaczyna się od daty
                 if (Regex.IsMatch(line, @"(?<rok>\d{4})\.(?<miesiac>\d{2})\.(?<dzien>\d{2})\b"))
                 {
-                 #region if_1
+                    #region if_1
                     NowaLinia = new Linia();
-                    line = line + ";";
+                    line += ";";
                     line = line.Substring(0, line.IndexOf(";"));
-                    
+
                     //Dodanie do pojedynczej linii wartości kolumny: Date
                     NowaLinia.AddLine(NowaLinia.Headers.uplook_Date, line, numer);
                     DateTime tmp = DateTime.Parse(line);
-                    MyHourTime = tmp.Hour.ToString();
+                    string MyHourTime = tmp.Hour.ToString();
                     ListViewGroup tmp_Group = new ListViewGroup(NowaLinia.GroupName, HorizontalAlignment.Left);
                     if (ListViewTmp.Groups.Count == 0)
                     {
@@ -136,7 +134,7 @@ namespace StatlookLogViewer
                             NowaLinia.ListViewItem.Group = tmp_Group;
                             NowaLinia.ListViewItem.Group.Name = tmp_Group.ToString();
                         }
-                     }
+                    }
                     #endregion if_1
                 }
                 //Wykonaj jeśli linia nie zawiera znacznika przerwy 
@@ -146,25 +144,25 @@ namespace StatlookLogViewer
                     {
                         if (line.StartsWith(choose_Headers[i]))
                         {
-                            line = line + ";";
+                            line += ";";
                             line = line.Remove(0, choose_Headers[i].Length);
                             line = line.TrimStart();
                             line = line.Substring(0, line.IndexOf(";"));
                             NowaLinia.AddLine(choose_Headers[i], line, numer);
                             break;
-                         }
-                     }
+                        }
+                    }
                 }
 
-                 //Wykonaj jeśli linia zawiera znacznika przerwy 
-                 else if (line.StartsWith(uplookDeskryptor.uplook_Break))
-                 {
+                //Wykonaj jeśli linia zawiera znacznika przerwy 
+                else if (line.StartsWith(uplookDeskryptor.uplook_Break))
+                {
                     //Dodanie pojedynczej linii do pliku wynikowego analizy 
                     PlikLogu.AddLine(NowaLinia);
-                 }
+                }
 
             }
-            
+
             #endregion pętla
 
             ListViewTmp.BeginUpdate();

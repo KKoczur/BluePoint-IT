@@ -1089,11 +1089,11 @@ namespace StatlookLogViewer
                             {
                                 if (show_uplook[j])
                                 {
-                                    t.CheckState = System.Windows.Forms.CheckState.Checked; ;
+                                    t.CheckState = System.Windows.Forms.CheckState.Checked; 
                                 }
                                 else
                                 {
-                                    t.CheckState = System.Windows.Forms.CheckState.Unchecked; ;
+                                    t.CheckState = System.Windows.Forms.CheckState.Unchecked; 
                                 }
                                 break;
                             }
@@ -1439,7 +1439,6 @@ namespace StatlookLogViewer
 
         }
 
-            
     }
 
 }

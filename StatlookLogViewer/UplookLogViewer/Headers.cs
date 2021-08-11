@@ -4,7 +4,9 @@ namespace StatlookLogViewer
 {
     class Headers
     {
-        #region Zmienne
+        #region Members
+
+        private readonly Configuration _config;
 
         //Elementy składowe(deskryptory) pliku logów systemu uplook
         private string[] m_uplook_Headers;
@@ -15,14 +17,13 @@ namespace StatlookLogViewer
         private string m_usm_Break = "----------------------------------------";
         private Descriptor[] m_Zbior_uplook_Deskryptors = new Descriptor[10];
         private Descriptor[] m_Zbior_usm_Deskryptors = new Descriptor[6];
-        #endregion Zmienne
+
+        #endregion Members
 
         #region Konstruktory
 
         public Headers()
         {
-            Configuration config;
-
             if (!File.Exists("config.xml"))
             {
                 // Create a new configuration object
@@ -33,16 +34,16 @@ namespace StatlookLogViewer
                 Configuration.Serialize("config.xml", c);
 
                 // Read the configuration object from a file
-                config = Configuration.Deserialize("config.xml");
+                _config = Configuration.Deserialize("config.xml");
             }
             else
             {
                 // Read the configuration object from a file
-                config = Configuration.Deserialize("config.xml");
+                _config = Configuration.Deserialize("config.xml");
             }
 
-            m_uplook_Headers = config.StatlookHeaders.Split(new char[] { ';' });
-            m_usm_Headers = config.Usm_Headers.Split(new char[] { ';' });
+            m_uplook_Headers = _config.GetStatlookTextHeaders().Split(new char[] { ';' });
+            m_usm_Headers = _config.Usm_Headers.Split(new char[] { ';' });
 
             //Utworzenie zbioru deskryptorów uplook
             for (int i = 0; i < m_uplook_Headers.Length; i++)
@@ -58,7 +59,7 @@ namespace StatlookLogViewer
 
         #endregion Konstruktory
 
-        #region Wlasciowsci
+        #region Properties
 
         public Descriptor[] uplook_Deskryptor => m_Zbior_uplook_Deskryptors;
 
@@ -76,18 +77,7 @@ namespace StatlookLogViewer
 
         public string usm_Date => m_usm_Date;
 
-        #endregion Wlasciowsci
+        #endregion Properties
 
-        #region Metody
-
-        public string[] GetAllHeaders()
-        {
-            string [] T = new string [m_uplook_Headers.Length + m_usm_Headers.Length]; 
-            m_uplook_Headers.CopyTo(T, 0);
-            m_usm_Headers.CopyTo(T, m_uplook_Headers.Length);
-            return T;
-        }
-
-        #endregion Metody
     }
 }

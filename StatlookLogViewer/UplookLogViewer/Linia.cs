@@ -17,8 +17,6 @@ namespace StatlookLogViewer
 
         #region Properties
 
-        public int NumerLinii { set; get; }
-
         public Headers Headers { get; } = new Headers();
 
         public string GroupName => _groupName;
@@ -27,7 +25,7 @@ namespace StatlookLogViewer
 
         #endregion Properties
 
-        #region Metody
+        #region Methods
 
         public void AddLine(string Header, string Value, int numer)
         {
@@ -167,7 +165,7 @@ namespace StatlookLogViewer
         }
 
 
-        #endregion Metody
+        #endregion Methods
     }
 }
 
