@@ -12,14 +12,12 @@ namespace StatlookLogViewer
 
         private void buttonUserCatalog_Click(object sender, EventArgs e)
         {
-            using var dlg = new FolderBrowserDialog();
+            using var folderBrowserDialog = new FolderBrowserDialog();
 
-            dlg.Description = "Select a folder";
+            folderBrowserDialog.Description = "Select a folder";
 
-            if (dlg.ShowDialog() == DialogResult.OK)
-            {
-                textBoxUserCatalog.Text = dlg.SelectedPath;
-            }
+            if (folderBrowserDialog.ShowDialog() == DialogResult.OK)
+                textBoxUserCatalog.Text = folderBrowserDialog.SelectedPath;
         }
     }
 }

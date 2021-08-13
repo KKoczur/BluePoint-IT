@@ -16,10 +16,10 @@ namespace StatlookLogViewer
         #region Members
 
         //private OCatalogs PanelCatalogs;
-        private readonly Configuration config;
+        private readonly Configuration _config;
         // Create a new configuration object
         // and initialize some variables
-        private Configuration c = new Configuration();
+        private readonly Configuration c = new Configuration();
         private readonly string _osVersion;
         private readonly string _logMap;
         private readonly string _usmMap;
@@ -35,16 +35,16 @@ namespace StatlookLogViewer
                 Configuration.Serialize("config.xml", c);
 
                 // Read the configuration object from a file
-                config = Configuration.Deserialize("config.xml");
+                _config = Configuration.Deserialize("config.xml");
             }
             else
             {
                 // Read the configuration object from a file
-                config = Configuration.Deserialize("config.xml");
+                _config = Configuration.Deserialize("config.xml");
             }
         _osVersion = System.Environment.OSVersion.Version.Major.ToString();
-	    _logMap = System.Environment.GetFolderPath(Environment.SpecialFolder.CommonApplicationData) + config.StatlookLogDirectory;
-        _usmMap = System.Environment.GetFolderPath(Environment.SpecialFolder.CommonApplicationData) + config.StatlookUsmLogDirectory;
+	    _logMap = System.Environment.GetFolderPath(Environment.SpecialFolder.CommonApplicationData) + _config.StatlookLogDirectory;
+        _usmMap = System.Environment.GetFolderPath(Environment.SpecialFolder.CommonApplicationData) + _config.StatlookUsmLogDirectory;
         InitializeComponent();
 
         }
@@ -52,7 +52,7 @@ namespace StatlookLogViewer
         private void buttonOptionsCancel_Click(object sender, EventArgs e)
         {
             // Serialize the configuration object to a file
-            Configuration.Serialize("config.xml", config);
+            Configuration.Serialize("config.xml", _config);
             this.Close();
         }
 
@@ -66,7 +66,7 @@ namespace StatlookLogViewer
                 TextBox txUsm = (TextBox)(oCatalogs.Controls.Find("textBoxUSMCatalog", true))[0];
                 txUsm.Text = _usmMap;
                 TextBox txUser= (TextBox)(oCatalogs.Controls.Find("textBoxUserCatalog",true))[0];
-                txUser.Text = config.UserDirectory;
+                txUser.Text = _config.UserDirectory;
                 oCatalogs.Visible = true;
             }
             else

@@ -6,6 +6,9 @@ namespace StatlookLogViewer
     {
         #region Members
 
+        /// <summary>
+        /// Obiekt konfiguracji
+        /// </summary>
         private readonly Configuration _config;
 
         //Elementy składowe(deskryptory) pliku logów systemu uplook
@@ -20,7 +23,7 @@ namespace StatlookLogViewer
 
         #endregion Members
 
-        #region Konstruktory
+        #region Constructors
 
         public Headers()
         {
@@ -43,7 +46,7 @@ namespace StatlookLogViewer
             }
 
             m_uplook_Headers = _config.GetStatlookTextHeaders().Split(new char[] { ';' });
-            m_usm_Headers = _config.Usm_Headers.Split(new char[] { ';' });
+            m_usm_Headers = _config.GetUsmTextHeaders().Split(new char[] { ';' });
 
             //Utworzenie zbioru deskryptorów uplook
             for (int i = 0; i < m_uplook_Headers.Length; i++)
@@ -57,11 +60,11 @@ namespace StatlookLogViewer
             }
         }
 
-        #endregion Konstruktory
+        #endregion Constructors
 
         #region Properties
 
-        public Descriptor[] uplook_Deskryptor => m_Zbior_uplook_Deskryptors;
+        public Descriptor[] uplook_Deskryptor => _config.GetStatlookHeaders();
 
         public string[] uplook_Headers => m_uplook_Headers;
 

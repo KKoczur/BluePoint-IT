@@ -1,7 +1,5 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Linq;
-using System.Text;
 
 namespace StatlookLogViewer
 {
@@ -29,7 +27,7 @@ namespace StatlookLogViewer
 
         public Descriptor[] GetUsmHeaders() => _descriptors.Where(item => item.LogType == LogType.Usm).ToArray();
 
-        public Descriptor GetHeaderByKeyName(string keyName) => _descriptors.Where(item => item.KeyName == keyName).FirstOrDefault();
+        public Descriptor GetHeaderByKeyName(string keyName) => _descriptors.FirstOrDefault(item => item.KeyName == keyName);
 
         private Descriptor[] CreateStatlookHeaders()
         {

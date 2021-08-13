@@ -46,6 +46,8 @@ namespace StatlookLogViewer
 
         public Descriptor[] GetUsmHeaders() => DescriptorCollection.GetUsmHeaders();
 
+        public string GetUsmTextHeaders() => string.Join(";", DescriptorCollection.GetUsmHeaders().Select(item => item.HeaderText));
+
         public void SetHeaderVisibility(string headerKeyName, bool needToShow)
         {
             Descriptor descriptor = DescriptorCollection.GetHeaderByKeyName(headerKeyName);
@@ -64,7 +66,6 @@ namespace StatlookLogViewer
         public string LogFileExtensions { get; set; } = "*.log;*.zip";
 
         public string Show_uplook { get; set; } = "false;true;true;true;true;true;true;true;true;true";
-        public string Usm_Headers { get; set; } = "Date; Code:; Type:; Session:; PID/TID:; Description:";
         public string Show_usm { get; set; } = "false;false;true;false;false;true;";
     }
 }

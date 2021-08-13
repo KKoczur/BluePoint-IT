@@ -18,50 +18,50 @@ namespace StatlookLogViewer
 
 	public partial class uplookMainForm : Form
     {
-        /// <summary> Zmienne
-        /// 
-        /// </summary>
-        #region Zmienne
-        private StatlookLogViewer.ListViewColumnSorter lvwColumnSorter;
-	    public string OSVersion=null;
-	    public string LogDirectory = null;
-        public string USMDirectory = null;
-        public string UserDirectory = null;
-        private string[] extensions;
-        private Headers uplookDeskryptor = new Headers();
-        private bool[] show_uplook=new bool[10];
-        private bool[] show_usm=new bool[6];
-        private Configuration config;
-        #endregion Zmienne
+        #region Members
+
+        private readonly ListViewColumnSorter _lvwColumnSorter;
+	    public string OSVersion;
+	    public string LogDirectory;
+        public string USMDirectory;
+        public string UserDirectory;
+        private readonly string[] extensions;
+        private readonly Headers uplookDeskryptor = new Headers();
+        private readonly bool[] show_uplook=new bool[10];
+        private readonly bool[] show_usm=new bool[6];
+        private Configuration _config;
+
+        #endregion Members
 
         public uplookMainForm()
 		{
             //Odczytanie konfiguracji zapisanej w pliku ustawień 
             if(!File.Exists("config.xml"))
             {
-            // Create a new configuration object
-            // and initialize some variables
-            Configuration c = new Configuration();
+                // Create a new configuration object
+                // and initialize some variables
+                Configuration c = new Configuration();
 
-            // Serialize the configuration object to a file
-            Configuration.Serialize("config.xml", c);
+                // Serialize the configuration object to a file
+                Configuration.Serialize("config.xml", c);
 
-            // Read the configuration object from a file
-            config = Configuration.Deserialize("config.xml");
+                // Read the configuration object from a file
+                _config = Configuration.Deserialize("config.xml");
             }
             else
             {
                 // Read the configuration object from a file
-            config = Configuration.Deserialize("config.xml");
+                _config = Configuration.Deserialize("config.xml");
             }
-            Descriptor[] udes = config.GetStatlookHeaders();
+
+            Descriptor[] udes = _config.GetStatlookHeaders();
             int j = 0;
             foreach (Descriptor d in udes)
             {
                 show_uplook[j]= d.Show;
                 j++;
             }
-            Descriptor[] usmdes = config.GetUsmHeaders();
+            Descriptor[] usmdes = _config.GetUsmHeaders();
             int k = 0;
             foreach (Descriptor d in usmdes)
             {
@@ -72,10 +72,10 @@ namespace StatlookLogViewer
             //show_usm = config.show_usm.Split(new char[] { ';' });
             //Przypisanie wartości zmiennym
 			OSVersion = System.Environment.OSVersion.Version.Major.ToString();
-			LogDirectory = System.Environment.GetFolderPath(Environment.SpecialFolder.CommonApplicationData) + config.StatlookLogDirectory;
-            USMDirectory = System.Environment.GetFolderPath(Environment.SpecialFolder.CommonApplicationData) + config.StatlookUsmLogDirectory;
-            UserDirectory = config.UserDirectory;
-            extensions= config.LogFileExtensions.Split(new char[] { ';' });
+			LogDirectory = System.Environment.GetFolderPath(Environment.SpecialFolder.CommonApplicationData) + _config.StatlookLogDirectory;
+            USMDirectory = System.Environment.GetFolderPath(Environment.SpecialFolder.CommonApplicationData) + _config.StatlookUsmLogDirectory;
+            UserDirectory = _config.UserDirectory;
+            extensions= _config.LogFileExtensions.Split(new char[] { ';' });
 
             InitializeComponent();
             
@@ -85,9 +85,12 @@ namespace StatlookLogViewer
             //
             for (int i = 0; i < udes.Length; i++)
             {
-            ToolStripMenuItem viewMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-            viewMenuItem.Checked = true;
-            if (udes[i].Show)
+                ToolStripMenuItem viewMenuItem = new ToolStripMenuItem
+                {
+                    Checked = true
+                };
+
+                if (udes[i].Show)
             {
                 viewMenuItem.CheckState = System.Windows.Forms.CheckState.Checked;
             }
@@ -96,14 +99,14 @@ namespace StatlookLogViewer
                 viewMenuItem.CheckState = System.Windows.Forms.CheckState.Unchecked;
             }
             viewMenuItem.Name = udes[i].KeyName; 
-            viewMenuItem.Size = new System.Drawing.Size(152, 22);
+            viewMenuItem.Size = new Size(152, 22);
             viewMenuItem.Text =udes[i].HeaderText;
             ToolStripMenuItemUplook.DropDownItems.Add(viewMenuItem);
             }
 
             for (int i = 0; i < usmdes.Length; i++)
             {
-                ToolStripMenuItem viewMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+                ToolStripMenuItem viewMenuItem = new ToolStripMenuItem();
                 viewMenuItem.Checked = true;
                 if (usmdes[i].Show)
                 {
@@ -114,14 +117,14 @@ namespace StatlookLogViewer
                     viewMenuItem.CheckState = System.Windows.Forms.CheckState.Unchecked;
                 }
                 viewMenuItem.Name = usmdes[i].KeyName;
-                viewMenuItem.Size = new System.Drawing.Size(152, 22);
+                viewMenuItem.Size = new Size(152, 22);
                 viewMenuItem.Text = usmdes[i].HeaderText;
                 ToolStripMenuItemUSM.DropDownItems.Add(viewMenuItem);
             }
 
             
-		    lvwColumnSorter = new ListViewColumnSorter();
-            this.listViewFiles.ListViewItemSorter = lvwColumnSorter;
+		    _lvwColumnSorter = new ListViewColumnSorter();
+            this.listViewFiles.ListViewItemSorter = _lvwColumnSorter;
             IniTabPageInfo();
 		 
 		}
@@ -129,7 +132,7 @@ namespace StatlookLogViewer
         //Wypełnia listę informacjami o plikach logów
 		private void IniTabPageInfo()
 		{
-            UserDirectory = config.UserDirectory;
+            UserDirectory = _config.UserDirectory;
             //Podaje informacje o katalogu "Logs"
             WypelnijDashboard(LogDirectory, labelLogsPathValue, labelFilesSizeValue, labelFilesCountValue);
             //Podaje informacje statystyczne o katalogu "uplook system monitor"
@@ -187,7 +190,7 @@ namespace StatlookLogViewer
                             plikInfo.SubItems.Add(FileSize(pliki[i].Length,false));
                             plikInfo.SubItems.Add(pliki[i].DirectoryName);
                             listViewFiles.Items.Add(plikInfo);
-                            toolStripButtonIcon.Image = global::StatlookLogViewer.Properties.Resources.ok_16;
+                            toolStripButtonIcon.Image = Properties.Resources.ok_16;
                             toolStripStatusReady.Text = "Ready";
                         }
                     }
@@ -203,7 +206,7 @@ namespace StatlookLogViewer
                         }
                         else
                         {
-                        ch.Width = -2;
+                            ch.Width = -2;
                         }
                     }
             }
@@ -343,9 +346,7 @@ namespace StatlookLogViewer
                                 //RozwinGrupy();
 
                             }
-                            else
-                            { 
-                            }
+
                         }
                         else
                         {
@@ -435,40 +436,31 @@ namespace StatlookLogViewer
             }
             else
             {
-                Configuration.Serialize("config.xml", config);
+                Configuration.Serialize("config.xml", _config);
             }
 		}
 
-		private void exitToolStripMenuItem1_Click(object sender, EventArgs e)
-		{
-			this.Close();
-		}
+        private void exitToolStripMenuItem1_Click(object sender, EventArgs e) => this.Close();
 
-		private void toolStripButton2_Click(object sender, EventArgs e)
-		{
-			otworzPlik();
-		}
+        private void toolStripButton2_Click(object sender, EventArgs e) => otworzPlik();
 
-		private void toolStripButton3_Click(object sender, EventArgs e)
-		{
-			this.Close();
-		}
-		
-		//Sortowanie kolumny w liście plików logu
-		private void listViewFiles_ColumnClick(object sender, ColumnClickEventArgs e)
+        private void toolStripButton3_Click(object sender, EventArgs e) => this.Close();
+
+        //Sortowanie kolumny w liście plików logu
+        private void listViewFiles_ColumnClick(object sender, ColumnClickEventArgs e)
 		{
             //listViewFiles.ListViewItemSorter = new IntegerComparer(0);
             this.listViewFiles.BeginUpdate();
-                if (e.Column == lvwColumnSorter.SortColumn)
+                if (e.Column == _lvwColumnSorter.SortColumn)
                 {
                     // Reverse the current sort direction for this column.
-                    if (lvwColumnSorter.Order == SortOrder.Ascending)
+                    if (_lvwColumnSorter.Order == SortOrder.Ascending)
                     {
-                        lvwColumnSorter.Order = SortOrder.Descending;
+                        _lvwColumnSorter.Order = SortOrder.Descending;
                     }
                     else
                     {
-                        lvwColumnSorter.Order = SortOrder.Ascending;
+                        _lvwColumnSorter.Order = SortOrder.Ascending;
                     }
                 }
                 else
@@ -476,8 +468,8 @@ namespace StatlookLogViewer
                     // Set the column number that is to be sorted; default to ascending.
                     if (e.Column != 0)
                     {
-                        lvwColumnSorter.SortColumn = e.Column;
-                        lvwColumnSorter.Order = SortOrder.Ascending;
+                        _lvwColumnSorter.SortColumn = e.Column;
+                        _lvwColumnSorter.Order = SortOrder.Ascending;
                     }
                 }
                 //lvwColumnSorter.Order = SortOrder.None;
@@ -490,8 +482,7 @@ namespace StatlookLogViewer
 
 		private void listViewFiles_DoubleClick(object sender, EventArgs e)
 		{
-			ListView.SelectedListViewItemCollection Li = this.listViewFiles.SelectedItems;
-			foreach (ListViewItem item in Li)
+			foreach (ListViewItem item in this.listViewFiles.SelectedItems)
 			{
                 string FileName = item.SubItems[1].Text;
                 string FullName= item.SubItems[4].Text+"\\"+item.SubItems[1].Text;
@@ -1056,8 +1047,7 @@ namespace StatlookLogViewer
 
         private void openContainFolderToolStripMenuItem_Click(object sender, EventArgs e)
         {
-            ListView.SelectedListViewItemCollection Li = this.listViewFiles.SelectedItems;
-            foreach (ListViewItem item in Li)
+            foreach (ListViewItem item in this.listViewFiles.SelectedItems)
             {
                 string FullName = item.SubItems[4].Text + "\\" + item.SubItems[1].Text;
                 FileInfo Plik = new FileInfo(FullName);
@@ -1161,7 +1151,7 @@ namespace StatlookLogViewer
         private void ToolStripMenuItemUplook_DropDownItemClicked(object sender, ToolStripItemClickedEventArgs e)
         {
             ToolStripMenuItem t = (ToolStripMenuItem)e.ClickedItem;
-            Descriptor[] udes = config.GetStatlookHeaders();
+            Descriptor[] udes = _config.GetStatlookHeaders();
             if (t.CheckState == System.Windows.Forms.CheckState.Checked)
             {
                 t.CheckState =System.Windows.Forms.CheckState.Unchecked;
@@ -1170,7 +1160,7 @@ namespace StatlookLogViewer
                     if (t.Name == ud.KeyName)
                     {
                         ud.Show = false;
-                        config.SetHeaderVisibility(ud.KeyName, false);
+                        _config.SetHeaderVisibility(ud.KeyName, false);
                     }
                 }
             }
@@ -1182,7 +1172,7 @@ namespace StatlookLogViewer
                     if (t.Name == ud.KeyName)
                     {
                         ud.Show = true;
-                        config.SetHeaderVisibility(ud.KeyName, true);
+                        _config.SetHeaderVisibility(ud.KeyName, true);
                     }
                 }
             }
@@ -1206,7 +1196,7 @@ namespace StatlookLogViewer
         private void ToolStripMenuItemUSM_DropDownItemClicked(object sender, ToolStripItemClickedEventArgs e)
         {
             ToolStripMenuItem t = (ToolStripMenuItem)e.ClickedItem;
-            Descriptor[] usmdes = config.GetUsmHeaders();
+            Descriptor[] usmdes = _config.GetUsmHeaders();
             if (t.CheckState == System.Windows.Forms.CheckState.Checked)
             {
                 t.CheckState = System.Windows.Forms.CheckState.Unchecked;
@@ -1215,7 +1205,7 @@ namespace StatlookLogViewer
                     if (t.Name == usmd.KeyName)
                     {
                         usmd.Show = false;
-                        config.SetHeaderVisibility(usmd.KeyName, false);
+                        _config.SetHeaderVisibility(usmd.KeyName, false);
                     }
                 }
             }
@@ -1227,7 +1217,7 @@ namespace StatlookLogViewer
                     if (t.Name == usmd.KeyName)
                     {
                         usmd.Show = true;
-                        config.SetHeaderVisibility(usmd.KeyName, true);
+                        _config.SetHeaderVisibility(usmd.KeyName, true);
                     }
                 }
             }
@@ -1268,7 +1258,7 @@ namespace StatlookLogViewer
                 float rozmiar = 0;
                 for (int i = 0; i < pliki.Length; i++)
                 {
-                    rozmiar = rozmiar + pliki[i].Length;
+                    rozmiar += pliki[i].Length;
                 }
                 Size.Text = FileSize(rozmiar, true);
                 Count.Text = (pliki.Length).ToString() + " plików, " + katalogi.Length.ToString() + " folderów";
@@ -1340,7 +1330,7 @@ namespace StatlookLogViewer
                     for (int colAll = 0; colAll < colCount; colAll++)
                     {
                         if (listViewFiles.Items[lst12].SubItems[colAll].Text.IndexOf(toolStripTextBox.Text) > -1 |
-                            listViewFiles.Items[lst12].SubItems[colAll].Text.ToUpper().IndexOf(toolStripTextBox.Text.ToUpper()) > -1)
+                            listViewFiles.Items[lst12].SubItems[colAll].Text.IndexOf(toolStripTextBox.Text, StringComparison.OrdinalIgnoreCase) > -1)
                         {
                             LVTmp.Items.Add((ListViewItem)listViewFiles.Items[lst12].Clone());
                             break;
@@ -1374,7 +1364,7 @@ namespace StatlookLogViewer
                                     if (ListV.Columns[colAll].Width != 0)
                                     {
                                         if (ListV.Items[lst12].SubItems[colAll].Text.IndexOf(toolStripTextBox.Text) > -1 |
-                                        ListV.Items[lst12].SubItems[colAll].Text.ToUpper().IndexOf(toolStripTextBox.Text.ToUpper()) > -1)
+                                        ListV.Items[lst12].SubItems[colAll].Text.IndexOf(toolStripTextBox.Text, StringComparison.OrdinalIgnoreCase) > -1)
                                         {
                                             ListV.SuspendLayout();
                                             ListV.BeginUpdate();
@@ -1428,12 +1418,12 @@ namespace StatlookLogViewer
                 Configuration.Serialize("config.xml", c);
 
                 // Read the configuration object from a file
-                config = Configuration.Deserialize("config.xml");
+                _config = Configuration.Deserialize("config.xml");
             }
             else
             {
                 // Read the configuration object from a file
-                config = Configuration.Deserialize("config.xml");
+                _config = Configuration.Deserialize("config.xml");
             }
             IniTabPageInfo();
 

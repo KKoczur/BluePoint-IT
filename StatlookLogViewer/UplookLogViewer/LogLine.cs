@@ -46,7 +46,7 @@ namespace StatlookLogViewer
 
                     foreach (Descriptor Des in Headers.uplook_Deskryptor)
                     {
-                        if (Des.KeyName == tmp_Header)
+                        if (Des.HeaderText == tmp_Header)
                         {
                             if (tmp_Header == Headers.uplook_Date)
                             {
@@ -111,7 +111,7 @@ namespace StatlookLogViewer
                 Descriptor[] ListaBledow = SlownikErrors.GetListOfAllErrors();
                 foreach (Descriptor Des in Headers.usm_Deskryptor)
                 {
-                    if (Des.KeyName == tmp_Header)
+                    if (Des.HeaderText == tmp_Header)
                     {
                         if (tmp_Header == Headers.uplook_Date)
                         {

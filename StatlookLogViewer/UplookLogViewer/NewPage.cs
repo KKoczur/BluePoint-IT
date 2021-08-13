@@ -1,15 +1,6 @@
-﻿using System;
-using System.Collections;
-using System.Collections.Generic;
-using System.ComponentModel;
-using System.Data;
-using System.Drawing;
-using System.Text;
-using System.Text.RegularExpressions;
-using System.Windows.Forms;
+﻿using System.Windows.Forms;
 using System.IO;
 using ListViewGroupCollapse;
-using Yoramo.GuiLib;
 
 namespace StatlookLogViewer
 {
@@ -110,9 +101,6 @@ namespace StatlookLogViewer
                         NewTabPage.Tag = "usm";
                         break;
                     }
-
-                default:
-                    break;
             }
 
             // 
@@ -143,31 +131,36 @@ namespace StatlookLogViewer
         private void listViewFiles_ColumnClick(object sender, ColumnClickEventArgs e)
         {
             ListViewExtended.BeginUpdate();
-            if (e.Column == lvwColumnSorter.SortColumn)
+            try
             {
-                // Reverse the current sort direction for this column.
-                if (lvwColumnSorter.Order == SortOrder.Ascending)
+                if (e.Column == lvwColumnSorter.SortColumn)
                 {
-                    lvwColumnSorter.Order = SortOrder.Descending;
+                    // Reverse the current sort direction for this column.
+                    if (lvwColumnSorter.Order == SortOrder.Ascending)
+                    {
+                        lvwColumnSorter.Order = SortOrder.Descending;
+                    }
+                    else
+                    {
+                        lvwColumnSorter.Order = SortOrder.Ascending;
+                    }
                 }
                 else
                 {
-                    lvwColumnSorter.Order = SortOrder.Ascending;
+                    // Set the column number that is to be sorted; default to ascending.
+                    if (e.Column != 0)
+                    {
+                        lvwColumnSorter.SortColumn = e.Column;
+                        lvwColumnSorter.Order = SortOrder.Ascending;
+                    }
                 }
+
+                ListViewExtended.Sort();
             }
-            else
+            finally
             {
-                // Set the column number that is to be sorted; default to ascending.
-                if (e.Column != 0)
-                {
-                    lvwColumnSorter.SortColumn = e.Column;
-                    lvwColumnSorter.Order = SortOrder.Ascending;
-                }
+                ListViewExtended.EndUpdate();
             }
-            //lvwColumnSorter.Order = SortOrder.None;
-            // Call the sort method to manually sort the column based on the ListViewItemComparer implementation.
-            ListViewExtended.Sort();
-            ListViewExtended.EndUpdate();
         }
 
         private void sprawdzenieWidocznoscikolumn(ListView listView, bool[] show)
