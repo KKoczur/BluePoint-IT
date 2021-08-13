@@ -24,7 +24,7 @@ namespace StatlookLogViewer
 
         #region Metody
 
-        public void AddLine(Linia line)
+        public void AddLine(LogLine line)
         {
             m_ZbiorLinii.Add(line);
             m_Grupy.Add(line.GroupName);
@@ -94,7 +94,7 @@ namespace StatlookLogViewer
 
             //Utworzenie obiektu przechowującego zbiór linii przetworzonych pliku logu 
             PlikLogu PlikLogu = new PlikLogu();
-            Linia NowaLinia = new Linia();
+            LogLine NowaLinia = new LogLine();
 
             string line;
 
@@ -106,7 +106,7 @@ namespace StatlookLogViewer
                 if (Regex.IsMatch(line, @"(?<rok>\d{4})\.(?<miesiac>\d{2})\.(?<dzien>\d{2})\b"))
                 {
                     #region if_1
-                    NowaLinia = new Linia();
+                    NowaLinia = new LogLine();
                     line += ";";
                     line = line.Substring(0, line.IndexOf(";"));
 
