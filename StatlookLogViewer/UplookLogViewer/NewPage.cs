@@ -8,8 +8,8 @@ namespace StatlookLogViewer
     {
         private const string CONFIG_FILE_NAME = "config.xml";
         private readonly ListViewColumnSorter lvwColumnSorter = new ListViewColumnSorter();
-        private bool[] show_uplook=new bool[10];
-        private bool[] show_usm=new bool[6];
+        private readonly bool[] show_uplook=new bool[10];
+        private readonly bool[] show_usm=new bool[6];
 
 
         public NewPage()
@@ -80,7 +80,7 @@ namespace StatlookLogViewer
             ListViewExtended.Size = new System.Drawing.Size(988, 604);
             ListViewExtended.TabIndex = index;
             ListViewExtended.UseCompatibleStateImageBehavior = false;
-            ListViewExtended.View = System.Windows.Forms.View.Details;
+            ListViewExtended.View = View.Details;
             ListViewExtended.GridLines = true;
             ListViewExtended.FullRowSelect = true;
             ListViewExtended.ListViewItemSorter = null;

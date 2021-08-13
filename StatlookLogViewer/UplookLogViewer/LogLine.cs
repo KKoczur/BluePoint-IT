@@ -4,9 +4,8 @@ using System.Text.RegularExpressions;
 
 namespace StatlookLogViewer
 {
-    internal class Linia
+    internal class LogLine
     {
-
         #region Members
 
         private string _groupName;
@@ -148,7 +147,7 @@ namespace StatlookLogViewer
                                 {
                                     if (!ListViewItem.Group.Header.Contains(des.HeaderText))
                                     {
-                                                ListViewItem.Group.Header += " ( " + des.HeaderText + " )";
+                                         ListViewItem.Group.Header += " ( " + des.HeaderText + " )";
                                     }
                                 }
                             }
@@ -161,7 +160,6 @@ namespace StatlookLogViewer
                }
                #endregion usm_Log
             }
-
         }
 
 

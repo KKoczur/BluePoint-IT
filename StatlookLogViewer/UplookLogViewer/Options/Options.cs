@@ -42,6 +42,7 @@ namespace StatlookLogViewer
                 // Read the configuration object from a file
                 _config = Configuration.Deserialize("config.xml");
             }
+
         _osVersion = System.Environment.OSVersion.Version.Major.ToString();
 	    _logMap = System.Environment.GetFolderPath(Environment.SpecialFolder.CommonApplicationData) + _config.StatlookLogDirectory;
         _usmMap = System.Environment.GetFolderPath(Environment.SpecialFolder.CommonApplicationData) + _config.StatlookUsmLogDirectory;
@@ -60,7 +61,7 @@ namespace StatlookLogViewer
         {
             if (e.Node.Name == "NCatalogs")
             {
-                this.oCatalogs.Dock = System.Windows.Forms.DockStyle.Fill;
+                this.oCatalogs.Dock = DockStyle.Fill;
                 TextBox txUplook = (TextBox)(oCatalogs.Controls.Find("textBoxUplookCatalog", true))[0];
                 txUplook.Text = _logMap;
                 TextBox txUsm = (TextBox)(oCatalogs.Controls.Find("textBoxUSMCatalog", true))[0];
