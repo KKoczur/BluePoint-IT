@@ -1263,7 +1263,7 @@
             this.StartPosition = System.Windows.Forms.FormStartPosition.CenterParent;
             this.Text = "uplook Log Viewer";
             this.WindowState = System.Windows.Forms.FormWindowState.Maximized;
-            this.FormClosing += new System.Windows.Forms.FormClosingEventHandler(this.uplookMainForm_FormClosing);
+            this.FormClosing += new System.Windows.Forms.FormClosingEventHandler(this.MainForm_FormClosing);
             this.menuMainStrip.ResumeLayout(false);
             this.menuMainStrip.PerformLayout();
             this.tableLayoutPanelMain.ResumeLayout(false);

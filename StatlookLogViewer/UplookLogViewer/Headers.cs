@@ -27,23 +27,7 @@ namespace StatlookLogViewer
 
         public Headers()
         {
-            if (!File.Exists("config.xml"))
-            {
-                // Create a new configuration object
-                // and initialize some variables
-                Configuration c = new Configuration();
-
-                // Serialize the configuration object to a file
-                Configuration.Serialize("config.xml", c);
-
-                // Read the configuration object from a file
-                _config = Configuration.Deserialize("config.xml");
-            }
-            else
-            {
-                // Read the configuration object from a file
-                _config = Configuration.Deserialize("config.xml");
-            }
+            _config = Configuration.GetConfiguration();
 
             m_uplook_Headers = _config.GetStatlookTextHeaders().Split(new char[] { ';' });
             m_usm_Headers = _config.GetUsmTextHeaders().Split(new char[] { ';' });
@@ -73,7 +57,7 @@ namespace StatlookLogViewer
 
         public string uplook_Date => m_uplook_Date;
 
-        public Descriptor[] usm_Deskryptor => _config.GetUsmHeaders();;
+        public Descriptor[] usm_Deskryptor => _config.GetUsmHeaders();
 
         public string[] usm_Headers => m_usm_Headers;
 

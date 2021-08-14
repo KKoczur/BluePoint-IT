@@ -1,12 +1,5 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.ComponentModel;
-using System.Data;
-using System.Drawing;
-using System.Linq;
-using System.Text;
 using System.Windows.Forms;
-using System.IO;
 
 
 namespace StatlookLogViewer
@@ -16,10 +9,12 @@ namespace StatlookLogViewer
         #region Members
 
         //private OCatalogs PanelCatalogs;
+
+        /// <summary>
+        /// Configuration object
+        /// </summary>
         private readonly Configuration _config;
-        // Create a new configuration object
-        // and initialize some variables
-        private readonly Configuration c = new Configuration();
+
         private readonly string _osVersion;
         private readonly string _logMap;
         private readonly string _usmMap;
@@ -28,32 +23,19 @@ namespace StatlookLogViewer
 
         public Options()
         {
-            //Odczytanie konfiguracji zapisanej w pliku ustawień 
-            if (!File.Exists("config.xml"))
-            {
-                // Serialize the configuration object to a file
-                Configuration.Serialize("config.xml", c);
+            InitializeComponent();
 
-                // Read the configuration object from a file
-                _config = Configuration.Deserialize("config.xml");
-            }
-            else
-            {
-                // Read the configuration object from a file
-                _config = Configuration.Deserialize("config.xml");
-            }
+            _config = Configuration.GetConfiguration();
 
-        _osVersion = System.Environment.OSVersion.Version.Major.ToString();
-	    _logMap = System.Environment.GetFolderPath(Environment.SpecialFolder.CommonApplicationData) + _config.StatlookLogDirectory;
-        _usmMap = System.Environment.GetFolderPath(Environment.SpecialFolder.CommonApplicationData) + _config.StatlookUsmLogDirectory;
-        InitializeComponent();
-
+            _osVersion = System.Environment.OSVersion.Version.Major.ToString();
+	        _logMap = System.Environment.GetFolderPath(Environment.SpecialFolder.CommonApplicationData) + _config.StatlookLogDirectory;
+            _usmMap = System.Environment.GetFolderPath(Environment.SpecialFolder.CommonApplicationData) + _config.StatlookUsmLogDirectory;
         }
 
         private void buttonOptionsCancel_Click(object sender, EventArgs e)
         {
             // Serialize the configuration object to a file
-            Configuration.Serialize("config.xml", _config);
+            Configuration.SaveConfig(_config);
             this.Close();
         }
 
@@ -79,9 +61,11 @@ namespace StatlookLogViewer
         private void buttonOptionsSave_Click(object sender, EventArgs e)
         {
             TextBox tx = (TextBox)(oCatalogs.Controls.Find("textBoxUserCatalog", true))[0];
-            c.UserDirectory = tx.Text;
+            _config.UserDirectory = tx.Text;
+
             // Serialize the configuration object to a file
-            Configuration.Serialize("config.xml", c);
+            Configuration.SaveConfig(_config);
+
             this.Close();
         }
     }

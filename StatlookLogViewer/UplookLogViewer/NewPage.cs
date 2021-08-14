@@ -11,6 +11,8 @@ namespace StatlookLogViewer
         private readonly bool[] show_uplook=new bool[10];
         private readonly bool[] show_usm=new bool[6];
 
+        private readonly Configuration _config;
+
 
         public NewPage()
         {
@@ -28,27 +30,9 @@ namespace StatlookLogViewer
         /// <param name="typeOfLog">Type of log</param>
         public NewPage(int index, string name, string Fullname, string[] columnNames, string createdDate, LogType typeOfLog)
         {
-            Configuration config;
+            _config = Configuration.GetConfiguration();
 
-            if (!File.Exists(CONFIG_FILE_NAME))
-            {
-                // Create a new configuration object
-                // and initialize some variables
-                Configuration c = new Configuration();
-
-                // Serialize the configuration object to a file
-                Configuration.Serialize(CONFIG_FILE_NAME, c);
-
-                // Read the configuration object from a file
-                config = Configuration.Deserialize(CONFIG_FILE_NAME);
-            }
-            else
-            {
-                // Read the configuration object from a file
-                config = Configuration.Deserialize(CONFIG_FILE_NAME);
-            }
-
-            Descriptor[] udes = config.GetStatlookHeaders();
+            Descriptor[] udes = _config.GetStatlookHeaders();
 
             int j = 0;
             foreach (Descriptor d in udes)
@@ -57,7 +41,7 @@ namespace StatlookLogViewer
                 j++;
             }
 
-            Descriptor[] usmdes = config.GetUsmHeaders();
+            Descriptor[] usmdes = _config.GetUsmHeaders();
             int k = 0;
             foreach (Descriptor d in usmdes)
             {

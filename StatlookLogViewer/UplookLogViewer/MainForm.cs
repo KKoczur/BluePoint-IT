@@ -35,24 +35,7 @@ namespace StatlookLogViewer
 
         public uplookMainForm()
 		{
-            //Odczytanie konfiguracji zapisanej w pliku ustawień 
-            if(!File.Exists("config.xml"))
-            {
-                // Create a new configuration object
-                // and initialize some variables
-                Configuration c = new Configuration();
-
-                // Serialize the configuration object to a file
-                Configuration.Serialize("config.xml", c);
-
-                // Read the configuration object from a file
-                _config = Configuration.Deserialize("config.xml");
-            }
-            else
-            {
-                // Read the configuration object from a file
-                _config = Configuration.Deserialize("config.xml");
-            }
+            _config = Configuration.GetConfiguration();
 
             Descriptor[] udes = _config.GetStatlookHeaders();
             int j = 0;
@@ -427,17 +410,17 @@ namespace StatlookLogViewer
 		{
 			
 		}
-		// Wyświetla pytanie i zamyka główne okno programu 
-		private void uplookMainForm_FormClosing(object sender, FormClosingEventArgs e)
+
+        /// <summary>
+        /// Wyświetla pytanie i zamyka główne okno programu 
+        /// </summary>
+
+        private void MainForm_FormClosing(object sender, FormClosingEventArgs e)
 		{
             if (MessageBox.Show("Czy na pewno chcesz zamknąć aplikację?", "Zamknij", MessageBoxButtons.YesNo, MessageBoxIcon.Question) == DialogResult.No)
-            {
                 e.Cancel = true;
-            }
             else
-            {
-                Configuration.Serialize("config.xml", _config);
-            }
+                Configuration.SaveConfig(_config);
 		}
 
         private void exitToolStripMenuItem1_Click(object sender, EventArgs e) => this.Close();
@@ -1407,24 +1390,8 @@ namespace StatlookLogViewer
             Options opcje = new Options();
             opcje.ShowDialog(this);
 
-            //Odczytanie konfiguracji zapisanej w pliku ustawień 
-            if (!File.Exists("config.xml"))
-            {
-                // Create a new configuration object
-                // and initialize some variables
-                Configuration c = new Configuration();
+            _config = Configuration.GetConfiguration();
 
-                // Serialize the configuration object to a file
-                Configuration.Serialize("config.xml", c);
-
-                // Read the configuration object from a file
-                _config = Configuration.Deserialize("config.xml");
-            }
-            else
-            {
-                // Read the configuration object from a file
-                _config = Configuration.Deserialize("config.xml");
-            }
             IniTabPageInfo();
 
         }

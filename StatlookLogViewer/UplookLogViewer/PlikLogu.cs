@@ -9,7 +9,7 @@ using ListViewGroupCollapse;
 
 namespace StatlookLogViewer
 {
-    class PlikLogu
+    internal class PlikLogu
     {
         #region Members
 
@@ -22,7 +22,7 @@ namespace StatlookLogViewer
 
         #endregion Members
 
-        #region Metody
+        #region Methods
 
         public void AddLine(LogLine line)
         {
@@ -175,6 +175,6 @@ namespace StatlookLogViewer
             return _newPage;
         }
 
-        #endregion Metody
+        #endregion Methods
     }
 }
