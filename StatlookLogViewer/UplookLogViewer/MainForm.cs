@@ -1,22 +1,16 @@
 ﻿using System;
 using System.Collections;
-using System.Collections.Generic;
-using System.ComponentModel;
-using System.Data;
 using System.Drawing;
-using System.Text;
-using System.Text.RegularExpressions;
 using System.Windows.Forms;
 using System.IO;
 using ListViewGroupCollapse;
-using Yoramo.GuiLib;
 using Ionic.Zip;
 
 
 namespace StatlookLogViewer
 {
 
-	public partial class uplookMainForm : Form
+	public partial class MainForm : Form
     {
         #region Members
 
@@ -24,8 +18,8 @@ namespace StatlookLogViewer
 	    public string OSVersion;
 	    public string LogDirectory;
         public string USMDirectory;
-        public string UserDirectory;
-        private readonly string[] extensions;
+        public string _userDirectory;
+        private readonly string[] _fileExtensions;
         private readonly Headers uplookDeskryptor = new Headers();
         private readonly bool[] show_uplook=new bool[10];
         private readonly bool[] show_usm=new bool[6];
@@ -33,34 +27,33 @@ namespace StatlookLogViewer
 
         #endregion Members
 
-        public uplookMainForm()
+        public MainForm()
 		{
+            InitializeComponent();
+
             _config = Configuration.GetConfiguration();
 
-            Descriptor[] udes = _config.GetStatlookHeaders();
+            Descriptor[] udes = _config.GetStatlookDescriptors();
             int j = 0;
             foreach (Descriptor d in udes)
             {
                 show_uplook[j]= d.Show;
                 j++;
             }
-            Descriptor[] usmdes = _config.GetUsmHeaders();
+            Descriptor[] usmdes = _config.GetUsmDescriptors();
             int k = 0;
             foreach (Descriptor d in usmdes)
             {
                 show_usm[k] = d.Show;
                 k++;
             }
-            //show_uplook = config.show_uplook.Split(new char[] { ';' });
-            //show_usm = config.show_usm.Split(new char[] { ';' });
-            //Przypisanie wartości zmiennym
-			OSVersion = System.Environment.OSVersion.Version.Major.ToString();
-			LogDirectory = System.Environment.GetFolderPath(Environment.SpecialFolder.CommonApplicationData) + _config.StatlookLogDirectory;
-            USMDirectory = System.Environment.GetFolderPath(Environment.SpecialFolder.CommonApplicationData) + _config.StatlookUsmLogDirectory;
-            UserDirectory = _config.UserDirectory;
-            extensions= _config.LogFileExtensions.Split(new char[] { ';' });
 
-            InitializeComponent();
+			OSVersion = Environment.OSVersion.Version.Major.ToString();
+			LogDirectory = Environment.GetFolderPath(Environment.SpecialFolder.CommonApplicationData) + _config.StatlookLogDirectory;
+            USMDirectory = Environment.GetFolderPath(Environment.SpecialFolder.CommonApplicationData) + _config.StatlookUsmLogDirectory;
+            _userDirectory = _config.UserDirectory;
+            _fileExtensions= _config.LogFileExtensions.Split(new char[] { ';' });
+
             
             // 
             // Wypełnia menu widocznosci kolumn
@@ -75,11 +68,11 @@ namespace StatlookLogViewer
 
                 if (udes[i].Show)
             {
-                viewMenuItem.CheckState = System.Windows.Forms.CheckState.Checked;
+                viewMenuItem.CheckState = CheckState.Checked;
             }
             else
             {
-                viewMenuItem.CheckState = System.Windows.Forms.CheckState.Unchecked;
+                viewMenuItem.CheckState = CheckState.Unchecked;
             }
             viewMenuItem.Name = udes[i].KeyName; 
             viewMenuItem.Size = new Size(152, 22);
@@ -89,15 +82,18 @@ namespace StatlookLogViewer
 
             for (int i = 0; i < usmdes.Length; i++)
             {
-                ToolStripMenuItem viewMenuItem = new ToolStripMenuItem();
-                viewMenuItem.Checked = true;
+                ToolStripMenuItem viewMenuItem = new ToolStripMenuItem
+                {
+                    Checked = true
+                };
+
                 if (usmdes[i].Show)
                 {
-                    viewMenuItem.CheckState = System.Windows.Forms.CheckState.Checked;
+                    viewMenuItem.CheckState = CheckState.Checked;
                 }
                 else 
                 {
-                    viewMenuItem.CheckState = System.Windows.Forms.CheckState.Unchecked;
+                    viewMenuItem.CheckState = CheckState.Unchecked;
                 }
                 viewMenuItem.Name = usmdes[i].KeyName;
                 viewMenuItem.Size = new Size(152, 22);
@@ -108,26 +104,21 @@ namespace StatlookLogViewer
             
 		    _lvwColumnSorter = new ListViewColumnSorter();
             this.listViewFiles.ListViewItemSorter = _lvwColumnSorter;
-            IniTabPageInfo();
-		 
+            IniTabPageInfo(); 
 		}
 		
         //Wypełnia listę informacjami o plikach logów
 		private void IniTabPageInfo()
-		{
-            UserDirectory = _config.UserDirectory;
+		{            
             //Podaje informacje o katalogu "Logs"
-            WypelnijDashboard(LogDirectory, labelLogsPathValue, labelFilesSizeValue, labelFilesCountValue);
+            SetDashboardData(LogDirectory, labelLogsPathValue, labelFilesSizeValue, labelFilesCountValue);
+            
             //Podaje informacje statystyczne o katalogu "uplook system monitor"
-            WypelnijDashboard(USMDirectory, labelLogsPathValueUSM, labelFilesSizeValueUSM, labelFilesCountValueUSM);
+            SetDashboardData(USMDirectory, labelLogsPathValueUSM, labelFilesSizeValueUSM, labelFilesCountValueUSM);
+            
             //Podaje informacje statystyczne o katalogu usera
-            WypelnijDashboard(UserDirectory, labelUserPathValue, labelFilesSizeValueUser, labelFilesCountValueUser);
-			ListViewItem listaPlikow = new ListViewItem();
-            DirectoryInfo[] catalogs = new DirectoryInfo[]{
-            new DirectoryInfo(LogDirectory),
-            new DirectoryInfo(USMDirectory),
-            new DirectoryInfo(UserDirectory)
-            };
+            SetDashboardData(_userDirectory, labelUserPathValue, labelFilesSizeValueUser, labelFilesCountValueUser);
+
             WypelnijListe();	
 		}
 
@@ -137,7 +128,7 @@ namespace StatlookLogViewer
             DirectoryInfo[] catalogs = new DirectoryInfo[]{
             new DirectoryInfo(LogDirectory),
             new DirectoryInfo(USMDirectory),
-            new DirectoryInfo(UserDirectory)
+            new DirectoryInfo(_userDirectory)
             };
             bool[] ShowCatalog =new bool[]{
             checkBoxLogs.Checked,
@@ -152,7 +143,7 @@ namespace StatlookLogViewer
                     if (di.Exists&& ShowCatalog[j])
                     {
                         ArrayList myFileInfo = new ArrayList();
-                        foreach (string ext in extensions)
+                        foreach (string ext in _fileExtensions)
                         {
                             if (di.FullName != "C:\\")
                             {
@@ -166,8 +157,11 @@ namespace StatlookLogViewer
                         FileInfo[] pliki = (FileInfo[])myFileInfo.ToArray(typeof(FileInfo));
                         for (int i = 0; i < pliki.Length; i++)
                         {
-                            ListViewItem plikInfo = new ListViewItem();
-                            plikInfo.Text = i.ToString();
+                            ListViewItem plikInfo = new ListViewItem
+                            {
+                                Text = i.ToString()
+                            };
+
                             plikInfo.SubItems.Add(pliki[i].Name);
                             plikInfo.SubItems.Add(pliki[i].LastWriteTime.ToString());
                             plikInfo.SubItems.Add(FileSize(pliki[i].Length,false));
@@ -209,7 +203,7 @@ namespace StatlookLogViewer
                     if (di.Exists)
                     {
                         ArrayList myFileInfo = new ArrayList();
-                        foreach (string ext in extensions)
+                        foreach (string ext in _fileExtensions)
                         {
                             if (di.FullName != "C:\\")
                             {
@@ -223,14 +217,16 @@ namespace StatlookLogViewer
                         FileInfo[] pliki = (FileInfo[])myFileInfo.ToArray(typeof(FileInfo));
                         for (int i = 1; i <= pliki.Length; i++)
                         {
-                            ListViewItem plikInfo = new ListViewItem();
-                            plikInfo.Text = i.ToString();
+                            ListViewItem plikInfo = new ListViewItem
+                            {
+                                Text = i.ToString()
+                            };
                             plikInfo.SubItems.Add(pliki[i - 1].Name);
                             plikInfo.SubItems.Add(pliki[i - 1].CreationTime.ToString());
                             plikInfo.SubItems.Add(FileSize(pliki[i-1].Length,true));
                             plikInfo.SubItems.Add(pliki[i - 1].DirectoryName);
                             listViewFiles.Items.Add(plikInfo);
-                            toolStripButtonIcon.Image = global::StatlookLogViewer.Properties.Resources.ok_16;
+                            toolStripButtonIcon.Image = Properties.Resources.ok_16;
                             toolStripStatusReady.Text = "Ready";
                         }
                     }
@@ -256,27 +252,32 @@ namespace StatlookLogViewer
         }
 		
 		// Otwiera wskazany plik logu
-		private void otworzPlik()
+		private void OpenLogFile()
 		{
-			OpenFileDialog otworzPlik= new OpenFileDialog();
-            otworzPlik.Multiselect = true;
-			otworzPlik.Filter = "Log files (*.log)|*.log|Text files (*.txt)|*.txt| Zip files (*.zip)|*.zip| All files (*.*)|*.*";
-			otworzPlik.Title = "Please select log source file";
-			if (otworzPlik.ShowDialog() == DialogResult.OK)
+            var openFileDialog = new OpenFileDialog
+            {
+                Multiselect = true,
+                Filter = "Log files (*.log)|*.log|Text files (*.txt)|*.txt| Zip files (*.zip)|*.zip| All files (*.*)|*.*",
+                Title = "Please select log source file"
+            };
+
+            if (openFileDialog.ShowDialog() == DialogResult.OK)
 			{
  
                 //Otwarcie pojedynczego pliku o rozszerzeniu .zip
-                if((otworzPlik.FileNames.Length==1) && (otworzPlik.SafeFileName.Substring((otworzPlik.SafeFileName.Length - 4),4)==".zip"))
+                if((openFileDialog.FileNames.Length==1) && (openFileDialog.SafeFileName.Substring(openFileDialog.SafeFileName.Length - 4,4)==".zip"))
                 {
-                   OpenZip otworzZip = new OpenZip(otworzPlik.FileName);
+                   OpenZip otworzZip = new OpenZip(openFileDialog.FileName);
                    #region ReadZip 
-                    using (ZipFile zip = ZipFile.Read(otworzPlik.FileName))
+                    using (ZipFile zip = ZipFile.Read(openFileDialog.FileName))
                     {
                         int i=1;
                         foreach (ZipEntry e in zip)
                         {
-                            ListViewItem plikInfo = new ListViewItem();
-                            plikInfo.Text = i.ToString();
+                            ListViewItem plikInfo = new ListViewItem
+                            {
+                                Text = i.ToString()
+                            };
                             plikInfo.SubItems.Add(e.FileName);
                             plikInfo.SubItems.Add(e.LastModified.ToString());
                             if ((e.UncompressedSize / 1024) < 1)
@@ -291,21 +292,22 @@ namespace StatlookLogViewer
                             {
                                 plikInfo.SubItems.Add((e.UncompressedSize / (1024 * 1024)).ToString() + " MB");
                             }
-                            plikInfo.SubItems.Add(otworzPlik.InitialDirectory);
+                            plikInfo.SubItems.Add(openFileDialog.InitialDirectory);
                             otworzZip.DodajItem(plikInfo);
                             i++;
                         }
                     }
                   #endregion ReadZip  
+
                    otworzZip.ShowDialog(this);
 
                 }
                 else
                 {
-                    for (int i = 0; i < otworzPlik.FileNames.Length; i++)
+                    for (int i = 0; i < openFileDialog.FileNames.Length; i++)
                     {
                         //Nie przetwarzaj plików o rozszerzeniu .zip
-                        FileInfo atrybutyPlik = new FileInfo(otworzPlik.FileNames[i]);
+                        FileInfo atrybutyPlik = new FileInfo(openFileDialog.FileNames[i]);
                         if (atrybutyPlik.Extension == ".zip")
                         {
                             Form otworzZip = new OpenZip();
@@ -333,7 +335,7 @@ namespace StatlookLogViewer
                         }
                         else
                         {
-                            analizeUplookLog(otworzPlik.FileNames[i], otworzPlik.SafeFileNames[i], atrybutyPlik.LastWriteTime.ToString());
+                            analizeUplookLog(openFileDialog.FileNames[i], openFileDialog.SafeFileNames[i], atrybutyPlik.LastWriteTime.ToString());
 
                         }
                     }
@@ -341,7 +343,7 @@ namespace StatlookLogViewer
 			}
 		}
 
-        public string FileSize(float size,bool useByte)
+        private string FileSize(float size,bool useByte)
         {
             float tmp_Size = size;
             string addByte = useByte ? " (bajtów: " + tmp_Size.ToString() + ")" : string.Empty;
@@ -351,11 +353,11 @@ namespace StatlookLogViewer
             }
             else if (((tmp_Size / 1024) >= 1) && ((tmp_Size / 1024) < 1024))
             {
-                return Math.Round((tmp_Size / 1024), 1).ToString() + " KB" + addByte;
+                return Math.Round(tmp_Size / 1024, 1).ToString() + " KB" + addByte;
             }
             else if ((tmp_Size / (1024 * 1024)) >= 1)
             {
-                return Math.Round((tmp_Size / (1024 * 1024)), 1).ToString() + " MB" + addByte;
+                return Math.Round(tmp_Size / (1024 * 1024), 1).ToString() + " MB" + addByte;
             }
             else
             {
@@ -374,7 +376,7 @@ namespace StatlookLogViewer
                     {
                         if (ch.Text == t.Text)
                         {
-                            if (t.CheckState==System.Windows.Forms.CheckState.Checked)
+                            if (t.CheckState== CheckState.Checked)
                                 ch.Width = -2;
                             else
                                 ch.Width = 0;
@@ -391,7 +393,7 @@ namespace StatlookLogViewer
                     {
                         if (ch.Text == t.Text)
                         {
-                            if (t.CheckState == System.Windows.Forms.CheckState.Checked)
+                            if (t.CheckState == CheckState.Checked)
                                 ch.Width = -2;
                             else
                                 ch.Width = 0;
@@ -403,7 +405,7 @@ namespace StatlookLogViewer
 		
 		private void openFileToolStripMenuItem_Click(object sender, EventArgs e)
 		{
-		otworzPlik();	
+		    OpenLogFile();	
 		}
 
 		private void exitToolStripMenuItem_Click(object sender, EventArgs e)
@@ -425,7 +427,7 @@ namespace StatlookLogViewer
 
         private void exitToolStripMenuItem1_Click(object sender, EventArgs e) => this.Close();
 
-        private void toolStripButton2_Click(object sender, EventArgs e) => otworzPlik();
+        private void toolStripButton2_Click(object sender, EventArgs e) => OpenLogFile();
 
         private void toolStripButton3_Click(object sender, EventArgs e) => this.Close();
 
@@ -434,6 +436,9 @@ namespace StatlookLogViewer
 		{
             //listViewFiles.ListViewItemSorter = new IntegerComparer(0);
             this.listViewFiles.BeginUpdate();
+
+            try
+            {
                 if (e.Column == _lvwColumnSorter.SortColumn)
                 {
                     // Reverse the current sort direction for this column.
@@ -455,10 +460,15 @@ namespace StatlookLogViewer
                         _lvwColumnSorter.Order = SortOrder.Ascending;
                     }
                 }
+
                 //lvwColumnSorter.Order = SortOrder.None;
-		    // Call the sort method to manually sort the column based on the ListViewItemComparer implementation.
-            listViewFiles.Sort();
-            this.listViewFiles.EndUpdate();
+                // Call the sort method to manually sort the column based on the ListViewItemComparer implementation.
+                listViewFiles.Sort();
+            }
+            finally
+            {
+                this.listViewFiles.EndUpdate();
+            }
   
         
     }
@@ -516,8 +526,9 @@ namespace StatlookLogViewer
 
         private void tabControlMain_SelectedIndexChanged(object sender, EventArgs e)
         {
-            TabControl TabC = (TabControl)Controls.Find("tabControlMain", true)[0];
-            if (TabC.SelectedTab.Name != "tabPageInfo")
+            TabControl tabControl = (TabControl)Controls.Find("tabControlMain", true)[0];
+
+            if (tabControl.SelectedTab.Name != "tabPageInfo")
             {
                 //Wyzerowanie paska wyszukiwania
                 toolStripTextBox.Text = string.Empty;
@@ -539,46 +550,42 @@ namespace StatlookLogViewer
                 toolStripButtonClose.Enabled = true;
 
                 //TabPage TabP = (TabPage)Controls.Find(TabC.SelectedTab.Name, true)[0];
-                TabPage TabP = (TabPage)Controls.Find(TabC.SelectedTab.Name, true)[0];
-                foreach (Control control in TabP.Controls)
+                TabPage tabPage = (TabPage)Controls.Find(tabControl.SelectedTab.Name, true)[0];
+                foreach (Control control in tabPage.Controls)
                 {
                     if (control.GetType() == typeof(ListViewExtended))
                     {
                         ListViewExtended ListV = (ListViewExtended)control;
-                        if (TabP.Tag.ToString() == "uplook")
+                        if (tabPage.Tag.ToString() == "uplook")
                         {
                             ToolStripMenuItemUplook.Visible = true;
                             ToolStripMenuItemUSM.Visible = false;
                         }
-                        else if (TabP.Tag.ToString() == "usm")
+                        else if (tabPage.Tag.ToString() == "usm")
                         {
                             ToolStripMenuItemUSM.Visible = true;
                             ToolStripMenuItemUplook.Visible = false;
                         }
 
-                        ShowColumns(ListV, TabP.Tag.ToString());
+                        ShowColumns(ListV, tabPage.Tag.ToString());
                     }
                 }
-                FileInfo OpisPliku = new FileInfo(TabC.SelectedTab.Tag.ToString());
-                toolStripButtonIcon.Image = global::StatlookLogViewer.Properties.Resources.ok_16;
+                FileInfo OpisPliku = new FileInfo(tabControl.SelectedTab.Tag.ToString());
+                toolStripButtonIcon.Image = Properties.Resources.ok_16;
                 toolStripStatusReady.Text = OpisPliku.FullName;
                 toolStripSeparator_1.Visible = true;
                 toolStripLabelCreationTime.Text = OpisPliku.LastWriteTime.ToString();
                 toolStripSeparator_2.Visible = true;
 
-                float rozmiarPliku = OpisPliku.Length;
                 toolStripLableSize.Text = FileSize(OpisPliku.Length, true);
             }
             else
             {
-                //listViewFiles.Focus();
-                //listViewFiles.Items.Clear();
-                //IniTabPageInfo();
                 toolStripStatusReady.Text = "Ready";
                 toolStripSeparator_1.Visible = false;
-                toolStripLabelCreationTime.Text = "";
+                toolStripLabelCreationTime.Text = string.Empty;
                 toolStripSeparator_2.Visible = false;
-                toolStripLableSize.Text = "";
+                toolStripLableSize.Text = string.Empty;
                 //Wyłączenie przycisku Close page
                 closeToolStripMenuItem1.Enabled = false;
                 //Deaktywacja przycisków menu File
@@ -602,36 +609,24 @@ namespace StatlookLogViewer
 
         }
 
-        private void zwinToolStripMenuItem_Click(object sender, EventArgs e)
-        {
-            ZwinGrupy();
-        }
+        private void zwinToolStripMenuItem_Click(object sender, EventArgs e) => ZwinGrupy();
 
-        private void rozwinWszystkieToolStripMenuItem_Click(object sender, EventArgs e)
-        {
-            RozwinGrupy();
-        }
+        private void rozwinWszystkieToolStripMenuItem_Click(object sender, EventArgs e) => RozwinGrupy();
 
-        private void toolStripButtonCollapsedAll_Click(object sender, EventArgs e)
-        {
-            ZwinGrupy();
-        }
+        private void toolStripButtonCollapsedAll_Click(object sender, EventArgs e) => ZwinGrupy();
 
-        private void toolStripButtonNormalAll_Click(object sender, EventArgs e)
-        {
-            RozwinGrupy();
-        }
+        private void toolStripButtonNormalAll_Click(object sender, EventArgs e) => RozwinGrupy();
 
         private void ZwinGrupy()
         {
-            TabControl TabC = (TabControl)Controls.Find("tabControlMain", true)[0];
-            if (TabC.SelectedTab.Name != "tabPageInfo")
-            {
-                TabPage TabP = (TabPage)Controls.Find(TabC.SelectedTab.Name, true)[0];
+            TabControl tabControl = (TabControl)Controls.Find("tabControlMain", true)[0];
 
-                foreach (Control control in TabP.Controls)
+            if (tabControl.SelectedTab.Name != "tabPageInfo")
+            {
+                TabPage tabPage = (TabPage)Controls.Find(tabControl.SelectedTab.Name, true)[0];
+
+                foreach (Control control in tabPage.Controls)
                 {
-                    string kk = control.ToString();
                     if (control.GetType() == typeof(ListViewExtended))
                     {
                         ListViewExtended ListV = (ListViewExtended)control;
@@ -813,21 +808,21 @@ namespace StatlookLogViewer
         {
             string FullName=tabControlMain.SelectedTab.ToolTipText.ToString();
             FileInfo Plik = new FileInfo(FullName);
-            System.Windows.Forms.Clipboard.SetText(Plik.Name);
+            Clipboard.SetText(Plik.Name);
         }
 
         private void toolStripMenuItem5_Click(object sender, EventArgs e)
         {
             string FullName = tabControlMain.SelectedTab.ToolTipText.ToString();
             FileInfo Plik = new FileInfo(FullName);
-            System.Windows.Forms.Clipboard.SetText(Plik.FullName);
+            Clipboard.SetText(Plik.FullName);
         }
 
         private void toolStripMenuItem6_Click(object sender, EventArgs e)
         {
             string FullName = tabControlMain.SelectedTab.ToolTipText.ToString();
             FileInfo Plik = new FileInfo(FullName);
-            System.Windows.Forms.Clipboard.SetText(Plik.DirectoryName);         
+            Clipboard.SetText(Plik.DirectoryName);         
         }
 
         private void toolStripMenuItem7_Click(object sender, EventArgs e)
@@ -967,15 +962,15 @@ namespace StatlookLogViewer
                 listaNazwPlikow += Plik.Name;
                 listaNazwPlikow += Environment.NewLine;
             }
-            System.Windows.Forms.Clipboard.SetText(listaNazwPlikow, System.Windows.Forms.TextDataFormat.UnicodeText);
+            Clipboard.SetText(listaNazwPlikow, TextDataFormat.UnicodeText);
         }
 
         private void toolStripMenuItem3_Click_1(object sender, EventArgs e)
         {
-            string FullName = tabControlMain.SelectedTab.ToolTipText.ToString();
-            FileInfo Plik = new FileInfo(FullName);
-            System.Windows.Forms.Clipboard.SetText(Plik.Name);
-            System.Diagnostics.Process.Start("explorer.exe", Plik.DirectoryName); 
+            string fileFullName = tabControlMain.SelectedTab.ToolTipText;
+            FileInfo fileInfo = new FileInfo(fileFullName);
+            Clipboard.SetText(fileInfo.Name);
+            System.Diagnostics.Process.Start("explorer.exe", fileInfo.DirectoryName); 
         }
 
         private void toolStripMenuItemCopyFilePath_Click(object sender, EventArgs e)
@@ -990,7 +985,7 @@ namespace StatlookLogViewer
                 listaNazwPlikow += Plik.FullName;
                 listaNazwPlikow += Environment.NewLine; ;
             }
-            System.Windows.Forms.Clipboard.SetText(listaNazwPlikow, System.Windows.Forms.TextDataFormat.UnicodeText);
+            Clipboard.SetText(listaNazwPlikow, TextDataFormat.UnicodeText);
         }
 
         private void toolStripMenuItemCopyCatalogPath_Click(object sender, EventArgs e)
@@ -1005,7 +1000,7 @@ namespace StatlookLogViewer
                 listaNazwPlikow += Plik.DirectoryName;
                 listaNazwPlikow += Environment.NewLine;
             }
-            System.Windows.Forms.Clipboard.SetText(listaNazwPlikow, System.Windows.Forms.TextDataFormat.UnicodeText);
+            Clipboard.SetText(listaNazwPlikow, TextDataFormat.UnicodeText);
         }
 
         private void refreshToolStripMenuItem_Click(object sender, EventArgs e)
@@ -1062,11 +1057,11 @@ namespace StatlookLogViewer
                             {
                                 if (show_uplook[j])
                                 {
-                                    t.CheckState = System.Windows.Forms.CheckState.Checked; 
+                                    t.CheckState = CheckState.Checked; 
                                 }
                                 else
                                 {
-                                    t.CheckState = System.Windows.Forms.CheckState.Unchecked; 
+                                    t.CheckState = CheckState.Unchecked; 
                                 }
                                 break;
                             }
@@ -1089,11 +1084,11 @@ namespace StatlookLogViewer
                             {
                                 if (show_usm[j])
                                 {
-                                    t.CheckState = System.Windows.Forms.CheckState.Checked; ;
+                                    t.CheckState = CheckState.Checked; ;
                                 }
                                 else
                                 {
-                                    t.CheckState = System.Windows.Forms.CheckState.Unchecked; ;
+                                    t.CheckState = CheckState.Unchecked; ;
                                 }
                                 break;
                             }
@@ -1134,10 +1129,10 @@ namespace StatlookLogViewer
         private void ToolStripMenuItemUplook_DropDownItemClicked(object sender, ToolStripItemClickedEventArgs e)
         {
             ToolStripMenuItem t = (ToolStripMenuItem)e.ClickedItem;
-            Descriptor[] udes = _config.GetStatlookHeaders();
-            if (t.CheckState == System.Windows.Forms.CheckState.Checked)
+            Descriptor[] udes = _config.GetStatlookDescriptors();
+            if (t.CheckState == CheckState.Checked)
             {
-                t.CheckState =System.Windows.Forms.CheckState.Unchecked;
+                t.CheckState = CheckState.Unchecked;
                 foreach (Descriptor ud in udes)
                 {
                     if (t.Name == ud.KeyName)
@@ -1149,7 +1144,7 @@ namespace StatlookLogViewer
             }
             else
             {
-                t.CheckState = System.Windows.Forms.CheckState.Checked;
+                t.CheckState = CheckState.Checked;
                 foreach (Descriptor ud in udes)
                 {
                     if (t.Name == ud.KeyName)
@@ -1179,10 +1174,10 @@ namespace StatlookLogViewer
         private void ToolStripMenuItemUSM_DropDownItemClicked(object sender, ToolStripItemClickedEventArgs e)
         {
             ToolStripMenuItem t = (ToolStripMenuItem)e.ClickedItem;
-            Descriptor[] usmdes = _config.GetUsmHeaders();
-            if (t.CheckState == System.Windows.Forms.CheckState.Checked)
+            Descriptor[] usmdes = _config.GetUsmDescriptors();
+            if (t.CheckState == CheckState.Checked)
             {
-                t.CheckState = System.Windows.Forms.CheckState.Unchecked;
+                t.CheckState = CheckState.Unchecked;
                 foreach (Descriptor usmd in usmdes)
                 {
                     if (t.Name == usmd.KeyName)
@@ -1194,7 +1189,7 @@ namespace StatlookLogViewer
             }
             else
             {
-                t.CheckState = System.Windows.Forms.CheckState.Checked;
+                t.CheckState = CheckState.Checked;
                 foreach (Descriptor usmd in usmdes)
                 {
                     if (t.Name == usmd.KeyName)
@@ -1223,28 +1218,37 @@ namespace StatlookLogViewer
  
         }
 
-        private void WypelnijDashboard(string Catalog, Label Path ,Label Size, Label Count)
+        private void SetDashboardData(string directoryLogPath, Label label ,Label labelSize, Label labelCount)
         {
             try
             {
-                DirectoryInfo s = new DirectoryInfo(Catalog);
+                DirectoryInfo s = new DirectoryInfo(directoryLogPath);
+
                 if(s.Exists)
                 {
-                DirectoryInfo[] katalogi = s.GetDirectories();
-                Path.Text = s.FullName;
-                ArrayList myfileinfos = new ArrayList();
-                foreach (string ext in extensions)
-                {
-                    myfileinfos.AddRange(s.GetFiles(ext, SearchOption.AllDirectories));
-                }
-                FileInfo[] pliki = (FileInfo[])myfileinfos.ToArray(typeof(FileInfo));
-                float rozmiar = 0;
-                for (int i = 0; i < pliki.Length; i++)
-                {
-                    rozmiar += pliki[i].Length;
-                }
-                Size.Text = FileSize(rozmiar, true);
-                Count.Text = (pliki.Length).ToString() + " plików, " + katalogi.Length.ToString() + " folderów";
+                    DirectoryInfo[] directories = s.GetDirectories();
+
+                    label.Text = s.FullName;
+
+                    ArrayList myfileinfos = new ArrayList();
+
+                    foreach (string ext in _fileExtensions)
+                    {
+                        myfileinfos.AddRange(s.GetFiles(ext, SearchOption.AllDirectories));
+                    }
+
+                    FileInfo[] files = (FileInfo[])myfileinfos.ToArray(typeof(FileInfo));
+
+                    float rozmiar = 0;
+
+                    for (int i = 0; i < files.Length; i++)
+                    {
+                        rozmiar += files[i].Length;
+                    }
+
+                    labelSize.Text = FileSize(rozmiar, true);
+
+                    labelCount.Text = (files.Length).ToString() + " plików, " + directories.Length.ToString() + " folderów";
                 }
             }
             catch
@@ -1387,13 +1391,20 @@ namespace StatlookLogViewer
 
         private void analizeToolStripMenuItem2_Click(object sender, EventArgs e)
         {
-            Options opcje = new Options();
-            opcje.ShowDialog(this);
+            try
+            {
+                using var options = new Options();
 
-            _config = Configuration.GetConfiguration();
+                if (options.ShowDialog(this) == DialogResult.OK)
+                {
+                    _config = Configuration.GetConfiguration();
 
-            IniTabPageInfo();
-
+                    IniTabPageInfo();
+                }
+            }
+            catch (Exception exception)
+            { 
+            }
         }
 
     }

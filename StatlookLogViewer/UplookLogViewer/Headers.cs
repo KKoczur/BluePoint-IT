@@ -18,8 +18,6 @@ namespace StatlookLogViewer
         private string m_uplook_Break = "----------------------------------------";
         private string m_usm_Date = "Date";
         private string m_usm_Break = "----------------------------------------";
-        private Descriptor[] m_Zbior_uplook_Deskryptors = new Descriptor[10];
-        private Descriptor[] m_Zbior_usm_Deskryptors = new Descriptor[6];
 
         #endregion Members
 
@@ -31,25 +29,13 @@ namespace StatlookLogViewer
 
             m_uplook_Headers = _config.GetStatlookTextHeaders().Split(new char[] { ';' });
             m_usm_Headers = _config.GetUsmTextHeaders().Split(new char[] { ';' });
-
-            //Utworzenie zbioru deskryptorów uplook
-            for (int i = 0; i < m_uplook_Headers.Length; i++)
-            {
-                m_Zbior_uplook_Deskryptors[i] = new Descriptor(LogType.Statlook, m_uplook_Headers[i]);
-            }
-
-            //Utworzenie zbioru deskryptorów usm
-            for (int i = 0; i < m_usm_Headers.Length; i++)
-            {
-                m_Zbior_usm_Deskryptors[i] = new Descriptor(LogType.Usm, m_usm_Headers[i]);
-            }
         }
 
         #endregion Constructors
 
         #region Properties
 
-        public Descriptor[] uplook_Deskryptor => _config.GetStatlookHeaders();
+        public Descriptor[] uplook_Deskryptor => _config.GetStatlookDescriptors();
 
         public string[] uplook_Headers => m_uplook_Headers;
 
@@ -57,7 +43,7 @@ namespace StatlookLogViewer
 
         public string uplook_Date => m_uplook_Date;
 
-        public Descriptor[] usm_Deskryptor => _config.GetUsmHeaders();
+        public Descriptor[] usm_Deskryptor => _config.GetUsmDescriptors();
 
         public string[] usm_Headers => m_usm_Headers;
 

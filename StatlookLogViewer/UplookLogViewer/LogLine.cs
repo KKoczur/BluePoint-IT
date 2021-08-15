@@ -37,9 +37,7 @@ namespace StatlookLogViewer
 
                 case 1:
                 {
-                    string tmp_NazwaGrupy = null;
-                    string myHourTime = null;
-                    DictionaryLog SlownikErrors = new DictionaryLog();
+                        DictionaryLog SlownikErrors = new DictionaryLog();
 
                     Descriptor[] ListaBledow = SlownikErrors.GetListOfAllErrors();
 
@@ -50,17 +48,18 @@ namespace StatlookLogViewer
                             if (tmp_Header == Headers.uplook_Date)
                             {
                                 DateTime tmp_DateTime = DateTime.Parse(tmp_Value);
-                                myHourTime = tmp_DateTime.Hour.ToString();
-                                //Określenie nazwę grupy do której ma należeć linia
-                                if (myHourTime.Length < 2)
-                                {
-                                    tmp_NazwaGrupy = "0" + myHourTime + ":00-" + "0" + myHourTime + ":59";
-                                }
-                                else
-                                {
-                                    tmp_NazwaGrupy = myHourTime + ":00-" + myHourTime + ":59";
-                                }
-                                _groupName = tmp_NazwaGrupy;
+                                    string myHourTime = tmp_DateTime.Hour.ToString();
+                                    string tmp_NazwaGrupy;
+                                    //Określenie nazwę grupy do której ma należeć linia
+                                    if (myHourTime.Length < 2)
+                                    {
+                                        tmp_NazwaGrupy = "0" + myHourTime + ":00-" + "0" + myHourTime + ":59";
+                                    }
+                                    else
+                                    {
+                                        tmp_NazwaGrupy = myHourTime + ":00-" + myHourTime + ":59";
+                                    }
+                                    _groupName = tmp_NazwaGrupy;
                                     ListViewItem.Text = tmp_Value;
                                 _listViewGroup = new ListViewGroup(_groupName, HorizontalAlignment.Left);
                                     ListViewItem.Group = _listViewGroup;
@@ -104,9 +103,7 @@ namespace StatlookLogViewer
                 #region usm_Log
              case 2:
              {
-                string tmp_NazwaGrupy = null;
-                string myHourTime = null;
-                DictionaryLog SlownikErrors = new DictionaryLog();
+                        DictionaryLog SlownikErrors = new DictionaryLog();
                 Descriptor[] ListaBledow = SlownikErrors.GetListOfAllErrors();
                 foreach (Descriptor Des in Headers.usm_Deskryptor)
                 {
@@ -115,17 +112,18 @@ namespace StatlookLogViewer
                         if (tmp_Header == Headers.uplook_Date)
                         {
                             DateTime tmp_DateTime = DateTime.Parse(tmp_Value);
-                            myHourTime = tmp_DateTime.Hour.ToString();
-                            //Określenie nazwę grupy do której ma należeć linia
-                            if (myHourTime.Length < 2)
-                            {
-                                tmp_NazwaGrupy = "0" + myHourTime + ":00-" + "0" + myHourTime + ":59";
-                            }
-                            else
-                            {
-                                tmp_NazwaGrupy = myHourTime + ":00-" + myHourTime + ":59";
-                            }
-                            _groupName = tmp_NazwaGrupy;
+                                    string myHourTime = tmp_DateTime.Hour.ToString();
+                                    string tmp_NazwaGrupy;
+                                    //Określenie nazwę grupy do której ma należeć linia
+                                    if (myHourTime.Length < 2)
+                                    {
+                                        tmp_NazwaGrupy = "0" + myHourTime + ":00-" + "0" + myHourTime + ":59";
+                                    }
+                                    else
+                                    {
+                                        tmp_NazwaGrupy = myHourTime + ":00-" + myHourTime + ":59";
+                                    }
+                                    _groupName = tmp_NazwaGrupy;
                                     ListViewItem.Text = tmp_Value;
                             _listViewGroup = new ListViewGroup(_groupName, HorizontalAlignment.Left);
                                     ListViewItem.Group = _listViewGroup;

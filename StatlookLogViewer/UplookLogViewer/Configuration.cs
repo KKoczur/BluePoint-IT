@@ -11,6 +11,7 @@ namespace StatlookLogViewer
         #region Constans
 
         private const string CONFIG_FILE_NAME = "config.xml";
+        private const string LOG_DIRECTORY_PATH = "\\Statlook\\Logs\\";
 
         #endregion Constans
 
@@ -30,13 +31,13 @@ namespace StatlookLogViewer
 
         public static void SaveConfig(Configuration c) => Serialize(CONFIG_FILE_NAME, c);
 
-        public Descriptor[] GetStatlookHeaders() => DescriptorCollection.GetStatlookHeaders();
+        public Descriptor[] GetStatlookDescriptors() => DescriptorCollection.GetStatlookDescriptors();
 
-        public string GetStatlookTextHeaders() => string.Join (";", DescriptorCollection.GetStatlookHeaders().Select(item => item.HeaderText));
+        public string GetStatlookTextHeaders() => string.Join (";", DescriptorCollection.GetStatlookDescriptors().Select(item => item.HeaderText));
 
-        public Descriptor[] GetUsmHeaders() => DescriptorCollection.GetUsmHeaders();
+        public Descriptor[] GetUsmDescriptors() => DescriptorCollection.GetUsmDescriptors();
 
-        public string GetUsmTextHeaders() => string.Join(";", DescriptorCollection.GetUsmHeaders().Select(item => item.HeaderText));
+        public string GetUsmTextHeaders() => string.Join(";", DescriptorCollection.GetUsmDescriptors().Select(item => item.HeaderText));
 
         public void SetHeaderVisibility(string headerKeyName, bool needToShow)
         {
@@ -67,7 +68,7 @@ namespace StatlookLogViewer
             }
         }
 
-        static void Serialize(string file, Configuration c)
+        private static void Serialize(string file, Configuration c)
         {
             XmlSerializer xs = new XmlSerializer(c.GetType());
             StreamWriter writer = File.CreateText(file);
@@ -76,7 +77,7 @@ namespace StatlookLogViewer
             writer.Close();
         }
 
-        static Configuration Deserialize(string file)
+        private static Configuration Deserialize(string file)
         {
             XmlSerializer xs = new XmlSerializer(typeof(Configuration));
             StreamReader reader = File.OpenText(file);
@@ -91,9 +92,9 @@ namespace StatlookLogViewer
 
         public DescriptorCollection DescriptorCollection { get; set; }
 
-        public string StatlookLogDirectory { get; set; } = "\\Statlook\\Logs\\";
-        public string StatlookUsmLogDirectory { get; set; }= "\\Statlook\\Logs\\";
-        public string UserDirectory { get; set; } = $"{Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData)}\\Statlook\\Logs\\";
+        public string StatlookLogDirectory { get; set; } = LOG_DIRECTORY_PATH;
+        public string StatlookUsmLogDirectory { get; set; }= LOG_DIRECTORY_PATH;
+        public string UserDirectory { get; set; } = Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData) + LOG_DIRECTORY_PATH;
         public string LogFileExtensions { get; set; } = "*.log;*.zip";
 
         #endregion Properties

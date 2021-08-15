@@ -14,7 +14,7 @@ namespace StatlookLogViewer
 		{
 			Application.EnableVisualStyles();
 			Application.SetCompatibleTextRenderingDefault(false);
-			Application.Run(new uplookMainForm());
+			Application.Run(new MainForm());
 		}
 	}
 }

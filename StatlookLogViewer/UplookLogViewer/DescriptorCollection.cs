@@ -23,9 +23,9 @@ namespace StatlookLogViewer
 
         #region Methods
 
-        public Descriptor[] GetStatlookHeaders() => _descriptors.Where(item => item.LogType == LogType.Statlook).ToArray();
+        public Descriptor[] GetStatlookDescriptors() => _descriptors.Where(item => item.LogType == LogType.Statlook).ToArray();
 
-        public Descriptor[] GetUsmHeaders() => _descriptors.Where(item => item.LogType == LogType.Usm).ToArray();
+        public Descriptor[] GetUsmDescriptors() => _descriptors.Where(item => item.LogType == LogType.Usm).ToArray();
 
         public Descriptor GetHeaderByKeyName(string keyName) => _descriptors.FirstOrDefault(item => item.KeyName == keyName);
 

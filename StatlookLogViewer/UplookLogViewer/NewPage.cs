@@ -32,7 +32,7 @@ namespace StatlookLogViewer
         {
             _config = Configuration.GetConfiguration();
 
-            Descriptor[] udes = _config.GetStatlookHeaders();
+            Descriptor[] udes = _config.GetStatlookDescriptors();
 
             int j = 0;
             foreach (Descriptor d in udes)
@@ -41,7 +41,7 @@ namespace StatlookLogViewer
                 j++;
             }
 
-            Descriptor[] usmdes = _config.GetUsmHeaders();
+            Descriptor[] usmdes = _config.GetUsmDescriptors();
             int k = 0;
             foreach (Descriptor d in usmdes)
             {
