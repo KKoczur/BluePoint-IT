@@ -20,7 +20,7 @@ namespace StatlookLogViewer
         public string USMDirectory;
         public string _userDirectory;
         private readonly string[] _fileExtensions;
-        private readonly Headers uplookDeskryptor = new Headers();
+        private readonly LogHeader uplookDeskryptor = new LogHeader();
         private readonly bool[] show_uplook=new bool[10];
         private readonly bool[] show_usm=new bool[6];
         private Configuration _config;
@@ -1051,9 +1051,9 @@ namespace StatlookLogViewer
                     int j = 0;
                     foreach (ToolStripMenuItem t in ToolStripMenuItemUplook.DropDownItems)
                     {
-                        for (int i = 0; i < uplookDeskryptor.uplook_Headers.Length; i++)
+                        for (int i = 0; i < uplookDeskryptor.GetStatlookTextHeaders().Length; i++)
                         {
-                            if (t.Name.Equals("uplook" + uplookDeskryptor.uplook_Headers[i]))
+                            if (t.Name.Equals("uplook" + uplookDeskryptor.GetStatlookTextHeaders()[i]))
                             {
                                 if (show_uplook[j])
                                 {
@@ -1078,9 +1078,9 @@ namespace StatlookLogViewer
                     int j = 0;
                     foreach (ToolStripMenuItem t in ToolStripMenuItemUSM.DropDownItems)
                     {
-                        for (int i = 0; i < uplookDeskryptor.usm_Headers.Length; i++)
+                        for (int i = 0; i < uplookDeskryptor.GetUsmTextHeaders().Length; i++)
                         {
-                            if (t.Name.Equals("usm" + uplookDeskryptor.usm_Headers[i]))
+                            if (t.Name.Equals("usm" + uplookDeskryptor.GetUsmTextHeaders()[i]))
                             {
                                 if (show_usm[j])
                                 {

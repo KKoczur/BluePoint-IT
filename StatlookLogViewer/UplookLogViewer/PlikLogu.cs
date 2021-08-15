@@ -13,31 +13,32 @@ namespace StatlookLogViewer
     {
         #region Members
 
-        private ArrayList m_ZbiorLinii = new ArrayList();
-        private ArrayList m_Grupy = new ArrayList();
-        private List <ListViewItem> m_ListViewItem = new List<ListViewItem>(); 
+        private readonly ArrayList _logLineCollection = new ArrayList();
+
+        private readonly ArrayList _logLineGroupNameCollection = new ArrayList();
+
+        private readonly List <ListViewItem> _listViewItem = new List<ListViewItem>(); 
+
         private LogType _typeOfLog;
+
         private NewPage _newPage= new NewPage();
-        //private Headers uplookDeskryptor;
 
         #endregion Members
 
         #region Methods
 
-        public void AddLine(LogLine line)
+        public void AddLine(LogLine logLine)
         {
-            m_ZbiorLinii.Add(line);
-            m_Grupy.Add(line.GroupName);
-            m_ListViewItem.Add(line.ListViewItem);
+            _logLineCollection.Add(logLine);
+            _logLineGroupNameCollection.Add(logLine.GroupName);
+            _listViewItem.Add(logLine.ListViewItem);
         }
 
-        public int LineCount() => m_ZbiorLinii.Count;
 
-        public ListViewItem[] GetListViewItem() => m_ListViewItem.ToArray();
+        public ListViewItem[] GetListViewItem() => _listViewItem.ToArray();
 
-        public NewPage analizeUplookLog(string SafeFileName, string FileName, string dataUtworzenia, Headers _uplookDeskryptor)
+        public NewPage analizeUplookLog(string SafeFileName, string FileName, string dataUtworzenia, LogHeader logHeader)
         {
-            Headers uplookDeskryptor = _uplookDeskryptor;
             string[] choose_Headers;
             string allData=null;
             StreamReader plikFirstAnalize;
@@ -55,33 +56,33 @@ namespace StatlookLogViewer
                 MessageBox.Show("Error: Could not read file from disk. Original error: " + ex.Message);
             }
 
-            var m_ListOfHeaders = new List<String>();
+            var listOfHeaders = new List<string>();
 
             int numer = 0;
 
-            if(allData.Contains(uplookDeskryptor.uplook_Headers[1]))
+            if(allData.Contains(logHeader.GetStatlookTextHeaders()[1]))
             {
-                for (int i = 0; i < uplookDeskryptor.uplook_Headers.Length; i++)
+                foreach (var item in logHeader.GetStatlookTextHeaders())
                 {
-                    m_ListOfHeaders.Add(uplookDeskryptor.uplook_Headers[i]);
+                    listOfHeaders.Add(item);
                     numer = 1;
-                    _typeOfLog=(int)LogType.Statlook;
+                    _typeOfLog = (int)LogType.Statlook;
                 }
 
-                         
+
             }
-            else if (allData.Contains(uplookDeskryptor.usm_Headers[1]))
+            else if (allData.Contains(logHeader.GetUsmTextHeaders()[1]))
             {
-                for (int i = 0; i < uplookDeskryptor.usm_Headers.Length; i++)
+                foreach (var item2 in logHeader.GetUsmTextHeaders())
                 {
-                    m_ListOfHeaders.Add(uplookDeskryptor.usm_Headers[i]);
+                    listOfHeaders.Add(item2);
                     numer = 2;
                     _typeOfLog = LogType.Usm;
                 }
 
-             }
+            }
 
-             choose_Headers = m_ListOfHeaders.ToArray();
+             choose_Headers = listOfHeaders.ToArray();
 
             _newPage = new NewPage(0, FileName, SafeFileName, choose_Headers, dataUtworzenia, _typeOfLog)
             {
@@ -94,7 +95,8 @@ namespace StatlookLogViewer
 
             //Utworzenie obiektu przechowującego zbiór linii przetworzonych pliku logu 
             PlikLogu PlikLogu = new PlikLogu();
-            LogLine NowaLinia = new LogLine();
+
+            LogLine logLine = new LogLine();
 
             string line;
 
@@ -106,37 +108,40 @@ namespace StatlookLogViewer
                 if (Regex.IsMatch(line, @"(?<rok>\d{4})\.(?<miesiac>\d{2})\.(?<dzien>\d{2})\b"))
                 {
                     #region if_1
-                    NowaLinia = new LogLine();
+                    logLine = new LogLine();
                     line += ";";
                     line = line.Substring(0, line.IndexOf(";"));
 
                     //Dodanie do pojedynczej linii wartości kolumny: Date
-                    NowaLinia.AddLine(NowaLinia.Headers.uplook_Date, line, numer);
+                    logLine.AddLine(logLine.Headers.uplook_Date, line, numer);
                     DateTime tmp = DateTime.Parse(line);
                     string MyHourTime = tmp.Hour.ToString();
-                    ListViewGroup tmp_Group = new ListViewGroup(NowaLinia.GroupName, HorizontalAlignment.Left);
+
+                    ListViewGroup tmp_Group = new ListViewGroup(logLine.GroupName, HorizontalAlignment.Left);
                     if (ListViewTmp.Groups.Count == 0)
                     {
                         ListViewTmp.Groups.Add(tmp_Group);
-                        NowaLinia.ListViewItem.Group = tmp_Group;
-                        NowaLinia.ListViewItem.Group.Name = tmp_Group.ToString(); /**/
+                        logLine.ListViewItem.Group = tmp_Group;
+                        logLine.ListViewItem.Group.Name = tmp_Group.ToString(); /**/
                     }
                     else
                     {
                         if (ListViewTmp.Groups[ListViewTmp.Groups.Count - 1].Name.Equals(tmp_Group.ToString()))
                         {
-                            NowaLinia.ListViewItem.Group = ListViewTmp.Groups[ListViewTmp.Groups.Count - 1];
-                            NowaLinia.ListViewItem.Group.Name = ListViewTmp.Groups[ListViewTmp.Groups.Count - 1].Name; /**/
+                            logLine.ListViewItem.Group = ListViewTmp.Groups[ListViewTmp.Groups.Count - 1];
+                            logLine.ListViewItem.Group.Name = ListViewTmp.Groups[ListViewTmp.Groups.Count - 1].Name; /**/
                         }
                         else
                         {
                             ListViewTmp.Groups.Add(tmp_Group);
-                            NowaLinia.ListViewItem.Group = tmp_Group;
-                            NowaLinia.ListViewItem.Group.Name = tmp_Group.ToString();
+                            logLine.ListViewItem.Group = tmp_Group;
+                            logLine.ListViewItem.Group.Name = tmp_Group.ToString();
                         }
                     }
+
                     #endregion if_1
                 }
+
                 //Wykonaj jeśli linia nie zawiera znacznika przerwy 
                 else if (!line.Contains(uplookDeskryptor.uplook_Break))
                 {
@@ -148,17 +153,17 @@ namespace StatlookLogViewer
                             line = line.Remove(0, choose_Headers[i].Length);
                             line = line.TrimStart();
                             line = line.Substring(0, line.IndexOf(";"));
-                            NowaLinia.AddLine(choose_Headers[i], line, numer);
+                            logLine.AddLine(choose_Headers[i], line, numer);
                             break;
                         }
                     }
                 }
-
-                //Wykonaj jeśli linia zawiera znacznika przerwy 
                 else if (line.StartsWith(uplookDeskryptor.uplook_Break))
                 {
+
+                    //Wykonaj jeśli linia zawiera znacznika przerwy 
                     //Dodanie pojedynczej linii do pliku wynikowego analizy 
-                    PlikLogu.AddLine(NowaLinia);
+                    PlikLogu.AddLine(logLine);
                 }
 
             }

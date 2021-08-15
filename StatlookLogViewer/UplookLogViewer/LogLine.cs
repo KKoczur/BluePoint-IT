@@ -12,11 +12,13 @@ namespace StatlookLogViewer
 
         private ListViewGroup _listViewGroup = new ListViewGroup();
 
+        private readonly Descriptor[] _listOfAllErrors = (new DictionaryLog()).GetListOfAllErrors();
+
         #endregion Members
 
         #region Properties
 
-        public Headers Headers { get; } = new Headers();
+        public LogHeader Headers { get; } = new LogHeader();
 
         public string GroupName => _groupName;
 
@@ -37,11 +39,7 @@ namespace StatlookLogViewer
 
                 case 1:
                 {
-                        DictionaryLog SlownikErrors = new DictionaryLog();
-
-                    Descriptor[] ListaBledow = SlownikErrors.GetListOfAllErrors();
-
-                    foreach (Descriptor Des in Headers.uplook_Deskryptor)
+                    foreach (Descriptor Des in Headers.GetStatlookDescriptors())
                     {
                         if (Des.HeaderText == tmp_Header)
                         {
@@ -81,7 +79,7 @@ namespace StatlookLogViewer
                         }
                         else
                         {
-                            foreach (Descriptor des in ListaBledow)
+                            foreach (Descriptor des in _listOfAllErrors)
                             {
                                 if (tmp_Value.Contains(des.KeyName))
                                 {
@@ -103,15 +101,15 @@ namespace StatlookLogViewer
                 #region usm_Log
              case 2:
              {
-                        DictionaryLog SlownikErrors = new DictionaryLog();
-                Descriptor[] ListaBledow = SlownikErrors.GetListOfAllErrors();
-                foreach (Descriptor Des in Headers.usm_Deskryptor)
+
+                foreach (Descriptor Des in Headers.GetUsmDescriptors())
                 {
                     if (Des.HeaderText == tmp_Header)
                     {
                         if (tmp_Header == Headers.uplook_Date)
                         {
                             DateTime tmp_DateTime = DateTime.Parse(tmp_Value);
+
                                     string myHourTime = tmp_DateTime.Hour.ToString();
                                     string tmp_NazwaGrupy;
                                     //Określenie nazwę grupy do której ma należeć linia
@@ -135,11 +133,11 @@ namespace StatlookLogViewer
                                 ListViewItem.SubItems.Add(tmp_Value);
                         if (Regex.IsMatch(tmp_Value, @"(?<NR_1>\d{1})\.(?<NR_2>\d{1})\.(?<NR_3>\d{1})\b został uruchomiony.") || Regex.IsMatch(tmp_Value, @"(?<NR_1>\d{1})\.(?<NR_2>\d{1})\.(?<NR_3>\d{1})\b started"))
                         {
-                                    ListViewItem.Group.Header = ListViewItem.Group.Name + " (" + tmp_Value + ")"; /**/
+                            ListViewItem.Group.Header = ListViewItem.Group.Name + " (" + tmp_Value + ")"; /**/
                         }
                         else
                         {
-                            foreach (Descriptor des in ListaBledow)
+                            foreach (Descriptor des in _listOfAllErrors)
                             {
                                 if (tmp_Value.Contains(des.KeyName))
                                 {

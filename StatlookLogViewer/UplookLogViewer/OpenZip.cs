@@ -12,7 +12,7 @@ namespace StatlookLogViewer
        private string m_zip;
        public static string ZipTmpDirectory = "\\A plus C Systems\\uplook3\\TMP\\";
        public static string ZipDirectory;
-       private Headers uplookDeskryptor = new Headers();
+       private LogHeader uplookDeskryptor = new LogHeader();
 
         public OpenZip()
         {
