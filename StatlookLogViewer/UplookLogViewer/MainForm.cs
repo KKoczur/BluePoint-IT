@@ -654,46 +654,36 @@ namespace StatlookLogViewer
 
         private void closeToolStripMenuItem1_Click_1(object sender, EventArgs e)
         {
-            if (tabControlMain.SelectedTab.Name != "tabPageInfo")
-            {
-                int NumerZakładki = tabControlMain.SelectedIndex;
-                tabControlMain.TabPages.Remove(tabControlMain.SelectedTab);
-                if (tabControlMain.TabPages.Count > 1)
-                {
-                    if (NumerZakładki == tabControlMain.TabPages.Count)
-                    {
-                        tabControlMain.SelectedIndex = NumerZakładki - 1;
-                    }
-                    else
-                    {
-                        tabControlMain.SelectedIndex = NumerZakładki;
-                    }
-                }
-            }
+            if (tabControlMain.SelectedTab.Name == "tabPageInfo")
+                return;
 
+            ClosePage();
         }
 
         private void toolStripButtonClose_Click(object sender, EventArgs e)
         {
-            if (tabControlMain.SelectedTab.Name != "tabPageInfo")
-            {
-                int NumerZakładki = tabControlMain.SelectedIndex;
-                tabControlMain.TabPages.Remove(tabControlMain.SelectedTab);
-                if (tabControlMain.TabPages.Count > 1)
-                {
-                    if (NumerZakładki == tabControlMain.TabPages.Count)
-                    {
-                        tabControlMain.SelectedIndex = NumerZakładki - 1;
-                    }
-                    else
-                    {
-                        tabControlMain.SelectedIndex = NumerZakładki;
-                    }
-                }
-            }
-            else 
-            {
+            if (tabControlMain.SelectedTab.Name == "tabPageInfo")
                 toolStripMenuItemGeneral.Visible = true;
+            else
+                ClosePage();
+        }
+
+        private void ClosePage()
+        {
+            int selectedTapPageIndex = tabControlMain.SelectedIndex;
+
+            tabControlMain.TabPages.Remove(tabControlMain.SelectedTab);
+
+            if (tabControlMain.TabPages.Count > 1)
+            {
+                if (selectedTapPageIndex == tabControlMain.TabPages.Count)
+                {
+                    tabControlMain.SelectedIndex = selectedTapPageIndex - 1;
+                }
+                else
+                {
+                    tabControlMain.SelectedIndex = selectedTapPageIndex;
+                }
             }
         }
 
