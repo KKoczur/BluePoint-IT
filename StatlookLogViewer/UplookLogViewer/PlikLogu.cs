@@ -19,8 +19,6 @@ namespace StatlookLogViewer
 
         private readonly List <ListViewItem> _listViewItem = new List<ListViewItem>(); 
 
-        private LogType _typeOfLog;
-
         private NewPage _newPage= new NewPage();
 
         #endregion Members
@@ -39,54 +37,38 @@ namespace StatlookLogViewer
 
         public NewPage analizeUplookLog(string SafeFileName, string FileName, string dataUtworzenia, LogHeader logHeader)
         {
-            string[] choose_Headers;
-            string allData=null;
-            StreamReader plikFirstAnalize;
-            StreamReader plikAnalize;
+            string allData = null;
+            StreamReader streamReader;
 
             try
             {
-              plikFirstAnalize = new StreamReader(SafeFileName, Encoding.Default);
-              plikAnalize = new StreamReader(SafeFileName, Encoding.Default);
-              allData = plikAnalize.ReadToEnd();
-              plikAnalize.Close();
+              streamReader = new StreamReader(SafeFileName, Encoding.Default);
+              allData = streamReader.ReadToEnd();
+              streamReader.Close();
             }
             catch (Exception ex)
             {
                 MessageBox.Show("Error: Could not read file from disk. Original error: " + ex.Message);
             }
 
-            var listOfHeaders = new List<string>();
+            LogType logType = LogType.Default;
 
-            int numer = 0;
+            string[] listOfHeaders = null;
 
             if(allData.Contains(logHeader.GetStatlookTextHeaders()[1]))
             {
-                foreach (var item in logHeader.GetStatlookTextHeaders())
-                {
-                    listOfHeaders.Add(item);
-                    numer = 1;
-                    _typeOfLog = (int)LogType.Statlook;
-                }
-
-
+                logType = (int)LogType.Statlook;
+                listOfHeaders = logHeader.GetStatlookTextHeaders();               
             }
             else if (allData.Contains(logHeader.GetUsmTextHeaders()[1]))
             {
-                foreach (var item2 in logHeader.GetUsmTextHeaders())
-                {
-                    listOfHeaders.Add(item2);
-                    numer = 2;
-                    _typeOfLog = LogType.Usm;
-                }
-
+                logType = LogType.Usm;
+                listOfHeaders = logHeader.GetUsmTextHeaders();
             }
 
-             choose_Headers = listOfHeaders.ToArray();
-
-            _newPage = new NewPage(0, FileName, SafeFileName, choose_Headers, dataUtworzenia, _typeOfLog)
+            _newPage = new NewPage(0, FileName, SafeFileName, listOfHeaders, dataUtworzenia, logType)
             {
-                TypeOfReport = _typeOfLog.ToString()
+                LogType = logType
             };
 
             ListViewExtended ListViewTmp = _newPage.ListViewExtended;
@@ -100,8 +82,6 @@ namespace StatlookLogViewer
 
             string line;
 
-            #region pętla
-
             while ((line = plikAnalize_Sec.ReadLine()) != null)
             {
                 //Wyrażenie regularne do sprawdzenia czy wpis logu nie zaczyna się od daty
@@ -113,7 +93,8 @@ namespace StatlookLogViewer
                     line = line.Substring(0, line.IndexOf(";"));
 
                     //Dodanie do pojedynczej linii wartości kolumny: Date
-                    logLine.AddLine(logLine.Headers.uplook_Date, line, numer);
+                    logLine.AddLine(logLine.Headers.StatlookHeaderDate, line, logType);
+
                     DateTime tmp = DateTime.Parse(line);
                     string MyHourTime = tmp.Hour.ToString();
 
@@ -143,22 +124,22 @@ namespace StatlookLogViewer
                 }
 
                 //Wykonaj jeśli linia nie zawiera znacznika przerwy 
-                else if (!line.Contains(uplookDeskryptor.uplook_Break))
+                else if (!line.Contains(logHeader.StatlookHeaderBreak))
                 {
-                    for (int i = 1; i < choose_Headers.Length; i++)
+                    for (int i = 1; i < listOfHeaders.Length; i++)
                     {
-                        if (line.StartsWith(choose_Headers[i]))
+                        if (line.StartsWith(listOfHeaders[i]))
                         {
                             line += ";";
-                            line = line.Remove(0, choose_Headers[i].Length);
+                            line = line.Remove(0, listOfHeaders[i].Length);
                             line = line.TrimStart();
                             line = line.Substring(0, line.IndexOf(";"));
-                            logLine.AddLine(choose_Headers[i], line, numer);
+                            logLine.AddLine(listOfHeaders[i], line, logType);
                             break;
                         }
                     }
                 }
-                else if (line.StartsWith(uplookDeskryptor.uplook_Break))
+                else if (line.StartsWith(logHeader.StatlookHeaderBreak))
                 {
 
                     //Wykonaj jeśli linia zawiera znacznika przerwy 
@@ -167,8 +148,6 @@ namespace StatlookLogViewer
                 }
 
             }
-
-            #endregion pętla
 
             ListViewTmp.BeginUpdate();
             ListViewTmp.SuspendLayout();

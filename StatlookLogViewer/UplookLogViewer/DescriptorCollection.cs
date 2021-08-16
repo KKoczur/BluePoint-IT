@@ -56,7 +56,7 @@ namespace StatlookLogViewer
 
             var result = new List<Descriptor>()
             {
-                 new Descriptor(logType, "usmDate", "Date", true),
+                new Descriptor(logType, "usmDate", "Date", true),
                 new Descriptor(logType, "usmCode", " Code:", true),
                 new Descriptor(logType, "usmType", " Type:", true),
                 new Descriptor(logType, "usmSession", " Session:", true),

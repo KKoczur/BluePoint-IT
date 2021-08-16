@@ -28,22 +28,20 @@ namespace StatlookLogViewer
 
         #region Methods
 
-        public void AddLine(string Header, string Value, int numer)
+        public void AddLine(string header, string value, LogType logType)
         {
-            string tmp_Header= Header;
-            string tmp_Value= Value;
+            string tmp_Header= header;
+            string tmp_Value= value;
 
-            switch (numer)
+            switch (logType)
             {
-                #region uplook_Log
-
-                case 1:
+                case LogType.Statlook:
                 {
                     foreach (Descriptor Des in Headers.GetStatlookDescriptors())
                     {
                         if (Des.HeaderText == tmp_Header)
                         {
-                            if (tmp_Header == Headers.uplook_Date)
+                            if (tmp_Header == Headers.StatlookHeaderDate)
                             {
                                 DateTime tmp_DateTime = DateTime.Parse(tmp_Value);
                                     string myHourTime = tmp_DateTime.Hour.ToString();
@@ -96,17 +94,15 @@ namespace StatlookLogViewer
                     }
                         break;
                     }
-                        #endregion uplook_Log
 
-                #region usm_Log
-             case 2:
-             {
+                case LogType.Usm:
+                {
 
                 foreach (Descriptor Des in Headers.GetUsmDescriptors())
                 {
                     if (Des.HeaderText == tmp_Header)
                     {
-                        if (tmp_Header == Headers.uplook_Date)
+                        if (tmp_Header == Headers.StatlookHeaderDate)
                         {
                             DateTime tmp_DateTime = DateTime.Parse(tmp_Value);
 
@@ -154,7 +150,6 @@ namespace StatlookLogViewer
                 }
                 break;
                }
-               #endregion usm_Log
             }
         }
 

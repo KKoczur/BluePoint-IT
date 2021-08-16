@@ -20,7 +20,7 @@ namespace StatlookLogViewer
         public string USMDirectory;
         public string _userDirectory;
         private readonly string[] _fileExtensions;
-        private readonly LogHeader uplookDeskryptor = new LogHeader();
+        private readonly LogHeader _logHeader = new LogHeader();
         private readonly bool[] show_uplook=new bool[10];
         private readonly bool[] show_usm=new bool[6];
         private Configuration _config;
@@ -327,7 +327,7 @@ namespace StatlookLogViewer
                                 //Aktywowanie przycisków menu File
                                 closeAllWithoutActiveToolStripMenuItem.Enabled = true;
                                 closeAllToolStripMenuItem.Enabled = true;
-                                ZwinGrupy();
+                                CollapseAllGroups();
                                 //RozwinGrupy();
 
                             }
@@ -365,9 +365,9 @@ namespace StatlookLogViewer
             }
         }
 
-        private void ShowColumns(ListView ListViewTmp,string rodzajRaportu)
+        private void ShowColumns(ListView ListViewTmp,LogType logType)
         {
-            if (rodzajRaportu == "uplook")
+            if (logType ==LogType.Statlook)
             {
                 // Loop through and size each column header to fit the column header text.
                 foreach (ColumnHeader ch in ListViewTmp.Columns)
@@ -384,7 +384,7 @@ namespace StatlookLogViewer
                     }
                 }
             }
-            else if (rodzajRaportu == "usm")
+            else if (logType == LogType.Usm)
             {
                 // Loop through and size each column header to fit the column header text.
                 foreach (ColumnHeader ch in ListViewTmp.Columns)
@@ -402,11 +402,8 @@ namespace StatlookLogViewer
                 }
             }
         }
-		
-		private void openFileToolStripMenuItem_Click(object sender, EventArgs e)
-		{
-		    OpenLogFile();	
-		}
+
+        private void openFileToolStripMenuItem_Click(object sender, EventArgs e) => OpenLogFile();
 
 		private void exitToolStripMenuItem_Click(object sender, EventArgs e)
 		{
@@ -556,18 +553,23 @@ namespace StatlookLogViewer
                     if (control.GetType() == typeof(ListViewExtended))
                     {
                         ListViewExtended ListV = (ListViewExtended)control;
+
+                        LogType logType = LogType.Default;
+
                         if (tabPage.Tag.ToString() == "uplook")
                         {
+                            logType = LogType.Statlook;
                             ToolStripMenuItemUplook.Visible = true;
                             ToolStripMenuItemUSM.Visible = false;
                         }
                         else if (tabPage.Tag.ToString() == "usm")
                         {
+                            logType = LogType.Usm;
                             ToolStripMenuItemUSM.Visible = true;
                             ToolStripMenuItemUplook.Visible = false;
                         }
 
-                        ShowColumns(ListV, tabPage.Tag.ToString());
+                        ShowColumns(ListV, logType);
                     }
                 }
                 FileInfo OpisPliku = new FileInfo(tabControl.SelectedTab.Tag.ToString());
@@ -609,39 +611,18 @@ namespace StatlookLogViewer
 
         }
 
-        private void zwinToolStripMenuItem_Click(object sender, EventArgs e) => ZwinGrupy();
+        private void zwinToolStripMenuItem_Click(object sender, EventArgs e) => CollapseAllGroups();
 
-        private void rozwinWszystkieToolStripMenuItem_Click(object sender, EventArgs e) => RozwinGrupy();
+        private void rozwinWszystkieToolStripMenuItem_Click(object sender, EventArgs e) => ExpandAllGroups();
 
-        private void toolStripButtonCollapsedAll_Click(object sender, EventArgs e) => ZwinGrupy();
+        private void toolStripButtonCollapsedAll_Click(object sender, EventArgs e) => CollapseAllGroups();
 
-        private void toolStripButtonNormalAll_Click(object sender, EventArgs e) => RozwinGrupy();
+        private void toolStripButtonNormalAll_Click(object sender, EventArgs e) => ExpandAllGroups();
 
-        private void ZwinGrupy()
-        {
-            TabControl tabControl = (TabControl)Controls.Find("tabControlMain", true)[0];
+        private void CollapseAllGroups() => ChangeGroupState(ListViewGroupState.Collapsed);
+        private void ExpandAllGroups() => ChangeGroupState(ListViewGroupState.Normal);
 
-            if (tabControl.SelectedTab.Name != "tabPageInfo")
-            {
-                TabPage tabPage = (TabPage)Controls.Find(tabControl.SelectedTab.Name, true)[0];
-
-                foreach (Control control in tabPage.Controls)
-                {
-                    if (control.GetType() == typeof(ListViewExtended))
-                    {
-                        ListViewExtended ListV = (ListViewExtended)control;
-                        ListV.SuspendLayout();
-                        ListV.BeginUpdate();
-                        ListV.SetGroupState(ListViewGroupState.Collapsible | ListViewGroupState.Collapsed);
-                        ListV.EndUpdate();
-                        ListV.ResumeLayout();
-                    }
-                }
-            }
-
-        }
-
-        private void RozwinGrupy()
+        private void ChangeGroupState(ListViewGroupState listViewGroupState)
         {
             TabControl TabC = (TabControl)Controls.Find("tabControlMain", true)[0];
             if (TabC.SelectedTab.Name != "tabPageInfo")
@@ -650,21 +631,27 @@ namespace StatlookLogViewer
 
                 foreach (Control control in TabP.Controls)
                 {
-                    string kk = control.ToString();
                     if (control.GetType() == typeof(ListViewExtended))
                     {
-                        ListViewExtended ListV = (ListViewExtended)control;
-                        ListV.SuspendLayout();
-                        ListV.BeginUpdate();
-                        ListV.SetGroupState(ListViewGroupState.Collapsible | ListViewGroupState.Normal);
-                        ListV.EndUpdate();
-                        ListV.ResumeLayout();
+                        ListViewExtended listViewExtended = (ListViewExtended)control;
+
+                        listViewExtended.SuspendLayout();
+                        listViewExtended.BeginUpdate();
+
+                        try
+                        {
+                            listViewExtended.SetGroupState(ListViewGroupState.Collapsible | listViewGroupState);
+                        }
+                        finally
+                        {
+                            listViewExtended.EndUpdate();
+                            listViewExtended.ResumeLayout();
+                        }
                     }
                 }
             }
-
         }
-    
+
         private void closeToolStripMenuItem1_Click_1(object sender, EventArgs e)
         {
             if (tabControlMain.SelectedTab.Name != "tabPageInfo")
@@ -1041,9 +1028,10 @@ namespace StatlookLogViewer
             if (TabC.Controls.Find(FileName, false).Length == 0)
             {
                 PlikLogu plik = new PlikLogu();
-                NewPage nowaKarta = plik.analizeUplookLog(SafeFileName, FileName, dataUtworzenia, uplookDeskryptor);
 
-                if (nowaKarta.TypeOfReport.Equals("uplook"))
+                NewPage newPage = plik.analizeUplookLog(SafeFileName, FileName, dataUtworzenia, _logHeader);
+
+                if (newPage.LogType == LogType.Statlook)
                 {
                     ToolStripMenuItemUplook.Enabled = true;
                     ToolStripMenuItemUplook.Visible = true;
@@ -1051,9 +1039,9 @@ namespace StatlookLogViewer
                     int j = 0;
                     foreach (ToolStripMenuItem t in ToolStripMenuItemUplook.DropDownItems)
                     {
-                        for (int i = 0; i < uplookDeskryptor.GetStatlookTextHeaders().Length; i++)
+                        for (int i = 0; i < _logHeader.GetStatlookTextHeaders().Length; i++)
                         {
-                            if (t.Name.Equals("uplook" + uplookDeskryptor.GetStatlookTextHeaders()[i]))
+                            if (t.Name.Equals("uplook" + _logHeader.GetStatlookTextHeaders()[i]))
                             {
                                 if (show_uplook[j])
                                 {
@@ -1070,7 +1058,7 @@ namespace StatlookLogViewer
                     }
                     
                 }
-                if (nowaKarta.TypeOfReport.Equals("usm"))
+                if (newPage.LogType == LogType.Usm)
                 {
                     ToolStripMenuItemUplook.Visible = false;
                     ToolStripMenuItemUSM.Enabled = true;
@@ -1078,9 +1066,9 @@ namespace StatlookLogViewer
                     int j = 0;
                     foreach (ToolStripMenuItem t in ToolStripMenuItemUSM.DropDownItems)
                     {
-                        for (int i = 0; i < uplookDeskryptor.GetUsmTextHeaders().Length; i++)
+                        for (int i = 0; i < _logHeader.GetUsmTextHeaders().Length; i++)
                         {
-                            if (t.Name.Equals("usm" + uplookDeskryptor.GetUsmTextHeaders()[i]))
+                            if (t.Name.Equals("usm" + _logHeader.GetUsmTextHeaders()[i]))
                             {
                                 if (show_usm[j])
                                 {
@@ -1096,14 +1084,10 @@ namespace StatlookLogViewer
                         j++;
                     }
                 }
-                else 
-                { 
-                }
 
-
-                tabControlMain.Controls.Add(nowaKarta.NewTabPage);
-                tabControlMain.SelectTab(nowaKarta.NewTabPage);
-                ShowColumns(nowaKarta.ListViewExtended, nowaKarta.TypeOfReport);
+                tabControlMain.Controls.Add(newPage.NewTabPage);
+                tabControlMain.SelectTab(newPage.NewTabPage);
+                ShowColumns(newPage.ListViewExtended, newPage.LogType);
                 //Aktywownie menu grupowania 
                 grupyToolStripMenuItem.Enabled = true;
                 zwinToolStripMenuItem.Enabled = true;
@@ -1116,7 +1100,7 @@ namespace StatlookLogViewer
                 closeAllToolStripMenuItem.Enabled = true;
                 //Aktywowanie przycisków widoku
                 //ToolStripMenuItemUplook.Enabled = true;
-                ZwinGrupy();
+                CollapseAllGroups();
                 //RozwinGrupy();
             }
             else
@@ -1165,7 +1149,7 @@ namespace StatlookLogViewer
                     if (control.GetType() == typeof(ListViewExtended))
                     {
                         ListViewExtended ListV = (ListViewExtended)control;
-                        ShowColumns(ListV, "uplook");
+                        ShowColumns(ListV, LogType.Statlook);
                     }
                 }
             }
@@ -1211,7 +1195,7 @@ namespace StatlookLogViewer
                     if (control.GetType() == typeof(ListViewExtended))
                     {
                         ListViewExtended ListV = (ListViewExtended)control;
-                        ShowColumns(ListV, "usm");
+                        ShowColumns(ListV, LogType.Usm);
                     }
                 }
             }

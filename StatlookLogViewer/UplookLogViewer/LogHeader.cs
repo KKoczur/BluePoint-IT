@@ -1,20 +1,22 @@
-﻿using System.IO; 
-
-namespace StatlookLogViewer
+﻿namespace StatlookLogViewer
 {
     internal class LogHeader
     {
+        #region Consts
+
+        private const string STATLOOK_DATE = "Date";
+        private const string USM_DATE = "Date";
+        private const string STATLOOK_BREAK = "----------------------------------------";
+        private const string USM_BREAK = "----------------------------------------";
+
+        #endregion Consts
+
         #region Members
 
         /// <summary>
         /// Obiekt konfiguracji
         /// </summary>
         private readonly Configuration _config;
-
-        private string m_uplook_Date = "Date";
-        private string m_uplook_Break = "----------------------------------------";
-        private string m_usm_Date = "Date";
-        private string m_usm_Break = "----------------------------------------";
 
         #endregion Members
 
@@ -29,13 +31,13 @@ namespace StatlookLogViewer
 
         #region Properties
 
-        public string uplook_Break => m_uplook_Break;
+        public string StatlookHeaderDate => STATLOOK_DATE;
 
-        public string uplook_Date => m_uplook_Date;
+        public string StatlookHeaderBreak => STATLOOK_BREAK;
 
-        public string usm_Break => m_usm_Break;
+        public string UsmHeaderDate => USM_DATE;
 
-        public string usm_Date => m_usm_Date;
+        public string UsmHeaderBreak => USM_BREAK;
 
         #endregion Properties
 

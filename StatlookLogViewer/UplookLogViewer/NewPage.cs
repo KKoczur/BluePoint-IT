@@ -6,10 +6,9 @@ namespace StatlookLogViewer
 {
     public class NewPage:TabPage
     {
-        private const string CONFIG_FILE_NAME = "config.xml";
-        private readonly ListViewColumnSorter lvwColumnSorter = new ListViewColumnSorter();
-        private readonly bool[] show_uplook=new bool[10];
-        private readonly bool[] show_usm=new bool[6];
+        private readonly ListViewColumnSorter _lvwColumnSorter = new ListViewColumnSorter();
+        private readonly bool[] _statlookColumnNeedToShow=new bool[10];
+        private readonly bool[] _usmColumnNeedToShow=new bool[6];
 
         private readonly Configuration _config;
 
@@ -24,40 +23,37 @@ namespace StatlookLogViewer
         /// </summary>
         /// <param name="index">Index</param>
         /// <param name="name">Page name</param>
-        /// <param name="Fullname">Page fullname</param>
+        /// <param name="fullName">Page fullname</param>
         /// <param name="columnNames">Column names</param>
-        /// <param name="createdDate">Creaded date</param>
-        /// <param name="typeOfLog">Type of log</param>
-        public NewPage(int index, string name, string Fullname, string[] columnNames, string createdDate, LogType typeOfLog)
+        /// <param name="createdDate">Created date</param>
+        /// <param name="logType">Type of log</param>
+        public NewPage(int index, string name, string fullName, string[] columnNames, string createdDate, LogType logType)
         {
             _config = Configuration.GetConfiguration();
 
-            Descriptor[] udes = _config.GetStatlookDescriptors();
-
             int j = 0;
-            foreach (Descriptor d in udes)
+            foreach (Descriptor d in _config.GetStatlookDescriptors())
             {
-                show_uplook[j] = d.Show;
+                _statlookColumnNeedToShow[j] = d.Show;
                 j++;
             }
 
-            Descriptor[] usmdes = _config.GetUsmDescriptors();
             int k = 0;
-            foreach (Descriptor d in usmdes)
+            foreach (Descriptor d in _config.GetUsmDescriptors())
             {
-                show_usm[k] = d.Show;
+                _usmColumnNeedToShow[k] = d.Show;
                 k++;
             }
             
 
-            ListViewExtended.ListViewItemSorter = lvwColumnSorter;
+            ListViewExtended.ListViewItemSorter = _lvwColumnSorter;
 
             for (int i = 0; i < columnNames.Length; i++)
             {
                 ListViewExtended.Columns.Add(columnNames[i], 0);
             }
 
-            ListViewExtended.Dock = System.Windows.Forms.DockStyle.Fill;
+            ListViewExtended.Dock = DockStyle.Fill;
             ListViewExtended.GridLines = true;
             ListViewExtended.Location = new System.Drawing.Point(3, 3);
             ListViewExtended.Name = name;
@@ -69,19 +65,19 @@ namespace StatlookLogViewer
             ListViewExtended.FullRowSelect = true;
             ListViewExtended.ListViewItemSorter = null;
             ListViewExtended.SetGroupState(ListViewGroupState.Collapsible);
-            ListViewExtended.ColumnClick += new System.Windows.Forms.ColumnClickEventHandler(listViewFiles_ColumnClick);
+            ListViewExtended.ColumnClick += listViewFiles_ColumnClick;
 
-            switch (typeOfLog)
+            switch (logType)
             {
-                case LogType.Statlook:
+                case StatlookLogViewer.LogType.Statlook:
                     {
-                        sprawdzenieWidocznoscikolumn(ListViewExtended, show_uplook);
+                        CheckColumnsVisibility(ListViewExtended, _statlookColumnNeedToShow);
                         NewTabPage.Tag = "uplook";
                         break;
                     }
-                case LogType.Usm:
+                case StatlookLogViewer.LogType.Usm:
                     {
-                        sprawdzenieWidocznoscikolumn(ListViewExtended, show_usm);
+                        CheckColumnsVisibility(ListViewExtended, _usmColumnNeedToShow);
                         NewTabPage.Tag = "usm";
                         break;
                     }
@@ -92,13 +88,13 @@ namespace StatlookLogViewer
             // 
             NewTabPage.Location = new System.Drawing.Point(4, 22);
             NewTabPage.Name = name;
-            NewTabPage.Padding = new System.Windows.Forms.Padding(3);
+            NewTabPage.Padding = new Padding(3);
             NewTabPage.Size = new System.Drawing.Size(994, 610);
             NewTabPage.TabIndex = index;
             NewTabPage.Text = "      " + name;
             NewTabPage.UseVisualStyleBackColor = true;
-            NewTabPage.ToolTipText = Fullname;
-            NewTabPage.Tag = Fullname;
+            NewTabPage.ToolTipText = fullName;
+            NewTabPage.Tag = fullName;
             NewTabPage.Controls.Add(ListViewExtended);
         }
 
@@ -108,7 +104,7 @@ namespace StatlookLogViewer
 
         public ListViewExtended ListViewExtended { get; } = new ListViewExtended();
 
-        public string TypeOfReport { get; set; }
+        public LogType LogType { get; set; }
 
         #endregion Properties
 
@@ -117,16 +113,16 @@ namespace StatlookLogViewer
             ListViewExtended.BeginUpdate();
             try
             {
-                if (e.Column == lvwColumnSorter.SortColumn)
+                if (e.Column == _lvwColumnSorter.SortColumn)
                 {
                     // Reverse the current sort direction for this column.
-                    if (lvwColumnSorter.Order == SortOrder.Ascending)
+                    if (_lvwColumnSorter.Order == SortOrder.Ascending)
                     {
-                        lvwColumnSorter.Order = SortOrder.Descending;
+                        _lvwColumnSorter.Order = SortOrder.Descending;
                     }
                     else
                     {
-                        lvwColumnSorter.Order = SortOrder.Ascending;
+                        _lvwColumnSorter.Order = SortOrder.Ascending;
                     }
                 }
                 else
@@ -134,8 +130,8 @@ namespace StatlookLogViewer
                     // Set the column number that is to be sorted; default to ascending.
                     if (e.Column != 0)
                     {
-                        lvwColumnSorter.SortColumn = e.Column;
-                        lvwColumnSorter.Order = SortOrder.Ascending;
+                        _lvwColumnSorter.SortColumn = e.Column;
+                        _lvwColumnSorter.Order = SortOrder.Ascending;
                     }
                 }
 
@@ -147,7 +143,7 @@ namespace StatlookLogViewer
             }
         }
 
-        private void sprawdzenieWidocznoscikolumn(ListView listView, bool[] show)
+        private void CheckColumnsVisibility(ListView listView, bool[] show)
         {
             // Loop through and size each column header to fit the column header text.
 
