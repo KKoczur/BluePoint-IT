@@ -119,7 +119,7 @@ namespace StatlookLogViewer
                 FileInfo atrybutyPlik = new FileInfo(FullName);
 
                 PlikLogu plik = new PlikLogu();
-                m_nowaKarta.Add(plik.analizeUplookLog(FullName, item.SubItems[1].Text, item.SubItems[2].Text, uplookDeskryptor));
+                m_nowaKarta.Add(plik.LogAnalyze(FullName, item.SubItems[1].Text, item.SubItems[2].Text, uplookDeskryptor));
                 i++;
             }
             DialogResult = DialogResult.OK;

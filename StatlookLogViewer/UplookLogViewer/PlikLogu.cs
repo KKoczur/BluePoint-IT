@@ -13,11 +13,11 @@ namespace StatlookLogViewer
     {
         #region Members
 
-        private readonly ArrayList _logLineCollection = new ArrayList();
+        private readonly List<LogLine> _logLineCollection = new List<LogLine>();
 
-        private readonly ArrayList _logLineGroupNameCollection = new ArrayList();
+        private readonly List<string> _logLineGroupNameCollection = new List<string>();
 
-        private readonly List <ListViewItem> _listViewItem = new List<ListViewItem>(); 
+        private readonly List <ListViewItem> _listViewItem = new List<ListViewItem>();
 
         private NewPage _newPage= new NewPage();
 
@@ -32,33 +32,18 @@ namespace StatlookLogViewer
             _listViewItem.Add(logLine.ListViewItem);
         }
 
-
-        public ListViewItem[] GetListViewItem() => _listViewItem.ToArray();
-
-        public NewPage analizeUplookLog(string SafeFileName, string FileName, string dataUtworzenia, LogHeader logHeader)
+        public NewPage LogAnalyze(string filePath, string fileName, string dataUtworzenia, LogHeader logHeader)
         {
-            string allData = null;
-            StreamReader streamReader;
-
-            try
-            {
-              streamReader = new StreamReader(SafeFileName, Encoding.Default);
-              allData = streamReader.ReadToEnd();
-              streamReader.Close();
-            }
-            catch (Exception ex)
-            {
-                MessageBox.Show("Error: Could not read file from disk. Original error: " + ex.Message);
-            }
+            string allData = GetFileContent(filePath);
 
             LogType logType = LogType.Default;
 
             string[] listOfHeaders = null;
 
-            if(allData.Contains(logHeader.GetStatlookTextHeaders()[1]))
+            if (allData.Contains(logHeader.GetStatlookTextHeaders()[1]))
             {
                 logType = (int)LogType.Statlook;
-                listOfHeaders = logHeader.GetStatlookTextHeaders();               
+                listOfHeaders = logHeader.GetStatlookTextHeaders();
             }
             else if (allData.Contains(logHeader.GetUsmTextHeaders()[1]))
             {
@@ -66,14 +51,14 @@ namespace StatlookLogViewer
                 listOfHeaders = logHeader.GetUsmTextHeaders();
             }
 
-            _newPage = new NewPage(0, FileName, SafeFileName, listOfHeaders, dataUtworzenia, logType)
+            _newPage = new NewPage(0, fileName, filePath, listOfHeaders, dataUtworzenia, logType)
             {
                 LogType = logType
             };
 
             ListViewExtended ListViewTmp = _newPage.ListViewExtended;
-             
-             StreamReader plikAnalize_Sec = new StreamReader(SafeFileName, UTF8Encoding.Default);
+
+            StreamReader plikAnalize_Sec = new StreamReader(filePath, Encoding.Default);
 
             //Utworzenie obiektu przechowującego zbiór linii przetworzonych pliku logu 
             PlikLogu PlikLogu = new PlikLogu();
@@ -151,12 +136,45 @@ namespace StatlookLogViewer
 
             ListViewTmp.BeginUpdate();
             ListViewTmp.SuspendLayout();
-            //dodanie całego zakresu danych 
-            ListViewTmp.Items.AddRange(PlikLogu.GetListViewItem());
-            ListViewTmp.EndUpdate();        
-            ListViewTmp.ResumeLayout();
+            try
+            {
+
+                //dodanie całego zakresu danych 
+                ListViewTmp.Items.AddRange(PlikLogu.GetListViewItem());
+            }
+            finally
+            {
+
+                ListViewTmp.EndUpdate();
+                ListViewTmp.ResumeLayout();
+            }
 
             return _newPage;
+        }
+
+        private ListViewItem[] GetListViewItem() => _listViewItem.ToArray();
+
+        /// <summary>
+        /// Get file content
+        /// </summary>
+        /// <param name="filePath">File path</param>
+        /// <returns>File text content</returns>
+        private string GetFileContent(string filePath)
+        {
+            string fileContent = null;
+
+            try
+            {
+                using var streamReader = new StreamReader(filePath, Encoding.Default);
+
+                fileContent = streamReader.ReadToEnd();
+            }
+            catch (Exception exception)
+            {
+                MessageBox.Show("Error: Could not read file from disk. Original error: " + exception.Message);
+            }
+
+            return fileContent;
         }
 
         #endregion Methods

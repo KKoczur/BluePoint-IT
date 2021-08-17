@@ -69,18 +69,21 @@ namespace StatlookLogViewer
 
             switch (logType)
             {
-                case StatlookLogViewer.LogType.Statlook:
+                case LogType.Statlook:
                     {
                         CheckColumnsVisibility(ListViewExtended, _statlookColumnNeedToShow);
                         NewTabPage.Tag = "uplook";
                         break;
                     }
-                case StatlookLogViewer.LogType.Usm:
+                case LogType.Usm:
                     {
                         CheckColumnsVisibility(ListViewExtended, _usmColumnNeedToShow);
                         NewTabPage.Tag = "usm";
                         break;
                     }
+
+                default:
+                    break;
             }
 
             // 
@@ -111,6 +114,7 @@ namespace StatlookLogViewer
         private void listViewFiles_ColumnClick(object sender, ColumnClickEventArgs e)
         {
             ListViewExtended.BeginUpdate();
+
             try
             {
                 if (e.Column == _lvwColumnSorter.SortColumn)

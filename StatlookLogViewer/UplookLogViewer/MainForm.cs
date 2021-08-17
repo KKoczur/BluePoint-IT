@@ -267,8 +267,8 @@ namespace StatlookLogViewer
                 //Otwarcie pojedynczego pliku o rozszerzeniu .zip
                 if((openFileDialog.FileNames.Length==1) && (openFileDialog.SafeFileName.Substring(openFileDialog.SafeFileName.Length - 4,4)==".zip"))
                 {
-                   OpenZip otworzZip = new OpenZip(openFileDialog.FileName);
-                   #region ReadZip 
+                   OpenZip openZip = new OpenZip(openFileDialog.FileName);
+
                     using (ZipFile zip = ZipFile.Read(openFileDialog.FileName))
                     {
                         int i=1;
@@ -293,22 +293,22 @@ namespace StatlookLogViewer
                                 plikInfo.SubItems.Add((e.UncompressedSize / (1024 * 1024)).ToString() + " MB");
                             }
                             plikInfo.SubItems.Add(openFileDialog.InitialDirectory);
-                            otworzZip.DodajItem(plikInfo);
+                            openZip.DodajItem(plikInfo);
                             i++;
                         }
                     }
-                  #endregion ReadZip  
 
-                   otworzZip.ShowDialog(this);
+                   openZip.ShowDialog(this);
 
                 }
                 else
                 {
                     for (int i = 0; i < openFileDialog.FileNames.Length; i++)
                     {
-                        //Nie przetwarzaj plików o rozszerzeniu .zip
-                        FileInfo atrybutyPlik = new FileInfo(openFileDialog.FileNames[i]);
-                        if (atrybutyPlik.Extension == ".zip")
+                        // Nie przetwarzaj plików o rozszerzeniu .zip
+                        FileInfo fileInfo = new FileInfo(openFileDialog.FileNames[i]);
+
+                        if (fileInfo.Extension == ".zip")
                         {
                             Form otworzZip = new OpenZip();
                             otworzZip.ShowDialog(this);
@@ -335,8 +335,7 @@ namespace StatlookLogViewer
                         }
                         else
                         {
-                            analizeUplookLog(openFileDialog.FileNames[i], openFileDialog.SafeFileNames[i], atrybutyPlik.LastWriteTime.ToString());
-
+                            analizeUplookLog(openFileDialog.FileNames[i], openFileDialog.SafeFileNames[i], fileInfo.LastWriteTime.ToString());
                         }
                     }
                 }
@@ -466,8 +465,6 @@ namespace StatlookLogViewer
             {
                 this.listViewFiles.EndUpdate();
             }
-  
-        
     }
 
 		private void listViewFiles_DoubleClick(object sender, EventArgs e)
@@ -481,7 +478,7 @@ namespace StatlookLogViewer
                 //Nie przetwarzaj plików o rozszerzeniu .zip
                 if (atrybutyPlik.Extension == ".zip")
                 {
-                    OpenZip otworzZip = new OpenZip();
+                    OpenZip openZip = new OpenZip();
                     #region ReadZip
                     using (ZipFile zip = ZipFile.Read(atrybutyPlik.FullName))
                     {
@@ -505,12 +502,12 @@ namespace StatlookLogViewer
                                 plikInfo.SubItems.Add((e2.UncompressedSize / (1024 * 1024)).ToString() + " MB");
                             }
                             plikInfo.SubItems.Add(atrybutyPlik.DirectoryName);
-                            otworzZip.DodajItem(plikInfo);
+                            openZip.DodajItem(plikInfo);
                             i++;
                         }
                     }
                     #endregion ReadZip
-                    otworzZip.ShowDialog(this);
+                    openZip.ShowDialog(this);
                 }
                 else
                 {      
@@ -1012,14 +1009,14 @@ namespace StatlookLogViewer
             
         }
 
-        private void analizeUplookLog(string SafeFileName, string FileName,string dataUtworzenia)
+        private void analizeUplookLog(string filePath, string fileName,string dataUtworzenia)
         {
             TabControl TabC = (TabControl)Controls.Find("tabControlMain", true)[0];
-            if (TabC.Controls.Find(FileName, false).Length == 0)
+            if (TabC.Controls.Find(fileName, false).Length == 0)
             {
                 PlikLogu plik = new PlikLogu();
 
-                NewPage newPage = plik.analizeUplookLog(SafeFileName, FileName, dataUtworzenia, _logHeader);
+                NewPage newPage = plik.LogAnalyze(filePath, fileName, dataUtworzenia, _logHeader);
 
                 if (newPage.LogType == LogType.Statlook)
                 {
@@ -1078,6 +1075,7 @@ namespace StatlookLogViewer
                 tabControlMain.Controls.Add(newPage.NewTabPage);
                 tabControlMain.SelectTab(newPage.NewTabPage);
                 ShowColumns(newPage.ListViewExtended, newPage.LogType);
+
                 //Aktywownie menu grupowania 
                 grupyToolStripMenuItem.Enabled = true;
                 zwinToolStripMenuItem.Enabled = true;
@@ -1088,14 +1086,12 @@ namespace StatlookLogViewer
                 //Aktywowanie przycisków menu File
                 closeAllWithoutActiveToolStripMenuItem.Enabled = true;
                 closeAllToolStripMenuItem.Enabled = true;
-                //Aktywowanie przycisków widoku
-                //ToolStripMenuItemUplook.Enabled = true;
                 CollapseAllGroups();
-                //RozwinGrupy();
+
             }
             else
             {
-                TabC.SelectTab(FileName);
+                TabC.SelectTab(fileName);
             }
 
         }
