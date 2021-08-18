@@ -1,15 +1,8 @@
-﻿namespace StatlookLogViewer
+﻿
+namespace StatlookLogViewer
 {
     internal class LogHeader
     {
-        #region Consts
-
-        private const string STATLOOK_DATE = "Date";
-        private const string USM_DATE = "Date";
-        private const string STATLOOK_BREAK = "----------------------------------------";
-        private const string USM_BREAK = "----------------------------------------";
-
-        #endregion Consts
 
         #region Members
 
@@ -31,13 +24,13 @@
 
         #region Properties
 
-        public string StatlookHeaderDate => STATLOOK_DATE;
+        public string StatlookHeaderDate => Configuration.STATLOOK_DATE;
 
-        public string StatlookHeaderBreak => STATLOOK_BREAK;
+        public string StatlookHeaderBreak => Configuration.STATLOOK_BREAK;
 
-        public string UsmHeaderDate => USM_DATE;
+        public string UsmHeaderDate => Configuration.USM_DATE;
 
-        public string UsmHeaderBreak => USM_BREAK;
+        public string UsmHeaderBreak => Configuration.USM_BREAK;
 
         #endregion Properties
 

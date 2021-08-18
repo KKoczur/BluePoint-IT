@@ -32,7 +32,7 @@ namespace StatlookLogViewer
             _listViewItem.Add(logLine.ListViewItem);
         }
 
-        public NewPage LogAnalyze(string filePath, string fileName, string dataUtworzenia, LogHeader logHeader)
+        public NewPage LogAnalyze(string filePath, string fileName, DateTime lastWriteTime, LogHeader logHeader)
         {
             string allData = GetFileContent(filePath);
 
@@ -51,7 +51,7 @@ namespace StatlookLogViewer
                 listOfHeaders = logHeader.GetUsmTextHeaders();
             }
 
-            _newPage = new NewPage(0, fileName, filePath, listOfHeaders, dataUtworzenia, logType)
+            _newPage = new NewPage(0, fileName, filePath, listOfHeaders, lastWriteTime, logType)
             {
                 LogType = logType
             };

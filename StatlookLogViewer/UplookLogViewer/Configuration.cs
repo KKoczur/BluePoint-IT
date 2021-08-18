@@ -13,6 +13,11 @@ namespace StatlookLogViewer
         private const string CONFIG_FILE_NAME = "config.xml";
         private const string LOG_DIRECTORY_PATH = "\\Statlook\\Logs\\";
 
+        public const string STATLOOK_DATE = "Date";
+        public const string USM_DATE = "Date";
+        public const string STATLOOK_BREAK = "----------------------------------------";
+        public const string USM_BREAK = "----------------------------------------";
+
         #endregion Constans
 
         #region Constructors

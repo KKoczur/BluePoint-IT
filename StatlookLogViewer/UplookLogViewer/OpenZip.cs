@@ -105,8 +105,8 @@ namespace StatlookLogViewer
             foreach (ListViewItem item in Li)
             {
                 
-                string FileName = item.SubItems[1].Text;
-                string FullName = item.SubItems[4].Text + "\\" + item.SubItems[1].Text;
+                string fileName = item.SubItems[1].Text;
+                string fileFullPath = item.SubItems[4].Text + "\\" + item.SubItems[1].Text;
 
                 using (ZipFile zip = ZipFile.Read(m_zip))
                 {
@@ -116,10 +116,13 @@ namespace StatlookLogViewer
                     }  
                 }
 
-                FileInfo atrybutyPlik = new FileInfo(FullName);
+                FileInfo atrybutyPlik = new FileInfo(fileFullPath);
 
                 PlikLogu plik = new PlikLogu();
-                m_nowaKarta.Add(plik.LogAnalyze(FullName, item.SubItems[1].Text, item.SubItems[2].Text, uplookDeskryptor));
+
+                DateTime.TryParse(item.SubItems[2].Text, out DateTime lastWriteTime);
+
+                m_nowaKarta.Add(plik.LogAnalyze(fileFullPath, item.SubItems[1].Text, lastWriteTime, uplookDeskryptor));
                 i++;
             }
             DialogResult = DialogResult.OK;

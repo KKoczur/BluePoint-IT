@@ -1,10 +1,10 @@
-﻿using System.Windows.Forms;
-using System.IO;
+﻿using System;
+using System.Windows.Forms;
 using ListViewGroupCollapse;
 
 namespace StatlookLogViewer
 {
-    public class NewPage:TabPage
+    public class NewPage: TabPage
     {
         private readonly ListViewColumnSorter _lvwColumnSorter = new ListViewColumnSorter();
         private readonly bool[] _statlookColumnNeedToShow=new bool[10];
@@ -25,23 +25,36 @@ namespace StatlookLogViewer
         /// <param name="name">Page name</param>
         /// <param name="fullName">Page fullname</param>
         /// <param name="columnNames">Column names</param>
-        /// <param name="createdDate">Created date</param>
+        /// <param name="lastWriteTime">File last write time</param>
         /// <param name="logType">Type of log</param>
-        public NewPage(int index, string name, string fullName, string[] columnNames, string createdDate, LogType logType)
+        public NewPage(int index, string name, string fullName, string[] columnNames, DateTime lastWriteTime, LogType logType)
         {
+            LogType = logType;
+
+            this.Location = new System.Drawing.Point(4, 22);
+            this.Name = name;
+            this.Padding = new Padding(3);
+            this.Size = new System.Drawing.Size(994, 610);
+            this.TabIndex = index;
+            this.Text = "      " + name;
+            this.UseVisualStyleBackColor = true;
+            this.ToolTipText = fullName;
+            this.Tag = fullName;
+            this.Controls.Add(ListViewExtended);
+
             _config = Configuration.GetConfiguration();
 
             int j = 0;
-            foreach (Descriptor d in _config.GetStatlookDescriptors())
+            foreach (Descriptor descriptor in _config.GetStatlookDescriptors())
             {
-                _statlookColumnNeedToShow[j] = d.Show;
+                _statlookColumnNeedToShow[j] = descriptor.Show;
                 j++;
             }
 
             int k = 0;
-            foreach (Descriptor d in _config.GetUsmDescriptors())
+            foreach (Descriptor descriptor in _config.GetUsmDescriptors())
             {
-                _usmColumnNeedToShow[k] = d.Show;
+                _usmColumnNeedToShow[k] = descriptor.Show;
                 k++;
             }
             
@@ -67,18 +80,16 @@ namespace StatlookLogViewer
             ListViewExtended.SetGroupState(ListViewGroupState.Collapsible);
             ListViewExtended.ColumnClick += listViewFiles_ColumnClick;
 
-            switch (logType)
+            switch (LogType)
             {
                 case LogType.Statlook:
                     {
                         CheckColumnsVisibility(ListViewExtended, _statlookColumnNeedToShow);
-                        NewTabPage.Tag = "uplook";
                         break;
                     }
                 case LogType.Usm:
                     {
                         CheckColumnsVisibility(ListViewExtended, _usmColumnNeedToShow);
-                        NewTabPage.Tag = "usm";
                         break;
                     }
 
@@ -86,24 +97,10 @@ namespace StatlookLogViewer
                     break;
             }
 
-            // 
-            // TabPages
-            // 
-            NewTabPage.Location = new System.Drawing.Point(4, 22);
-            NewTabPage.Name = name;
-            NewTabPage.Padding = new Padding(3);
-            NewTabPage.Size = new System.Drawing.Size(994, 610);
-            NewTabPage.TabIndex = index;
-            NewTabPage.Text = "      " + name;
-            NewTabPage.UseVisualStyleBackColor = true;
-            NewTabPage.ToolTipText = fullName;
-            NewTabPage.Tag = fullName;
-            NewTabPage.Controls.Add(ListViewExtended);
         }
 
         #region Properties
 
-        public TabPage NewTabPage { get; } = new TabPage();
 
         public ListViewExtended ListViewExtended { get; } = new ListViewExtended();
 
@@ -152,12 +149,12 @@ namespace StatlookLogViewer
             // Loop through and size each column header to fit the column header text.
 
             int j = 0;
-            foreach (ColumnHeader ch in listView.Columns)
+            foreach (ColumnHeader columnHeader in listView.Columns)
             {
                 if (show[j])
-                    ch.Width = -2;
+                    columnHeader.Width = -2;
                 else
-                    ch.Width = 0;
+                    columnHeader.Width = 0;
                 j++;
             }
 
