@@ -5,7 +5,7 @@ using System.Windows.Forms;
 using System.IO;
 using ListViewGroupCollapse;
 using Ionic.Zip;
-
+using System.Collections.Generic;
 
 namespace StatlookLogViewer
 {
@@ -151,36 +151,37 @@ namespace StatlookLogViewer
                 {
                     if (di.Exists && ShowCatalog[j])
                     {
-                        ArrayList myFileInfo = new ArrayList();
+                        var fileCollection = new List<FileInfo>();
                         foreach (string ext in _fileExtensions)
                         {
                             if (di.FullName != "C:\\")
                             {
-                                myFileInfo.AddRange(di.GetFiles(ext, SearchOption.AllDirectories));
+                                fileCollection.AddRange(di.GetFiles(ext, SearchOption.AllDirectories));
                             }
                             else
                             {
-                                myFileInfo.AddRange(di.GetFiles(ext, SearchOption.TopDirectoryOnly));
+                                fileCollection.AddRange(di.GetFiles(ext, SearchOption.TopDirectoryOnly));
                             }
                         }
 
-                        FileInfo[] pliki = (FileInfo[])myFileInfo.ToArray(typeof(FileInfo));
-
-                        for (int i = 0; i < pliki.Length; i++)
+                        int i = 0;
+                        foreach (FileInfo fileInfo in fileCollection)
                         {
-                            ListViewItem plikInfo = new ListViewItem
+                            var listViewItem = new ListViewItem
                             {
                                 Text = i.ToString()
                             };
 
-                            plikInfo.SubItems.Add(pliki[i].Name);
-                            plikInfo.SubItems.Add(pliki[i].LastWriteTime.ToString());
-                            plikInfo.SubItems.Add(FileSize(pliki[i].Length,false));
-                            plikInfo.SubItems.Add(pliki[i].DirectoryName);
-                            listViewFiles.Items.Add(plikInfo);
-                            toolStripButtonIcon.Image = Properties.Resources.ok_16;
-                            toolStripStatusReady.Text = "Ready";
+                            listViewItem.SubItems.Add(fileInfo.Name);
+                            listViewItem.SubItems.Add(fileInfo.LastWriteTime.ToString());
+                            listViewItem.SubItems.Add(FileSize(fileInfo.Length, false));
+                            listViewItem.SubItems.Add(fileInfo.DirectoryName);
+                            listViewFiles.Items.Add(listViewItem);
+
+                            i++;
                         }
+                        toolStripButtonIcon.Image = Properties.Resources.ok_16;
+                        toolStripStatusReady.Text = "Ready";
                     }
                     j++;
                 }
@@ -274,10 +275,10 @@ namespace StatlookLogViewer
         /// </summary>
         private void OpenLogFile()
 		{
-            var openFileDialog = new OpenFileDialog
+            using var openFileDialog = new OpenFileDialog()
             {
                 Multiselect = true,
-                Filter = "Log files (*.log)|*.log|Text files (*.txt)|*.txt| Zip files (*.zip)|*.zip| All files (*.*)|*.*",
+                Filter = Configuration.LOG_FILE_EXTENSIONS,
                 Title = "Please select log source file"
             };
 
@@ -285,7 +286,7 @@ namespace StatlookLogViewer
 			{
  
                 //Otwarcie pojedynczego pliku o rozszerzeniu .zip
-                if((openFileDialog.FileNames.Length==1) && (openFileDialog.SafeFileName.Substring(openFileDialog.SafeFileName.Length - 4,4)==".zip"))
+                if((openFileDialog.FileNames.Length==1) && (openFileDialog.SafeFileName.Substring(openFileDialog.SafeFileName.Length - 4,4)== Configuration.ZIP_FILE_EXTENSION))
                 {
                    OpenZip openZip = new OpenZip(openFileDialog.FileName);
 
@@ -328,7 +329,7 @@ namespace StatlookLogViewer
                         // Nie przetwarzaj plików o rozszerzeniu .zip
                         FileInfo fileInfo = new FileInfo(openFileDialog.FileNames[i]);
 
-                        if (fileInfo.Extension == ".zip")
+                        if (fileInfo.Extension == Configuration.ZIP_FILE_EXTENSION)
                         {
                             Form otworzZip = new OpenZip();
                             otworzZip.ShowDialog(this);
@@ -546,18 +547,18 @@ namespace StatlookLogViewer
 
 		private void listViewFiles_DoubleClick(object sender, EventArgs e)
 		{
-			foreach (ListViewItem item in this.listViewFiles.SelectedItems)
+			foreach (ListViewItem listViewItem in this.listViewFiles.SelectedItems)
 			{
-                string fileName = item.SubItems[1].Text;
-                string fileFullPath= item.SubItems[4].Text+"\\"+item.SubItems[1].Text;
-                FileInfo atrybutyPlik = new FileInfo(fileFullPath);
+                string fileFullPath = GetFileFullPathFromListViewItem(listViewItem);
+
+                FileInfo fileInfo = new FileInfo(fileFullPath);
 
                 //Nie przetwarzaj plików o rozszerzeniu .zip
-                if (atrybutyPlik.Extension == ".zip")
+                if (fileInfo.Extension == Configuration.ZIP_FILE_EXTENSION)
                 {
                     OpenZip openZip = new OpenZip();
 
-                    using (ZipFile zip = ZipFile.Read(atrybutyPlik.FullName))
+                    using (ZipFile zip = ZipFile.Read(fileInfo.FullName))
                     {
                         int i = 1;
                         foreach (ZipEntry e2 in zip)
@@ -580,7 +581,7 @@ namespace StatlookLogViewer
                             {
                                 plikInfo.SubItems.Add((e2.UncompressedSize / (1024 * 1024)).ToString() + " MB");
                             }
-                            plikInfo.SubItems.Add(atrybutyPlik.DirectoryName);
+                            plikInfo.SubItems.Add(fileInfo.DirectoryName);
                             openZip.DodajItem(plikInfo);
                             i++;
                         }
@@ -590,12 +591,11 @@ namespace StatlookLogViewer
                 }
                 else
                 {
-                    DateTime.TryParse(item.SubItems[2].Text, out DateTime lastWriteTime);
+                    DateTime.TryParse(listViewItem.SubItems[2].Text, out DateTime lastWriteTime);
 
-                    analizeUplookLog(fileFullPath, item.SubItems[1].Text, lastWriteTime);
-                    
+                    analizeUplookLog(fileFullPath, listViewItem.SubItems[1].Text, lastWriteTime);                
                 }
-			}		
+			}
 		}
 
         private void tabControlMain_SelectedIndexChanged(object sender, EventArgs e)
@@ -916,7 +916,7 @@ namespace StatlookLogViewer
                     FileInfo fileInfo = new FileInfo(fileFullPath);
                     
                     //Nie przetwarzaj plików o rozszerzeniu .zip
-                    if (fileInfo.Extension == ".zip")
+                    if (fileInfo.Extension == Configuration.ZIP_FILE_EXTENSION)
                     {
                         using var openZip = new OpenZip();
                         openZip.ShowDialog(this);

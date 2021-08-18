@@ -170,12 +170,8 @@
             this.viewToolStripMenuItem,
             this.toolsToolStripMenuItem,
             this.aboutToolStripMenuItem1});
-            this.menuMainStrip.Location = new System.Drawing.Point(0, 0);
+            resources.ApplyResources(this.menuMainStrip, "menuMainStrip");
             this.menuMainStrip.Name = "menuMainStrip";
-            this.menuMainStrip.Padding = new System.Windows.Forms.Padding(7, 2, 0, 2);
-            this.menuMainStrip.Size = new System.Drawing.Size(1176, 24);
-            this.menuMainStrip.TabIndex = 0;
-            this.menuMainStrip.Text = "menuStrip1";
             // 
             // toolStripMenuItem1
             // 
@@ -188,60 +184,46 @@
             this.toolStripSeparator2,
             this.exitToolStripMenuItem1});
             this.toolStripMenuItem1.Name = "toolStripMenuItem1";
-            this.toolStripMenuItem1.Size = new System.Drawing.Size(37, 20);
-            this.toolStripMenuItem1.Text = "File";
+            resources.ApplyResources(this.toolStripMenuItem1, "toolStripMenuItem1");
             // 
             // openFileToolStripMenuItem
             // 
-            this.openFileToolStripMenuItem.Image = ((System.Drawing.Image)(resources.GetObject("openFileToolStripMenuItem.Image")));
+            resources.ApplyResources(this.openFileToolStripMenuItem, "openFileToolStripMenuItem");
             this.openFileToolStripMenuItem.Name = "openFileToolStripMenuItem";
-            this.openFileToolStripMenuItem.ShortcutKeys = ((System.Windows.Forms.Keys)((System.Windows.Forms.Keys.Control | System.Windows.Forms.Keys.O)));
-            this.openFileToolStripMenuItem.Size = new System.Drawing.Size(208, 22);
-            this.openFileToolStripMenuItem.Text = "Open file";
             this.openFileToolStripMenuItem.Click += new System.EventHandler(this.openFileToolStripMenuItem_Click);
             // 
             // toolStripSeparator6
             // 
             this.toolStripSeparator6.Name = "toolStripSeparator6";
-            this.toolStripSeparator6.Size = new System.Drawing.Size(205, 6);
+            resources.ApplyResources(this.toolStripSeparator6, "toolStripSeparator6");
             // 
             // closeToolStripMenuItem1
             // 
-            this.closeToolStripMenuItem1.Enabled = false;
-            this.closeToolStripMenuItem1.Image = ((System.Drawing.Image)(resources.GetObject("closeToolStripMenuItem1.Image")));
+            resources.ApplyResources(this.closeToolStripMenuItem1, "closeToolStripMenuItem1");
             this.closeToolStripMenuItem1.Name = "closeToolStripMenuItem1";
-            this.closeToolStripMenuItem1.Size = new System.Drawing.Size(208, 22);
-            this.closeToolStripMenuItem1.Text = "Close page";
             this.closeToolStripMenuItem1.Click += new System.EventHandler(this.closeToolStripMenuItem1_Click_1);
             // 
             // closeAllToolStripMenuItem
             // 
-            this.closeAllToolStripMenuItem.Enabled = false;
+            resources.ApplyResources(this.closeAllToolStripMenuItem, "closeAllToolStripMenuItem");
             this.closeAllToolStripMenuItem.Name = "closeAllToolStripMenuItem";
-            this.closeAllToolStripMenuItem.Size = new System.Drawing.Size(208, 22);
-            this.closeAllToolStripMenuItem.Text = "Close All";
             this.closeAllToolStripMenuItem.Click += new System.EventHandler(this.closeAllToolStripMenuItem_Click);
             // 
             // closeAllWithoutActiveToolStripMenuItem
             // 
-            this.closeAllWithoutActiveToolStripMenuItem.Enabled = false;
+            resources.ApplyResources(this.closeAllWithoutActiveToolStripMenuItem, "closeAllWithoutActiveToolStripMenuItem");
             this.closeAllWithoutActiveToolStripMenuItem.Name = "closeAllWithoutActiveToolStripMenuItem";
-            this.closeAllWithoutActiveToolStripMenuItem.Size = new System.Drawing.Size(208, 22);
-            this.closeAllWithoutActiveToolStripMenuItem.Text = "Close All (Without active)";
             this.closeAllWithoutActiveToolStripMenuItem.Click += new System.EventHandler(this.closeAllWithoutActiveToolStripMenuItem_Click);
             // 
             // toolStripSeparator2
             // 
             this.toolStripSeparator2.Name = "toolStripSeparator2";
-            this.toolStripSeparator2.Size = new System.Drawing.Size(205, 6);
+            resources.ApplyResources(this.toolStripSeparator2, "toolStripSeparator2");
             // 
             // exitToolStripMenuItem1
             // 
-            this.exitToolStripMenuItem1.Image = ((System.Drawing.Image)(resources.GetObject("exitToolStripMenuItem1.Image")));
+            resources.ApplyResources(this.exitToolStripMenuItem1, "exitToolStripMenuItem1");
             this.exitToolStripMenuItem1.Name = "exitToolStripMenuItem1";
-            this.exitToolStripMenuItem1.ShortcutKeys = ((System.Windows.Forms.Keys)((System.Windows.Forms.Keys.Alt | System.Windows.Forms.Keys.F4)));
-            this.exitToolStripMenuItem1.Size = new System.Drawing.Size(208, 22);
-            this.exitToolStripMenuItem1.Text = "Exit";
             this.exitToolStripMenuItem1.Click += new System.EventHandler(this.exitToolStripMenuItem1_Click);
             // 
             // viewToolStripMenuItem
@@ -254,48 +236,34 @@
             this.ToolStripMenuItemUSM,
             this.grupyToolStripMenuItem});
             this.viewToolStripMenuItem.Name = "viewToolStripMenuItem";
-            this.viewToolStripMenuItem.Size = new System.Drawing.Size(44, 20);
-            this.viewToolStripMenuItem.Text = "View";
+            resources.ApplyResources(this.viewToolStripMenuItem, "viewToolStripMenuItem");
             // 
             // refreshToolStripMenuItem
             // 
-            this.refreshToolStripMenuItem.Image = ((System.Drawing.Image)(resources.GetObject("refreshToolStripMenuItem.Image")));
+            resources.ApplyResources(this.refreshToolStripMenuItem, "refreshToolStripMenuItem");
             this.refreshToolStripMenuItem.Name = "refreshToolStripMenuItem";
-            this.refreshToolStripMenuItem.Size = new System.Drawing.Size(147, 22);
-            this.refreshToolStripMenuItem.Text = "Refresh";
             this.refreshToolStripMenuItem.Click += new System.EventHandler(this.refreshToolStripMenuItem_Click);
             // 
             // toolStripSeparator11
             // 
             this.toolStripSeparator11.Name = "toolStripSeparator11";
-            this.toolStripSeparator11.Size = new System.Drawing.Size(144, 6);
+            resources.ApplyResources(this.toolStripSeparator11, "toolStripSeparator11");
             // 
             // toolStripMenuItemGeneral
             // 
-            this.toolStripMenuItemGeneral.Enabled = false;
-            this.toolStripMenuItemGeneral.Image = ((System.Drawing.Image)(resources.GetObject("toolStripMenuItemGeneral.Image")));
+            resources.ApplyResources(this.toolStripMenuItemGeneral, "toolStripMenuItemGeneral");
             this.toolStripMenuItemGeneral.Name = "toolStripMenuItemGeneral";
-            this.toolStripMenuItemGeneral.Size = new System.Drawing.Size(147, 22);
-            this.toolStripMenuItemGeneral.Text = "Show column";
             // 
             // ToolStripMenuItemUplook
             // 
-            this.ToolStripMenuItemUplook.Enabled = false;
-            this.ToolStripMenuItemUplook.Image = ((System.Drawing.Image)(resources.GetObject("ToolStripMenuItemUplook.Image")));
+            resources.ApplyResources(this.ToolStripMenuItemUplook, "ToolStripMenuItemUplook");
             this.ToolStripMenuItemUplook.Name = "ToolStripMenuItemUplook";
-            this.ToolStripMenuItemUplook.Size = new System.Drawing.Size(147, 22);
-            this.ToolStripMenuItemUplook.Text = "Show column";
-            this.ToolStripMenuItemUplook.Visible = false;
             this.ToolStripMenuItemUplook.DropDownItemClicked += new System.Windows.Forms.ToolStripItemClickedEventHandler(this.ToolStripMenuItemUplook_DropDownItemClicked);
             // 
             // ToolStripMenuItemUSM
             // 
-            this.ToolStripMenuItemUSM.Enabled = false;
-            this.ToolStripMenuItemUSM.Image = ((System.Drawing.Image)(resources.GetObject("ToolStripMenuItemUSM.Image")));
+            resources.ApplyResources(this.ToolStripMenuItemUSM, "ToolStripMenuItemUSM");
             this.ToolStripMenuItemUSM.Name = "ToolStripMenuItemUSM";
-            this.ToolStripMenuItemUSM.Size = new System.Drawing.Size(147, 22);
-            this.ToolStripMenuItemUSM.Text = "Show column";
-            this.ToolStripMenuItemUSM.Visible = false;
             this.ToolStripMenuItemUSM.DropDownItemClicked += new System.Windows.Forms.ToolStripItemClickedEventHandler(this.ToolStripMenuItemUSM_DropDownItemClicked);
             // 
             // grupyToolStripMenuItem
@@ -303,28 +271,19 @@
             this.grupyToolStripMenuItem.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
             this.zwinToolStripMenuItem,
             this.rozwinWszystkieToolStripMenuItem});
-            this.grupyToolStripMenuItem.Enabled = false;
-            this.grupyToolStripMenuItem.Image = ((System.Drawing.Image)(resources.GetObject("grupyToolStripMenuItem.Image")));
+            resources.ApplyResources(this.grupyToolStripMenuItem, "grupyToolStripMenuItem");
             this.grupyToolStripMenuItem.Name = "grupyToolStripMenuItem";
-            this.grupyToolStripMenuItem.Size = new System.Drawing.Size(147, 22);
-            this.grupyToolStripMenuItem.Text = "Groups";
             // 
             // zwinToolStripMenuItem
             // 
-            this.zwinToolStripMenuItem.Enabled = false;
-            this.zwinToolStripMenuItem.Image = ((System.Drawing.Image)(resources.GetObject("zwinToolStripMenuItem.Image")));
+            resources.ApplyResources(this.zwinToolStripMenuItem, "zwinToolStripMenuItem");
             this.zwinToolStripMenuItem.Name = "zwinToolStripMenuItem";
-            this.zwinToolStripMenuItem.Size = new System.Drawing.Size(141, 22);
-            this.zwinToolStripMenuItem.Text = "Collapsed all";
             this.zwinToolStripMenuItem.Click += new System.EventHandler(this.zwinToolStripMenuItem_Click);
             // 
             // rozwinWszystkieToolStripMenuItem
             // 
-            this.rozwinWszystkieToolStripMenuItem.Enabled = false;
-            this.rozwinWszystkieToolStripMenuItem.Image = ((System.Drawing.Image)(resources.GetObject("rozwinWszystkieToolStripMenuItem.Image")));
+            resources.ApplyResources(this.rozwinWszystkieToolStripMenuItem, "rozwinWszystkieToolStripMenuItem");
             this.rozwinWszystkieToolStripMenuItem.Name = "rozwinWszystkieToolStripMenuItem";
-            this.rozwinWszystkieToolStripMenuItem.Size = new System.Drawing.Size(141, 22);
-            this.rozwinWszystkieToolStripMenuItem.Text = "Normal all";
             this.rozwinWszystkieToolStripMenuItem.Click += new System.EventHandler(this.rozwinWszystkieToolStripMenuItem_Click);
             // 
             // toolsToolStripMenuItem
@@ -332,45 +291,38 @@
             this.toolsToolStripMenuItem.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
             this.analizeToolStripMenuItem2});
             this.toolsToolStripMenuItem.Name = "toolsToolStripMenuItem";
-            this.toolsToolStripMenuItem.Size = new System.Drawing.Size(46, 20);
-            this.toolsToolStripMenuItem.Text = "Tools";
+            resources.ApplyResources(this.toolsToolStripMenuItem, "toolsToolStripMenuItem");
             // 
             // analizeToolStripMenuItem2
             // 
-            this.analizeToolStripMenuItem2.Image = ((System.Drawing.Image)(resources.GetObject("analizeToolStripMenuItem2.Image")));
+            resources.ApplyResources(this.analizeToolStripMenuItem2, "analizeToolStripMenuItem2");
             this.analizeToolStripMenuItem2.Name = "analizeToolStripMenuItem2";
-            this.analizeToolStripMenuItem2.Size = new System.Drawing.Size(116, 22);
-            this.analizeToolStripMenuItem2.Text = "Options";
             this.analizeToolStripMenuItem2.Click += new System.EventHandler(this.analizeToolStripMenuItem2_Click);
             // 
             // aboutToolStripMenuItem1
             // 
             this.aboutToolStripMenuItem1.Name = "aboutToolStripMenuItem1";
-            this.aboutToolStripMenuItem1.Size = new System.Drawing.Size(52, 20);
-            this.aboutToolStripMenuItem1.Text = "About";
+            resources.ApplyResources(this.aboutToolStripMenuItem1, "aboutToolStripMenuItem1");
             // 
             // fileToolStripMenuItem
             // 
             this.fileToolStripMenuItem.Name = "fileToolStripMenuItem";
-            this.fileToolStripMenuItem.Size = new System.Drawing.Size(37, 20);
-            this.fileToolStripMenuItem.Text = "File";
+            resources.ApplyResources(this.fileToolStripMenuItem, "fileToolStripMenuItem");
             // 
             // closeToolStripMenuItem
             // 
             this.closeToolStripMenuItem.Name = "closeToolStripMenuItem";
-            this.closeToolStripMenuItem.Size = new System.Drawing.Size(152, 22);
-            this.closeToolStripMenuItem.Text = "Close";
+            resources.ApplyResources(this.closeToolStripMenuItem, "closeToolStripMenuItem");
             // 
             // toolStripSeparator1
             // 
             this.toolStripSeparator1.Name = "toolStripSeparator1";
-            this.toolStripSeparator1.Size = new System.Drawing.Size(149, 6);
+            resources.ApplyResources(this.toolStripSeparator1, "toolStripSeparator1");
             // 
             // exitToolStripMenuItem
             // 
             this.exitToolStripMenuItem.Name = "exitToolStripMenuItem";
-            this.exitToolStripMenuItem.Size = new System.Drawing.Size(152, 22);
-            this.exitToolStripMenuItem.Text = "Exit";
+            resources.ApplyResources(this.exitToolStripMenuItem, "exitToolStripMenuItem");
             this.exitToolStripMenuItem.Click += new System.EventHandler(this.exitToolStripMenuItem_Click);
             // 
             // analizeToolStripMenuItem
@@ -378,61 +330,45 @@
             this.analizeToolStripMenuItem.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
             this.analizeToolStripMenuItem1});
             this.analizeToolStripMenuItem.Name = "analizeToolStripMenuItem";
-            this.analizeToolStripMenuItem.Size = new System.Drawing.Size(48, 20);
-            this.analizeToolStripMenuItem.Text = "Tools";
+            resources.ApplyResources(this.analizeToolStripMenuItem, "analizeToolStripMenuItem");
             // 
             // analizeToolStripMenuItem1
             // 
             this.analizeToolStripMenuItem1.Name = "analizeToolStripMenuItem1";
-            this.analizeToolStripMenuItem1.Size = new System.Drawing.Size(112, 22);
-            this.analizeToolStripMenuItem1.Text = "Analize";
+            resources.ApplyResources(this.analizeToolStripMenuItem1, "analizeToolStripMenuItem1");
             // 
             // aboutToolStripMenuItem
             // 
             this.aboutToolStripMenuItem.Name = "aboutToolStripMenuItem";
-            this.aboutToolStripMenuItem.Size = new System.Drawing.Size(52, 20);
-            this.aboutToolStripMenuItem.Text = "About";
+            resources.ApplyResources(this.aboutToolStripMenuItem, "aboutToolStripMenuItem");
             // 
             // toolStripStatusLabel1
             // 
             this.toolStripStatusLabel1.Name = "toolStripStatusLabel1";
-            this.toolStripStatusLabel1.Size = new System.Drawing.Size(42, 17);
-            this.toolStripStatusLabel1.Text = "Status:";
+            resources.ApplyResources(this.toolStripStatusLabel1, "toolStripStatusLabel1");
             // 
             // toolStripStatusLabel
             // 
             this.toolStripStatusLabel.Name = "toolStripStatusLabel";
-            this.toolStripStatusLabel.Size = new System.Drawing.Size(0, 17);
+            resources.ApplyResources(this.toolStripStatusLabel, "toolStripStatusLabel");
             // 
             // openFileDialog
             // 
             this.openFileDialog.FileName = "openFileDialog";
-            this.openFileDialog.Filter = "Log files (*.log)|*.log|Text files (*.txt)|*.txt|All files (*.*)|*.*";
-            this.openFileDialog.Title = "Please select log source file";
+            resources.ApplyResources(this.openFileDialog, "openFileDialog");
             // 
             // tableLayoutPanelMain
             // 
-            this.tableLayoutPanelMain.ColumnCount = 1;
-            this.tableLayoutPanelMain.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 100F));
+            resources.ApplyResources(this.tableLayoutPanelMain, "tableLayoutPanelMain");
             this.tableLayoutPanelMain.Controls.Add(this.menuMainStrip, 0, 0);
             this.tableLayoutPanelMain.Controls.Add(this.toolStripMain, 0, 1);
             this.tableLayoutPanelMain.Controls.Add(this.tableLayoutPanelFiles, 0, 2);
             this.tableLayoutPanelMain.Controls.Add(this.toolStripButton, 0, 3);
-            this.tableLayoutPanelMain.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.tableLayoutPanelMain.Location = new System.Drawing.Point(0, 0);
-            this.tableLayoutPanelMain.Margin = new System.Windows.Forms.Padding(4, 3, 4, 3);
             this.tableLayoutPanelMain.Name = "tableLayoutPanelMain";
-            this.tableLayoutPanelMain.RowCount = 4;
-            this.tableLayoutPanelMain.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 28F));
-            this.tableLayoutPanelMain.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 58F));
-            this.tableLayoutPanelMain.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 100F));
-            this.tableLayoutPanelMain.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 28F));
-            this.tableLayoutPanelMain.Size = new System.Drawing.Size(1176, 842);
-            this.tableLayoutPanelMain.TabIndex = 3;
             // 
             // toolStripMain
             // 
-            this.toolStripMain.Dock = System.Windows.Forms.DockStyle.Fill;
+            resources.ApplyResources(this.toolStripMain, "toolStripMain");
             this.toolStripMain.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
             this.toolStripButton2,
             this.toolStripSeparator4,
@@ -445,131 +381,86 @@
             this.toolStripSeparator13,
             this.toolStripTextBox,
             this.toolStripLabel1});
-            this.toolStripMain.Location = new System.Drawing.Point(4, 28);
-            this.toolStripMain.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
             this.toolStripMain.Name = "toolStripMain";
-            this.toolStripMain.Size = new System.Drawing.Size(1168, 58);
-            this.toolStripMain.TabIndex = 3;
-            this.toolStripMain.Text = "toolStripMain";
             // 
             // toolStripButton2
             // 
-            this.toolStripButton2.Image = ((System.Drawing.Image)(resources.GetObject("toolStripButton2.Image")));
-            this.toolStripButton2.ImageTransparentColor = System.Drawing.Color.Magenta;
+            resources.ApplyResources(this.toolStripButton2, "toolStripButton2");
             this.toolStripButton2.Name = "toolStripButton2";
-            this.toolStripButton2.Size = new System.Drawing.Size(40, 55);
             this.toolStripButton2.Tag = "";
-            this.toolStripButton2.Text = "Open";
-            this.toolStripButton2.TextImageRelation = System.Windows.Forms.TextImageRelation.ImageAboveText;
             this.toolStripButton2.Click += new System.EventHandler(this.toolStripButton2_Click);
             // 
             // toolStripSeparator4
             // 
             this.toolStripSeparator4.Name = "toolStripSeparator4";
-            this.toolStripSeparator4.Size = new System.Drawing.Size(6, 58);
+            resources.ApplyResources(this.toolStripSeparator4, "toolStripSeparator4");
             // 
             // toolStripButtonCollapsedAll
             // 
-            this.toolStripButtonCollapsedAll.Enabled = false;
-            this.toolStripButtonCollapsedAll.Image = ((System.Drawing.Image)(resources.GetObject("toolStripButtonCollapsedAll.Image")));
-            this.toolStripButtonCollapsedAll.ImageTransparentColor = System.Drawing.Color.Magenta;
+            resources.ApplyResources(this.toolStripButtonCollapsedAll, "toolStripButtonCollapsedAll");
             this.toolStripButtonCollapsedAll.Name = "toolStripButtonCollapsedAll";
-            this.toolStripButtonCollapsedAll.Size = new System.Drawing.Size(63, 55);
-            this.toolStripButtonCollapsedAll.Text = "Collapsed";
-            this.toolStripButtonCollapsedAll.TextImageRelation = System.Windows.Forms.TextImageRelation.ImageAboveText;
             this.toolStripButtonCollapsedAll.Click += new System.EventHandler(this.toolStripButtonCollapsedAll_Click);
             // 
             // toolStripButtonNormalAll
             // 
-            this.toolStripButtonNormalAll.Enabled = false;
-            this.toolStripButtonNormalAll.Image = ((System.Drawing.Image)(resources.GetObject("toolStripButtonNormalAll.Image")));
-            this.toolStripButtonNormalAll.ImageTransparentColor = System.Drawing.Color.Magenta;
+            resources.ApplyResources(this.toolStripButtonNormalAll, "toolStripButtonNormalAll");
             this.toolStripButtonNormalAll.Name = "toolStripButtonNormalAll";
-            this.toolStripButtonNormalAll.Size = new System.Drawing.Size(51, 55);
-            this.toolStripButtonNormalAll.Text = "Normal";
-            this.toolStripButtonNormalAll.TextImageRelation = System.Windows.Forms.TextImageRelation.ImageAboveText;
             this.toolStripButtonNormalAll.Click += new System.EventHandler(this.toolStripButtonNormalAll_Click);
             // 
             // toolStripSeparator3
             // 
             this.toolStripSeparator3.Name = "toolStripSeparator3";
-            this.toolStripSeparator3.Size = new System.Drawing.Size(6, 58);
+            resources.ApplyResources(this.toolStripSeparator3, "toolStripSeparator3");
             // 
             // toolStripButtonClose
             // 
-            this.toolStripButtonClose.Enabled = false;
-            this.toolStripButtonClose.Image = ((System.Drawing.Image)(resources.GetObject("toolStripButtonClose.Image")));
-            this.toolStripButtonClose.ImageTransparentColor = System.Drawing.Color.Magenta;
+            resources.ApplyResources(this.toolStripButtonClose, "toolStripButtonClose");
             this.toolStripButtonClose.Name = "toolStripButtonClose";
-            this.toolStripButtonClose.Size = new System.Drawing.Size(40, 55);
-            this.toolStripButtonClose.Text = "Close";
-            this.toolStripButtonClose.TextImageRelation = System.Windows.Forms.TextImageRelation.ImageAboveText;
             this.toolStripButtonClose.Click += new System.EventHandler(this.toolStripButtonClose_Click);
             // 
             // toolStripSeparator5
             // 
             this.toolStripSeparator5.Name = "toolStripSeparator5";
-            this.toolStripSeparator5.Size = new System.Drawing.Size(6, 58);
+            resources.ApplyResources(this.toolStripSeparator5, "toolStripSeparator5");
             // 
             // toolStripButton3
             // 
-            this.toolStripButton3.Image = ((System.Drawing.Image)(resources.GetObject("toolStripButton3.Image")));
-            this.toolStripButton3.ImageTransparentColor = System.Drawing.Color.Magenta;
+            resources.ApplyResources(this.toolStripButton3, "toolStripButton3");
             this.toolStripButton3.Name = "toolStripButton3";
-            this.toolStripButton3.Size = new System.Drawing.Size(30, 55);
-            this.toolStripButton3.Text = "Exit";
-            this.toolStripButton3.TextImageRelation = System.Windows.Forms.TextImageRelation.ImageAboveText;
             this.toolStripButton3.Click += new System.EventHandler(this.toolStripButton3_Click);
             // 
             // toolStripSeparator13
             // 
             this.toolStripSeparator13.Name = "toolStripSeparator13";
-            this.toolStripSeparator13.Size = new System.Drawing.Size(6, 58);
+            resources.ApplyResources(this.toolStripSeparator13, "toolStripSeparator13");
             // 
             // toolStripTextBox
             // 
             this.toolStripTextBox.Alignment = System.Windows.Forms.ToolStripItemAlignment.Right;
-            this.toolStripTextBox.Font = new System.Drawing.Font("Segoe UI", 9F, System.Drawing.FontStyle.Italic, System.Drawing.GraphicsUnit.Point);
+            resources.ApplyResources(this.toolStripTextBox, "toolStripTextBox");
             this.toolStripTextBox.Margin = new System.Windows.Forms.Padding(1, 0, 10, 0);
             this.toolStripTextBox.Name = "toolStripTextBox";
-            this.toolStripTextBox.Size = new System.Drawing.Size(233, 58);
             this.toolStripTextBox.TextChanged += new System.EventHandler(this.toolStripTextBox1_TextChanged);
             // 
             // toolStripLabel1
             // 
             this.toolStripLabel1.Alignment = System.Windows.Forms.ToolStripItemAlignment.Right;
             this.toolStripLabel1.Name = "toolStripLabel1";
-            this.toolStripLabel1.Size = new System.Drawing.Size(59, 55);
-            this.toolStripLabel1.Text = "Wyszukaj:";
+            resources.ApplyResources(this.toolStripLabel1, "toolStripLabel1");
             // 
             // tableLayoutPanelFiles
             // 
-            this.tableLayoutPanelFiles.ColumnCount = 2;
-            this.tableLayoutPanelFiles.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Absolute, 0F));
-            this.tableLayoutPanelFiles.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 100F));
+            resources.ApplyResources(this.tableLayoutPanelFiles, "tableLayoutPanelFiles");
             this.tableLayoutPanelFiles.Controls.Add(this.tabControlMain, 1, 0);
-            this.tableLayoutPanelFiles.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.tableLayoutPanelFiles.Location = new System.Drawing.Point(4, 89);
-            this.tableLayoutPanelFiles.Margin = new System.Windows.Forms.Padding(4, 3, 4, 3);
             this.tableLayoutPanelFiles.Name = "tableLayoutPanelFiles";
-            this.tableLayoutPanelFiles.RowCount = 1;
-            this.tableLayoutPanelFiles.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 100F));
-            this.tableLayoutPanelFiles.Size = new System.Drawing.Size(1168, 722);
-            this.tableLayoutPanelFiles.TabIndex = 4;
             // 
             // tabControlMain
             // 
             this.tabControlMain.Controls.Add(this.tabPageInfo);
-            this.tabControlMain.Dock = System.Windows.Forms.DockStyle.Fill;
+            resources.ApplyResources(this.tabControlMain, "tabControlMain");
             this.tabControlMain.DrawMode = System.Windows.Forms.TabDrawMode.OwnerDrawFixed;
-            this.tabControlMain.ItemSize = new System.Drawing.Size(88, 24);
-            this.tabControlMain.Location = new System.Drawing.Point(4, 3);
-            this.tabControlMain.Margin = new System.Windows.Forms.Padding(4, 3, 4, 3);
             this.tabControlMain.Name = "tabControlMain";
             this.tabControlMain.SelectedIndex = 0;
-            this.tabControlMain.ShowToolTips = true;
-            this.tabControlMain.Size = new System.Drawing.Size(1160, 716);
-            this.tabControlMain.TabIndex = 2;
             this.tabControlMain.SelectedIndexChanged += new System.EventHandler(this.tabControlMain_SelectedIndexChanged);
             this.tabControlMain.MouseUp += new System.Windows.Forms.MouseEventHandler(this.tabControlMain_MouseUp);
             // 
@@ -577,25 +468,16 @@
             // 
             this.tabPageInfo.BackColor = System.Drawing.Color.White;
             this.tabPageInfo.Controls.Add(this.splitContainerInfo);
-            this.tabPageInfo.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point);
-            this.tabPageInfo.Location = new System.Drawing.Point(4, 28);
-            this.tabPageInfo.Margin = new System.Windows.Forms.Padding(4, 3, 4, 3);
+            resources.ApplyResources(this.tabPageInfo, "tabPageInfo");
             this.tabPageInfo.Name = "tabPageInfo";
-            this.tabPageInfo.Size = new System.Drawing.Size(1152, 684);
-            this.tabPageInfo.TabIndex = 0;
             this.tabPageInfo.Tag = "Info";
-            this.tabPageInfo.Text = "      Information  ";
             // 
             // splitContainerInfo
             // 
             this.splitContainerInfo.Cursor = System.Windows.Forms.Cursors.HSplit;
-            this.splitContainerInfo.Dock = System.Windows.Forms.DockStyle.Fill;
+            resources.ApplyResources(this.splitContainerInfo, "splitContainerInfo");
             this.splitContainerInfo.FixedPanel = System.Windows.Forms.FixedPanel.Panel1;
-            this.splitContainerInfo.IsSplitterFixed = true;
-            this.splitContainerInfo.Location = new System.Drawing.Point(0, 0);
-            this.splitContainerInfo.Margin = new System.Windows.Forms.Padding(4, 3, 4, 3);
             this.splitContainerInfo.Name = "splitContainerInfo";
-            this.splitContainerInfo.Orientation = System.Windows.Forms.Orientation.Horizontal;
             // 
             // splitContainerInfo.Panel1
             // 
@@ -608,10 +490,6 @@
             // splitContainerInfo.Panel2
             // 
             this.splitContainerInfo.Panel2.Controls.Add(this.listViewFiles);
-            this.splitContainerInfo.Size = new System.Drawing.Size(1152, 684);
-            this.splitContainerInfo.SplitterDistance = 250;
-            this.splitContainerInfo.SplitterWidth = 5;
-            this.splitContainerInfo.TabIndex = 0;
             // 
             // groupBoxOptions
             // 
@@ -619,58 +497,34 @@
             this.groupBoxOptions.Controls.Add(this.checkBoxUser);
             this.groupBoxOptions.Controls.Add(this.checkBoxUSM);
             this.groupBoxOptions.Controls.Add(this.checkBoxLogs);
-            this.groupBoxOptions.Font = new System.Drawing.Font("Arial", 9F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point);
-            this.groupBoxOptions.Location = new System.Drawing.Point(589, 129);
-            this.groupBoxOptions.Margin = new System.Windows.Forms.Padding(4, 3, 4, 3);
+            resources.ApplyResources(this.groupBoxOptions, "groupBoxOptions");
             this.groupBoxOptions.Name = "groupBoxOptions";
-            this.groupBoxOptions.Padding = new System.Windows.Forms.Padding(4, 3, 4, 3);
-            this.groupBoxOptions.Size = new System.Drawing.Size(560, 115);
-            this.groupBoxOptions.TabIndex = 7;
             this.groupBoxOptions.TabStop = false;
-            this.groupBoxOptions.Text = "Opcje widoku";
             // 
             // checkBoxUser
             // 
-            this.checkBoxUser.AutoSize = true;
+            resources.ApplyResources(this.checkBoxUser, "checkBoxUser");
             this.checkBoxUser.Checked = true;
             this.checkBoxUser.CheckState = System.Windows.Forms.CheckState.Checked;
-            this.checkBoxUser.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point);
-            this.checkBoxUser.Location = new System.Drawing.Point(10, 85);
-            this.checkBoxUser.Margin = new System.Windows.Forms.Padding(4, 3, 4, 3);
             this.checkBoxUser.Name = "checkBoxUser";
-            this.checkBoxUser.Size = new System.Drawing.Size(91, 17);
-            this.checkBoxUser.TabIndex = 8;
-            this.checkBoxUser.Text = "Katalog usera";
             this.checkBoxUser.UseVisualStyleBackColor = true;
             this.checkBoxUser.CheckedChanged += new System.EventHandler(this.checkBoxUser_CheckedChanged);
             // 
             // checkBoxUSM
             // 
-            this.checkBoxUSM.AutoSize = true;
+            resources.ApplyResources(this.checkBoxUSM, "checkBoxUSM");
             this.checkBoxUSM.Checked = true;
             this.checkBoxUSM.CheckState = System.Windows.Forms.CheckState.Checked;
-            this.checkBoxUSM.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point);
-            this.checkBoxUSM.Location = new System.Drawing.Point(10, 55);
-            this.checkBoxUSM.Margin = new System.Windows.Forms.Padding(4, 3, 4, 3);
             this.checkBoxUSM.Name = "checkBoxUSM";
-            this.checkBoxUSM.Size = new System.Drawing.Size(130, 17);
-            this.checkBoxUSM.TabIndex = 7;
-            this.checkBoxUSM.Text = "uplook system monitor";
             this.checkBoxUSM.UseVisualStyleBackColor = true;
             this.checkBoxUSM.CheckedChanged += new System.EventHandler(this.checkBoxUSM_CheckedChanged);
             // 
             // checkBoxLogs
             // 
-            this.checkBoxLogs.AutoSize = true;
+            resources.ApplyResources(this.checkBoxLogs, "checkBoxLogs");
             this.checkBoxLogs.Checked = true;
             this.checkBoxLogs.CheckState = System.Windows.Forms.CheckState.Checked;
-            this.checkBoxLogs.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point);
-            this.checkBoxLogs.Location = new System.Drawing.Point(10, 27);
-            this.checkBoxLogs.Margin = new System.Windows.Forms.Padding(4, 3, 4, 3);
             this.checkBoxLogs.Name = "checkBoxLogs";
-            this.checkBoxLogs.Size = new System.Drawing.Size(49, 17);
-            this.checkBoxLogs.TabIndex = 6;
-            this.checkBoxLogs.Text = "Logs";
             this.checkBoxLogs.UseVisualStyleBackColor = true;
             this.checkBoxLogs.CheckedChanged += new System.EventHandler(this.checkBoxLogs_CheckedChanged);
             // 
@@ -683,81 +537,39 @@
             this.groupBoxUser.Controls.Add(this.labelFilesSizeUser);
             this.groupBoxUser.Controls.Add(this.labelFilesSizeValueUser);
             this.groupBoxUser.Controls.Add(this.labelUserPathValue);
-            this.groupBoxUser.Font = new System.Drawing.Font("Arial", 9F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point);
-            this.groupBoxUser.Location = new System.Drawing.Point(4, 126);
-            this.groupBoxUser.Margin = new System.Windows.Forms.Padding(4, 3, 4, 3);
+            resources.ApplyResources(this.groupBoxUser, "groupBoxUser");
             this.groupBoxUser.Name = "groupBoxUser";
-            this.groupBoxUser.Padding = new System.Windows.Forms.Padding(4, 3, 4, 3);
-            this.groupBoxUser.Size = new System.Drawing.Size(560, 118);
-            this.groupBoxUser.TabIndex = 6;
             this.groupBoxUser.TabStop = false;
-            this.groupBoxUser.Text = "Katalog usera";
             // 
             // labelFilesCountValueUser
             // 
-            this.labelFilesCountValueUser.AutoSize = true;
-            this.labelFilesCountValueUser.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point);
-            this.labelFilesCountValueUser.Location = new System.Drawing.Point(99, 89);
-            this.labelFilesCountValueUser.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
+            resources.ApplyResources(this.labelFilesCountValueUser, "labelFilesCountValueUser");
             this.labelFilesCountValueUser.Name = "labelFilesCountValueUser";
-            this.labelFilesCountValueUser.Size = new System.Drawing.Size(13, 13);
-            this.labelFilesCountValueUser.TabIndex = 5;
-            this.labelFilesCountValueUser.Text = "0";
             // 
             // labelFilesCountUser
             // 
-            this.labelFilesCountUser.AutoSize = true;
-            this.labelFilesCountUser.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point);
-            this.labelFilesCountUser.Location = new System.Drawing.Point(7, 89);
-            this.labelFilesCountUser.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
+            resources.ApplyResources(this.labelFilesCountUser, "labelFilesCountUser");
             this.labelFilesCountUser.Name = "labelFilesCountUser";
-            this.labelFilesCountUser.Size = new System.Drawing.Size(48, 13);
-            this.labelFilesCountUser.TabIndex = 4;
-            this.labelFilesCountUser.Text = "Zawiera:";
             // 
             // label3
             // 
-            this.label3.AutoSize = true;
-            this.label3.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point);
-            this.label3.Location = new System.Drawing.Point(7, 30);
-            this.label3.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
+            resources.ApplyResources(this.label3, "label3");
             this.label3.Name = "label3";
-            this.label3.Size = new System.Drawing.Size(63, 13);
-            this.label3.TabIndex = 0;
-            this.label3.Text = "Lokalizacja:";
             // 
             // labelFilesSizeUser
             // 
-            this.labelFilesSizeUser.AutoSize = true;
-            this.labelFilesSizeUser.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point);
-            this.labelFilesSizeUser.Location = new System.Drawing.Point(7, 59);
-            this.labelFilesSizeUser.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
+            resources.ApplyResources(this.labelFilesSizeUser, "labelFilesSizeUser");
             this.labelFilesSizeUser.Name = "labelFilesSizeUser";
-            this.labelFilesSizeUser.Size = new System.Drawing.Size(48, 13);
-            this.labelFilesSizeUser.TabIndex = 2;
-            this.labelFilesSizeUser.Text = "Rozmiar:";
             // 
             // labelFilesSizeValueUser
             // 
-            this.labelFilesSizeValueUser.AutoSize = true;
-            this.labelFilesSizeValueUser.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point);
-            this.labelFilesSizeValueUser.Location = new System.Drawing.Point(99, 59);
-            this.labelFilesSizeValueUser.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
+            resources.ApplyResources(this.labelFilesSizeValueUser, "labelFilesSizeValueUser");
             this.labelFilesSizeValueUser.Name = "labelFilesSizeValueUser";
-            this.labelFilesSizeValueUser.Size = new System.Drawing.Size(13, 13);
-            this.labelFilesSizeValueUser.TabIndex = 3;
-            this.labelFilesSizeValueUser.Text = "0";
             // 
             // labelUserPathValue
             // 
-            this.labelUserPathValue.AutoSize = true;
-            this.labelUserPathValue.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point);
-            this.labelUserPathValue.Location = new System.Drawing.Point(99, 30);
-            this.labelUserPathValue.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
+            resources.ApplyResources(this.labelUserPathValue, "labelUserPathValue");
             this.labelUserPathValue.Name = "labelUserPathValue";
-            this.labelUserPathValue.Size = new System.Drawing.Size(73, 13);
-            this.labelUserPathValue.TabIndex = 1;
-            this.labelUserPathValue.Text = "Brak katalogu";
             // 
             // groupBoxUSM
             // 
@@ -768,81 +580,39 @@
             this.groupBoxUSM.Controls.Add(this.labelFilesSizeUSM);
             this.groupBoxUSM.Controls.Add(this.labelFilesSizeValueUSM);
             this.groupBoxUSM.Controls.Add(this.labelLogsPathValueUSM);
-            this.groupBoxUSM.Font = new System.Drawing.Font("Arial", 9F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point);
-            this.groupBoxUSM.Location = new System.Drawing.Point(589, 3);
-            this.groupBoxUSM.Margin = new System.Windows.Forms.Padding(4, 3, 4, 3);
+            resources.ApplyResources(this.groupBoxUSM, "groupBoxUSM");
             this.groupBoxUSM.Name = "groupBoxUSM";
-            this.groupBoxUSM.Padding = new System.Windows.Forms.Padding(4, 3, 4, 3);
-            this.groupBoxUSM.Size = new System.Drawing.Size(560, 115);
-            this.groupBoxUSM.TabIndex = 6;
             this.groupBoxUSM.TabStop = false;
-            this.groupBoxUSM.Text = "uplook system monitor";
             // 
             // labelFilesCountValueUSM
             // 
-            this.labelFilesCountValueUSM.AutoSize = true;
-            this.labelFilesCountValueUSM.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point);
-            this.labelFilesCountValueUSM.Location = new System.Drawing.Point(99, 90);
-            this.labelFilesCountValueUSM.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
+            resources.ApplyResources(this.labelFilesCountValueUSM, "labelFilesCountValueUSM");
             this.labelFilesCountValueUSM.Name = "labelFilesCountValueUSM";
-            this.labelFilesCountValueUSM.Size = new System.Drawing.Size(13, 13);
-            this.labelFilesCountValueUSM.TabIndex = 5;
-            this.labelFilesCountValueUSM.Text = "0";
             // 
             // labelFilesCountUSM
             // 
-            this.labelFilesCountUSM.AutoSize = true;
-            this.labelFilesCountUSM.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point);
-            this.labelFilesCountUSM.Location = new System.Drawing.Point(7, 90);
-            this.labelFilesCountUSM.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
+            resources.ApplyResources(this.labelFilesCountUSM, "labelFilesCountUSM");
             this.labelFilesCountUSM.Name = "labelFilesCountUSM";
-            this.labelFilesCountUSM.Size = new System.Drawing.Size(48, 13);
-            this.labelFilesCountUSM.TabIndex = 4;
-            this.labelFilesCountUSM.Text = "Zawiera:";
             // 
             // labelLogsPathUSM
             // 
-            this.labelLogsPathUSM.AutoSize = true;
-            this.labelLogsPathUSM.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point);
-            this.labelLogsPathUSM.Location = new System.Drawing.Point(7, 30);
-            this.labelLogsPathUSM.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
+            resources.ApplyResources(this.labelLogsPathUSM, "labelLogsPathUSM");
             this.labelLogsPathUSM.Name = "labelLogsPathUSM";
-            this.labelLogsPathUSM.Size = new System.Drawing.Size(63, 13);
-            this.labelLogsPathUSM.TabIndex = 0;
-            this.labelLogsPathUSM.Text = "Lokalizacja:";
             // 
             // labelFilesSizeUSM
             // 
-            this.labelFilesSizeUSM.AutoSize = true;
-            this.labelFilesSizeUSM.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point);
-            this.labelFilesSizeUSM.Location = new System.Drawing.Point(7, 60);
-            this.labelFilesSizeUSM.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
+            resources.ApplyResources(this.labelFilesSizeUSM, "labelFilesSizeUSM");
             this.labelFilesSizeUSM.Name = "labelFilesSizeUSM";
-            this.labelFilesSizeUSM.Size = new System.Drawing.Size(48, 13);
-            this.labelFilesSizeUSM.TabIndex = 2;
-            this.labelFilesSizeUSM.Text = "Rozmiar:";
             // 
             // labelFilesSizeValueUSM
             // 
-            this.labelFilesSizeValueUSM.AutoSize = true;
-            this.labelFilesSizeValueUSM.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point);
-            this.labelFilesSizeValueUSM.Location = new System.Drawing.Point(99, 60);
-            this.labelFilesSizeValueUSM.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
+            resources.ApplyResources(this.labelFilesSizeValueUSM, "labelFilesSizeValueUSM");
             this.labelFilesSizeValueUSM.Name = "labelFilesSizeValueUSM";
-            this.labelFilesSizeValueUSM.Size = new System.Drawing.Size(13, 13);
-            this.labelFilesSizeValueUSM.TabIndex = 3;
-            this.labelFilesSizeValueUSM.Text = "0";
             // 
             // labelLogsPathValueUSM
             // 
-            this.labelLogsPathValueUSM.AutoSize = true;
-            this.labelLogsPathValueUSM.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point);
-            this.labelLogsPathValueUSM.Location = new System.Drawing.Point(99, 30);
-            this.labelLogsPathValueUSM.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
+            resources.ApplyResources(this.labelLogsPathValueUSM, "labelLogsPathValueUSM");
             this.labelLogsPathValueUSM.Name = "labelLogsPathValueUSM";
-            this.labelLogsPathValueUSM.Size = new System.Drawing.Size(73, 13);
-            this.labelLogsPathValueUSM.TabIndex = 1;
-            this.labelLogsPathValueUSM.Text = "Brak katalogu";
             // 
             // groupBoxCatalogUplook
             // 
@@ -853,81 +623,39 @@
             this.groupBoxCatalogUplook.Controls.Add(this.labelFilesSize);
             this.groupBoxCatalogUplook.Controls.Add(this.labelFilesSizeValue);
             this.groupBoxCatalogUplook.Controls.Add(this.labelLogsPathValue);
-            this.groupBoxCatalogUplook.Font = new System.Drawing.Font("Arial", 9F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point);
-            this.groupBoxCatalogUplook.Location = new System.Drawing.Point(4, 3);
-            this.groupBoxCatalogUplook.Margin = new System.Windows.Forms.Padding(4, 3, 4, 3);
+            resources.ApplyResources(this.groupBoxCatalogUplook, "groupBoxCatalogUplook");
             this.groupBoxCatalogUplook.Name = "groupBoxCatalogUplook";
-            this.groupBoxCatalogUplook.Padding = new System.Windows.Forms.Padding(4, 3, 4, 3);
-            this.groupBoxCatalogUplook.Size = new System.Drawing.Size(560, 119);
-            this.groupBoxCatalogUplook.TabIndex = 5;
             this.groupBoxCatalogUplook.TabStop = false;
-            this.groupBoxCatalogUplook.Text = "Logs";
             // 
             // labelFilesCountValue
             // 
-            this.labelFilesCountValue.AutoSize = true;
-            this.labelFilesCountValue.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point);
-            this.labelFilesCountValue.Location = new System.Drawing.Point(99, 89);
-            this.labelFilesCountValue.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
+            resources.ApplyResources(this.labelFilesCountValue, "labelFilesCountValue");
             this.labelFilesCountValue.Name = "labelFilesCountValue";
-            this.labelFilesCountValue.Size = new System.Drawing.Size(13, 13);
-            this.labelFilesCountValue.TabIndex = 5;
-            this.labelFilesCountValue.Text = "0";
             // 
             // labelFilesCount
             // 
-            this.labelFilesCount.AutoSize = true;
-            this.labelFilesCount.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point);
-            this.labelFilesCount.Location = new System.Drawing.Point(7, 89);
-            this.labelFilesCount.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
+            resources.ApplyResources(this.labelFilesCount, "labelFilesCount");
             this.labelFilesCount.Name = "labelFilesCount";
-            this.labelFilesCount.Size = new System.Drawing.Size(48, 13);
-            this.labelFilesCount.TabIndex = 4;
-            this.labelFilesCount.Text = "Zawiera:";
             // 
             // labelLogsPath
             // 
-            this.labelLogsPath.AutoSize = true;
-            this.labelLogsPath.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point);
-            this.labelLogsPath.Location = new System.Drawing.Point(7, 30);
-            this.labelLogsPath.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
+            resources.ApplyResources(this.labelLogsPath, "labelLogsPath");
             this.labelLogsPath.Name = "labelLogsPath";
-            this.labelLogsPath.Size = new System.Drawing.Size(63, 13);
-            this.labelLogsPath.TabIndex = 0;
-            this.labelLogsPath.Text = "Lokalizacja:";
             // 
             // labelFilesSize
             // 
-            this.labelFilesSize.AutoSize = true;
-            this.labelFilesSize.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point);
-            this.labelFilesSize.Location = new System.Drawing.Point(7, 59);
-            this.labelFilesSize.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
+            resources.ApplyResources(this.labelFilesSize, "labelFilesSize");
             this.labelFilesSize.Name = "labelFilesSize";
-            this.labelFilesSize.Size = new System.Drawing.Size(48, 13);
-            this.labelFilesSize.TabIndex = 2;
-            this.labelFilesSize.Text = "Rozmiar:";
             // 
             // labelFilesSizeValue
             // 
-            this.labelFilesSizeValue.AutoSize = true;
-            this.labelFilesSizeValue.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point);
-            this.labelFilesSizeValue.Location = new System.Drawing.Point(99, 59);
-            this.labelFilesSizeValue.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
+            resources.ApplyResources(this.labelFilesSizeValue, "labelFilesSizeValue");
             this.labelFilesSizeValue.Name = "labelFilesSizeValue";
-            this.labelFilesSizeValue.Size = new System.Drawing.Size(13, 13);
-            this.labelFilesSizeValue.TabIndex = 3;
-            this.labelFilesSizeValue.Text = "0";
             // 
             // labelLogsPathValue
             // 
-            this.labelLogsPathValue.AutoSize = true;
-            this.labelLogsPathValue.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point);
-            this.labelLogsPathValue.Location = new System.Drawing.Point(99, 30);
-            this.labelLogsPathValue.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
+            resources.ApplyResources(this.labelLogsPathValue, "labelLogsPathValue");
             this.labelLogsPathValue.Name = "labelLogsPathValue";
-            this.labelLogsPathValue.Size = new System.Drawing.Size(73, 13);
-            this.labelLogsPathValue.TabIndex = 1;
-            this.labelLogsPathValue.Text = "Brak katalogu";
             // 
             // listViewFiles
             // 
@@ -937,15 +665,11 @@
             this.columnHeaderDate,
             this.columnHeaderSize,
             this.columnHeaderPath1});
-            this.listViewFiles.Dock = System.Windows.Forms.DockStyle.Fill;
+            resources.ApplyResources(this.listViewFiles, "listViewFiles");
             this.listViewFiles.FullRowSelect = true;
             this.listViewFiles.GridLines = true;
             this.listViewFiles.HideSelection = false;
-            this.listViewFiles.Location = new System.Drawing.Point(0, 0);
-            this.listViewFiles.Margin = new System.Windows.Forms.Padding(4, 3, 4, 3);
             this.listViewFiles.Name = "listViewFiles";
-            this.listViewFiles.Size = new System.Drawing.Size(1152, 429);
-            this.listViewFiles.TabIndex = 0;
             this.listViewFiles.UseCompatibleStateImageBehavior = false;
             this.listViewFiles.View = System.Windows.Forms.View.Details;
             this.listViewFiles.ColumnClick += new System.Windows.Forms.ColumnClickEventHandler(this.listViewFiles_ColumnClick);
@@ -954,32 +678,27 @@
             // 
             // columnHeaderLn1
             // 
-            this.columnHeaderLn1.Text = "Lp.";
-            this.columnHeaderLn1.Width = 30;
+            resources.ApplyResources(this.columnHeaderLn1, "columnHeaderLn1");
             // 
             // columnHeaderFileName
             // 
-            this.columnHeaderFileName.Text = "File name";
-            this.columnHeaderFileName.Width = 120;
+            resources.ApplyResources(this.columnHeaderFileName, "columnHeaderFileName");
             // 
             // columnHeaderDate
             // 
-            this.columnHeaderDate.Text = "Date";
-            this.columnHeaderDate.Width = 120;
+            resources.ApplyResources(this.columnHeaderDate, "columnHeaderDate");
             // 
             // columnHeaderSize
             // 
-            this.columnHeaderSize.Text = "Size";
-            this.columnHeaderSize.TextAlign = System.Windows.Forms.HorizontalAlignment.Right;
+            resources.ApplyResources(this.columnHeaderSize, "columnHeaderSize");
             // 
             // columnHeaderPath1
             // 
-            this.columnHeaderPath1.Text = "Path";
-            this.columnHeaderPath1.Width = 600;
+            resources.ApplyResources(this.columnHeaderPath1, "columnHeaderPath1");
             // 
             // toolStripButton
             // 
-            this.toolStripButton.Dock = System.Windows.Forms.DockStyle.Fill;
+            resources.ApplyResources(this.toolStripButton, "toolStripButton");
             this.toolStripButton.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
             this.toolStripButtonIcon,
             this.toolStripStatusReady,
@@ -989,63 +708,53 @@
             this.toolStripLabelCreationTime,
             this.toolStripSeparator14,
             this.toolStripSeparator15});
-            this.toolStripButton.Location = new System.Drawing.Point(4, 814);
-            this.toolStripButton.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
             this.toolStripButton.Name = "toolStripButton";
-            this.toolStripButton.Size = new System.Drawing.Size(1168, 28);
-            this.toolStripButton.TabIndex = 5;
-            this.toolStripButton.Text = "toolStrip1";
             // 
             // toolStripButtonIcon
             // 
             this.toolStripButtonIcon.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Image;
-            this.toolStripButtonIcon.Image = ((System.Drawing.Image)(resources.GetObject("toolStripButtonIcon.Image")));
-            this.toolStripButtonIcon.ImageTransparentColor = System.Drawing.Color.Magenta;
+            resources.ApplyResources(this.toolStripButtonIcon, "toolStripButtonIcon");
             this.toolStripButtonIcon.Name = "toolStripButtonIcon";
-            this.toolStripButtonIcon.Size = new System.Drawing.Size(23, 25);
             // 
             // toolStripStatusReady
             // 
             this.toolStripStatusReady.Name = "toolStripStatusReady";
-            this.toolStripStatusReady.Size = new System.Drawing.Size(39, 25);
-            this.toolStripStatusReady.Text = "Ready";
+            resources.ApplyResources(this.toolStripStatusReady, "toolStripStatusReady");
             // 
             // toolStripSeparator_1
             // 
             this.toolStripSeparator_1.Alignment = System.Windows.Forms.ToolStripItemAlignment.Right;
             this.toolStripSeparator_1.Name = "toolStripSeparator_1";
-            this.toolStripSeparator_1.Size = new System.Drawing.Size(6, 28);
-            this.toolStripSeparator_1.Visible = false;
+            resources.ApplyResources(this.toolStripSeparator_1, "toolStripSeparator_1");
             // 
             // toolStripLableSize
             // 
             this.toolStripLableSize.Alignment = System.Windows.Forms.ToolStripItemAlignment.Right;
             this.toolStripLableSize.Name = "toolStripLableSize";
-            this.toolStripLableSize.Size = new System.Drawing.Size(0, 25);
+            resources.ApplyResources(this.toolStripLableSize, "toolStripLableSize");
             // 
             // toolStripSeparator_2
             // 
             this.toolStripSeparator_2.Alignment = System.Windows.Forms.ToolStripItemAlignment.Right;
             this.toolStripSeparator_2.Name = "toolStripSeparator_2";
-            this.toolStripSeparator_2.Size = new System.Drawing.Size(6, 28);
-            this.toolStripSeparator_2.Visible = false;
+            resources.ApplyResources(this.toolStripSeparator_2, "toolStripSeparator_2");
             // 
             // toolStripLabelCreationTime
             // 
             this.toolStripLabelCreationTime.Alignment = System.Windows.Forms.ToolStripItemAlignment.Right;
             this.toolStripLabelCreationTime.Name = "toolStripLabelCreationTime";
-            this.toolStripLabelCreationTime.Size = new System.Drawing.Size(0, 25);
+            resources.ApplyResources(this.toolStripLabelCreationTime, "toolStripLabelCreationTime");
             // 
             // toolStripSeparator14
             // 
             this.toolStripSeparator14.Name = "toolStripSeparator14";
-            this.toolStripSeparator14.Size = new System.Drawing.Size(6, 28);
+            resources.ApplyResources(this.toolStripSeparator14, "toolStripSeparator14");
             // 
             // toolStripSeparator15
             // 
             this.toolStripSeparator15.Alignment = System.Windows.Forms.ToolStripItemAlignment.Right;
             this.toolStripSeparator15.Name = "toolStripSeparator15";
-            this.toolStripSeparator15.Size = new System.Drawing.Size(6, 28);
+            resources.ApplyResources(this.toolStripSeparator15, "toolStripSeparator15");
             // 
             // contextMenuStripList
             // 
@@ -1059,61 +768,52 @@
             this.toolStripSeparator12,
             this.openContainFolderToolStripMenuItem});
             this.contextMenuStripList.Name = "contextMenuStripList";
-            this.contextMenuStripList.Size = new System.Drawing.Size(239, 148);
+            resources.ApplyResources(this.contextMenuStripList, "contextMenuStripList");
             // 
             // toolStripMenuItemOpenFile
             // 
-            this.toolStripMenuItemOpenFile.Image = ((System.Drawing.Image)(resources.GetObject("toolStripMenuItemOpenFile.Image")));
+            resources.ApplyResources(this.toolStripMenuItemOpenFile, "toolStripMenuItemOpenFile");
             this.toolStripMenuItemOpenFile.Name = "toolStripMenuItemOpenFile";
-            this.toolStripMenuItemOpenFile.Size = new System.Drawing.Size(238, 22);
-            this.toolStripMenuItemOpenFile.Text = "Open file";
             this.toolStripMenuItemOpenFile.Click += new System.EventHandler(this.toolStripMenuItemOpenFile_Click);
             // 
             // toolStripMenuItemDeleteFile
             // 
-            this.toolStripMenuItemDeleteFile.Image = ((System.Drawing.Image)(resources.GetObject("toolStripMenuItemDeleteFile.Image")));
+            resources.ApplyResources(this.toolStripMenuItemDeleteFile, "toolStripMenuItemDeleteFile");
             this.toolStripMenuItemDeleteFile.Name = "toolStripMenuItemDeleteFile";
-            this.toolStripMenuItemDeleteFile.Size = new System.Drawing.Size(238, 22);
-            this.toolStripMenuItemDeleteFile.Text = "Delete file";
             this.toolStripMenuItemDeleteFile.Click += new System.EventHandler(this.toolStripMenuItemDeleteFile_Click);
             // 
             // toolStripSeparator9
             // 
             this.toolStripSeparator9.Name = "toolStripSeparator9";
-            this.toolStripSeparator9.Size = new System.Drawing.Size(235, 6);
+            resources.ApplyResources(this.toolStripSeparator9, "toolStripSeparator9");
             // 
             // toolStripMenuItemCopyFileName
             // 
             this.toolStripMenuItemCopyFileName.Name = "toolStripMenuItemCopyFileName";
-            this.toolStripMenuItemCopyFileName.Size = new System.Drawing.Size(238, 22);
-            this.toolStripMenuItemCopyFileName.Text = "Copy file name to clipboard";
+            resources.ApplyResources(this.toolStripMenuItemCopyFileName, "toolStripMenuItemCopyFileName");
             this.toolStripMenuItemCopyFileName.Click += new System.EventHandler(this.toolStripMenuItemCopyFileName_Click);
             // 
             // toolStripMenuItemCopyFilePath
             // 
             this.toolStripMenuItemCopyFilePath.Name = "toolStripMenuItemCopyFilePath";
-            this.toolStripMenuItemCopyFilePath.Size = new System.Drawing.Size(238, 22);
-            this.toolStripMenuItemCopyFilePath.Text = "Copy file path to clipboard";
+            resources.ApplyResources(this.toolStripMenuItemCopyFilePath, "toolStripMenuItemCopyFilePath");
             this.toolStripMenuItemCopyFilePath.Click += new System.EventHandler(this.toolStripMenuItemCopyFilePath_Click);
             // 
             // toolStripMenuItemCopyCatalogPath
             // 
             this.toolStripMenuItemCopyCatalogPath.Name = "toolStripMenuItemCopyCatalogPath";
-            this.toolStripMenuItemCopyCatalogPath.Size = new System.Drawing.Size(238, 22);
-            this.toolStripMenuItemCopyCatalogPath.Text = "Copy catalog path to clipboard";
+            resources.ApplyResources(this.toolStripMenuItemCopyCatalogPath, "toolStripMenuItemCopyCatalogPath");
             this.toolStripMenuItemCopyCatalogPath.Click += new System.EventHandler(this.toolStripMenuItemCopyCatalogPath_Click);
             // 
             // toolStripSeparator12
             // 
             this.toolStripSeparator12.Name = "toolStripSeparator12";
-            this.toolStripSeparator12.Size = new System.Drawing.Size(235, 6);
+            resources.ApplyResources(this.toolStripSeparator12, "toolStripSeparator12");
             // 
             // openContainFolderToolStripMenuItem
             // 
-            this.openContainFolderToolStripMenuItem.Image = ((System.Drawing.Image)(resources.GetObject("openContainFolderToolStripMenuItem.Image")));
+            resources.ApplyResources(this.openContainFolderToolStripMenuItem, "openContainFolderToolStripMenuItem");
             this.openContainFolderToolStripMenuItem.Name = "openContainFolderToolStripMenuItem";
-            this.openContainFolderToolStripMenuItem.Size = new System.Drawing.Size(238, 22);
-            this.openContainFolderToolStripMenuItem.Text = "Open contain folder";
             this.openContainFolderToolStripMenuItem.Click += new System.EventHandler(this.openContainFolderToolStripMenuItem_Click);
             // 
             // contextMenuStripPage
@@ -1130,102 +830,83 @@
             this.toolStripSeparator10,
             this.toolStripMenuItem3});
             this.contextMenuStripPage.Name = "contextMenuStripPage";
-            this.contextMenuStripPage.Size = new System.Drawing.Size(239, 176);
+            resources.ApplyResources(this.contextMenuStripPage, "contextMenuStripPage");
             // 
             // toolStripMenuItemClose
             // 
-            this.toolStripMenuItemClose.Image = ((System.Drawing.Image)(resources.GetObject("toolStripMenuItemClose.Image")));
+            resources.ApplyResources(this.toolStripMenuItemClose, "toolStripMenuItemClose");
             this.toolStripMenuItemClose.Name = "toolStripMenuItemClose";
-            this.toolStripMenuItemClose.Size = new System.Drawing.Size(238, 22);
-            this.toolStripMenuItemClose.Text = "Close page";
             this.toolStripMenuItemClose.Click += new System.EventHandler(this.toolStripMenuItem3_Click);
             // 
             // toolStripMenuItem2
             // 
             this.toolStripMenuItem2.Name = "toolStripMenuItem2";
-            this.toolStripMenuItem2.Size = new System.Drawing.Size(238, 22);
-            this.toolStripMenuItem2.Text = "Close All (Without active)";
+            resources.ApplyResources(this.toolStripMenuItem2, "toolStripMenuItem2");
             this.toolStripMenuItem2.Click += new System.EventHandler(this.toolStripMenuItem2_Click);
             // 
             // toolStripSeparator7
             // 
             this.toolStripSeparator7.Name = "toolStripSeparator7";
-            this.toolStripSeparator7.Size = new System.Drawing.Size(235, 6);
+            resources.ApplyResources(this.toolStripSeparator7, "toolStripSeparator7");
             // 
             // toolStripMenuItem7
             // 
-            this.toolStripMenuItem7.Image = ((System.Drawing.Image)(resources.GetObject("toolStripMenuItem7.Image")));
+            resources.ApplyResources(this.toolStripMenuItem7, "toolStripMenuItem7");
             this.toolStripMenuItem7.Name = "toolStripMenuItem7";
-            this.toolStripMenuItem7.Size = new System.Drawing.Size(238, 22);
-            this.toolStripMenuItem7.Text = "Delete file";
             this.toolStripMenuItem7.Click += new System.EventHandler(this.toolStripMenuItem7_Click);
             // 
             // toolStripSeparator8
             // 
             this.toolStripSeparator8.Name = "toolStripSeparator8";
-            this.toolStripSeparator8.Size = new System.Drawing.Size(235, 6);
+            resources.ApplyResources(this.toolStripSeparator8, "toolStripSeparator8");
             // 
             // toolStripMenuItem4
             // 
             this.toolStripMenuItem4.Name = "toolStripMenuItem4";
-            this.toolStripMenuItem4.Size = new System.Drawing.Size(238, 22);
-            this.toolStripMenuItem4.Text = "Copy file name to clipboard";
+            resources.ApplyResources(this.toolStripMenuItem4, "toolStripMenuItem4");
             this.toolStripMenuItem4.Click += new System.EventHandler(this.toolStripMenuItem4_Click);
             // 
             // toolStripMenuItem5
             // 
             this.toolStripMenuItem5.Name = "toolStripMenuItem5";
-            this.toolStripMenuItem5.Size = new System.Drawing.Size(238, 22);
-            this.toolStripMenuItem5.Text = "Copy file path to clipboard";
+            resources.ApplyResources(this.toolStripMenuItem5, "toolStripMenuItem5");
             this.toolStripMenuItem5.Click += new System.EventHandler(this.toolStripMenuItem5_Click);
             // 
             // toolStripMenuItem6
             // 
             this.toolStripMenuItem6.Name = "toolStripMenuItem6";
-            this.toolStripMenuItem6.Size = new System.Drawing.Size(238, 22);
-            this.toolStripMenuItem6.Text = "Copy catalog path to clipboard";
+            resources.ApplyResources(this.toolStripMenuItem6, "toolStripMenuItem6");
             this.toolStripMenuItem6.Click += new System.EventHandler(this.toolStripMenuItem6_Click);
             // 
             // toolStripSeparator10
             // 
             this.toolStripSeparator10.Name = "toolStripSeparator10";
-            this.toolStripSeparator10.Size = new System.Drawing.Size(235, 6);
+            resources.ApplyResources(this.toolStripSeparator10, "toolStripSeparator10");
             // 
             // toolStripMenuItem3
             // 
-            this.toolStripMenuItem3.Image = ((System.Drawing.Image)(resources.GetObject("toolStripMenuItem3.Image")));
+            resources.ApplyResources(this.toolStripMenuItem3, "toolStripMenuItem3");
             this.toolStripMenuItem3.Name = "toolStripMenuItem3";
-            this.toolStripMenuItem3.Size = new System.Drawing.Size(238, 22);
-            this.toolStripMenuItem3.Text = "Open contain folder";
             this.toolStripMenuItem3.Click += new System.EventHandler(this.toolStripMenuItem3_Click_1);
             // 
             // tabPageAnalized
             // 
-            this.tabPageAnalized.Location = new System.Drawing.Point(4, 22);
+            resources.ApplyResources(this.tabPageAnalized, "tabPageAnalized");
             this.tabPageAnalized.Name = "tabPageAnalized";
-            this.tabPageAnalized.Size = new System.Drawing.Size(994, 610);
-            this.tabPageAnalized.TabIndex = 1;
-            this.tabPageAnalized.Text = "Analized";
             this.tabPageAnalized.UseVisualStyleBackColor = true;
             // 
             // columnHeader1
             // 
-            this.columnHeader1.Text = "Lp.";
-            this.columnHeader1.Width = 30;
+            resources.ApplyResources(this.columnHeader1, "columnHeader1");
             // 
             // columnHeader2
             // 
-            this.columnHeader2.Text = "Linia";
-            this.columnHeader2.Width = 630;
+            resources.ApplyResources(this.columnHeader2, "columnHeader2");
             // 
             // labelStatus
             // 
-            this.labelStatus.AutoSize = true;
-            this.labelStatus.Location = new System.Drawing.Point(43, 825);
-            this.labelStatus.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
+            resources.ApplyResources(this.labelStatus, "labelStatus");
             this.labelStatus.Name = "labelStatus";
-            this.labelStatus.Size = new System.Drawing.Size(0, 15);
-            this.labelStatus.TabIndex = 5;
             // 
             // timerFind
             // 
@@ -1234,34 +915,23 @@
             // 
             // openToolStripMenuItem
             // 
-            this.openToolStripMenuItem.Image = ((System.Drawing.Image)(resources.GetObject("openToolStripMenuItem.Image")));
+            resources.ApplyResources(this.openToolStripMenuItem, "openToolStripMenuItem");
             this.openToolStripMenuItem.Name = "openToolStripMenuItem";
-            this.openToolStripMenuItem.Size = new System.Drawing.Size(152, 22);
-            this.openToolStripMenuItem.Text = "Open File";
             // 
             // toolStripButton1
             // 
-            this.toolStripButton1.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Stretch;
+            resources.ApplyResources(this.toolStripButton1, "toolStripButton1");
             this.toolStripButton1.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Image;
-            this.toolStripButton1.Image = ((System.Drawing.Image)(resources.GetObject("toolStripButton1.Image")));
-            this.toolStripButton1.ImageTransparentColor = System.Drawing.Color.Magenta;
             this.toolStripButton1.Name = "toolStripButton1";
-            this.toolStripButton1.Size = new System.Drawing.Size(23, 39);
-            this.toolStripButton1.Text = "toolStripButton1";
             // 
-            // uplookMainForm
+            // MainForm
             // 
-            this.AutoScaleDimensions = new System.Drawing.SizeF(7F, 15F);
+            resources.ApplyResources(this, "$this");
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(1176, 842);
             this.Controls.Add(this.labelStatus);
             this.Controls.Add(this.tableLayoutPanelMain);
-            this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
             this.MainMenuStrip = this.menuMainStrip;
-            this.Margin = new System.Windows.Forms.Padding(4, 3, 4, 3);
-            this.Name = "uplookMainForm";
-            this.StartPosition = System.Windows.Forms.FormStartPosition.CenterParent;
-            this.Text = "uplook Log Viewer";
+            this.Name = "MainForm";
             this.WindowState = System.Windows.Forms.FormWindowState.Maximized;
             this.FormClosing += new System.Windows.Forms.FormClosingEventHandler(this.MainForm_FormClosing);
             this.menuMainStrip.ResumeLayout(false);
