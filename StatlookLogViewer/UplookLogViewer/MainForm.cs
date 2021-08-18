@@ -961,17 +961,17 @@ namespace StatlookLogViewer
 
         private void toolStripMenuItemCopyFileName_Click(object sender, EventArgs e)
         {
-            string listaNazwPlikow = null;
-            foreach (ListViewItem ZaznaczoneWiersze in listViewFiles.SelectedItems)
+            string fileNamesText = string.Empty;
+
+            foreach (ListViewItem listViewItem in listViewFiles.SelectedItems)
             {
-                string FileName = ZaznaczoneWiersze.SubItems[1].Text;
-                string FilePath = ZaznaczoneWiersze.SubItems[4].Text;
-                string FullName = FilePath + "\\" + FileName;
-                FileInfo Plik = new FileInfo(FullName);
-                listaNazwPlikow += Plik.Name;
-                listaNazwPlikow += Environment.NewLine;
+                string fileFullPath =  GetFileFullPathFromListViewItem(listViewItem);
+
+                FileInfo fileInfo = new FileInfo(fileFullPath);
+                fileNamesText += fileInfo.Name + Environment.NewLine;
             }
-            Clipboard.SetText(listaNazwPlikow, TextDataFormat.UnicodeText);
+
+            Clipboard.SetText(fileNamesText, TextDataFormat.UnicodeText);
         }
 
         private void toolStripMenuItem3_Click_1(object sender, EventArgs e)
@@ -984,32 +984,32 @@ namespace StatlookLogViewer
 
         private void toolStripMenuItemCopyFilePath_Click(object sender, EventArgs e)
         {
-            string listaNazwPlikow = null;
-            foreach (ListViewItem ZaznaczoneWiersze in listViewFiles.SelectedItems)
+            string fileFullNamesText = string.Empty;
+
+            foreach (ListViewItem listViewItem in listViewFiles.SelectedItems)
             {
-                string FileName = ZaznaczoneWiersze.SubItems[1].Text;
-                string FilePath = ZaznaczoneWiersze.SubItems[4].Text;
-                string FullName = FilePath + "\\" + FileName;
-                FileInfo Plik = new FileInfo(FullName);
-                listaNazwPlikow += Plik.FullName;
-                listaNazwPlikow += Environment.NewLine; ;
+                string fileFullPath = GetFileFullPathFromListViewItem(listViewItem);
+
+                FileInfo fileInfo = new FileInfo(fileFullPath);
+                fileFullNamesText += fileInfo.FullName + Environment.NewLine;
             }
-            Clipboard.SetText(listaNazwPlikow, TextDataFormat.UnicodeText);
+
+            Clipboard.SetText(fileFullNamesText, TextDataFormat.UnicodeText);
         }
 
         private void toolStripMenuItemCopyCatalogPath_Click(object sender, EventArgs e)
         {
-            string listaNazwPlikow = null;
-            foreach (ListViewItem ZaznaczoneWiersze in listViewFiles.SelectedItems)
+            string fileDirectoryNamesText = string.Empty;
+
+            foreach (ListViewItem listViewItem in listViewFiles.SelectedItems)
             {
-                string FileName = ZaznaczoneWiersze.SubItems[1].Text;
-                string FilePath = ZaznaczoneWiersze.SubItems[4].Text;
-                string FullName = FilePath + "\\" + FileName;
-                FileInfo Plik = new FileInfo(FullName);
-                listaNazwPlikow += Plik.DirectoryName;
-                listaNazwPlikow += Environment.NewLine;
+                string fileFullPath = GetFileFullPathFromListViewItem(listViewItem);
+
+                FileInfo fileInfo = new FileInfo(fileFullPath);
+                fileDirectoryNamesText += fileInfo.DirectoryName + Environment.NewLine;
             }
-            Clipboard.SetText(listaNazwPlikow, TextDataFormat.UnicodeText);
+
+            Clipboard.SetText(fileDirectoryNamesText, TextDataFormat.UnicodeText);
         }
 
         private void refreshToolStripMenuItem_Click(object sender, EventArgs e)
@@ -1034,17 +1034,17 @@ namespace StatlookLogViewer
 
         private void openContainFolderToolStripMenuItem_Click(object sender, EventArgs e)
         {
-            foreach (ListViewItem item in this.listViewFiles.SelectedItems)
+            foreach (ListViewItem listViewItem in this.listViewFiles.SelectedItems)
             {
-                string FullName = item.SubItems[4].Text + "\\" + item.SubItems[1].Text;
-                FileInfo Plik = new FileInfo(FullName);
-                System.Diagnostics.Process.Start("explorer.exe", Plik.DirectoryName); 
+                string fileFullPath = GetFileFullPathFromListViewItem(listViewItem);
 
+                FileInfo fileInfo = new FileInfo(fileFullPath);
+
+                System.Diagnostics.Process.Start("explorer.exe", fileInfo.DirectoryName);
             }
-            
         }
 
-        private void analizeUplookLog(string filePath, string fileName,DateTime lastWriteTime)
+        private void analizeUplookLog(string filePath, string fileName, DateTime lastWriteTime)
         {
             TabControl TabC = (TabControl)Controls.Find("tabControlMain", true)[0];
             if (TabC.Controls.Find(fileName, false).Length == 0)
