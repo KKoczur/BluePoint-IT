@@ -34,7 +34,7 @@ namespace StatlookLogViewer
 
         #region Methods
 
-        public LogTapPage LogAnalyze(string fileNameWithPath, LogHeader logHeader)
+        public LogTapPage LogAnalyze(string fileNameWithPath)
         {
             LogType logType = LogType.Default;
 
@@ -46,7 +46,7 @@ namespace StatlookLogViewer
 
             LogTapPage newTabPage = CreateNewTabPage(fileNameWithPath, logType);
 
-            ListViewExtended ListViewTmp = newTabPage.ListViewExtended;
+            ListViewExtended listViewExtended = newTabPage.ListViewExtended;
 
             StreamReader streamReader = new StreamReader(fileNameWithPath, Encoding.Default);
 
@@ -72,22 +72,22 @@ namespace StatlookLogViewer
 
                     ListViewGroup tmp_Group = new ListViewGroup(logLine.GroupName, HorizontalAlignment.Left);
 
-                    if (ListViewTmp.Groups.Count == 0)
+                    if (listViewExtended.Groups.Count == 0)
                     {
-                        ListViewTmp.Groups.Add(tmp_Group);
+                        listViewExtended.Groups.Add(tmp_Group);
                         logLine.ListViewItem.Group = tmp_Group;
                         logLine.ListViewItem.Group.Name = tmp_Group.ToString();
                     }
                     else
                     {
-                        if (ListViewTmp.Groups[ListViewTmp.Groups.Count - 1].Name.Equals(tmp_Group.ToString()))
+                        if (listViewExtended.Groups[listViewExtended.Groups.Count - 1].Name.Equals(tmp_Group.ToString()))
                         {
-                            logLine.ListViewItem.Group = ListViewTmp.Groups[ListViewTmp.Groups.Count - 1];
-                            logLine.ListViewItem.Group.Name = ListViewTmp.Groups[ListViewTmp.Groups.Count - 1].Name;
+                            logLine.ListViewItem.Group = listViewExtended.Groups[listViewExtended.Groups.Count - 1];
+                            logLine.ListViewItem.Group.Name = listViewExtended.Groups[listViewExtended.Groups.Count - 1].Name;
                         }
                         else
                         {
-                            ListViewTmp.Groups.Add(tmp_Group);
+                            listViewExtended.Groups.Add(tmp_Group);
                             logLine.ListViewItem.Group = tmp_Group;
                             logLine.ListViewItem.Group.Name = tmp_Group.ToString();
                         }
@@ -95,7 +95,7 @@ namespace StatlookLogViewer
                 }
 
                 //Wykonaj jeśli linia nie zawiera znacznika przerwy 
-                else if (!line.Contains(logHeader.StatlookHeaderBreak))
+                else if (!line.Contains(Configuration.STATLOOK_BREAK))
                 {
                     for (int i = 1; i < listOfHeaders.Length; i++)
                     {
@@ -110,7 +110,7 @@ namespace StatlookLogViewer
                         }
                     }
                 }
-                else if (line.StartsWith(logHeader.StatlookHeaderBreak))
+                else if (line.StartsWith(Configuration.STATLOOK_BREAK))
                 {
                     //Wykonaj jeśli linia zawiera znacznika przerwy 
                     //Dodanie pojedynczej linii do pliku wynikowego analizy 
@@ -119,19 +119,19 @@ namespace StatlookLogViewer
 
             }
 
-            ListViewTmp.BeginUpdate();
-            ListViewTmp.SuspendLayout();
+            listViewExtended.BeginUpdate();
+            listViewExtended.SuspendLayout();
             try
             {
 
                 //dodanie całego zakresu danych 
-                ListViewTmp.Items.AddRange(GetListViewItem());
+                listViewExtended.Items.AddRange(GetListViewItem());
             }
             finally
             {
 
-                ListViewTmp.EndUpdate();
-                ListViewTmp.ResumeLayout();
+                listViewExtended.EndUpdate();
+                listViewExtended.ResumeLayout();
             }
 
             return newTabPage;

@@ -9,10 +9,9 @@ namespace StatlookLogViewer
     public partial class OpenZip : Form
     {
         public ArrayList m_nowaKarta;
-        private string m_zip;
+        private readonly string _zip;
         public static string ZipTmpDirectory = "\\A plus C Systems\\uplook3\\TMP\\";
         public static string ZipDirectory;
-        private LogHeader uplookDeskryptor = new LogHeader();
 
         public OpenZip()
         {
@@ -22,32 +21,29 @@ namespace StatlookLogViewer
         }
 
         public OpenZip(string zip)
+            : this()
         {
-            ZipDirectory = System.Environment.GetFolderPath(Environment.SpecialFolder.CommonApplicationData) + ZipTmpDirectory;
-            m_zip = zip;
-            m_nowaKarta = new ArrayList();
-            InitializeComponent();
+            _zip = zip;
         }
 
-        private void buttonZipCancel_Click(object sender, EventArgs e)
-        {
-            this.Close();
-        }
+        private void buttonZipCancel_Click(object sender, EventArgs e) => Close();
+
 
         private void buttonZipChoose_Click(object sender, EventArgs e)
         {
-            foreach (ListViewItem ZaznaczoneWiersze in listViewFiles.SelectedItems)
+            foreach (ListViewItem listViewItem in listViewFiles.SelectedItems)
             {
-                string FileName = ZaznaczoneWiersze.SubItems[1].Text;
-                string FilePath = ZaznaczoneWiersze.SubItems[4].Text;
-                string FullName = FilePath + "\\" + FileName;
-                FileInfo atrybutyPlik = new FileInfo(FullName);
+                string fileName = listViewItem.SubItems[1].Text;
+                string filePath = listViewItem.SubItems[4].Text;
+                string fullName = filePath + "\\" + fileName;
+
+                FileInfo fileInfo = new FileInfo(fullName);
 
                 //Nie przetwarzaj plików o rozszerzeniu .zip
-                if (atrybutyPlik.Extension == ".zip")
+                if (fileInfo.Extension == ".zip")
                 {
-                    Form otworzZip = new OpenZip();
-                    otworzZip.ShowDialog(this);
+                    using var openZip = new OpenZip();
+                    openZip.ShowDialog(this);
                 }
                 else
                 {
@@ -79,9 +75,9 @@ namespace StatlookLogViewer
             }
         }
 
-        public void DodajItem(ListViewItem plikInfo)
+        public void DodajItem(ListViewItem listViewItem)
         {
-            listViewFiles.Items.Add(plikInfo);
+            listViewFiles.Items.Add(listViewItem);
 
             // Loop through and size each column header to fit the column header text.
             foreach (ColumnHeader ch in this.listViewFiles.Columns)
@@ -99,17 +95,13 @@ namespace StatlookLogViewer
         }
 
         private void listViewFiles_MouseDoubleClick(object sender, MouseEventArgs e)
-        {
-            ListView.SelectedListViewItemCollection Li = listViewFiles.SelectedItems;
-
-            int i = 0;
-            foreach (ListViewItem item in Li)
+        { 
+            foreach (ListViewItem item in listViewFiles.SelectedItems)
             {
-
                 string fileName = item.SubItems[1].Text;
                 string fileFullPath = item.SubItems[4].Text + "\\" + item.SubItems[1].Text;
 
-                using (ZipFile zip = ZipFile.Read(m_zip))
+                using (ZipFile zip = ZipFile.Read(_zip))
                 {
                     foreach (ZipEntry e1 in zip)
                     {
@@ -117,15 +109,13 @@ namespace StatlookLogViewer
                     }
                 }
 
-                FileInfo atrybutyPlik = new FileInfo(fileFullPath);
+                FileInfo fileInfo = new FileInfo(fileFullPath);
 
-                LogLineCollection plik = new LogLineCollection();
+                var logLineCollection = new LogLineCollection();
 
                 DateTime.TryParse(item.SubItems[2].Text, out DateTime lastWriteTime);
 
-                m_nowaKarta.Add(plik.LogAnalyze(fileFullPath, uplookDeskryptor));
-
-                i++;
+                m_nowaKarta.Add(logLineCollection.LogAnalyze(fileFullPath));
             }
 
             DialogResult = DialogResult.OK;

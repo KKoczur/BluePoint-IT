@@ -131,13 +131,13 @@ namespace StatlookLogViewer
         {
             listViewFiles.Items.Clear();
 
-            DirectoryInfo[] directoryInfo = new DirectoryInfo[]{
+            var directoryInfo = new DirectoryInfo[]{
             new DirectoryInfo(LogDirectory),
             new DirectoryInfo(USMDirectory),
             new DirectoryInfo(_userDirectory)
             };
 
-            bool[] ShowCatalog = new bool[]{
+            bool[] showCatalog = new bool[]{
             checkBoxLogs.Checked,
             checkBoxUSM.Checked,
             checkBoxUser.Checked
@@ -148,9 +148,10 @@ namespace StatlookLogViewer
                 int j = 0;
                 foreach (DirectoryInfo di in directoryInfo)
                 {
-                    if (di.Exists && ShowCatalog[j])
+                    if (di.Exists && showCatalog[j])
                     {
                         var fileCollection = new List<FileInfo>();
+
                         foreach (string ext in _fileExtensions)
                         {
                             if (di.FullName != "C:\\")
@@ -267,6 +268,12 @@ namespace StatlookLogViewer
             string fileName = listViewItem.SubItems[1].Text;
             string path = listViewItem.SubItems[4].Text;
             return path + "\\" + fileName;
+        }
+
+        private FileInfo GetFileInfoForSelectedTab()
+        {
+            string fileFullName = tabControlMain.SelectedTab.ToolTipText;
+            return new FileInfo(fileFullName);
         }
 
         /// <summary>
@@ -626,8 +633,6 @@ namespace StatlookLogViewer
                 {
                     if (control.GetType() == typeof(ListViewExtended))
                     {
-                        ListViewExtended ListV = (ListViewExtended)control;
-
                         if (tabPage.LogType == LogType.Statlook)
                         {
                             ToolStripMenuItemUplook.Visible = true;
@@ -635,13 +640,16 @@ namespace StatlookLogViewer
                         }
                         else if (tabPage.LogType == LogType.Usm)
                         {
-                            ToolStripMenuItemUSM.Visible = true;
                             ToolStripMenuItemUplook.Visible = false;
+                            ToolStripMenuItemUSM.Visible = true;
                         }
 
-                        ShowListViewColumns(ListV, tabPage.LogType);
+                        ListViewExtended listViewExtended = (ListViewExtended)control;
+
+                        ShowListViewColumns(listViewExtended, tabPage.LogType);
                     }
                 }
+
                 FileInfo fileInfo = new FileInfo(tabControl.SelectedTab.Tag.ToString());
 
                 if (fileInfo.Exists)
@@ -715,13 +723,9 @@ namespace StatlookLogViewer
 
         private void closeAllToolStripMenuItem_Click(object sender, EventArgs e)
         {
-            int liczbaZakladek = tabControlMain.TabCount;
-            for (int i = 0; i < liczbaZakladek; i++)
+            for (int i = 0; i < tabControlMain.TabCount; i++)
             {
-                if (i == 0)
-                {
-                }
-                else
+                if (i != 0)
                 {
                     tabControlMain.TabPages.Remove(tabControlMain.TabPages[1]);
                 }
@@ -730,19 +734,14 @@ namespace StatlookLogViewer
 
         private void closeAllWithoutActiveToolStripMenuItem_Click(object sender, EventArgs e)
         {
-            int liczbaZakladek = tabControlMain.TabCount - 1;
-            int aktywnaZakladka = tabControlMain.SelectedIndex;
-            for (int i = liczbaZakladek; i > 0; i--)
+            int selectedIndex = tabControlMain.SelectedIndex;
+            for (int i = tabControlMain.TabCount - 1; i > 0; i--)
             {
-                if ((i == 0) || (i == aktywnaZakladka))
-                {
-                }
-                else
+                if ((i != 0) && (i != selectedIndex))
                 {
                     tabControlMain.TabPages.Remove(tabControlMain.TabPages[i]);
                 }
             }
-
         }
 
         private void tabControlMain_MouseUp(object sender, MouseEventArgs e)
@@ -771,17 +770,17 @@ namespace StatlookLogViewer
             if (tabControlMain.SelectedTab.Name != "tabPageInfo")
             {
                 toolStripMenuItemGeneral.Visible = false;
-                int NumerZakładki = tabControlMain.SelectedIndex;
+                int selectedIndex = tabControlMain.SelectedIndex;
                 tabControlMain.TabPages.Remove(tabControlMain.SelectedTab);
                 if (tabControlMain.TabPages.Count > 1)
                 {
-                    if (NumerZakładki == tabControlMain.TabPages.Count)
+                    if (selectedIndex == tabControlMain.TabPages.Count)
                     {
-                        tabControlMain.SelectedIndex = NumerZakładki - 1;
+                        tabControlMain.SelectedIndex = selectedIndex - 1;
                     }
                     else
                     {
-                        tabControlMain.SelectedIndex = NumerZakładki;
+                        tabControlMain.SelectedIndex = selectedIndex;
                     }
                 }
             }
@@ -793,14 +792,11 @@ namespace StatlookLogViewer
 
         private void toolStripMenuItem2_Click(object sender, EventArgs e)
         {
-            int liczbaZakladek = tabControlMain.TabCount - 1;
-            int aktywnaZakladka = tabControlMain.SelectedIndex;
-            for (int i = liczbaZakladek; i > 0; i--)
+            int tabCount = tabControlMain.TabCount - 1;
+            int selectedIndex = tabControlMain.SelectedIndex;
+            for (int i = tabCount; i > 0; i--)
             {
-                if ((i == 0) || (i == aktywnaZakladka))
-                {
-                }
-                else
+                if ((i != 0) && (i != selectedIndex))
                 {
                     tabControlMain.TabPages.Remove(tabControlMain.TabPages[i]);
                 }
@@ -809,38 +805,34 @@ namespace StatlookLogViewer
 
         private void toolStripMenuItem4_Click(object sender, EventArgs e)
         {
-            string FullName = tabControlMain.SelectedTab.ToolTipText.ToString();
-            FileInfo Plik = new FileInfo(FullName);
-            Clipboard.SetText(Plik.Name);
+            FileInfo fileInfo = GetFileInfoForSelectedTab();
+            Clipboard.SetText(fileInfo.Name);
         }
 
         private void toolStripMenuItem5_Click(object sender, EventArgs e)
         {
-            string FullName = tabControlMain.SelectedTab.ToolTipText.ToString();
-            FileInfo Plik = new FileInfo(FullName);
-            Clipboard.SetText(Plik.FullName);
+            FileInfo fileInfo = GetFileInfoForSelectedTab();
+            Clipboard.SetText(fileInfo.FullName);
         }
 
         private void toolStripMenuItem6_Click(object sender, EventArgs e)
         {
-            string FullName = tabControlMain.SelectedTab.ToolTipText.ToString();
-            FileInfo Plik = new FileInfo(FullName);
-            Clipboard.SetText(Plik.DirectoryName);
+            FileInfo fileInfo = GetFileInfoForSelectedTab();
+            Clipboard.SetText(fileInfo.DirectoryName);
         }
 
         private void toolStripMenuItem7_Click(object sender, EventArgs e)
         {
-            string FullName = tabControlMain.SelectedTab.ToolTipText.ToString();
-            FileInfo Plik = new FileInfo(FullName);
+            FileInfo fileInfo = GetFileInfoForSelectedTab();
 
-            if (MessageBox.Show("Really delete file: " + FullName + " ?", "Confirm delete", MessageBoxButtons.YesNo, MessageBoxIcon.Warning) == DialogResult.Yes)
+            if (MessageBox.Show($"Really delete file: {fileInfo.FullName} ?", "Confirm delete", MessageBoxButtons.YesNo, MessageBoxIcon.Warning) == DialogResult.Yes)
             {
-                if (Plik.Exists)
+                if (fileInfo.Exists)
                 {
                     try
                     {
                         tabControlMain.TabPages.Remove(tabControlMain.SelectedTab);
-                        Plik.Delete();
+                        fileInfo.Delete();
                         listViewFiles.Items.Clear();
                         IniTabPageInfo();
                     }
@@ -1042,7 +1034,7 @@ namespace StatlookLogViewer
             {
                 LogLineCollection logLineCollection = new LogLineCollection();
 
-                LogTapPage newPage = logLineCollection.LogAnalyze(filePath, _logHeader);
+                LogTapPage newPage = logLineCollection.LogAnalyze(filePath);
 
                 if (newPage.LogType == LogType.Statlook)
                 {
