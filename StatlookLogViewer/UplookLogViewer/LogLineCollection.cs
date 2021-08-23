@@ -5,6 +5,7 @@ using System.Text.RegularExpressions;
 using System.Windows.Forms;
 using System.IO;
 using ListViewGroupCollapse;
+using System.Linq;
 
 namespace StatlookLogViewer
 {
@@ -18,7 +19,18 @@ namespace StatlookLogViewer
 
         private readonly List<ListViewItem> _listViewItem = new List<ListViewItem>();
 
+        private readonly Configuration _config;
+
         #endregion Members
+
+        #region Constructors
+
+        public LogLineCollection()
+        {
+            _config = Configuration.GetConfiguration();
+        }
+
+        #endregion Constructors
 
         #region Methods
 
@@ -37,7 +49,7 @@ namespace StatlookLogViewer
 
             string allFileData = GetFileContent(fileNameWithPath);
 
-            DetectLogType(logHeader, ref logType, ref listOfHeaders, allFileData);
+            DetectLogType(ref logType, ref listOfHeaders, allFileData);
 
             LogTapPage newTabPage = CreateNewTabPage(fileNameWithPath, logType);
 
@@ -59,7 +71,7 @@ namespace StatlookLogViewer
                     line = line.Substring(0, line.IndexOf(";"));
 
                     //Dodanie do pojedynczej linii wartości kolumny: Date
-                    logLine.AddLine(logLine.Headers.StatlookHeaderDate, line, logType);
+                    logLine.AddLine(Configuration.STATLOOK_DATE, line, logType);
 
                     DateTime tmp = DateTime.Parse(line);
 
@@ -132,17 +144,17 @@ namespace StatlookLogViewer
             return newTabPage;
         }
 
-        private static void DetectLogType(LogHeader logHeader, ref LogType logType, ref string[] listOfHeaders, string allFileData)
+        private void DetectLogType(ref LogType logType, ref string[] listOfHeaders, string allFileData)
         {
-            if (allFileData.Contains(logHeader.GetStatlookTextHeaders()[1]))
+            if (allFileData.Contains(_config.GetStatlookTextHeaders()[1]))
             {
                 logType = (int)LogType.Statlook;
-                listOfHeaders = logHeader.GetStatlookTextHeaders();
+                listOfHeaders = _config.GetStatlookTextHeaders().Split(new char[] { ';' });
             }
-            else if (allFileData.Contains(logHeader.GetUsmTextHeaders()[1]))
+            else if (allFileData.Contains(_config.GetUsmTextHeaders()[1]))
             {
                 logType = LogType.Usm;
-                listOfHeaders = logHeader.GetUsmTextHeaders();
+                listOfHeaders = _config.GetUsmTextHeaders().Split(new char[] { ';' });
             }
         }
 
