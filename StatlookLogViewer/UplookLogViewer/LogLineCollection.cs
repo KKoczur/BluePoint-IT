@@ -34,13 +34,6 @@ namespace StatlookLogViewer
 
         #region Methods
 
-        public void AddLine(LogLine logLine)
-        {
-            _logLineCollection.Add(logLine);
-            _logLineGroupNameCollection.Add(logLine.GroupName);
-            _listViewItem.Add(logLine.ListViewItem);
-        }
-
         public LogTapPage LogAnalyze(string fileNameWithPath, LogHeader logHeader)
         {
             LogType logType = LogType.Default;
@@ -49,7 +42,7 @@ namespace StatlookLogViewer
 
             string allFileData = GetFileContent(fileNameWithPath);
 
-            DetectLogType(ref logType, ref listOfHeaders, allFileData);
+            DetectLogType(allFileData, ref listOfHeaders, ref logType);
 
             LogTapPage newTabPage = CreateNewTabPage(fileNameWithPath, logType);
 
@@ -144,7 +137,14 @@ namespace StatlookLogViewer
             return newTabPage;
         }
 
-        private void DetectLogType(ref LogType logType, ref string[] listOfHeaders, string allFileData)
+        private void AddLine(LogLine logLine)
+        {
+            _logLineCollection.Add(logLine);
+            _logLineGroupNameCollection.Add(logLine.GroupName);
+            _listViewItem.Add(logLine.ListViewItem);
+        }
+
+        private void DetectLogType(string allFileData, ref string[] listOfHeaders, ref LogType logType)
         {
             if (allFileData.Contains(_config.GetStatlookTextHeaders()[1]))
             {
@@ -158,7 +158,7 @@ namespace StatlookLogViewer
             }
         }
 
-        private static LogTapPage CreateNewTabPage(string fileNameWithPath, LogType logType)
+        private LogTapPage CreateNewTabPage(string fileNameWithPath, LogType logType)
         {
             return new LogTapPage(0, fileNameWithPath, logType)
             {

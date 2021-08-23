@@ -36,9 +36,7 @@ namespace StatlookLogViewer
                         foreach (Descriptor descriptor in Headers.GetStatlookDescriptors())
                         {
                             if (string.Compare(descriptor.RowCaption, rowCaption, true) != 0)
-                            {
                                 continue;
-                            }
 
                             if (rowCaption != Headers.StatlookHeaderDate)
                             {
@@ -74,19 +72,8 @@ namespace StatlookLogViewer
 
                             DateTime tmp_DateTime = DateTime.Parse(rowValue);
                             string myHourTime = tmp_DateTime.Hour.ToString();
-                            string tmp_NazwaGrupy;
 
-                            //Określenie nazwę grupy do której ma należeć linia
-                            if (myHourTime.Length < 2)
-                            {
-                                tmp_NazwaGrupy = $"0{myHourTime}:00-0{myHourTime}:59";
-                            }
-                            else
-                            {
-                                tmp_NazwaGrupy = $"{myHourTime}:00-{myHourTime}:59";
-                            }
-
-                            _groupName = tmp_NazwaGrupy;
+                            _groupName = GetNameOfGroupByHourTime(myHourTime);
                             ListViewItem.Text = rowValue;
                             _listViewGroup = new ListViewGroup(_groupName, HorizontalAlignment.Left);
                             ListViewItem.Group = _listViewGroup;
@@ -137,17 +124,8 @@ namespace StatlookLogViewer
                             DateTime tmp_DateTime = DateTime.Parse(rowValue);
 
                             string myHourTime = tmp_DateTime.Hour.ToString();
-                            string tmp_NazwaGrupy;
-                            //Określenie nazwę grupy do której ma należeć linia
-                            if (myHourTime.Length < 2)
-                            {
-                                tmp_NazwaGrupy = "0" + myHourTime + ":00-" + "0" + myHourTime + ":59";
-                            }
-                            else
-                            {
-                                tmp_NazwaGrupy = myHourTime + ":00-" + myHourTime + ":59";
-                            }
-                            _groupName = tmp_NazwaGrupy;
+
+                            _groupName = GetNameOfGroupByHourTime(myHourTime);
                             ListViewItem.Text = rowValue;
                             _listViewGroup = new ListViewGroup(_groupName, HorizontalAlignment.Left);
                             ListViewItem.Group = _listViewGroup;
@@ -162,6 +140,11 @@ namespace StatlookLogViewer
                 default:
                     break;
             }
+        }
+
+        private string GetNameOfGroupByHourTime(string myHourTime)
+        {
+            return myHourTime.Length < 2 ? $"0{myHourTime}:00-0{myHourTime}:59" : $"{myHourTime}:00-{myHourTime}:59"; ;
         }
 
 
