@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Windows.Forms;
 using ListViewGroupCollapse;
 
@@ -22,11 +23,12 @@ namespace StatlookLogViewer
         /// Create new page
         /// </summary>
         /// <param name="index">Index</param>
-        /// <param name="name">Page name</param>
-        /// <param name="fullName">Page fullname</param>
+        /// <param name="fileNameWithPath">Page name</param>
         /// <param name="logType">Type of log</param>
-        public LogTapPage(int index, string name, string fullName, LogType logType)
+        public LogTapPage(int index, string fileNameWithPath, LogType logType)
         {
+            string fileName = Path.GetFileName(fileNameWithPath);
+
             LogType = logType;
 
             _config = Configuration.GetConfiguration();
@@ -77,7 +79,7 @@ namespace StatlookLogViewer
             ListViewExtended.Dock = DockStyle.Fill;
             ListViewExtended.GridLines = true;
             ListViewExtended.Location = new System.Drawing.Point(3, 3);
-            ListViewExtended.Name = name;
+            ListViewExtended.Name = fileNameWithPath;
             ListViewExtended.Size = new System.Drawing.Size(988, 604);
             ListViewExtended.TabIndex = index;
             ListViewExtended.UseCompatibleStateImageBehavior = false;
@@ -91,14 +93,14 @@ namespace StatlookLogViewer
 
 
             Location = new System.Drawing.Point(4, 22);
-            Name = name;
+            Name = fileName;
             Padding = new Padding(3);
             Size = new System.Drawing.Size(994, 610);
             TabIndex = index;
-            Text = "      " + name;
+            Text = "      " + fileName;
             UseVisualStyleBackColor = true;
-            ToolTipText = fullName;
-            Tag = fullName;
+            ToolTipText = fileNameWithPath;
+            Tag = fileNameWithPath;
             Controls.Add(ListViewExtended);
 
         }

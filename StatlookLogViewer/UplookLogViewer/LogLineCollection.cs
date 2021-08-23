@@ -29,21 +29,21 @@ namespace StatlookLogViewer
             _listViewItem.Add(logLine.ListViewItem);
         }
 
-        public LogTapPage LogAnalyze(string filePath, string fileName, LogHeader logHeader)
+        public LogTapPage LogAnalyze(string fileNameWithPath, string fileName, LogHeader logHeader)
         {
             LogType logType = LogType.Default;
 
             string[] listOfHeaders = null;
 
-            string allFileData = GetFileContent(filePath);
+            string allFileData = GetFileContent(fileNameWithPath);
 
             DetectLogType(logHeader, ref logType, ref listOfHeaders, allFileData);
 
-            LogTapPage newTabPage = CreateNewTabPage(filePath, fileName, logType);
+            LogTapPage newTabPage = CreateNewTabPage(fileNameWithPath, logType);
 
             ListViewExtended ListViewTmp = newTabPage.ListViewExtended;
 
-            StreamReader streamReader = new StreamReader(filePath, Encoding.Default);
+            StreamReader streamReader = new StreamReader(fileNameWithPath, Encoding.Default);
 
             //Utworzenie obiektu przechowującego zbiór linii przetworzonych pliku logu 
             LogLineCollection logLineCollection = new LogLineCollection();
@@ -149,9 +149,9 @@ namespace StatlookLogViewer
             }
         }
 
-        private static LogTapPage CreateNewTabPage(string filePath, string fileName, LogType logType)
+        private static LogTapPage CreateNewTabPage(string fileNameWithPath, LogType logType)
         {
-            return new LogTapPage(0, fileName, filePath, logType)
+            return new LogTapPage(0, fileNameWithPath, logType)
             {
                 LogType = logType
             };

@@ -356,7 +356,7 @@ namespace StatlookLogViewer
                         }
                         else
                         {
-                            analizeUplookLog(openFileDialog.FileNames[i], openFileDialog.SafeFileNames[i], fileInfo.LastWriteTime);
+                            analizeUplookLog(openFileDialog.FileNames[i], fileInfo.LastWriteTime);
                         }
                     }
                 }
@@ -583,7 +583,7 @@ namespace StatlookLogViewer
                 {
                     DateTime.TryParse(listViewItem.SubItems[2].Text, out DateTime lastWriteTime);
 
-                    analizeUplookLog(fileFullPath, listViewItem.SubItems[1].Text, lastWriteTime);
+                    analizeUplookLog(fileFullPath, lastWriteTime);
                 }
             }
         }
@@ -913,7 +913,7 @@ namespace StatlookLogViewer
                     }
                     else
                     {
-                        analizeUplookLog(fileInfo.FullName, fileInfo.Name, fileInfo.LastWriteTime);
+                        analizeUplookLog(fileInfo.FullName, fileInfo.LastWriteTime);
                     }
                 }
             }
@@ -1034,8 +1034,10 @@ namespace StatlookLogViewer
             }
         }
 
-        private void analizeUplookLog(string filePath, string fileName, DateTime lastWriteTime)
+        private void analizeUplookLog(string filePath, DateTime lastWriteTime)
         {
+            string fileName = Path.GetFileName(filePath);
+
             TabControl TabC = (TabControl)Controls.Find("tabControlMain", true)[0];
             if (TabC.Controls.Find(fileName, false).Length == 0)
             {
