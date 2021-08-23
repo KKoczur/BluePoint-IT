@@ -8,11 +8,11 @@ namespace StatlookLogViewer
 {
     public partial class OpenZip : Form
     {
-       public ArrayList m_nowaKarta;
-       private string m_zip;
-       public static string ZipTmpDirectory = "\\A plus C Systems\\uplook3\\TMP\\";
-       public static string ZipDirectory;
-       private LogHeader uplookDeskryptor = new LogHeader();
+        public ArrayList m_nowaKarta;
+        private string m_zip;
+        public static string ZipTmpDirectory = "\\A plus C Systems\\uplook3\\TMP\\";
+        public static string ZipDirectory;
+        private LogHeader uplookDeskryptor = new LogHeader();
 
         public OpenZip()
         {
@@ -36,25 +36,25 @@ namespace StatlookLogViewer
 
         private void buttonZipChoose_Click(object sender, EventArgs e)
         {
-                foreach (ListViewItem ZaznaczoneWiersze in listViewFiles.SelectedItems)
-                {
-                    string FileName = ZaznaczoneWiersze.SubItems[1].Text;
-                    string FilePath = ZaznaczoneWiersze.SubItems[4].Text;
-                    string FullName = FilePath + "\\" + FileName;
-                    FileInfo atrybutyPlik = new FileInfo(FullName);
+            foreach (ListViewItem ZaznaczoneWiersze in listViewFiles.SelectedItems)
+            {
+                string FileName = ZaznaczoneWiersze.SubItems[1].Text;
+                string FilePath = ZaznaczoneWiersze.SubItems[4].Text;
+                string FullName = FilePath + "\\" + FileName;
+                FileInfo atrybutyPlik = new FileInfo(FullName);
 
-                    //Nie przetwarzaj plików o rozszerzeniu .zip
-                    if (atrybutyPlik.Extension == ".zip")
-                    {
-                        Form otworzZip = new OpenZip();
-                        otworzZip.ShowDialog(this);
-                    }
-                    else
-                    {
-                        //analizeUplookLog(atrybutyPlik.FullName, atrybutyPlik.Name, atrybutyPlik.LastWriteTime.ToString());
-                    }
+                //Nie przetwarzaj plików o rozszerzeniu .zip
+                if (atrybutyPlik.Extension == ".zip")
+                {
+                    Form otworzZip = new OpenZip();
+                    otworzZip.ShowDialog(this);
                 }
-            
+                else
+                {
+                    //analizeUplookLog(atrybutyPlik.FullName, atrybutyPlik.Name, atrybutyPlik.LastWriteTime.ToString());
+                }
+            }
+
         }
 
         private void checkBoxSelectAll_Click(object sender, EventArgs e)
@@ -77,8 +77,8 @@ namespace StatlookLogViewer
                 }
                 listViewFiles.Focus();
             }
-        }       
-        
+        }
+
         public void DodajItem(ListViewItem plikInfo)
         {
             listViewFiles.Items.Add(plikInfo);
@@ -100,11 +100,12 @@ namespace StatlookLogViewer
 
         private void listViewFiles_MouseDoubleClick(object sender, MouseEventArgs e)
         {
-            ListView.SelectedListViewItemCollection Li = this.listViewFiles.SelectedItems;
+            ListView.SelectedListViewItemCollection Li = listViewFiles.SelectedItems;
+
             int i = 0;
             foreach (ListViewItem item in Li)
             {
-                
+
                 string fileName = item.SubItems[1].Text;
                 string fileFullPath = item.SubItems[4].Text + "\\" + item.SubItems[1].Text;
 
@@ -112,38 +113,25 @@ namespace StatlookLogViewer
                 {
                     foreach (ZipEntry e1 in zip)
                     {
-                       // e1.Extract(ZipDirectory, true);  // overwrite == true  
-                    }  
+                        // e1.Extract(ZipDirectory, true);  // overwrite == true  
+                    }
                 }
 
                 FileInfo atrybutyPlik = new FileInfo(fileFullPath);
 
-                PlikLogu plik = new PlikLogu();
+                LogLineCollection plik = new LogLineCollection();
 
                 DateTime.TryParse(item.SubItems[2].Text, out DateTime lastWriteTime);
 
-                m_nowaKarta.Add(plik.LogAnalyze(fileFullPath, item.SubItems[1].Text, lastWriteTime, uplookDeskryptor));
+                m_nowaKarta.Add(plik.LogAnalyze(fileFullPath, item.SubItems[1].Text, uplookDeskryptor));
+
                 i++;
             }
+
             DialogResult = DialogResult.OK;
+
             this.Close();
         }
-
-        #region Wlasciwosci
-
-        public ArrayList nowaKarta
-        {
-            set
-            {
-                m_nowaKarta = value;
-            }
-            get
-            {
-                return m_nowaKarta;
-            }
-        }
-
-        #endregion Wlasciwosci
 
     }
 }

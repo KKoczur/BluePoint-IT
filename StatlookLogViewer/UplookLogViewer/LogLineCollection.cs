@@ -1,5 +1,4 @@
 ﻿using System;
-using System.Collections;
 using System.Collections.Generic;
 using System.Text;
 using System.Text.RegularExpressions;
@@ -9,7 +8,7 @@ using ListViewGroupCollapse;
 
 namespace StatlookLogViewer
 {
-    internal class PlikLogu
+    internal class LogLineCollection
     {
         #region Members
 
@@ -17,9 +16,7 @@ namespace StatlookLogViewer
 
         private readonly List<string> _logLineGroupNameCollection = new List<string>();
 
-        private readonly List <ListViewItem> _listViewItem = new List<ListViewItem>();
-
-        private NewPage _newPage= new NewPage();
+        private readonly List<ListViewItem> _listViewItem = new List<ListViewItem>();
 
         #endregion Members
 
@@ -32,47 +29,34 @@ namespace StatlookLogViewer
             _listViewItem.Add(logLine.ListViewItem);
         }
 
-        public NewPage LogAnalyze(string filePath, string fileName, DateTime lastWriteTime, LogHeader logHeader)
+        public LogTapPage LogAnalyze(string filePath, string fileName, LogHeader logHeader)
         {
-            string allData = GetFileContent(filePath);
-
             LogType logType = LogType.Default;
 
             string[] listOfHeaders = null;
 
-            if (allData.Contains(logHeader.GetStatlookTextHeaders()[1]))
-            {
-                logType = (int)LogType.Statlook;
-                listOfHeaders = logHeader.GetStatlookTextHeaders();
-            }
-            else if (allData.Contains(logHeader.GetUsmTextHeaders()[1]))
-            {
-                logType = LogType.Usm;
-                listOfHeaders = logHeader.GetUsmTextHeaders();
-            }
+            string allFileData = GetFileContent(filePath);
 
-            _newPage = new NewPage(0, fileName, filePath, listOfHeaders, lastWriteTime, logType)
-            {
-                LogType = logType
-            };
+            DetectLogType(logHeader, ref logType, ref listOfHeaders, allFileData);
 
-            ListViewExtended ListViewTmp = _newPage.ListViewExtended;
+            LogTapPage newTabPage = CreateNewTabPage(filePath, fileName, logType);
 
-            StreamReader plikAnalize_Sec = new StreamReader(filePath, Encoding.Default);
+            ListViewExtended ListViewTmp = newTabPage.ListViewExtended;
+
+            StreamReader streamReader = new StreamReader(filePath, Encoding.Default);
 
             //Utworzenie obiektu przechowującego zbiór linii przetworzonych pliku logu 
-            PlikLogu PlikLogu = new PlikLogu();
+            LogLineCollection logLineCollection = new LogLineCollection();
 
             LogLine logLine = new LogLine();
 
             string line;
 
-            while ((line = plikAnalize_Sec.ReadLine()) != null)
+            while ((line = streamReader.ReadLine()) != null)
             {
                 //Wyrażenie regularne do sprawdzenia czy wpis logu nie zaczyna się od daty
                 if (Regex.IsMatch(line, @"(?<rok>\d{4})\.(?<miesiac>\d{2})\.(?<dzien>\d{2})\b"))
                 {
-                    #region if_1
                     logLine = new LogLine();
                     line += ";";
                     line = line.Substring(0, line.IndexOf(";"));
@@ -81,21 +65,23 @@ namespace StatlookLogViewer
                     logLine.AddLine(logLine.Headers.StatlookHeaderDate, line, logType);
 
                     DateTime tmp = DateTime.Parse(line);
+
                     string MyHourTime = tmp.Hour.ToString();
 
                     ListViewGroup tmp_Group = new ListViewGroup(logLine.GroupName, HorizontalAlignment.Left);
+
                     if (ListViewTmp.Groups.Count == 0)
                     {
                         ListViewTmp.Groups.Add(tmp_Group);
                         logLine.ListViewItem.Group = tmp_Group;
-                        logLine.ListViewItem.Group.Name = tmp_Group.ToString(); /**/
+                        logLine.ListViewItem.Group.Name = tmp_Group.ToString();
                     }
                     else
                     {
                         if (ListViewTmp.Groups[ListViewTmp.Groups.Count - 1].Name.Equals(tmp_Group.ToString()))
                         {
                             logLine.ListViewItem.Group = ListViewTmp.Groups[ListViewTmp.Groups.Count - 1];
-                            logLine.ListViewItem.Group.Name = ListViewTmp.Groups[ListViewTmp.Groups.Count - 1].Name; /**/
+                            logLine.ListViewItem.Group.Name = ListViewTmp.Groups[ListViewTmp.Groups.Count - 1].Name;
                         }
                         else
                         {
@@ -104,8 +90,6 @@ namespace StatlookLogViewer
                             logLine.ListViewItem.Group.Name = tmp_Group.ToString();
                         }
                     }
-
-                    #endregion if_1
                 }
 
                 //Wykonaj jeśli linia nie zawiera znacznika przerwy 
@@ -126,10 +110,9 @@ namespace StatlookLogViewer
                 }
                 else if (line.StartsWith(logHeader.StatlookHeaderBreak))
                 {
-
                     //Wykonaj jeśli linia zawiera znacznika przerwy 
                     //Dodanie pojedynczej linii do pliku wynikowego analizy 
-                    PlikLogu.AddLine(logLine);
+                    logLineCollection.AddLine(logLine);
                 }
 
             }
@@ -140,7 +123,7 @@ namespace StatlookLogViewer
             {
 
                 //dodanie całego zakresu danych 
-                ListViewTmp.Items.AddRange(PlikLogu.GetListViewItem());
+                ListViewTmp.Items.AddRange(logLineCollection.GetListViewItem());
             }
             finally
             {
@@ -149,7 +132,29 @@ namespace StatlookLogViewer
                 ListViewTmp.ResumeLayout();
             }
 
-            return _newPage;
+            return newTabPage;
+        }
+
+        private static void DetectLogType(LogHeader logHeader, ref LogType logType, ref string[] listOfHeaders, string allFileData)
+        {
+            if (allFileData.Contains(logHeader.GetStatlookTextHeaders()[1]))
+            {
+                logType = (int)LogType.Statlook;
+                listOfHeaders = logHeader.GetStatlookTextHeaders();
+            }
+            else if (allFileData.Contains(logHeader.GetUsmTextHeaders()[1]))
+            {
+                logType = LogType.Usm;
+                listOfHeaders = logHeader.GetUsmTextHeaders();
+            }
+        }
+
+        private static LogTapPage CreateNewTabPage(string filePath, string fileName, LogType logType)
+        {
+            return new LogTapPage(0, fileName, filePath, logType)
+            {
+                LogType = logType
+            };
         }
 
         private ListViewItem[] GetListViewItem() => _listViewItem.ToArray();

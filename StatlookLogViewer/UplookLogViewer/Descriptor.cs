@@ -11,14 +11,14 @@ namespace StatlookLogViewer
             KeyName = keyName;
         }
 
-        public Descriptor(LogType logType, string keyName, string headerText)
-            :this(logType, keyName)
+        public Descriptor(LogType logType, string keyName, string rowCaption)
+            : this(logType, keyName)
         {
-            HeaderText = headerText;
+            RowCaption = rowCaption;
         }
 
-        public Descriptor(LogType logType, string keyName, string headerText, bool show)
-            :this (logType, keyName, headerText)
+        public Descriptor(LogType logType, string keyName, string rowCaption, bool show)
+            : this(logType, keyName, rowCaption)
         {
             Show = show;
         }
@@ -35,15 +35,14 @@ namespace StatlookLogViewer
         public string KeyName { set; get; }
 
         /// <summary>
-        /// Header of descriptor
+        /// Row caption
         /// </summary>
-        public string HeaderText { set; get; }
+        public string RowCaption { set; get; }
 
         /// <summary>
         /// Need to show
         /// </summary>
         public bool Show { set; get; }
-
 
         #endregion Properties
 

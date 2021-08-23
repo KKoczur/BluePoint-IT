@@ -1,19 +1,19 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Windows.Forms;
 using ListViewGroupCollapse;
 
 namespace StatlookLogViewer
 {
-    public class NewPage: TabPage
+    public class LogTapPage : TabPage
     {
         private readonly ListViewColumnSorter _lvwColumnSorter = new ListViewColumnSorter();
-        private readonly bool[] _statlookColumnNeedToShow=new bool[10];
-        private readonly bool[] _usmColumnNeedToShow=new bool[6];
+        private readonly List<bool> _statlookColumnNeedToShow = new List<bool>();
+        private readonly List<bool> _usmColumnNeedToShow = new List<bool>();
 
         private readonly Configuration _config;
 
-
-        public NewPage()
+        public LogTapPage()
         {
 
         }
@@ -24,47 +24,55 @@ namespace StatlookLogViewer
         /// <param name="index">Index</param>
         /// <param name="name">Page name</param>
         /// <param name="fullName">Page fullname</param>
-        /// <param name="columnNames">Column names</param>
-        /// <param name="lastWriteTime">File last write time</param>
         /// <param name="logType">Type of log</param>
-        public NewPage(int index, string name, string fullName, string[] columnNames, DateTime lastWriteTime, LogType logType)
+        public LogTapPage(int index, string name, string fullName, LogType logType)
         {
             LogType = logType;
 
-            this.Location = new System.Drawing.Point(4, 22);
-            this.Name = name;
-            this.Padding = new Padding(3);
-            this.Size = new System.Drawing.Size(994, 610);
-            this.TabIndex = index;
-            this.Text = "      " + name;
-            this.UseVisualStyleBackColor = true;
-            this.ToolTipText = fullName;
-            this.Tag = fullName;
-            this.Controls.Add(ListViewExtended);
-
             _config = Configuration.GetConfiguration();
+            List<string> columnNames = new List<string>();
 
-            int j = 0;
-            foreach (Descriptor descriptor in _config.GetStatlookDescriptors())
+            switch (LogType)
             {
-                _statlookColumnNeedToShow[j] = descriptor.Show;
-                j++;
+                case LogType.Statlook:
+                    {
+                        foreach (Descriptor descriptor in _config.GetStatlookDescriptors())
+                        {
+                            _statlookColumnNeedToShow.Add(descriptor.Show);
+                            columnNames.Add(descriptor.RowCaption);
+                        }
+
+
+                        for (int i = 0; i < columnNames.Count; i++)
+                        {
+                            ListViewExtended.Columns.Add(columnNames[i], 0);
+                        }
+
+                        CheckColumnsVisibility(ListViewExtended, _statlookColumnNeedToShow.ToArray());
+                        break;
+                    }
+                case LogType.Usm:
+                    {
+
+                        foreach (Descriptor descriptor in _config.GetUsmDescriptors())
+                        {
+                            _usmColumnNeedToShow.Add(descriptor.Show);
+                            columnNames.Add(descriptor.RowCaption);
+                        }
+
+                        for (int i = 0; i < columnNames.Count; i++)
+                        {
+                            ListViewExtended.Columns.Add(columnNames[i], 0);
+                        }
+
+                        CheckColumnsVisibility(ListViewExtended, _usmColumnNeedToShow.ToArray());
+                        break;
+                    }
             }
 
-            int k = 0;
-            foreach (Descriptor descriptor in _config.GetUsmDescriptors())
-            {
-                _usmColumnNeedToShow[k] = descriptor.Show;
-                k++;
-            }
-            
+
 
             ListViewExtended.ListViewItemSorter = _lvwColumnSorter;
-
-            for (int i = 0; i < columnNames.Length; i++)
-            {
-                ListViewExtended.Columns.Add(columnNames[i], 0);
-            }
 
             ListViewExtended.Dock = DockStyle.Fill;
             ListViewExtended.GridLines = true;
@@ -80,27 +88,22 @@ namespace StatlookLogViewer
             ListViewExtended.SetGroupState(ListViewGroupState.Collapsible);
             ListViewExtended.ColumnClick += listViewFiles_ColumnClick;
 
-            switch (LogType)
-            {
-                case LogType.Statlook:
-                    {
-                        CheckColumnsVisibility(ListViewExtended, _statlookColumnNeedToShow);
-                        break;
-                    }
-                case LogType.Usm:
-                    {
-                        CheckColumnsVisibility(ListViewExtended, _usmColumnNeedToShow);
-                        break;
-                    }
 
-                default:
-                    break;
-            }
+
+            Location = new System.Drawing.Point(4, 22);
+            Name = name;
+            Padding = new Padding(3);
+            Size = new System.Drawing.Size(994, 610);
+            TabIndex = index;
+            Text = "      " + name;
+            UseVisualStyleBackColor = true;
+            ToolTipText = fullName;
+            Tag = fullName;
+            Controls.Add(ListViewExtended);
 
         }
 
         #region Properties
-
 
         public ListViewExtended ListViewExtended { get; } = new ListViewExtended();
 

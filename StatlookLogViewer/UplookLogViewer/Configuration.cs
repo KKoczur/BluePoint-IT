@@ -30,7 +30,7 @@ namespace StatlookLogViewer
         /// </summary>
         public Configuration()
         {
-           DescriptorCollection = new DescriptorCollection();
+            DescriptorCollection = new DescriptorCollection();
         }
 
         #endregion Constructors
@@ -41,11 +41,11 @@ namespace StatlookLogViewer
 
         public Descriptor[] GetStatlookDescriptors() => DescriptorCollection.GetStatlookDescriptors();
 
-        public string GetStatlookTextHeaders() => string.Join (";", DescriptorCollection.GetStatlookDescriptors().Select(item => item.HeaderText));
+        public string GetStatlookTextHeaders() => string.Join(";", DescriptorCollection.GetStatlookDescriptors().Select(item => item.RowCaption));
 
         public Descriptor[] GetUsmDescriptors() => DescriptorCollection.GetUsmDescriptors();
 
-        public string GetUsmTextHeaders() => string.Join(";", DescriptorCollection.GetUsmDescriptors().Select(item => item.HeaderText));
+        public string GetUsmTextHeaders() => string.Join(";", DescriptorCollection.GetUsmDescriptors().Select(item => item.RowCaption));
 
         public void SetHeaderVisibility(string headerKeyName, bool needToShow)
         {
@@ -101,7 +101,7 @@ namespace StatlookLogViewer
         public DescriptorCollection DescriptorCollection { get; set; }
 
         public string StatlookLogDirectory { get; set; } = LOG_DIRECTORY_PATH;
-        public string StatlookUsmLogDirectory { get; set; }= LOG_DIRECTORY_PATH;
+        public string StatlookUsmLogDirectory { get; set; } = LOG_DIRECTORY_PATH;
         public string UserDirectory { get; set; } = Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData) + LOG_DIRECTORY_PATH;
         public string LogFileExtensions { get; set; } = "*.log;*.zip";
 
