@@ -21,8 +21,8 @@ namespace StatlookLogViewer
         public string _userDirectory;
         private readonly string[] _fileExtensions;
         private readonly LogHeader _logHeader = new LogHeader();
-        private readonly bool[] show_uplook = new bool[10];
-        private readonly bool[] show_usm = new bool[6];
+        private readonly List<bool> show_uplook = new List<bool>();
+        private readonly List<bool> show_usm = new List<bool>();
         private Configuration _config;
 
         #endregion Members
@@ -36,18 +36,17 @@ namespace StatlookLogViewer
             _config = Configuration.GetConfiguration();
 
             Descriptor[] udes = _config.GetStatlookDescriptors();
-            int j = 0;
+
             foreach (Descriptor d in udes)
             {
-                show_uplook[j] = d.Show;
-                j++;
+                show_uplook.Add(d.Show);
             }
+
             Descriptor[] usmdes = _config.GetUsmDescriptors();
-            int k = 0;
+
             foreach (Descriptor d in usmdes)
             {
-                show_usm[k] = d.Show;
-                k++;
+                show_usm.Add(d.Show);
             }
 
             OSVersion = Environment.OSVersion.Version.Major.ToString();
@@ -1041,9 +1040,9 @@ namespace StatlookLogViewer
             TabControl TabC = (TabControl)Controls.Find("tabControlMain", true)[0];
             if (TabC.Controls.Find(fileName, false).Length == 0)
             {
-                LogLineCollection plik = new LogLineCollection();
+                LogLineCollection logLineCollection = new LogLineCollection();
 
-                LogTapPage newPage = plik.LogAnalyze(filePath, fileName, _logHeader);
+                LogTapPage newPage = logLineCollection.LogAnalyze(filePath, _logHeader);
 
                 if (newPage.LogType == LogType.Statlook)
                 {

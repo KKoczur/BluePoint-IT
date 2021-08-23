@@ -44,7 +44,14 @@ namespace StatlookLogViewer
                 new Descriptor(logType,"uException", " Exception:", true),
                 new Descriptor(logType,"uMessage", "   Message:", true),
                 new Descriptor(logType,"uMethod", "   Method:", true),
-                new Descriptor(logType,"uStack", "   Stack:", true)
+                new Descriptor(logType,"uStack", "   Stack:", true),
+
+                new Descriptor(logType,"uEvent", "Event=", false),
+                new Descriptor(logType,"uDocumentId", "DocumentId=", false),
+                new Descriptor(logType,"uBrowser", "Browser=", false),
+                new Descriptor(logType,"uUrl", "Url=", false),
+                new Descriptor(logType,"uTitle", "Title=", false),
+                new Descriptor(logType,"uActive", "Active=", false),
             };
 
             return result.ToArray();

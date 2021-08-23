@@ -123,7 +123,7 @@ namespace StatlookLogViewer
 
                 DateTime.TryParse(item.SubItems[2].Text, out DateTime lastWriteTime);
 
-                m_nowaKarta.Add(plik.LogAnalyze(fileFullPath, item.SubItems[1].Text, uplookDeskryptor));
+                m_nowaKarta.Add(plik.LogAnalyze(fileFullPath, uplookDeskryptor));
 
                 i++;
             }

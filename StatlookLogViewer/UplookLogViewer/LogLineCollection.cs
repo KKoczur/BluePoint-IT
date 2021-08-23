@@ -29,7 +29,7 @@ namespace StatlookLogViewer
             _listViewItem.Add(logLine.ListViewItem);
         }
 
-        public LogTapPage LogAnalyze(string fileNameWithPath, string fileName, LogHeader logHeader)
+        public LogTapPage LogAnalyze(string fileNameWithPath, LogHeader logHeader)
         {
             LogType logType = LogType.Default;
 
@@ -44,9 +44,6 @@ namespace StatlookLogViewer
             ListViewExtended ListViewTmp = newTabPage.ListViewExtended;
 
             StreamReader streamReader = new StreamReader(fileNameWithPath, Encoding.Default);
-
-            //Utworzenie obiektu przechowującego zbiór linii przetworzonych pliku logu 
-            LogLineCollection logLineCollection = new LogLineCollection();
 
             LogLine logLine = new LogLine();
 
@@ -112,7 +109,7 @@ namespace StatlookLogViewer
                 {
                     //Wykonaj jeśli linia zawiera znacznika przerwy 
                     //Dodanie pojedynczej linii do pliku wynikowego analizy 
-                    logLineCollection.AddLine(logLine);
+                    AddLine(logLine);
                 }
 
             }
@@ -123,7 +120,7 @@ namespace StatlookLogViewer
             {
 
                 //dodanie całego zakresu danych 
-                ListViewTmp.Items.AddRange(logLineCollection.GetListViewItem());
+                ListViewTmp.Items.AddRange(GetListViewItem());
             }
             finally
             {
