@@ -10,15 +10,8 @@ namespace StatlookLogViewer.Views
     public class LogTapPage : TabPage
     {
         private readonly ListViewColumnSorter _lvwColumnSorter = new ListViewColumnSorter();
-        private readonly List<bool> _statlookColumnNeedToShow = new List<bool>();
-        private readonly List<bool> _usmColumnNeedToShow = new List<bool>();
 
         private readonly Configuration _config;
-
-        public LogTapPage()
-        {
-
-        }
 
         /// <summary>
         /// Create new page
@@ -33,45 +26,38 @@ namespace StatlookLogViewer.Views
             LogType = logType;
 
             _config = Configuration.GetConfiguration();
-            List<string> columnNames = new List<string>();
+
+            ILogPattern[] logPatterns = null;
 
             switch (LogType)
             {
                 case LogType.Statlook:
                     {
-                        foreach (StatlookLogPattern descriptor in _config.GetStatlookDescriptors())
-                        {
-                            _statlookColumnNeedToShow.Add(descriptor.Show);
-                            columnNames.Add(descriptor.TextPattern);
-                        }
-
-
-                        for (int i = 0; i < columnNames.Count; i++)
-                        {
-                            ListViewExtended.Columns.Add(columnNames[i], 0);
-                        }
-
-                        CheckColumnsVisibility(ListViewExtended, _statlookColumnNeedToShow.ToArray());
+                        logPatterns = _config.GetStatlookDescriptors();
                         break;
                     }
                 case LogType.Usm:
                     {
-
-                        foreach (StatlookLogPattern descriptor in _config.GetUsmDescriptors())
-                        {
-                            _usmColumnNeedToShow.Add(descriptor.Show);
-                            columnNames.Add(descriptor.TextPattern);
-                        }
-
-                        for (int i = 0; i < columnNames.Count; i++)
-                        {
-                            ListViewExtended.Columns.Add(columnNames[i], 0);
-                        }
-
-                        CheckColumnsVisibility(ListViewExtended, _usmColumnNeedToShow.ToArray());
+                        logPatterns = _config.GetUsmDescriptors();
                         break;
                     }
             }
+
+            var columnNames = new List<string>();
+            var columnNeedToShow = new List<bool>();
+
+            foreach (ILogPattern logPattern in logPatterns)
+            {
+                columnNeedToShow.Add(logPattern.Show);
+                columnNames.Add(logPattern.TextPattern);
+            }
+
+            for (int i = 0; i < columnNames.Count; i++)
+            {
+                ListViewExtended.Columns.Add(columnNames[i], 0);
+            }
+
+            CheckColumnsVisibility(ListViewExtended, columnNeedToShow.ToArray());
 
 
             ListViewExtended.ListViewItemSorter = _lvwColumnSorter;

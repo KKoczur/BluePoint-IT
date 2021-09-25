@@ -36,7 +36,7 @@ namespace StatlookLogViewer
             {
                 case LogType.Statlook:
                     {
-                        foreach (StatlookLogPattern descriptor in Headers.GetStatlookDescriptors())
+                        foreach (ILogPattern descriptor in Headers.GetStatlookDescriptors())
                         {
                             if (string.Compare(descriptor.TextPattern, rowCaption, true) != 0)
                                 continue;
@@ -86,7 +86,7 @@ namespace StatlookLogViewer
 
                 case LogType.Usm:
                     {
-                        foreach (StatlookLogPattern logPattern in Headers.GetUsmDescriptors())
+                        foreach (ILogPattern logPattern in Headers.GetUsmDescriptors())
                         {
                             if (logPattern.TextPattern != rowCaption)
                             {
