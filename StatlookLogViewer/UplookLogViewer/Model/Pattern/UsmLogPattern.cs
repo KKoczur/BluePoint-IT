@@ -1,24 +1,24 @@
 ﻿
-namespace StatlookLogViewer
+namespace StatlookLogViewer.Model.Pattern
 {
-    public class Descriptor
+    public class UsmLogPattern : ILogPattern
     {
         #region Constructors
 
-        public Descriptor(LogType logType, string keyName)
+        public UsmLogPattern(LogType logType, string keyName)
         {
             LogType = logType;
             KeyName = keyName;
         }
 
-        public Descriptor(LogType logType, string keyName, string rowCaption)
+        public UsmLogPattern(LogType logType, string keyName, string textPattern)
             : this(logType, keyName)
         {
-            RowCaption = rowCaption;
+            TextPattern = textPattern;
         }
 
-        public Descriptor(LogType logType, string keyName, string rowCaption, bool show)
-            : this(logType, keyName, rowCaption)
+        public UsmLogPattern(LogType logType, string keyName, string textPattern, bool show)
+            : this(logType, keyName, textPattern)
         {
             Show = show;
         }
@@ -35,9 +35,9 @@ namespace StatlookLogViewer
         public string KeyName { set; get; }
 
         /// <summary>
-        /// Row caption
+        /// Text pattern
         /// </summary>
-        public string RowCaption { set; get; }
+        public string TextPattern { set; get; }
 
         /// <summary>
         /// Need to show

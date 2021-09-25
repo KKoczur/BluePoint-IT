@@ -1,8 +1,7 @@
-﻿using System;
-using System.Windows.Forms;
+﻿using System.Windows.Forms;
 using System.Drawing;
 
-namespace Yoramo.GuiLib
+namespace StatlookLogViewer.Views
 {
     public delegate bool PreRemoveTab(int indx);
     public class TabControlEx : TabControl

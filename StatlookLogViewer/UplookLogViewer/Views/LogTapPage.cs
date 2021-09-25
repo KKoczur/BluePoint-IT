@@ -1,10 +1,11 @@
-﻿using System;
+﻿using StatlookLogViewer.Controller;
+using StatlookLogViewer.Model;
+using StatlookLogViewer.Model.Pattern;
 using System.Collections.Generic;
 using System.IO;
 using System.Windows.Forms;
-using ListViewGroupCollapse;
 
-namespace StatlookLogViewer
+namespace StatlookLogViewer.Views
 {
     public class LogTapPage : TabPage
     {
@@ -38,10 +39,10 @@ namespace StatlookLogViewer
             {
                 case LogType.Statlook:
                     {
-                        foreach (Descriptor descriptor in _config.GetStatlookDescriptors())
+                        foreach (StatlookLogPattern descriptor in _config.GetStatlookDescriptors())
                         {
                             _statlookColumnNeedToShow.Add(descriptor.Show);
-                            columnNames.Add(descriptor.RowCaption);
+                            columnNames.Add(descriptor.TextPattern);
                         }
 
 
@@ -56,10 +57,10 @@ namespace StatlookLogViewer
                 case LogType.Usm:
                     {
 
-                        foreach (Descriptor descriptor in _config.GetUsmDescriptors())
+                        foreach (StatlookLogPattern descriptor in _config.GetUsmDescriptors())
                         {
                             _usmColumnNeedToShow.Add(descriptor.Show);
-                            columnNames.Add(descriptor.RowCaption);
+                            columnNames.Add(descriptor.TextPattern);
                         }
 
                         for (int i = 0; i < columnNames.Count; i++)
@@ -71,7 +72,6 @@ namespace StatlookLogViewer
                         break;
                     }
             }
-
 
 
             ListViewExtended.ListViewItemSorter = _lvwColumnSorter;

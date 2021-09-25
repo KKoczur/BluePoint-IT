@@ -1,7 +1,7 @@
 ﻿using System.Collections;
 using System.Windows.Forms;
 
-namespace StatlookLogViewer
+namespace StatlookLogViewer.Controller
 {
     public class IntegerComparer : IComparer
     {

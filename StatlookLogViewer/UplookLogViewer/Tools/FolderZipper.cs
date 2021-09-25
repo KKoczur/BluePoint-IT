@@ -3,8 +3,9 @@ using System.IO;
 using System.Collections;
 using System.Windows.Forms;
 using ICSharpCode.SharpZipLib.Zip;
+using StatlookLogViewer.Model;
 
-namespace StatlookLogViewer
+namespace StatlookLogViewer.Tools
 {
     public static class ZipUtil
     {
@@ -241,4 +242,4 @@ namespace StatlookLogViewer
 
 
 
- 
+

@@ -1,6 +1,8 @@
 ﻿using System;
 using System.Windows.Forms;
 using System.Text.RegularExpressions;
+using StatlookLogViewer.Model;
+using StatlookLogViewer.Model.Pattern;
 
 namespace StatlookLogViewer
 {
@@ -12,11 +14,12 @@ namespace StatlookLogViewer
 
         private ListViewGroup _listViewGroup = new ListViewGroup();
 
-        private readonly Descriptor[] _listOfAllErrors = (new DictionaryLog()).GetListOfAllErrors();
+        private readonly LogErrorPattern[] _listOfAllErrors = (new ErrorCollection()).GetListOfAllErrors();
 
         #endregion Members
 
         #region Properties
+
         public LogHeader Headers { get; } = new LogHeader();
 
         public string GroupName => _groupName;
@@ -33,18 +36,13 @@ namespace StatlookLogViewer
             {
                 case LogType.Statlook:
                     {
-                        foreach (Descriptor descriptor in Headers.GetStatlookDescriptors())
+                        foreach (StatlookLogPattern descriptor in Headers.GetStatlookDescriptors())
                         {
-                            if (string.Compare(descriptor.RowCaption, rowCaption, true) != 0)
+                            if (string.Compare(descriptor.TextPattern, rowCaption, true) != 0)
                                 continue;
 
-                            if (rowCaption != Headers.StatlookHeaderDate)
+                            if (rowCaption != Configuration.STATLOOK_DATE)
                             {
-                                /*if (tmp_Value.Contains("Error"))
-                                                            {
-                                                                m_ListViewItem.UseItemStyleForSubItems = false;
-                                                                m_ListViewItem.SubItems.Add(tmp_Value, System.Drawing.Color.Red, System.Drawing.Color.White, new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(238))));
-                                                            }*/
                                 ListViewItem.SubItems.Add(rowValue);
 
                                 if (Regex.IsMatch(rowValue, @"(?<NR_1>\d{1})\.(?<NR_2>\d{1})\.(?<NR_3>\d{1})\b został uruchomiony.") || Regex.IsMatch(rowValue, @"(?<NR_1>\d{1})\.(?<NR_2>\d{1})\.(?<NR_3>\d{1})\b started"))
@@ -53,19 +51,19 @@ namespace StatlookLogViewer
                                 }
                                 else
                                 {
-                                    foreach (Descriptor des in _listOfAllErrors)
+                                    foreach (LogErrorPattern logErrorPattern in _listOfAllErrors)
                                     {
-                                        if (rowValue.Contains(des.KeyName))
+                                        if (rowValue.Contains(logErrorPattern.ErrorTextPattern))
                                         {
-                                            if (!ListViewItem.Group.Header.Contains(des.RowCaption))
+                                            if (!ListViewItem.Group.Header.Contains(logErrorPattern.ErrorReason))
                                             {
-                                                ListViewItem.Group.Header += " ( " + des.RowCaption + " )";
+                                                ListViewItem.Group.Header += " ( " + logErrorPattern.ErrorReason + " )";
                                             }
                                         }
                                     }
                                 }
 
-                                descriptor.RowCaption = rowValue;
+                                descriptor.TextPattern = rowValue;
 
                                 break;
                             }
@@ -79,7 +77,7 @@ namespace StatlookLogViewer
                             ListViewItem.Group = _listViewGroup;
                             ListViewItem.Group.Name = _groupName;
                             ListViewItem.Group.Header = _groupName;
-                            descriptor.RowCaption = rowValue;
+                            descriptor.TextPattern = rowValue;
                             break;
                         }
 
@@ -88,14 +86,14 @@ namespace StatlookLogViewer
 
                 case LogType.Usm:
                     {
-                        foreach (Descriptor Des in Headers.GetUsmDescriptors())
+                        foreach (StatlookLogPattern logPattern in Headers.GetUsmDescriptors())
                         {
-                            if (Des.RowCaption != rowCaption)
+                            if (logPattern.TextPattern != rowCaption)
                             {
                                 continue;
                             }
 
-                            if (rowCaption != Headers.StatlookHeaderDate)
+                            if (rowCaption != Configuration.STATLOOK_DATE)
                             {
                                 ListViewItem.SubItems.Add(rowValue);
 
@@ -105,19 +103,19 @@ namespace StatlookLogViewer
                                 }
                                 else
                                 {
-                                    foreach (Descriptor des in _listOfAllErrors)
+                                    foreach (LogErrorPattern logErrorPattern in _listOfAllErrors)
                                     {
-                                        if (rowValue.Contains(des.KeyName))
+                                        if (rowValue.Contains(logErrorPattern.ErrorTextPattern))
                                         {
-                                            if (!ListViewItem.Group.Header.Contains(des.RowCaption))
+                                            if (!ListViewItem.Group.Header.Contains(logErrorPattern.ErrorReason))
                                             {
-                                                ListViewItem.Group.Header += " ( " + des.RowCaption + " )";
+                                                ListViewItem.Group.Header += " ( " + logErrorPattern.ErrorReason + " )";
                                             }
                                         }
                                     }
                                 }
 
-                                Des.RowCaption = rowValue;
+                                logPattern.TextPattern = rowValue;
                                 break;
                             }
 
@@ -131,7 +129,7 @@ namespace StatlookLogViewer
                             ListViewItem.Group = _listViewGroup;
                             ListViewItem.Group.Name = _groupName; /**/
                             ListViewItem.Group.Header = _groupName;
-                            Des.RowCaption = rowValue;
+                            logPattern.TextPattern = rowValue;
                             break;
                         }
                         break;

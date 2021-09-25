@@ -15,10 +15,10 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
-    <Compile Update="ListViewExtended.cs">
+    <Compile Update="Views\ListViewExtended.cs">
       <SubType>Component</SubType>
     </Compile>
-    <Compile Update="LogTapPage.cs">
+    <Compile Update="Views\LogTapPage.cs">
       <SubType>Component</SubType>
     </Compile>
     <Compile Update="Options\OCatalogs.cs">
@@ -29,7 +29,7 @@
       <AutoGen>True</AutoGen>
       <DependentUpon>Resources.resx</DependentUpon>
     </Compile>
-    <Compile Update="TabControlEx.cs">
+    <Compile Update="Views\TabControlEx.cs">
       <SubType>Component</SubType>
     </Compile>
   </ItemGroup>

@@ -4,8 +4,8 @@ using System.Text;
 using System.Text.RegularExpressions;
 using System.Windows.Forms;
 using System.IO;
-using ListViewGroupCollapse;
-using System.Linq;
+using StatlookLogViewer.Views;
+using StatlookLogViewer.Model;
 
 namespace StatlookLogViewer
 {

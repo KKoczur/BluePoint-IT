@@ -1,6 +1,6 @@
 ﻿using ICSharpCode.SharpZipLib.Zip;
 
-namespace StatlookLogViewer
+namespace StatlookLogViewer.Model
 {
     public class ZipHandle
     {

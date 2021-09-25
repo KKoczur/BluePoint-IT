@@ -1,12 +1,10 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Text;
 using System.Windows.Forms;
 using System.ComponentModel;
 using System.Runtime.InteropServices;
 using System.Reflection;
 
-namespace ListViewGroupCollapse
+namespace StatlookLogViewer.Views
 {
     public class ListViewExtended : ListView
     {
@@ -127,7 +125,7 @@ namespace ListViewGroupCollapse
 
         public void SetOneGroupState(ListViewGroup lvg, ListViewGroupState state)
         {
-                setGrpState(lvg, state);
+            setGrpState(lvg, state);
         }
 
         public void SetGroupFooter(ListViewGroup lvg, string footerText)

@@ -3,9 +3,12 @@ using System.Collections;
 using System.Drawing;
 using System.Windows.Forms;
 using System.IO;
-using ListViewGroupCollapse;
 using Ionic.Zip;
 using System.Collections.Generic;
+using StatlookLogViewer.Views;
+using StatlookLogViewer.Model;
+using StatlookLogViewer.Controller;
+using StatlookLogViewer.Model.Pattern;
 
 namespace StatlookLogViewer
 {
@@ -35,16 +38,16 @@ namespace StatlookLogViewer
 
             _config = Configuration.GetConfiguration();
 
-            Descriptor[] udes = _config.GetStatlookDescriptors();
+            ILogPattern[] udes = _config.GetStatlookDescriptors();
 
-            foreach (Descriptor d in udes)
+            foreach (StatlookLogPattern d in udes)
             {
                 show_uplook.Add(d.Show);
             }
 
-            Descriptor[] usmdes = _config.GetUsmDescriptors();
+            ILogPattern[] usmdes = _config.GetUsmDescriptors();
 
-            foreach (Descriptor d in usmdes)
+            foreach (ILogPattern d in usmdes)
             {
                 show_usm.Add(d.Show);
             }
@@ -77,7 +80,7 @@ namespace StatlookLogViewer
                 }
                 viewMenuItem.Name = udes[i].KeyName;
                 viewMenuItem.Size = new Size(152, 22);
-                viewMenuItem.Text = udes[i].RowCaption;
+                viewMenuItem.Text = udes[i].TextPattern;
                 ToolStripMenuItemUplook.DropDownItems.Add(viewMenuItem);
             }
 
@@ -98,7 +101,7 @@ namespace StatlookLogViewer
                 }
                 viewMenuItem.Name = usmdes[i].KeyName;
                 viewMenuItem.Size = new Size(152, 22);
-                viewMenuItem.Text = usmdes[i].RowCaption;
+                viewMenuItem.Text = usmdes[i].TextPattern;
                 ToolStripMenuItemUSM.DropDownItems.Add(viewMenuItem);
             }
 
@@ -1116,7 +1119,7 @@ namespace StatlookLogViewer
 
         private void ToolStripMenuItemUplook_DropDownItemClicked(object sender, ToolStripItemClickedEventArgs e)
         {
-            Descriptor[] udes = _config.GetStatlookDescriptors();
+            ILogPattern[] udes = _config.GetStatlookDescriptors();
 
             ToolStripMenuItem toolStripMenuItem = (ToolStripMenuItem)e.ClickedItem;
 
@@ -1124,7 +1127,7 @@ namespace StatlookLogViewer
             {
                 toolStripMenuItem.CheckState = CheckState.Unchecked;
 
-                foreach (Descriptor ud in udes)
+                foreach (StatlookLogPattern ud in udes)
                 {
                     if (toolStripMenuItem.Name == ud.KeyName)
                     {
@@ -1136,7 +1139,7 @@ namespace StatlookLogViewer
             else
             {
                 toolStripMenuItem.CheckState = CheckState.Checked;
-                foreach (Descriptor ud in udes)
+                foreach (StatlookLogPattern ud in udes)
                 {
                     if (toolStripMenuItem.Name == ud.KeyName)
                     {
@@ -1165,11 +1168,11 @@ namespace StatlookLogViewer
         private void ToolStripMenuItemUSM_DropDownItemClicked(object sender, ToolStripItemClickedEventArgs e)
         {
             ToolStripMenuItem t = (ToolStripMenuItem)e.ClickedItem;
-            Descriptor[] usmdes = _config.GetUsmDescriptors();
+            ILogPattern[] usmdes = _config.GetUsmDescriptors();
             if (t.CheckState == CheckState.Checked)
             {
                 t.CheckState = CheckState.Unchecked;
-                foreach (Descriptor usmd in usmdes)
+                foreach (StatlookLogPattern usmd in usmdes)
                 {
                     if (t.Name == usmd.KeyName)
                     {
@@ -1181,7 +1184,7 @@ namespace StatlookLogViewer
             else
             {
                 t.CheckState = CheckState.Checked;
-                foreach (Descriptor usmd in usmdes)
+                foreach (StatlookLogPattern usmd in usmdes)
                 {
                     if (t.Name == usmd.KeyName)
                     {

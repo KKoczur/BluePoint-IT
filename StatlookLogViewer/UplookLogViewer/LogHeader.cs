@@ -1,4 +1,7 @@
 ﻿
+using StatlookLogViewer.Model;
+using StatlookLogViewer.Model.Pattern;
+
 namespace StatlookLogViewer
 {
     internal class LogHeader
@@ -24,21 +27,14 @@ namespace StatlookLogViewer
 
         #region Properties
 
-        public string StatlookHeaderDate => Configuration.STATLOOK_DATE;
-
-        public string StatlookHeaderBreak => Configuration.STATLOOK_BREAK;
-
-        public string UsmHeaderDate => Configuration.USM_DATE;
-
-        public string UsmHeaderBreak => Configuration.USM_BREAK;
 
         #endregion Properties
 
         #region Methods
 
-        public Descriptor[] GetStatlookDescriptors() => _config.GetStatlookDescriptors();
+        public ILogPattern[] GetStatlookDescriptors() => _config.GetStatlookDescriptors();
 
-        public Descriptor[] GetUsmDescriptors() => _config.GetUsmDescriptors();
+        public ILogPattern[] GetUsmDescriptors() => _config.GetUsmDescriptors();
 
         public string[] GetStatlookTextHeaders() => _config.GetStatlookTextHeaders().Split(new char[] { ';' });
 
