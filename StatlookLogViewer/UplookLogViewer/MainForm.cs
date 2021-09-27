@@ -201,64 +201,6 @@ namespace StatlookLogViewer
             }
         }
 
-        private void WypelnijListe(DirectoryInfo[] Catalogs)
-        {
-            listViewFiles.Items.Clear();
-            try
-            {
-                foreach (DirectoryInfo di in Catalogs)
-                {
-                    if (di.Exists)
-                    {
-                        ArrayList myFileInfo = new ArrayList();
-                        foreach (string ext in _fileExtensions)
-                        {
-                            if (di.FullName != "C:\\")
-                            {
-                                myFileInfo.AddRange(di.GetFiles(ext, SearchOption.AllDirectories));
-                            }
-                            else
-                            {
-                                myFileInfo.AddRange(di.GetFiles(ext, SearchOption.TopDirectoryOnly));
-                            }
-                        }
-                        FileInfo[] pliki = (FileInfo[])myFileInfo.ToArray(typeof(FileInfo));
-                        for (int i = 1; i <= pliki.Length; i++)
-                        {
-                            ListViewItem plikInfo = new ListViewItem
-                            {
-                                Text = i.ToString()
-                            };
-                            plikInfo.SubItems.Add(pliki[i - 1].Name);
-                            plikInfo.SubItems.Add(pliki[i - 1].CreationTime.ToString());
-                            plikInfo.SubItems.Add(FormatFileSize(pliki[i - 1].Length, true));
-                            plikInfo.SubItems.Add(pliki[i - 1].DirectoryName);
-                            listViewFiles.Items.Add(plikInfo);
-                            toolStripButtonIcon.Image = Properties.Resources.ok_16;
-                            toolStripStatusReady.Text = "Ready";
-                        }
-                    }
-                }
-
-                // Loop through and size each column header to fit the column header text.
-                foreach (ColumnHeader ch in this.listViewFiles.Columns)
-                {
-                    if (ch.Index == 0)
-                    {
-                        ch.Width = 0;
-                    }
-                    else
-                    {
-                        ch.Width = -2;
-                    }
-                }
-            }
-            catch (Exception ex)
-            {
-                MessageBox.Show(ex.ToString());
-            }
-        }
-
         private string GetFileFullPathFromListViewItem(ListViewItem listViewItem)
         {
             string fileName = listViewItem.SubItems[1].Text;

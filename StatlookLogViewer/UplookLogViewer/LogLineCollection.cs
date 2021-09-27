@@ -46,29 +46,19 @@ namespace StatlookLogViewer
 
             ListViewExtended listViewExtended = newTabPage.ListViewExtended;
 
-           // string[] allFileLines = File.ReadAllLines(fileFullName);
-
-            StreamReader streamReader = new StreamReader(fileFullName, Encoding.Default);
-
             LogLine logLine = new LogLine();
 
-            string line;
-
-            while ((line = streamReader.ReadLine()) != null)
+            foreach (string singleLine in File.ReadAllLines(fileFullName))
             {
                 //Wyrażenie regularne do sprawdzenia czy wpis logu nie zaczyna się od daty
-                if (Regex.IsMatch(line, @"(?<rok>\d{4})\.(?<miesiac>\d{2})\.(?<dzien>\d{2})\b"))
+                if (Regex.IsMatch(singleLine, @"(?<rok>\d{4})\.(?<miesiac>\d{2})\.(?<dzien>\d{2})\b"))
                 {
                     logLine = new LogLine();
-                    line += ";";
-                    line = line.Substring(0, line.IndexOf(";"));
+                    string normalizeSingleLine = singleLine + ";";
+                    normalizeSingleLine = normalizeSingleLine.Substring(0, normalizeSingleLine.IndexOf(";"));
 
                     // Dodanie do pojedynczej linii wartości kolumny: Date
-                    logLine.AddLine(Configuration.STATLOOK_DATE, line, logType);
-
-                    DateTime tmp = DateTime.Parse(line);
-
-                    string MyHourTime = tmp.Hour.ToString();
+                    logLine.AddLine(Configuration.STATLOOK_DATE, normalizeSingleLine, logType);
 
                     ListViewGroup tmp_Group = new ListViewGroup(logLine.GroupName, HorizontalAlignment.Left);
 
@@ -95,22 +85,22 @@ namespace StatlookLogViewer
                 }
 
                 //Wykonaj jeśli linia nie zawiera znacznika przerwy 
-                else if (!line.Contains(Configuration.STATLOOK_BREAK))
+                else if (!singleLine.Contains(Configuration.STATLOOK_BREAK))
                 {
                     for (int i = 1; i < listOfHeaders.Length; i++)
                     {
-                        if (line.StartsWith(listOfHeaders[i]))
+                        if (singleLine.StartsWith(listOfHeaders[i]))
                         {
-                            line += ";";
-                            line = line.Remove(0, listOfHeaders[i].Length);
-                            line = line.TrimStart();
-                            line = line.Substring(0, line.IndexOf(";"));
-                            logLine.AddLine(listOfHeaders[i], line, logType);
+                            string normalizeSingleLine = singleLine + ";";
+                            normalizeSingleLine = normalizeSingleLine.Remove(0, listOfHeaders[i].Length);
+                            normalizeSingleLine = normalizeSingleLine.TrimStart();
+                            normalizeSingleLine = normalizeSingleLine.Substring(0, normalizeSingleLine.IndexOf(";"));
+                            logLine.AddLine(listOfHeaders[i], normalizeSingleLine, logType);
                             break;
                         }
                     }
                 }
-                else if (line.StartsWith(Configuration.STATLOOK_BREAK))
+                else if (singleLine.StartsWith(Configuration.STATLOOK_BREAK))
                 {
                     //Wykonaj jeśli linia zawiera znacznika przerwy 
                     //Dodanie pojedynczej linii do pliku wynikowego analizy 
