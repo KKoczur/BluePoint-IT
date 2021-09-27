@@ -103,7 +103,6 @@ namespace StatlookLogViewer
         public LogPatternCollection LogPatternCollection { get; set; }
 
         public string StatlookLogDirectory { get; set; } = LOG_DIRECTORY_PATH;
-        public string StatlookUsmLogDirectory { get; set; } = LOG_DIRECTORY_PATH;
         public string UserDirectory { get; set; } = Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData) + LOG_DIRECTORY_PATH;
         public string LogFileExtensions { get; set; } = "*.log;*.zip";
 

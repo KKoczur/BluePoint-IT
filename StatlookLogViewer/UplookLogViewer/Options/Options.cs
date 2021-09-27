@@ -17,7 +17,6 @@ namespace StatlookLogViewer
 
         private readonly string _osVersion;
         private readonly string _logMap;
-        private readonly string _usmMap;
 
         #endregion Members
 
@@ -28,8 +27,7 @@ namespace StatlookLogViewer
             _config = Configuration.GetConfiguration();
 
             _osVersion = System.Environment.OSVersion.Version.Major.ToString();
-	        _logMap = System.Environment.GetFolderPath(Environment.SpecialFolder.CommonApplicationData) + _config.StatlookLogDirectory;
-            _usmMap = System.Environment.GetFolderPath(Environment.SpecialFolder.CommonApplicationData) + _config.StatlookUsmLogDirectory;
+            _logMap = System.Environment.GetFolderPath(Environment.SpecialFolder.CommonApplicationData) + _config.StatlookLogDirectory;
         }
 
         private void buttonOptionsCancel_Click(object sender, EventArgs e)
@@ -46,9 +44,7 @@ namespace StatlookLogViewer
                 this.oCatalogs.Dock = DockStyle.Fill;
                 TextBox txUplook = (TextBox)(oCatalogs.Controls.Find("textBoxUplookCatalog", true))[0];
                 txUplook.Text = _logMap;
-                TextBox txUsm = (TextBox)(oCatalogs.Controls.Find("textBoxUSMCatalog", true))[0];
-                txUsm.Text = _usmMap;
-                TextBox txUser= (TextBox)(oCatalogs.Controls.Find("textBoxUserCatalog",true))[0];
+                TextBox txUser = (TextBox)(oCatalogs.Controls.Find("textBoxUserCatalog", true))[0];
                 txUser.Text = _config.UserDirectory;
                 oCatalogs.Visible = true;
             }

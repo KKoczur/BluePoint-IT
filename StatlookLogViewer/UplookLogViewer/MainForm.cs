@@ -19,9 +19,8 @@ namespace StatlookLogViewer
 
         private readonly ListViewColumnSorter _lvwColumnSorter;
         public string OSVersion;
-        public string LogDirectory;
-        public string USMDirectory;
-        public string _userDirectory;
+        public string _logDirectory;
+        public string _userLogDirectory;
         private readonly string[] _fileExtensions;
         private readonly LogHeader _logHeader = new LogHeader();
         private readonly List<bool> show_uplook = new List<bool>();
@@ -53,9 +52,8 @@ namespace StatlookLogViewer
             }
 
             OSVersion = Environment.OSVersion.Version.Major.ToString();
-            LogDirectory = Environment.GetFolderPath(Environment.SpecialFolder.CommonApplicationData) + _config.StatlookLogDirectory;
-            USMDirectory = Environment.GetFolderPath(Environment.SpecialFolder.CommonApplicationData) + _config.StatlookUsmLogDirectory;
-            _userDirectory = _config.UserDirectory;
+            _logDirectory = Environment.GetFolderPath(Environment.SpecialFolder.CommonApplicationData) + _config.StatlookLogDirectory;
+            _userLogDirectory = _config.UserDirectory;
             _fileExtensions = _config.LogFileExtensions.Split(new char[] { ';' });
 
 
@@ -119,10 +117,10 @@ namespace StatlookLogViewer
         private void IniTabPageInfo()
         {
             //Podaje informacje o katalogu "Logs"
-            SetDashboardData(LogDirectory, labelLogsPathValue, labelFilesSizeValue, labelFilesCountValue);
+            SetDashboardData(_logDirectory, labelLogsPathValue, labelFilesSizeValue, labelFilesCountValue);
 
             //Podaje informacje statystyczne o katalogu usera
-            SetDashboardData(_userDirectory, labelUserPathValue, labelFilesSizeValueUser, labelFilesCountValueUser);
+            SetDashboardData(_userLogDirectory, labelUserPathValue, labelFilesSizeValueUser, labelFilesCountValueUser);
 
             WypelnijListe();
         }
@@ -132,9 +130,8 @@ namespace StatlookLogViewer
             listViewFiles.Items.Clear();
 
             var directoryInfo = new DirectoryInfo[]{
-            new DirectoryInfo(LogDirectory),
-            new DirectoryInfo(USMDirectory),
-            new DirectoryInfo(_userDirectory)
+            new DirectoryInfo(_logDirectory),
+            new DirectoryInfo(_userLogDirectory)
             };
 
             bool[] showCatalog = new bool[]{
