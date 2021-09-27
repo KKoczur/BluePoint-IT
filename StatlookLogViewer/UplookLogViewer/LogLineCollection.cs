@@ -6,6 +6,7 @@ using System.Windows.Forms;
 using System.IO;
 using StatlookLogViewer.Views;
 using StatlookLogViewer.Model;
+using System.Runtime.InteropServices.WindowsRuntime;
 
 namespace StatlookLogViewer
 {
@@ -14,8 +15,6 @@ namespace StatlookLogViewer
         #region Members
 
         private readonly List<LogLine> _logLineCollection = new List<LogLine>();
-
-        private readonly List<string> _logLineGroupNameCollection = new List<string>();
 
         private readonly List<ListViewItem> _listViewItem = new List<ListViewItem>();
 
@@ -36,11 +35,9 @@ namespace StatlookLogViewer
 
         public LogTapPage AnalyzeLogFile(string fileFullName)
         {
-            LogType logType = LogType.Default;
+            string[] logTextPatterns = null;
 
-            string[] listOfHeaders = null;
-
-            DetectLogType(fileFullName, ref listOfHeaders, ref logType);
+            LogType logType = DetectLogType(fileFullName, ref logTextPatterns);
 
             LogTapPage newTabPage = CreateNewTabPage(fileFullName, logType);
 
@@ -87,15 +84,15 @@ namespace StatlookLogViewer
                 //Wykonaj jeśli linia nie zawiera znacznika przerwy 
                 else if (!singleLine.Contains(Configuration.STATLOOK_BREAK))
                 {
-                    for (int i = 1; i < listOfHeaders.Length; i++)
+                    for (int i = 1; i < logTextPatterns.Length; i++)
                     {
-                        if (singleLine.StartsWith(listOfHeaders[i]))
+                        if (singleLine.StartsWith(logTextPatterns[i]))
                         {
                             string normalizeSingleLine = singleLine + ";";
-                            normalizeSingleLine = normalizeSingleLine.Remove(0, listOfHeaders[i].Length);
+                            normalizeSingleLine = normalizeSingleLine.Remove(0, logTextPatterns[i].Length);
                             normalizeSingleLine = normalizeSingleLine.TrimStart();
                             normalizeSingleLine = normalizeSingleLine.Substring(0, normalizeSingleLine.IndexOf(";"));
-                            logLine.AddLine(listOfHeaders[i], normalizeSingleLine, logType);
+                            logLine.AddLine(logTextPatterns[i], normalizeSingleLine, logType);
                             break;
                         }
                     }
@@ -130,24 +127,27 @@ namespace StatlookLogViewer
         private void AddLine(LogLine logLine)
         {
             _logLineCollection.Add(logLine);
-            _logLineGroupNameCollection.Add(logLine.GroupName);
             _listViewItem.Add(logLine.ListViewItem);
         }
 
-        private void DetectLogType(string fileFullName, ref string[] listOfHeaders, ref LogType logType)
+        private LogType DetectLogType(string fileFullName, ref string[] logTextPatterns)
         {
             string allFileData = ReadAllFileText(fileFullName);
+
+            LogType logType = LogType.Default;
 
             if (allFileData.Contains(_config.GetStatlookTextPatterns()[1]))
             {
                 logType = (int)LogType.Statlook;
-                listOfHeaders = _config.GetStatlookTextPatterns().Split(new char[] { ';' });
+                logTextPatterns = _config.GetStatlookTextPatterns().Split(new char[] { ';' });
             }
             else if (allFileData.Contains(_config.GetUsmTextPatterns()[1]))
             {
                 logType = LogType.Usm;
-                listOfHeaders = _config.GetUsmTextPatterns().Split(new char[] { ';' });
+                logTextPatterns = _config.GetUsmTextPatterns().Split(new char[] { ';' });
             }
+
+            return logType;
         }
 
         private LogTapPage CreateNewTabPage(string fileNameWithPath, LogType logType)

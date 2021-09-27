@@ -43,22 +43,7 @@ namespace StatlookLogViewer.Views
                     }
             }
 
-            var columnNames = new List<string>();
-            var columnNeedToShow = new List<bool>();
-
-            foreach (ILogPattern logPattern in logPatterns)
-            {
-                columnNeedToShow.Add(logPattern.Show);
-                columnNames.Add(logPattern.TextPattern);
-            }
-
-            for (int i = 0; i < columnNames.Count; i++)
-            {
-                ListViewExtended.Columns.Add(columnNames[i], 0);
-            }
-
-            CheckColumnsVisibility(ListViewExtended, columnNeedToShow.ToArray());
-
+            AddListViewColumns(logPatterns);
 
             ListViewExtended.ListViewItemSorter = _lvwColumnSorter;
 
@@ -89,6 +74,14 @@ namespace StatlookLogViewer.Views
             Tag = fileNameWithPath;
             Controls.Add(ListViewExtended);
 
+        }
+
+        private void AddListViewColumns(ILogPattern[] logPatterns)
+        {
+            for (int i = 0; i < logPatterns.Length; i++)
+            {
+                ListViewExtended.Columns.Add(logPatterns[i].TextPattern, -2);
+            }
         }
 
         #region Properties

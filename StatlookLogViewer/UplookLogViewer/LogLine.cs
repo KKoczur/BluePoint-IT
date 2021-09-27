@@ -71,12 +71,9 @@ namespace StatlookLogViewer
                     {
                         foreach (LogErrorPattern logErrorPattern in _listOfAllErrors)
                         {
-                            if (lineValue.Contains(logErrorPattern.ErrorTextPattern))
+                            if (lineValue.Contains(logErrorPattern.ErrorTextPattern) && !ListViewItem.Group.Header.Contains(logErrorPattern.ErrorReason))
                             {
-                                if (!ListViewItem.Group.Header.Contains(logErrorPattern.ErrorReason))
-                                {
-                                    ListViewItem.Group.Header += " ( " + logErrorPattern.ErrorReason + " )";
-                                }
+                                ListViewItem.Group.Header += " ( " + logErrorPattern.ErrorReason + " )";
                             }
                         }
                     }
