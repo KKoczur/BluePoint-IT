@@ -34,21 +34,21 @@ namespace StatlookLogViewer
 
         #region Methods
 
-        public LogTapPage LogAnalyze(string fileNameWithPath)
+        public LogTapPage AnalyzeLog(string fileFullName)
         {
             LogType logType = LogType.Default;
 
             string[] listOfHeaders = null;
 
-            string allFileData = GetFileContent(fileNameWithPath);
+            DetectLogType(fileFullName, ref listOfHeaders, ref logType);
 
-            DetectLogType(allFileData, ref listOfHeaders, ref logType);
-
-            LogTapPage newTabPage = CreateNewTabPage(fileNameWithPath, logType);
+            LogTapPage newTabPage = CreateNewTabPage(fileFullName, logType);
 
             ListViewExtended listViewExtended = newTabPage.ListViewExtended;
 
-            StreamReader streamReader = new StreamReader(fileNameWithPath, Encoding.Default);
+           // string[] allFileLines = File.ReadAllLines(fileFullName);
+
+            StreamReader streamReader = new StreamReader(fileFullName, Encoding.Default);
 
             LogLine logLine = new LogLine();
 
@@ -63,7 +63,7 @@ namespace StatlookLogViewer
                     line += ";";
                     line = line.Substring(0, line.IndexOf(";"));
 
-                    //Dodanie do pojedynczej linii wartości kolumny: Date
+                    // Dodanie do pojedynczej linii wartości kolumny: Date
                     logLine.AddLine(Configuration.STATLOOK_DATE, line, logType);
 
                     DateTime tmp = DateTime.Parse(line);
@@ -144,17 +144,19 @@ namespace StatlookLogViewer
             _listViewItem.Add(logLine.ListViewItem);
         }
 
-        private void DetectLogType(string allFileData, ref string[] listOfHeaders, ref LogType logType)
+        private void DetectLogType(string fileFullName, ref string[] listOfHeaders, ref LogType logType)
         {
-            if (allFileData.Contains(_config.GetStatlookTextHeaders()[1]))
+            string allFileData = ReadAllFileText(fileFullName);
+
+            if (allFileData.Contains(_config.GetStatlookTextPatterns()[1]))
             {
                 logType = (int)LogType.Statlook;
-                listOfHeaders = _config.GetStatlookTextHeaders().Split(new char[] { ';' });
+                listOfHeaders = _config.GetStatlookTextPatterns().Split(new char[] { ';' });
             }
-            else if (allFileData.Contains(_config.GetUsmTextHeaders()[1]))
+            else if (allFileData.Contains(_config.GetUsmTextPatterns()[1]))
             {
                 logType = LogType.Usm;
-                listOfHeaders = _config.GetUsmTextHeaders().Split(new char[] { ';' });
+                listOfHeaders = _config.GetUsmTextPatterns().Split(new char[] { ';' });
             }
         }
 
@@ -169,26 +171,21 @@ namespace StatlookLogViewer
         private ListViewItem[] GetListViewItem() => _listViewItem.ToArray();
 
         /// <summary>
-        /// Get file content
+        /// Get file text content
         /// </summary>
         /// <param name="filePath">File path</param>
         /// <returns>File text content</returns>
-        private string GetFileContent(string filePath)
+        private string ReadAllFileText(string filePath)
         {
-            string fileContent = null;
-
             try
             {
-                using var streamReader = new StreamReader(filePath, Encoding.Default);
-
-                fileContent = streamReader.ReadToEnd();
+                return File.ReadAllText(filePath);
             }
             catch (Exception exception)
             {
                 MessageBox.Show("Error: Could not read file from disk. Original error: " + exception.Message);
+                return string.Empty;
             }
-
-            return fileContent;
         }
 
         #endregion Methods

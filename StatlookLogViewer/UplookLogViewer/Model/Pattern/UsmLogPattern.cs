@@ -1,4 +1,6 @@
 ﻿
+using System.Collections.Generic;
+
 namespace StatlookLogViewer.Model.Pattern
 {
     public class UsmLogPattern : ILogPattern
@@ -46,5 +48,25 @@ namespace StatlookLogViewer.Model.Pattern
 
         #endregion Properties
 
+        #region Methods
+
+        public static ILogPattern[] CreateLogPatterns()
+        {
+            const LogType logType = LogType.Usm;
+
+            var result = new List<ILogPattern>()
+            {
+                new UsmLogPattern(logType, "usmDate", "Date", true),
+                new UsmLogPattern(logType, "usmCode", " Code:", true),
+                new UsmLogPattern(logType, "usmType", " Type:", true),
+                new UsmLogPattern(logType, "usmSession", " Session:", true),
+                new UsmLogPattern(logType, "usmProcess", " Process ID:", true),
+                new UsmLogPattern(logType, "usmDescription", " Description:", true)
+             };
+
+            return result.ToArray();
+        }
+
+        #endregion Methods
     }
 }

@@ -32,13 +32,13 @@ namespace StatlookLogViewer
 
         #region Methods
 
-        public ILogPattern[] GetStatlookDescriptors() => _config.GetStatlookDescriptors();
+        public ILogPattern[] GetStatlookLogPatterns() => _config.GetStatlookLogPatterns();
 
-        public ILogPattern[] GetUsmDescriptors() => _config.GetUsmDescriptors();
+        public ILogPattern[] GetUsmLogPatterns() => _config.GetUsmLogPatterns();
 
-        public string[] GetStatlookTextHeaders() => _config.GetStatlookTextHeaders().Split(new char[] { ';' });
+        public string[] GetStatlookTextHeaders() => _config.GetStatlookTextPatterns().Split(new char[] { ';' });
 
-        public string[] GetUsmTextHeaders() => _config.GetUsmTextHeaders().Split(new char[] { ';' });
+        public string[] GetUsmTextHeaders() => _config.GetUsmTextPatterns().Split(new char[] { ';' });
 
         #endregion Methods
     }

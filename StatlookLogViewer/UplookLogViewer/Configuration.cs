@@ -32,7 +32,7 @@ namespace StatlookLogViewer
         /// </summary>
         public Configuration()
         {
-            DescriptorCollection = new LogPatternCollection();
+            LogPatternCollection = new LogPatternCollection();
         }
 
         #endregion Constructors
@@ -41,20 +41,20 @@ namespace StatlookLogViewer
 
         public static void SaveConfig(Configuration c) => Serialize(CONFIG_FILE_NAME, c);
 
-        public ILogPattern[] GetStatlookDescriptors() => DescriptorCollection.GetStatlookDescriptors();
+        public ILogPattern[] GetStatlookLogPatterns() => LogPatternCollection.GetStatlookLogPatterns();
 
-        public string GetStatlookTextHeaders() => string.Join(";", DescriptorCollection.GetStatlookDescriptors().Select(item => item.TextPattern));
+        public string GetStatlookTextPatterns() => string.Join(";", LogPatternCollection.GetStatlookLogPatterns().Select(item => item.TextPattern));
 
-        public ILogPattern[] GetUsmDescriptors() => DescriptorCollection.GetUsmDescriptors();
+        public ILogPattern[] GetUsmLogPatterns() => LogPatternCollection.GetUsmLogPatterns();
 
-        public string GetUsmTextHeaders() => string.Join(";", DescriptorCollection.GetUsmDescriptors().Select(item => item.TextPattern));
+        public string GetUsmTextPatterns() => string.Join(";", LogPatternCollection.GetUsmLogPatterns().Select(item => item.TextPattern));
 
-        public void SetHeaderVisibility(string headerKeyName, bool needToShow)
+        public void SetHeaderVisibility(string keyName, bool needToShow)
         {
-            ILogPattern descriptor = DescriptorCollection.GetHeaderByKeyName(headerKeyName);
+            ILogPattern logPattern = LogPatternCollection.GetHeaderByKeyName(keyName);
 
-            if (descriptor != null)
-                descriptor.Show = needToShow;
+            if (logPattern != null)
+                logPattern.Show = needToShow;
         }
 
         public static Configuration GetConfiguration()
@@ -100,7 +100,7 @@ namespace StatlookLogViewer
 
         #region Properties
 
-        public LogPatternCollection DescriptorCollection { get; set; }
+        public LogPatternCollection LogPatternCollection { get; set; }
 
         public string StatlookLogDirectory { get; set; } = LOG_DIRECTORY_PATH;
         public string StatlookUsmLogDirectory { get; set; } = LOG_DIRECTORY_PATH;

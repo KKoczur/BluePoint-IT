@@ -33,12 +33,12 @@ namespace StatlookLogViewer.Views
             {
                 case LogType.Statlook:
                     {
-                        logPatterns = _config.GetStatlookDescriptors();
+                        logPatterns = _config.GetStatlookLogPatterns();
                         break;
                     }
                 case LogType.Usm:
                     {
-                        logPatterns = _config.GetUsmDescriptors();
+                        logPatterns = _config.GetUsmLogPatterns();
                         break;
                     }
             }

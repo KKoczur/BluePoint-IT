@@ -38,14 +38,14 @@ namespace StatlookLogViewer
 
             _config = Configuration.GetConfiguration();
 
-            ILogPattern[] udes = _config.GetStatlookDescriptors();
+            ILogPattern[] udes = _config.GetStatlookLogPatterns();
 
             foreach (StatlookLogPattern d in udes)
             {
                 show_uplook.Add(d.Show);
             }
 
-            ILogPattern[] usmdes = _config.GetUsmDescriptors();
+            ILogPattern[] usmdes = _config.GetUsmLogPatterns();
 
             foreach (ILogPattern d in usmdes)
             {
@@ -177,7 +177,7 @@ namespace StatlookLogViewer
 
                             listViewItem.SubItems.Add(fileInfo.Name);
                             listViewItem.SubItems.Add(fileInfo.LastWriteTime.ToString());
-                            listViewItem.SubItems.Add(FileSize(fileInfo.Length, false));
+                            listViewItem.SubItems.Add(FormatFileSize(fileInfo.Length, false));
                             listViewItem.SubItems.Add(fileInfo.DirectoryName);
                             listViewFiles.Items.Add(listViewItem);
 
@@ -238,7 +238,7 @@ namespace StatlookLogViewer
                             };
                             plikInfo.SubItems.Add(pliki[i - 1].Name);
                             plikInfo.SubItems.Add(pliki[i - 1].CreationTime.ToString());
-                            plikInfo.SubItems.Add(FileSize(pliki[i - 1].Length, true));
+                            plikInfo.SubItems.Add(FormatFileSize(pliki[i - 1].Length, true));
                             plikInfo.SubItems.Add(pliki[i - 1].DirectoryName);
                             listViewFiles.Items.Add(plikInfo);
                             toolStripButtonIcon.Image = Properties.Resources.ok_16;
@@ -372,7 +372,7 @@ namespace StatlookLogViewer
             }
         }
 
-        private string FileSize(float size, bool useByte)
+        private string FormatFileSize(float size, bool useByte)
         {
             float tmp_Size = size;
             string addByte = useByte ? " (bajtów: " + tmp_Size.ToString() + ")" : string.Empty;
@@ -662,7 +662,7 @@ namespace StatlookLogViewer
                     toolStripSeparator_1.Visible = true;
                     toolStripLabelCreationTime.Text = fileInfo.LastWriteTime.ToString();
                     toolStripSeparator_2.Visible = true;
-                    toolStripLableSize.Text = FileSize(fileInfo.Length, true);
+                    toolStripLableSize.Text = FormatFileSize(fileInfo.Length, true);
                 }
                 else
                 {
@@ -1033,11 +1033,12 @@ namespace StatlookLogViewer
             string fileName = Path.GetFileName(filePath);
 
             TabControl TabC = (TabControl)Controls.Find("tabControlMain", true)[0];
+
             if (TabC.Controls.Find(fileName, false).Length == 0)
             {
                 LogLineCollection logLineCollection = new LogLineCollection();
 
-                LogTapPage newPage = logLineCollection.LogAnalyze(filePath);
+                LogTapPage newPage = logLineCollection.AnalyzeLog(filePath);
 
                 if (newPage.LogType == LogType.Statlook)
                 {
@@ -1119,7 +1120,7 @@ namespace StatlookLogViewer
 
         private void ToolStripMenuItemUplook_DropDownItemClicked(object sender, ToolStripItemClickedEventArgs e)
         {
-            ILogPattern[] udes = _config.GetStatlookDescriptors();
+            ILogPattern[] udes = _config.GetStatlookLogPatterns();
 
             ToolStripMenuItem toolStripMenuItem = (ToolStripMenuItem)e.ClickedItem;
 
@@ -1168,7 +1169,7 @@ namespace StatlookLogViewer
         private void ToolStripMenuItemUSM_DropDownItemClicked(object sender, ToolStripItemClickedEventArgs e)
         {
             ToolStripMenuItem t = (ToolStripMenuItem)e.ClickedItem;
-            ILogPattern[] usmdes = _config.GetUsmDescriptors();
+            ILogPattern[] usmdes = _config.GetUsmLogPatterns();
             if (t.CheckState == CheckState.Checked)
             {
                 t.CheckState = CheckState.Unchecked;
@@ -1240,7 +1241,7 @@ namespace StatlookLogViewer
                         rozmiar += files[i].Length;
                     }
 
-                    labelSize.Text = FileSize(rozmiar, true);
+                    labelSize.Text = FormatFileSize(rozmiar, true);
 
                     labelCount.Text = (files.Length).ToString() + " plików, " + directories.Length.ToString() + " folderów";
                 }

@@ -36,9 +36,9 @@ namespace StatlookLogViewer
             {
                 case LogType.Statlook:
                     {
-                        foreach (ILogPattern descriptor in Headers.GetStatlookDescriptors())
+                        foreach (ILogPattern logPattern in Headers.GetStatlookLogPatterns())
                         {
-                            if (string.Compare(descriptor.TextPattern, rowCaption, true) != 0)
+                            if (string.Compare(logPattern.TextPattern, rowCaption, true) != 0)
                                 continue;
 
                             if (rowCaption != Configuration.STATLOOK_DATE)
@@ -63,7 +63,7 @@ namespace StatlookLogViewer
                                     }
                                 }
 
-                                descriptor.TextPattern = rowValue;
+                                logPattern.TextPattern = rowValue;
 
                                 break;
                             }
@@ -77,7 +77,7 @@ namespace StatlookLogViewer
                             ListViewItem.Group = _listViewGroup;
                             ListViewItem.Group.Name = _groupName;
                             ListViewItem.Group.Header = _groupName;
-                            descriptor.TextPattern = rowValue;
+                            logPattern.TextPattern = rowValue;
                             break;
                         }
 
@@ -86,14 +86,14 @@ namespace StatlookLogViewer
 
                 case LogType.Usm:
                     {
-                        foreach (ILogPattern logPattern in Headers.GetUsmDescriptors())
+                        foreach (ILogPattern logPattern in Headers.GetUsmLogPatterns())
                         {
                             if (logPattern.TextPattern != rowCaption)
                             {
                                 continue;
                             }
 
-                            if (rowCaption != Configuration.STATLOOK_DATE)
+                            if (rowCaption != Configuration.USM_DATE)
                             {
                                 ListViewItem.SubItems.Add(rowValue);
 
@@ -134,16 +134,10 @@ namespace StatlookLogViewer
                         }
                         break;
                     }
-
-                default:
-                    break;
             }
         }
 
-        private string GetNameOfGroupByHourTime(string myHourTime)
-        {
-            return myHourTime.Length < 2 ? $"0{myHourTime}:00-0{myHourTime}:59" : $"{myHourTime}:00-{myHourTime}:59"; ;
-        }
+        private string GetNameOfGroupByHourTime(string myHourTime) => myHourTime.Length < 2 ? $"0{myHourTime}:00-0{myHourTime}:59" : $"{myHourTime}:00-{myHourTime}:59";
 
 
         #endregion Methods
