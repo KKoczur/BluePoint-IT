@@ -287,7 +287,7 @@
   <data name="zwinToolStripMenuItem.Image" type="System.Drawing.Bitmap, System.Drawing" mimetype="application/x-microsoft.net.object.bytearray.base64">
     <value>
         iVBORw0KGgoAAAANSUhEUgAAABAAAAAQCAYAAAAf8/9hAAAABGdBTUEAALGPC/xhBQAAAAlwSFlzAAAL
-        DwAACw8BkvkDpQAAAAd0SU1FB9sICAsMDgaxqIgAAALrSURBVDhPbZN7LJVhHMefWJvrIYdzOgcH53Bc
+        DQAACw0B7QfALAAAAAd0SU1FB9sICAsMDgaxqIgAAALrSURBVDhPbZN7LJVhHMefWJvrIYdzOgcH53Bc
         iuiPprVpjJTLjGlUVk2XzTJpsWoiHCRyzXlx3CojqyG3lNyWyZQa5rZpS/445WhlpITeb87bK2w+zx/P
         s/2+n2fPlWxm6tMUOyIkVnHF2TfDKyQowy+UKpPvB6DDlrZH8+q//kCuU4ptvsUvSzkPQsoQ/Bx9cFO0
         IYozmQ2Q+aZBCY46p1KpmDyDbtwOcr70tLGd3OKLe4Mrjrxwo50bpQivC4NLiR3MS41gWcij+ekc2F63
@@ -315,7 +315,7 @@
   <data name="rozwinWszystkieToolStripMenuItem.Image" type="System.Drawing.Bitmap, System.Drawing" mimetype="application/x-microsoft.net.object.bytearray.base64">
     <value>
         iVBORw0KGgoAAAANSUhEUgAAABAAAAAQCAYAAAAf8/9hAAAABGdBTUEAALGPC/xhBQAAAAlwSFlzAAAL
-        DwAACw8BkvkDpQAAAAd0SU1FB9sICAsNNNmmQHsAAALoSURBVDhPdZF9LNRxHMd/sTaP5+G46w6HO3eO
+        DQAACw0B7QfALAAAAAd0SU1FB9sICAsNNNmmQHsAAALoSURBVDhPdZF9LNRxHMd/sTaP5+G46w6HO3eO
         IvqjaW0aI+VhxjQqq6aHzTLVYtVEOCTymPs556kyshrylB44lsmUGuZp05b8ceW0MlJCv3fn52dL9Pr+
         8flsn/fru+93H2Ir3FKcfHiJpnKezPQFP8OsU5BpeU+Uzo9kxpuZnp6m65H8YJcd102muJnGsCHZlKDM
         AsIqLpxr7ald1UKISeslaZZtCB1eR61W0zUk1z+Qk2wMEcmn2Dn6YGXrgl2gB57CBK5VEgQ3+iG+P5by
@@ -500,17 +500,17 @@
   <data name="toolStripButton2.Image" type="System.Drawing.Bitmap, System.Drawing" mimetype="application/x-microsoft.net.object.bytearray.base64">
     <value>
         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
-        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
+        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
 </value>
   </data>
   <data name="toolStripButton2.ImageTransparentColor" type="System.Drawing.Color, System.Drawing">
@@ -534,19 +534,19 @@
   <data name="toolStripButtonCollapsedAll.Image" type="System.Drawing.Bitmap, System.Drawing" mimetype="application/x-microsoft.net.object.bytearray.base64">
     <value>
         iVBORw0KGgoAAAANSUhEUgAAABAAAAAQCAYAAAAf8/9hAAAAAXNSR0IArs4c6QAAAARnQU1BAACxjwv8
-        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
+        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
 </value>
   </data>
   <data name="toolStripButtonCollapsedAll.ImageTransparentColor" type="System.Drawing.Color, System.Drawing">
@@ -567,19 +567,19 @@
   <data name="toolStripButtonNormalAll.Image" type="System.Drawing.Bitmap, System.Drawing" mimetype="application/x-microsoft.net.object.bytearray.base64">
     <value>
         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
-        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
+        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
 </value>
   </data>
   <data name="toolStripButtonNormalAll.ImageTransparentColor" type="System.Drawing.Color, System.Drawing">
@@ -603,18 +603,18 @@
   <data name="toolStripButtonClose.Image" type="System.Drawing.Bitmap, System.Drawing" mimetype="application/x-microsoft.net.object.bytearray.base64">
     <value>
         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
-        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
+        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
 </value>
   </data>
   <data name="toolStripButtonClose.ImageTransparentColor" type="System.Drawing.Color, System.Drawing">
@@ -635,16 +635,16 @@
   <data name="toolStripButton3.Image" type="System.Drawing.Bitmap, System.Drawing" mimetype="application/x-microsoft.net.object.bytearray.base64">
     <value>
         iVBORw0KGgoAAAANSUhEUgAAABAAAAAQCAYAAAAf8/9hAAAAAXNSR0IArs4c6QAAAARnQU1BAACxjwv8
-        YQUAAAAJcEhZcwAADsMAAA7DAcdvqGQAAAIWSURBVDhPvdJfSFNRHAfw09pym8Y2vbZcS8tuLSPCnEVz
-        6NIu/kk2JBWkmJfNvRRSIygphKJMy26twv5QKSFYREggPRilRSx6qIYFQVAPPUoUYf/mhXm/nXVP2FKk
-        l/rA4Zzfv8vl3Ev+JzNdnHqcnbmMN62ne7YaTssgpHGw1z/xaLRVpqFJzaZacbIi8/14xIW35zzyw0jV
-        2NWDm0/XCI5iWhOHztZB+XYGkS7fCRprfk78rshm6JePrgUiTuDaFmCoHsqoiPG7ATztqwc+duD+gP8J
-        a5/Jt87y5pNUgokjTiR6PMBNL3BvO0Afgue7gBd7cKOzepi26tSJP5gMmnDxwnm33BbdSG2O4ZWYn/6l
-        V1g6lRjYSt+mEXggQomGMNxd+ZLo9XlsbE75O1dqJnHFDfRXIn5RAO40ASM7EJWEDxscWcm7mVPgWbMN
-        OFUEXC5BZxmH9gIzlOs+4LYXsQ6X7HVmu1nvTAJvfDzVzgNty6EcXo3uaqtE05fCuXpMnq8A+koxFl7z
-        udRurFInUuV01eYl0GYHWq2Qdy/BhXJTkNV6gtYFSEhuvN676nshp/Ww/DSdMS0U20c/abMBCFnwNZiJ
-        Q4WGBlZOkrZxurh/k01kcSrOqB2MBhzAgWVAMB3xJj32F8yvYeVfstg+q3KekHfHNi5CrIVHzG9Hg03r
-        YrW/lvxh6hYTcjw3I61FTf0ThPwALDXcAEjOv+IAAAAASUVORK5CYII=
+        YQUAAAAJcEhZcwAADsMAAA7DAcdvqGQAAAIVSURBVDhPvdJfSFNRHAfw09pydxn742y5llrdWkaEOYvm
+        0OUa6oqNgQpSzMvmIJAwCUoKoSi1slursD9kiQgWERJID0ZpEkYP2aigXuqhR4ki7N+8MO+3s+4JW4r0
+        Uh84nPP7d7mce8n/ZKDLrBznZijj9Zvonq2EMzIJqR3oDk2OjjRKNNQr2XSrT3tM7ydiTry94JZGY5XP
+        rx3edtbntRfTmjB4Pgj52znETgRO0Vj1c+J3RVauTzq+AYg5gN7twGA15BEBE/fCeNpTDXxsw4P+0BPW
+        Pltgo/HNJ7EEk8ccSHa5gVt+4P4ugD4EzxqBF/tws6NqiLZqlIk/6DlVc/GSBbddRs3wzhzulZCv+3Ld
+        s2I62b+Dvk0t8FCAPBbFUGfFS6LV5rGxea3as0Y1hW4X0FeBxGUvcLcOGN6NR6L3w2Z7Vupu5hUer7cC
+        Z4qAqyXoKDOjtcAA+UYAuOPHeJtT8juyXax3Ni+vezzdygMtKyEfXYfOKotI01eac7WYuugBekoRb1r/
+        udSmq1Qm0uW0+/KSaLEBey2QmpbjUrk+wmpdEcsiJEUXXu9f+73QrHaz/AyNLiMaP0A/aT0HRI34GjHh
+        SCFXw8opYtCkSYS2WgUWpzPr1ANjYTtwKB+ILEaiTouDBQt9rPxLFtvnVM4T8q59y1LEG3jEQzbUWNVO
+        VvtrqR8muIyQk7mZGQ1K6p8g5AfsndvhOfNytwAAAABJRU5ErkJggg==
 </value>
   </data>
   <data name="toolStripButton3.ImageTransparentColor" type="System.Drawing.Color, System.Drawing">
@@ -735,7 +735,7 @@
     <value>Microsoft Sans Serif, 8.25pt</value>
   </data>
   <data name="checkBoxUser.Location" type="System.Drawing.Point, System.Drawing">
-    <value>10, 85</value>
+    <value>10, 55</value>
   </data>
   <data name="checkBoxUser.Margin" type="System.Windows.Forms.Padding, System.Windows.Forms">
     <value>4, 3, 4, 3</value>
@@ -760,39 +760,6 @@
   </data>
   <data name="&gt;&gt;checkBoxUser.ZOrder" xml:space="preserve">
     <value>0</value>
-  </data>
-  <data name="checkBoxUSM.AutoSize" type="System.Boolean, mscorlib">
-    <value>True</value>
-  </data>
-  <data name="checkBoxUSM.Font" type="System.Drawing.Font, System.Drawing">
-    <value>Microsoft Sans Serif, 8.25pt</value>
-  </data>
-  <data name="checkBoxUSM.Location" type="System.Drawing.Point, System.Drawing">
-    <value>10, 55</value>
-  </data>
-  <data name="checkBoxUSM.Margin" type="System.Windows.Forms.Padding, System.Windows.Forms">
-    <value>4, 3, 4, 3</value>
-  </data>
-  <data name="checkBoxUSM.Size" type="System.Drawing.Size, System.Drawing">
-    <value>130, 17</value>
-  </data>
-  <data name="checkBoxUSM.TabIndex" type="System.Int32, mscorlib">
-    <value>7</value>
-  </data>
-  <data name="checkBoxUSM.Text" xml:space="preserve">
-    <value>uplook system monitor</value>
-  </data>
-  <data name="&gt;&gt;checkBoxUSM.Name" xml:space="preserve">
-    <value>checkBoxUSM</value>
-  </data>
-  <data name="&gt;&gt;checkBoxUSM.Type" xml:space="preserve">
-    <value>System.Windows.Forms.CheckBox, System.Windows.Forms, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
-  </data>
-  <data name="&gt;&gt;checkBoxUSM.Parent" xml:space="preserve">
-    <value>groupBoxOptions</value>
-  </data>
-  <data name="&gt;&gt;checkBoxUSM.ZOrder" xml:space="preserve">
-    <value>1</value>
   </data>
   <data name="checkBoxLogs.AutoSize" type="System.Boolean, mscorlib">
     <value>True</value>
@@ -825,13 +792,13 @@
     <value>groupBoxOptions</value>
   </data>
   <data name="&gt;&gt;checkBoxLogs.ZOrder" xml:space="preserve">
-    <value>2</value>
+    <value>1</value>
   </data>
   <data name="groupBoxOptions.Font" type="System.Drawing.Font, System.Drawing">
     <value>Arial, 9pt, style=Bold</value>
   </data>
   <data name="groupBoxOptions.Location" type="System.Drawing.Point, System.Drawing">
-    <value>589, 129</value>
+    <value>589, 3</value>
   </data>
   <data name="groupBoxOptions.Margin" type="System.Windows.Forms.Padding, System.Windows.Forms">
     <value>4, 3, 4, 3</value>
@@ -1091,237 +1058,6 @@
   <data name="&gt;&gt;groupBoxUser.ZOrder" xml:space="preserve">
     <value>1</value>
   </data>
-  <data name="labelFilesCountValueUSM.AutoSize" type="System.Boolean, mscorlib">
-    <value>True</value>
-  </data>
-  <data name="labelFilesCountValueUSM.Font" type="System.Drawing.Font, System.Drawing">
-    <value>Microsoft Sans Serif, 8.25pt</value>
-  </data>
-  <data name="labelFilesCountValueUSM.Location" type="System.Drawing.Point, System.Drawing">
-    <value>99, 90</value>
-  </data>
-  <data name="labelFilesCountValueUSM.Margin" type="System.Windows.Forms.Padding, System.Windows.Forms">
-    <value>4, 0, 4, 0</value>
-  </data>
-  <data name="labelFilesCountValueUSM.Size" type="System.Drawing.Size, System.Drawing">
-    <value>13, 13</value>
-  </data>
-  <data name="labelFilesCountValueUSM.TabIndex" type="System.Int32, mscorlib">
-    <value>5</value>
-  </data>
-  <data name="labelFilesCountValueUSM.Text" xml:space="preserve">
-    <value>0</value>
-  </data>
-  <data name="&gt;&gt;labelFilesCountValueUSM.Name" xml:space="preserve">
-    <value>labelFilesCountValueUSM</value>
-  </data>
-  <data name="&gt;&gt;labelFilesCountValueUSM.Type" xml:space="preserve">
-    <value>System.Windows.Forms.Label, System.Windows.Forms, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
-  </data>
-  <data name="&gt;&gt;labelFilesCountValueUSM.Parent" xml:space="preserve">
-    <value>groupBoxUSM</value>
-  </data>
-  <data name="&gt;&gt;labelFilesCountValueUSM.ZOrder" xml:space="preserve">
-    <value>0</value>
-  </data>
-  <data name="labelFilesCountUSM.AutoSize" type="System.Boolean, mscorlib">
-    <value>True</value>
-  </data>
-  <data name="labelFilesCountUSM.Font" type="System.Drawing.Font, System.Drawing">
-    <value>Microsoft Sans Serif, 8.25pt</value>
-  </data>
-  <data name="labelFilesCountUSM.Location" type="System.Drawing.Point, System.Drawing">
-    <value>7, 90</value>
-  </data>
-  <data name="labelFilesCountUSM.Margin" type="System.Windows.Forms.Padding, System.Windows.Forms">
-    <value>4, 0, 4, 0</value>
-  </data>
-  <data name="labelFilesCountUSM.Size" type="System.Drawing.Size, System.Drawing">
-    <value>48, 13</value>
-  </data>
-  <data name="labelFilesCountUSM.TabIndex" type="System.Int32, mscorlib">
-    <value>4</value>
-  </data>
-  <data name="labelFilesCountUSM.Text" xml:space="preserve">
-    <value>Zawiera:</value>
-  </data>
-  <data name="&gt;&gt;labelFilesCountUSM.Name" xml:space="preserve">
-    <value>labelFilesCountUSM</value>
-  </data>
-  <data name="&gt;&gt;labelFilesCountUSM.Type" xml:space="preserve">
-    <value>System.Windows.Forms.Label, System.Windows.Forms, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
-  </data>
-  <data name="&gt;&gt;labelFilesCountUSM.Parent" xml:space="preserve">
-    <value>groupBoxUSM</value>
-  </data>
-  <data name="&gt;&gt;labelFilesCountUSM.ZOrder" xml:space="preserve">
-    <value>1</value>
-  </data>
-  <data name="labelLogsPathUSM.AutoSize" type="System.Boolean, mscorlib">
-    <value>True</value>
-  </data>
-  <data name="labelLogsPathUSM.Font" type="System.Drawing.Font, System.Drawing">
-    <value>Microsoft Sans Serif, 8.25pt</value>
-  </data>
-  <data name="labelLogsPathUSM.Location" type="System.Drawing.Point, System.Drawing">
-    <value>7, 30</value>
-  </data>
-  <data name="labelLogsPathUSM.Margin" type="System.Windows.Forms.Padding, System.Windows.Forms">
-    <value>4, 0, 4, 0</value>
-  </data>
-  <data name="labelLogsPathUSM.Size" type="System.Drawing.Size, System.Drawing">
-    <value>63, 13</value>
-  </data>
-  <data name="labelLogsPathUSM.TabIndex" type="System.Int32, mscorlib">
-    <value>0</value>
-  </data>
-  <data name="labelLogsPathUSM.Text" xml:space="preserve">
-    <value>Lokalizacja:</value>
-  </data>
-  <data name="&gt;&gt;labelLogsPathUSM.Name" xml:space="preserve">
-    <value>labelLogsPathUSM</value>
-  </data>
-  <data name="&gt;&gt;labelLogsPathUSM.Type" xml:space="preserve">
-    <value>System.Windows.Forms.Label, System.Windows.Forms, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
-  </data>
-  <data name="&gt;&gt;labelLogsPathUSM.Parent" xml:space="preserve">
-    <value>groupBoxUSM</value>
-  </data>
-  <data name="&gt;&gt;labelLogsPathUSM.ZOrder" xml:space="preserve">
-    <value>2</value>
-  </data>
-  <data name="labelFilesSizeUSM.AutoSize" type="System.Boolean, mscorlib">
-    <value>True</value>
-  </data>
-  <data name="labelFilesSizeUSM.Font" type="System.Drawing.Font, System.Drawing">
-    <value>Microsoft Sans Serif, 8.25pt</value>
-  </data>
-  <data name="labelFilesSizeUSM.Location" type="System.Drawing.Point, System.Drawing">
-    <value>7, 60</value>
-  </data>
-  <data name="labelFilesSizeUSM.Margin" type="System.Windows.Forms.Padding, System.Windows.Forms">
-    <value>4, 0, 4, 0</value>
-  </data>
-  <data name="labelFilesSizeUSM.Size" type="System.Drawing.Size, System.Drawing">
-    <value>48, 13</value>
-  </data>
-  <data name="labelFilesSizeUSM.TabIndex" type="System.Int32, mscorlib">
-    <value>2</value>
-  </data>
-  <data name="labelFilesSizeUSM.Text" xml:space="preserve">
-    <value>Rozmiar:</value>
-  </data>
-  <data name="&gt;&gt;labelFilesSizeUSM.Name" xml:space="preserve">
-    <value>labelFilesSizeUSM</value>
-  </data>
-  <data name="&gt;&gt;labelFilesSizeUSM.Type" xml:space="preserve">
-    <value>System.Windows.Forms.Label, System.Windows.Forms, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
-  </data>
-  <data name="&gt;&gt;labelFilesSizeUSM.Parent" xml:space="preserve">
-    <value>groupBoxUSM</value>
-  </data>
-  <data name="&gt;&gt;labelFilesSizeUSM.ZOrder" xml:space="preserve">
-    <value>3</value>
-  </data>
-  <data name="labelFilesSizeValueUSM.AutoSize" type="System.Boolean, mscorlib">
-    <value>True</value>
-  </data>
-  <data name="labelFilesSizeValueUSM.Font" type="System.Drawing.Font, System.Drawing">
-    <value>Microsoft Sans Serif, 8.25pt</value>
-  </data>
-  <data name="labelFilesSizeValueUSM.Location" type="System.Drawing.Point, System.Drawing">
-    <value>99, 60</value>
-  </data>
-  <data name="labelFilesSizeValueUSM.Margin" type="System.Windows.Forms.Padding, System.Windows.Forms">
-    <value>4, 0, 4, 0</value>
-  </data>
-  <data name="labelFilesSizeValueUSM.Size" type="System.Drawing.Size, System.Drawing">
-    <value>13, 13</value>
-  </data>
-  <data name="labelFilesSizeValueUSM.TabIndex" type="System.Int32, mscorlib">
-    <value>3</value>
-  </data>
-  <data name="labelFilesSizeValueUSM.Text" xml:space="preserve">
-    <value>0</value>
-  </data>
-  <data name="&gt;&gt;labelFilesSizeValueUSM.Name" xml:space="preserve">
-    <value>labelFilesSizeValueUSM</value>
-  </data>
-  <data name="&gt;&gt;labelFilesSizeValueUSM.Type" xml:space="preserve">
-    <value>System.Windows.Forms.Label, System.Windows.Forms, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
-  </data>
-  <data name="&gt;&gt;labelFilesSizeValueUSM.Parent" xml:space="preserve">
-    <value>groupBoxUSM</value>
-  </data>
-  <data name="&gt;&gt;labelFilesSizeValueUSM.ZOrder" xml:space="preserve">
-    <value>4</value>
-  </data>
-  <data name="labelLogsPathValueUSM.AutoSize" type="System.Boolean, mscorlib">
-    <value>True</value>
-  </data>
-  <data name="labelLogsPathValueUSM.Font" type="System.Drawing.Font, System.Drawing">
-    <value>Microsoft Sans Serif, 8.25pt</value>
-  </data>
-  <data name="labelLogsPathValueUSM.Location" type="System.Drawing.Point, System.Drawing">
-    <value>99, 30</value>
-  </data>
-  <data name="labelLogsPathValueUSM.Margin" type="System.Windows.Forms.Padding, System.Windows.Forms">
-    <value>4, 0, 4, 0</value>
-  </data>
-  <data name="labelLogsPathValueUSM.Size" type="System.Drawing.Size, System.Drawing">
-    <value>73, 13</value>
-  </data>
-  <data name="labelLogsPathValueUSM.TabIndex" type="System.Int32, mscorlib">
-    <value>1</value>
-  </data>
-  <data name="labelLogsPathValueUSM.Text" xml:space="preserve">
-    <value>Brak katalogu</value>
-  </data>
-  <data name="&gt;&gt;labelLogsPathValueUSM.Name" xml:space="preserve">
-    <value>labelLogsPathValueUSM</value>
-  </data>
-  <data name="&gt;&gt;labelLogsPathValueUSM.Type" xml:space="preserve">
-    <value>System.Windows.Forms.Label, System.Windows.Forms, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
-  </data>
-  <data name="&gt;&gt;labelLogsPathValueUSM.Parent" xml:space="preserve">
-    <value>groupBoxUSM</value>
-  </data>
-  <data name="&gt;&gt;labelLogsPathValueUSM.ZOrder" xml:space="preserve">
-    <value>5</value>
-  </data>
-  <data name="groupBoxUSM.Font" type="System.Drawing.Font, System.Drawing">
-    <value>Arial, 9pt, style=Bold</value>
-  </data>
-  <data name="groupBoxUSM.Location" type="System.Drawing.Point, System.Drawing">
-    <value>589, 3</value>
-  </data>
-  <data name="groupBoxUSM.Margin" type="System.Windows.Forms.Padding, System.Windows.Forms">
-    <value>4, 3, 4, 3</value>
-  </data>
-  <data name="groupBoxUSM.Padding" type="System.Windows.Forms.Padding, System.Windows.Forms">
-    <value>4, 3, 4, 3</value>
-  </data>
-  <data name="groupBoxUSM.Size" type="System.Drawing.Size, System.Drawing">
-    <value>560, 115</value>
-  </data>
-  <data name="groupBoxUSM.TabIndex" type="System.Int32, mscorlib">
-    <value>6</value>
-  </data>
-  <data name="groupBoxUSM.Text" xml:space="preserve">
-    <value>uplook system monitor</value>
-  </data>
-  <data name="&gt;&gt;groupBoxUSM.Name" xml:space="preserve">
-    <value>groupBoxUSM</value>
-  </data>
-  <data name="&gt;&gt;groupBoxUSM.Type" xml:space="preserve">
-    <value>System.Windows.Forms.GroupBox, System.Windows.Forms, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
-  </data>
-  <data name="&gt;&gt;groupBoxUSM.Parent" xml:space="preserve">
-    <value>splitContainerInfo.Panel1</value>
-  </data>
-  <data name="&gt;&gt;groupBoxUSM.ZOrder" xml:space="preserve">
-    <value>2</value>
-  </data>
   <data name="labelFilesCountValue.AutoSize" type="System.Boolean, mscorlib">
     <value>True</value>
   </data>
@@ -1551,7 +1287,7 @@
     <value>splitContainerInfo.Panel1</value>
   </data>
   <data name="&gt;&gt;groupBoxCatalogUplook.ZOrder" xml:space="preserve">
-    <value>3</value>
+    <value>2</value>
   </data>
   <data name="&gt;&gt;splitContainerInfo.Panel1.Name" xml:space="preserve">
     <value>splitContainerInfo.Panel1</value>
@@ -1713,7 +1449,7 @@
     <value>tabControlMain</value>
   </data>
   <data name="&gt;&gt;tabControlMain.Type" xml:space="preserve">
-    <value>Yoramo.GuiLib.TabControlEx, UplookLogViewer, Culture=neutral, PublicKeyToken=null</value>
+    <value>StatlookLogViewer.Views.TabControlEx, UplookLogViewer, Culture=neutral, PublicKeyToken=null</value>
   </data>
   <data name="&gt;&gt;tabControlMain.Parent" xml:space="preserve">
     <value>tableLayoutPanelFiles</value>
@@ -1763,15 +1499,15 @@
   <data name="toolStripButtonIcon.Image" type="System.Drawing.Bitmap, System.Drawing" mimetype="application/x-microsoft.net.object.bytearray.base64">
     <value>
         iVBORw0KGgoAAAANSUhEUgAAABAAAAAQCAYAAAAf8/9hAAAAAXNSR0IArs4c6QAAAARnQU1BAACxjwv8
-        YQUAAAAJcEhZcwAADsMAAA7DAcdvqGQAAAHkSURBVDhPY6ArkEgX9OI2YtWFckkDXi3u3svOLf5h2m/0
-        klWRREOMKwy8Nl1b/+Pexzv/Dz7Z/9+kXwu7IWLx3M5AigXCgwDpdBGvwNX+34uP5f7vvNzyf9ndRf+r
-        j5X+l64ReMEgyCAHVQbUnCuYYjBZ869xjsFKIBdsiESqoKfuRNXvVquN/ltvMv7vtdP5f+7h9P8Fu7P/
-        C7nxbwUqEQepYxDP4UnWmKj413a52f+QNX7/FVOkVwhH8vpq9Ct+N1is8V99qdx/jWXy/61WGf93X+Lw
-        X9ZPZhtQmzRYM28iR5xkm8Bflemy/5XmSv43XaL733qRyX/D6Vr/dOYp/1eYK/5fbo7of425Cv+1JykD
-        beZDaAYBFhkGe5Eyzk9K/dL/pacI/ZeYwvdfYYbEf5lpwkA2P5ivPE36v1K31H9uR9btQC0IzTDALMns
-        JpbP80mpV+q/aC/vf8Eejv8ifdz/hXo4/8v1if6XaxX/z2HHugOoVAaiAwtgFmVwEyjk+izXKfZfqJ3z
-        v0A7+3/ZbtH/0o0iQM0s+DXDALMYg6tQHscH+Q6J//Jd4v9lgJo57Vl3AqVkISqIAMzCDI4gQ8RrBf5z
-        2LPsAgoRrxkGmIWZndjNWdYDmaRrRgIcUJqWgIEBAJ3yovaNLIjQAAAAAElFTkSuQmCC
+        YQUAAAAJcEhZcwAADsMAAA7DAcdvqGQAAAHkSURBVDhPY6ArkEgX9OI2YtWFckkDXi3u3kvOLP5h0m/0
+        klWRREOMKwy8NlxZ++Pexzv/Dz7Z/9+kXwO7IWLx3M5AigXCgwDpdBEv/9X+34uP5f7vvNzyf9ndRf+r
+        j5X+l64ReMEgyCAHVQbUnCuYYjBZ869xjsFKIBdsiESqoKduv+p3q9VG/603Gf/32un8P/dw+v+C3dn/
+        hdz4twKViIPUMYjn8CRrTFT8a7vc7H/IGr//iinSK4QjeX01+hW/GyzW+K++VO6/xjL5/1arjP+7L3H4
+        L+snsw2oTRqsmTeRI06yTeCvynTZ/0pzJf+bLtH9b73I5L/hVK1/OvOU/yvMFf8vN0f0v8Zchf/ak5SB
+        NvMhNIMAiwyDvUgZ5yelfun/0lOE/ktM4fuvMEPiv8w0YSCbH8xXnib9X6lb6j+3I+t2oBaEZhhglmR2
+        E8vl+qTUK/VftJf3v2APx3+RPu7/Qj2c/+X6RP/LtYr/57Bj3QFUKgPRgQUwizK48RVyfZbrFPsv1M75
+        X6Cd/b9st+h/6UYRoGYW/JphgFmMwVUoj+ODfIfEf/ku8f8yQM2c9qw7gVKyEBVEAGZhBkeQIeK1Av85
+        7Fl2AYWI1wwDzMLMTuzmLOuBTNI1IwEOKE1LwMAAAFqzot1iRnhHAAAAAElFTkSuQmCC
 </value>
   </data>
   <data name="toolStripButtonIcon.ImageTransparentColor" type="System.Drawing.Color, System.Drawing">
@@ -1898,7 +1634,7 @@
   <data name="toolStripMenuItemDeleteFile.Image" type="System.Drawing.Bitmap, System.Drawing" mimetype="application/x-microsoft.net.object.bytearray.base64">
     <value>
         iVBORw0KGgoAAAANSUhEUgAAABAAAAAQCAYAAAAf8/9hAAAABGdBTUEAALGPC/xhBQAAAAlwSFlzAAAL
-        DgAACw4BQL7hQQAAAB90RVh0U29mdHdhcmUATWFjcm9tZWRpYSBGaXJld29ya3MgOLVo0ngAAAK/SURB
+        DAAACwwBP0AiyAAAAB90RVh0U29mdHdhcmUATWFjcm9tZWRpYSBGaXJld29ya3MgOLVo0ngAAAK/SURB
         VDhPjZBbSJNhGMdfg6KQ8EJD8+ycbmOKW3Plpt/2pZuHeQxKMCIQBEvZppaZmudlZF5ElCeMmXjRAXGe
         CkqK2ZSEiupCDILCEAoc7nu/T3do+PZ+o5ZzXnTxg/f5839+LzwAIbQnEgAEN3LV5VdSkkoAAIF7dVj8
         gnqJSPFyeMi0bH61trJgYVYsr6n3s9PLRr32eiAAQbv7PkNLhqxpbrAfmR8Y0Wid3nHv/DlmsKJ809Rt
@@ -2014,7 +1750,7 @@
   <data name="toolStripMenuItem7.Image" type="System.Drawing.Bitmap, System.Drawing" mimetype="application/x-microsoft.net.object.bytearray.base64">
     <value>
         iVBORw0KGgoAAAANSUhEUgAAABAAAAAQCAYAAAAf8/9hAAAABGdBTUEAALGPC/xhBQAAAAlwSFlzAAAL
-        DgAACw4BQL7hQQAAAB90RVh0U29mdHdhcmUATWFjcm9tZWRpYSBGaXJld29ya3MgOLVo0ngAAAK/SURB
+        DAAACwwBP0AiyAAAAB90RVh0U29mdHdhcmUATWFjcm9tZWRpYSBGaXJld29ya3MgOLVo0ngAAAK/SURB
         VDhPjZBbSJNhGMdfg6KQ8EJD8+ycbmOKW3Plpt/2pZuHeQxKMCIQBEvZppaZmudlZF5ElCeMmXjRAXGe
         CkqK2ZSEiupCDILCEAoc7nu/T3do+PZ+o5ZzXnTxg/f5839+LzwAIbQnEgAEN3LV5VdSkkoAAIF7dVj8
         gnqJSPFyeMi0bH61trJgYVYsr6n3s9PLRr32eiAAQbv7PkNLhqxpbrAfmR8Y0Wid3nHv/DlmsKJ809Rt
@@ -2179,17 +1915,17 @@
   <data name="toolStripButton1.Image" type="System.Drawing.Bitmap, System.Drawing" mimetype="application/x-microsoft.net.object.bytearray.base64">
     <value>
         iVBORw0KGgoAAAANSUhEUgAAABAAAAAQCAYAAAAf8/9hAAAAAXNSR0IArs4c6QAAAARnQU1BAACxjwv8
-        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
+        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
 </value>
   </data>
   <data name="toolStripButton1.ImageTransparentColor" type="System.Drawing.Color, System.Drawing">

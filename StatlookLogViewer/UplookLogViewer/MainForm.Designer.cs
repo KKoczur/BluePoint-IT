@@ -79,7 +79,6 @@
             this.splitContainerInfo = new System.Windows.Forms.SplitContainer();
             this.groupBoxOptions = new System.Windows.Forms.GroupBox();
             this.checkBoxUser = new System.Windows.Forms.CheckBox();
-            this.checkBoxUSM = new System.Windows.Forms.CheckBox();
             this.checkBoxLogs = new System.Windows.Forms.CheckBox();
             this.groupBoxUser = new System.Windows.Forms.GroupBox();
             this.labelFilesCountValueUser = new System.Windows.Forms.Label();
@@ -88,13 +87,6 @@
             this.labelFilesSizeUser = new System.Windows.Forms.Label();
             this.labelFilesSizeValueUser = new System.Windows.Forms.Label();
             this.labelUserPathValue = new System.Windows.Forms.Label();
-            this.groupBoxUSM = new System.Windows.Forms.GroupBox();
-            this.labelFilesCountValueUSM = new System.Windows.Forms.Label();
-            this.labelFilesCountUSM = new System.Windows.Forms.Label();
-            this.labelLogsPathUSM = new System.Windows.Forms.Label();
-            this.labelFilesSizeUSM = new System.Windows.Forms.Label();
-            this.labelFilesSizeValueUSM = new System.Windows.Forms.Label();
-            this.labelLogsPathValueUSM = new System.Windows.Forms.Label();
             this.groupBoxCatalogUplook = new System.Windows.Forms.GroupBox();
             this.labelFilesCountValue = new System.Windows.Forms.Label();
             this.labelFilesCount = new System.Windows.Forms.Label();
@@ -156,7 +148,6 @@
             this.splitContainerInfo.SuspendLayout();
             this.groupBoxOptions.SuspendLayout();
             this.groupBoxUser.SuspendLayout();
-            this.groupBoxUSM.SuspendLayout();
             this.groupBoxCatalogUplook.SuspendLayout();
             this.toolStripButton.SuspendLayout();
             this.contextMenuStripList.SuspendLayout();
@@ -484,7 +475,6 @@
             this.splitContainerInfo.Panel1.BackColor = System.Drawing.Color.Transparent;
             this.splitContainerInfo.Panel1.Controls.Add(this.groupBoxOptions);
             this.splitContainerInfo.Panel1.Controls.Add(this.groupBoxUser);
-            this.splitContainerInfo.Panel1.Controls.Add(this.groupBoxUSM);
             this.splitContainerInfo.Panel1.Controls.Add(this.groupBoxCatalogUplook);
             // 
             // splitContainerInfo.Panel2
@@ -495,7 +485,6 @@
             // 
             this.groupBoxOptions.BackColor = System.Drawing.Color.White;
             this.groupBoxOptions.Controls.Add(this.checkBoxUser);
-            this.groupBoxOptions.Controls.Add(this.checkBoxUSM);
             this.groupBoxOptions.Controls.Add(this.checkBoxLogs);
             resources.ApplyResources(this.groupBoxOptions, "groupBoxOptions");
             this.groupBoxOptions.Name = "groupBoxOptions";
@@ -509,15 +498,6 @@
             this.checkBoxUser.Name = "checkBoxUser";
             this.checkBoxUser.UseVisualStyleBackColor = true;
             this.checkBoxUser.CheckedChanged += new System.EventHandler(this.checkBoxUser_CheckedChanged);
-            // 
-            // checkBoxUSM
-            // 
-            resources.ApplyResources(this.checkBoxUSM, "checkBoxUSM");
-            this.checkBoxUSM.Checked = true;
-            this.checkBoxUSM.CheckState = System.Windows.Forms.CheckState.Checked;
-            this.checkBoxUSM.Name = "checkBoxUSM";
-            this.checkBoxUSM.UseVisualStyleBackColor = true;
-            this.checkBoxUSM.CheckedChanged += new System.EventHandler(this.checkBoxUSM_CheckedChanged);
             // 
             // checkBoxLogs
             // 
@@ -570,49 +550,6 @@
             // 
             resources.ApplyResources(this.labelUserPathValue, "labelUserPathValue");
             this.labelUserPathValue.Name = "labelUserPathValue";
-            // 
-            // groupBoxUSM
-            // 
-            this.groupBoxUSM.BackColor = System.Drawing.Color.White;
-            this.groupBoxUSM.Controls.Add(this.labelFilesCountValueUSM);
-            this.groupBoxUSM.Controls.Add(this.labelFilesCountUSM);
-            this.groupBoxUSM.Controls.Add(this.labelLogsPathUSM);
-            this.groupBoxUSM.Controls.Add(this.labelFilesSizeUSM);
-            this.groupBoxUSM.Controls.Add(this.labelFilesSizeValueUSM);
-            this.groupBoxUSM.Controls.Add(this.labelLogsPathValueUSM);
-            resources.ApplyResources(this.groupBoxUSM, "groupBoxUSM");
-            this.groupBoxUSM.Name = "groupBoxUSM";
-            this.groupBoxUSM.TabStop = false;
-            // 
-            // labelFilesCountValueUSM
-            // 
-            resources.ApplyResources(this.labelFilesCountValueUSM, "labelFilesCountValueUSM");
-            this.labelFilesCountValueUSM.Name = "labelFilesCountValueUSM";
-            // 
-            // labelFilesCountUSM
-            // 
-            resources.ApplyResources(this.labelFilesCountUSM, "labelFilesCountUSM");
-            this.labelFilesCountUSM.Name = "labelFilesCountUSM";
-            // 
-            // labelLogsPathUSM
-            // 
-            resources.ApplyResources(this.labelLogsPathUSM, "labelLogsPathUSM");
-            this.labelLogsPathUSM.Name = "labelLogsPathUSM";
-            // 
-            // labelFilesSizeUSM
-            // 
-            resources.ApplyResources(this.labelFilesSizeUSM, "labelFilesSizeUSM");
-            this.labelFilesSizeUSM.Name = "labelFilesSizeUSM";
-            // 
-            // labelFilesSizeValueUSM
-            // 
-            resources.ApplyResources(this.labelFilesSizeValueUSM, "labelFilesSizeValueUSM");
-            this.labelFilesSizeValueUSM.Name = "labelFilesSizeValueUSM";
-            // 
-            // labelLogsPathValueUSM
-            // 
-            resources.ApplyResources(this.labelLogsPathValueUSM, "labelLogsPathValueUSM");
-            this.labelLogsPathValueUSM.Name = "labelLogsPathValueUSM";
             // 
             // groupBoxCatalogUplook
             // 
@@ -951,8 +888,6 @@
             this.groupBoxOptions.PerformLayout();
             this.groupBoxUser.ResumeLayout(false);
             this.groupBoxUser.PerformLayout();
-            this.groupBoxUSM.ResumeLayout(false);
-            this.groupBoxUSM.PerformLayout();
             this.groupBoxCatalogUplook.ResumeLayout(false);
             this.groupBoxCatalogUplook.PerformLayout();
             this.toolStripButton.ResumeLayout(false);
@@ -1053,13 +988,6 @@
         private System.Windows.Forms.TableLayoutPanel tableLayoutPanelFiles;
         private System.Windows.Forms.Label labelFilesCountValue;
         private System.Windows.Forms.Label labelFilesCount;
-        private System.Windows.Forms.GroupBox groupBoxUSM;
-        private System.Windows.Forms.Label labelFilesCountValueUSM;
-        private System.Windows.Forms.Label labelFilesCountUSM;
-        private System.Windows.Forms.Label labelLogsPathUSM;
-        private System.Windows.Forms.Label labelFilesSizeValueUSM;
-        private System.Windows.Forms.Label labelLogsPathValueUSM;
-        private System.Windows.Forms.Label labelFilesSizeUSM;
         private System.Windows.Forms.GroupBox groupBoxUser;
         private System.Windows.Forms.Label labelFilesCountValueUser;
         private System.Windows.Forms.Label labelFilesCountUser;
@@ -1084,7 +1012,6 @@
         private System.Windows.Forms.ToolStripMenuItem toolStripMenuItemGeneral;
         private System.Windows.Forms.GroupBox groupBoxOptions;
         private System.Windows.Forms.CheckBox checkBoxUser;
-        private System.Windows.Forms.CheckBox checkBoxUSM;
         private System.Windows.Forms.CheckBox checkBoxLogs;
         private System.Windows.Forms.ToolStripTextBox toolStripTextBox;
         private System.Windows.Forms.ToolStripLabel toolStripLabel1;

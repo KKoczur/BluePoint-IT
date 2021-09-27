@@ -52,26 +52,26 @@ namespace StatlookLogViewer
             AnalyzeLine(lineCaption, lineValue, patterns);
         }
 
-        private void AnalyzeLine(string rowCaption, string rowValue, ILogPattern[] logPatterns)
+        private void AnalyzeLine(string lineCaption, string lineValue, ILogPattern[] logPatterns)
         {
             foreach (ILogPattern logPattern in logPatterns)
             {
-                if (string.Compare(logPattern.TextPattern, rowCaption, true) != 0)
+                if (string.Compare(logPattern.TextPattern, lineCaption, true) != 0)
                     continue;
 
-                if (rowCaption != Configuration.STATLOOK_DATE)
+                if (lineCaption != Configuration.STATLOOK_DATE)
                 {
-                    ListViewItem.SubItems.Add(rowValue);
+                    ListViewItem.SubItems.Add(lineValue);
 
-                    if (Regex.IsMatch(rowValue, @"(?<NR_1>\d{1})\.(?<NR_2>\d{1})\.(?<NR_3>\d{1})\b został uruchomiony.") || Regex.IsMatch(rowValue, @"(?<NR_1>\d{1})\.(?<NR_2>\d{1})\.(?<NR_3>\d{1})\b started"))
+                    if (Regex.IsMatch(lineValue, @"(?<NR_1>\d{1})\.(?<NR_2>\d{1})\.(?<NR_3>\d{1})\b został uruchomiony.") || Regex.IsMatch(lineValue, @"(?<NR_1>\d{1})\.(?<NR_2>\d{1})\.(?<NR_3>\d{1})\b started"))
                     {
-                        ListViewItem.Group.Header = $"{ListViewItem.Group.Name} ({rowValue})";
+                        ListViewItem.Group.Header = $"{ListViewItem.Group.Name} ({lineValue})";
                     }
                     else
                     {
                         foreach (LogErrorPattern logErrorPattern in _listOfAllErrors)
                         {
-                            if (rowValue.Contains(logErrorPattern.ErrorTextPattern))
+                            if (lineValue.Contains(logErrorPattern.ErrorTextPattern))
                             {
                                 if (!ListViewItem.Group.Header.Contains(logErrorPattern.ErrorReason))
                                 {
@@ -81,21 +81,21 @@ namespace StatlookLogViewer
                         }
                     }
 
-                    logPattern.TextPattern = rowValue;
+                    logPattern.TextPattern = lineValue;
 
                     break;
                 }
 
-                DateTime tmp_DateTime = DateTime.Parse(rowValue);
+                DateTime tmp_DateTime = DateTime.Parse(lineValue);
                 string myHourTime = tmp_DateTime.Hour.ToString();
 
                 _groupName = GetNameOfGroupByHourTime(myHourTime);
-                ListViewItem.Text = rowValue;
+                ListViewItem.Text = lineValue;
                 _listViewGroup = new ListViewGroup(_groupName, HorizontalAlignment.Left);
                 ListViewItem.Group = _listViewGroup;
                 ListViewItem.Group.Name = _groupName;
                 ListViewItem.Group.Header = _groupName;
-                logPattern.TextPattern = rowValue;
+                logPattern.TextPattern = lineValue;
                 break;
             }
         }

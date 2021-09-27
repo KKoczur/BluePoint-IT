@@ -121,9 +121,6 @@ namespace StatlookLogViewer
             //Podaje informacje o katalogu "Logs"
             SetDashboardData(LogDirectory, labelLogsPathValue, labelFilesSizeValue, labelFilesCountValue);
 
-            //Podaje informacje statystyczne o katalogu "uplook system monitor"
-            SetDashboardData(USMDirectory, labelLogsPathValueUSM, labelFilesSizeValueUSM, labelFilesCountValueUSM);
-
             //Podaje informacje statystyczne o katalogu usera
             SetDashboardData(_userDirectory, labelUserPathValue, labelFilesSizeValueUser, labelFilesCountValueUser);
 
@@ -142,7 +139,6 @@ namespace StatlookLogViewer
 
             bool[] showCatalog = new bool[]{
             checkBoxLogs.Checked,
-            checkBoxUSM.Checked,
             checkBoxUser.Checked
             };
 

@@ -38,6 +38,5 @@ namespace StatlookLogViewer.Model.Pattern
 
 
         #endregion Properties
-
     }
 }
