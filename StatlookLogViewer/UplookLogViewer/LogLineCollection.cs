@@ -34,7 +34,7 @@ namespace StatlookLogViewer
 
         #region Methods
 
-        public LogTapPage AnalyzeLog(string fileFullName)
+        public LogTapPage AnalyzeLogFile(string fileFullName)
         {
             LogType logType = LogType.Default;
 

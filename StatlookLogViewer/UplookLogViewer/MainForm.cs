@@ -1038,7 +1038,7 @@ namespace StatlookLogViewer
             {
                 LogLineCollection logLineCollection = new LogLineCollection();
 
-                LogTapPage newPage = logLineCollection.AnalyzeLog(filePath);
+                LogTapPage newPage = logLineCollection.AnalyzeLogFile(filePath);
 
                 if (newPage.LogType == LogType.Statlook)
                 {
