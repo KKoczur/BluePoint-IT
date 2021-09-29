@@ -1,6 +1,7 @@
 ﻿using StatlookLogViewer.Controller;
 using StatlookLogViewer.Model;
 using StatlookLogViewer.Model.Pattern;
+using StatlookLogViewer.Parser;
 using System.Collections.Generic;
 using System.IO;
 using System.Windows.Forms;
@@ -19,31 +20,13 @@ namespace StatlookLogViewer.Views
         /// <param name="index">Index</param>
         /// <param name="fileNameWithPath">Page name</param>
         /// <param name="logType">Type of log</param>
-        public LogTapPage(int index, string fileNameWithPath, LogType logType)
+        public LogTapPage(int index, string fileNameWithPath, ILogParser logParser)
         {
             string fileName = Path.GetFileName(fileNameWithPath);
 
-            LogType = logType;
+            LogParser = logParser;
 
-            _config = Configuration.GetConfiguration();
-
-            ILogPattern[] logPatterns = null;
-
-            switch (LogType)
-            {
-                case LogType.Statlook:
-                    {
-                        logPatterns = _config.GetStatlookLogPatterns();
-                        break;
-                    }
-                case LogType.Usm:
-                    {
-                        logPatterns = _config.GetUsmLogPatterns();
-                        break;
-                    }
-            }
-
-            AddListViewColumns(logPatterns);
+            AddListViewColumns(LogParser);
 
             ListViewExtended.ListViewItemSorter = _lvwColumnSorter;
 
@@ -76,13 +59,13 @@ namespace StatlookLogViewer.Views
 
         }
 
-        private void AddListViewColumns(ILogPattern[] logPatterns)
+        private void AddListViewColumns(ILogParser logParser)
         {
             ListViewExtended.BeginUpdate();
 
             try
             {
-                foreach (var pattern in logPatterns)
+                foreach (var pattern in logParser.GetLogPatterns())
                 {
                     ListViewExtended.Columns.Add(pattern.TextPattern, -2);
                 }
@@ -97,7 +80,7 @@ namespace StatlookLogViewer.Views
 
         public ListViewExtended ListViewExtended { get; } = new ListViewExtended();
 
-        public LogType LogType { get; set; }
+        public ILogParser LogParser { get; set; }
 
         #endregion Properties
 

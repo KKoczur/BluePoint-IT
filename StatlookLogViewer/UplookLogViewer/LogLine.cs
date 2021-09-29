@@ -29,26 +29,9 @@ namespace StatlookLogViewer
 
         #region Methods
 
-        public void AddLine(string lineCaption, string lineValue, LogType logType)
+        public void AddLine(string lineCaption, string lineValue, ILogParser logParser)
         {
-            ILogParser parser = null;
-
-            switch (logType)
-            {
-                case LogType.Statlook:
-                    {
-                        parser = new StatlookLogParser();
-                        break;
-                    }
-
-                case LogType.Usm:
-                    {
-                        parser = new UsmLogParser();
-                        break;
-                    }
-            }
-
-            AnalyzeLine(lineCaption, lineValue, parser);
+            AnalyzeLine(lineCaption, lineValue, logParser);
         }
 
         private void AnalyzeLine(string lineCaption, string lineValue, ILogParser logParser)

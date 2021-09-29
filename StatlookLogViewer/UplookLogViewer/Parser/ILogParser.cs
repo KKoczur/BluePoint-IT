@@ -15,5 +15,7 @@ namespace StatlookLogViewer.Parser
         {
             return GetLogPatterns().ToList().Find(item => item.KeyName == keyName);
         }
+
+        public IEnumerable<string> GetTextPatterns() => GetLogPatterns().Select(item => item.TextPattern);
     }
 }

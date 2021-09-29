@@ -7,6 +7,7 @@ using System.IO;
 using StatlookLogViewer.Views;
 using StatlookLogViewer.Model;
 using System.Runtime.InteropServices.WindowsRuntime;
+using StatlookLogViewer.Parser;
 
 namespace StatlookLogViewer
 {
@@ -35,11 +36,9 @@ namespace StatlookLogViewer
 
         public LogTapPage AnalyzeLogFile(string fileFullName)
         {
-            string[] logTextPatterns = null;
+            ILogParser logParser = DetectLogType(fileFullName);
 
-            LogType logType = DetectLogType(fileFullName, ref logTextPatterns);
-
-            LogTapPage newTabPage = CreateNewTabPage(fileFullName, logType);
+            LogTapPage newTabPage = CreateNewTabPage(fileFullName, logParser);
 
             ListViewExtended listViewExtended = newTabPage.ListViewExtended;
 
@@ -55,7 +54,7 @@ namespace StatlookLogViewer
                     normalizeSingleLine = normalizeSingleLine.Substring(0, normalizeSingleLine.IndexOf(";"));
 
                     // Dodanie do pojedynczej linii wartości kolumny: Date
-                    logLine.AddLine(Configuration.STATLOOK_DATE, normalizeSingleLine, logType);
+                    logLine.AddLine(Configuration.STATLOOK_DATE, normalizeSingleLine, logParser);
 
                     ListViewGroup tmp_Group = new ListViewGroup(logLine.GroupName, HorizontalAlignment.Left);
 
@@ -84,15 +83,15 @@ namespace StatlookLogViewer
                 //Wykonaj jeśli linia nie zawiera znacznika przerwy 
                 else if (!singleLine.Contains(Configuration.STATLOOK_BREAK))
                 {
-                    for (int i = 1; i < logTextPatterns.Length; i++)
+                    foreach (string textPattern in (logParser as ILogParser).GetTextPatterns())
                     {
-                        if (singleLine.StartsWith(logTextPatterns[i]))
+                        if (singleLine.StartsWith(textPattern))
                         {
                             string normalizeSingleLine = singleLine + ";";
-                            normalizeSingleLine = normalizeSingleLine.Remove(0, logTextPatterns[i].Length);
+                            normalizeSingleLine = normalizeSingleLine.Remove(0, textPattern.Length);
                             normalizeSingleLine = normalizeSingleLine.TrimStart();
                             normalizeSingleLine = normalizeSingleLine.Substring(0, normalizeSingleLine.IndexOf(";"));
-                            logLine.AddLine(logTextPatterns[i], normalizeSingleLine, logType);
+                            logLine.AddLine(textPattern, normalizeSingleLine, logParser);
                             break;
                         }
                     }
@@ -130,31 +129,29 @@ namespace StatlookLogViewer
             _listViewItem.Add(logLine.ListViewItem);
         }
 
-        private LogType DetectLogType(string fileFullName, ref string[] logTextPatterns)
+        private ILogParser DetectLogType(string fileFullName)
         {
             string allFileData = ReadAllFileText(fileFullName);
 
-            LogType logType = LogType.Default;
+            ILogParser logParser = null;
 
             if (allFileData.Contains(_config.GetStatlookTextPatterns()[1]))
             {
-                logType = (int)LogType.Statlook;
-                logTextPatterns = _config.GetStatlookTextPatterns().Split(new char[] { ';' });
+                logParser =new StatlookLogParser();
             }
             else if (allFileData.Contains(_config.GetUsmTextPatterns()[1]))
             {
-                logType = LogType.Usm;
-                logTextPatterns = _config.GetUsmTextPatterns().Split(new char[] { ';' });
+                logParser = new UsmLogParser();
             }
 
-            return logType;
+            return logParser;
         }
 
-        private LogTapPage CreateNewTabPage(string fileNameWithPath, LogType logType)
+        private LogTapPage CreateNewTabPage(string fileNameWithPath, ILogParser logParser)
         {
-            return new LogTapPage(0, fileNameWithPath, logType)
+            return new LogTapPage(0, fileNameWithPath, logParser)
             {
-                LogType = logType
+                LogParser = logParser
             };
         }
 

@@ -10,6 +10,7 @@ using StatlookLogViewer.Model;
 using StatlookLogViewer.Controller;
 using StatlookLogViewer.Model.Pattern;
 using System.Linq;
+using StatlookLogViewer.Parser;
 
 namespace StatlookLogViewer
 {
@@ -330,13 +331,13 @@ namespace StatlookLogViewer
             }
         }
 
-        private void ShowListViewColumns(ListView listView, LogType logType)
+        private void ShowListViewColumns(ListView listView, ILogParser logParser)
         {
             ToolStripItemCollection toolStripItemCollection = null;
 
-            if (logType == LogType.Statlook)
+            if (logParser is StatlookLogParser)
                 toolStripItemCollection = ToolStripMenuItemUplook.DropDownItems;
-            else if (logType == LogType.Usm)
+            else if (logParser is UsmLogParser)
                 toolStripItemCollection = ToolStripMenuItemUSM.DropDownItems;
 
             if (toolStripItemCollection == null)
@@ -572,12 +573,12 @@ namespace StatlookLogViewer
                 {
                     if (control.GetType() == typeof(ListViewExtended))
                     {
-                        if (tabPage.LogType == LogType.Statlook)
+                        if (tabPage.LogParser is StatlookLogParser)
                         {
                             ToolStripMenuItemUplook.Visible = true;
                             ToolStripMenuItemUSM.Visible = false;
                         }
-                        else if (tabPage.LogType == LogType.Usm)
+                        else if (tabPage.LogParser is UsmLogParser)
                         {
                             ToolStripMenuItemUplook.Visible = false;
                             ToolStripMenuItemUSM.Visible = true;
@@ -585,7 +586,7 @@ namespace StatlookLogViewer
 
                         ListViewExtended listViewExtended = (ListViewExtended)control;
 
-                        ShowListViewColumns(listViewExtended, tabPage.LogType);
+                        ShowListViewColumns(listViewExtended, tabPage.LogParser);
                     }
                 }
 
@@ -976,7 +977,7 @@ namespace StatlookLogViewer
 
                 LogTapPage newPage = logLineCollection.AnalyzeLogFile(filePath);
 
-                if (newPage.LogType == LogType.Statlook)
+                if (newPage.LogParser is StatlookLogParser)
                 {
                     ToolStripMenuItemUplook.Enabled = true;
                     ToolStripMenuItemUplook.Visible = true;
@@ -1003,7 +1004,7 @@ namespace StatlookLogViewer
                     }
 
                 }
-                if (newPage.LogType == LogType.Usm)
+                if (newPage.LogParser is UsmLogParser)
                 {
                     ToolStripMenuItemUplook.Visible = false;
                     ToolStripMenuItemUSM.Enabled = true;
@@ -1032,7 +1033,7 @@ namespace StatlookLogViewer
 
                 tabControlMain.Controls.Add(newPage);
                 tabControlMain.SelectTab(newPage);
-                ShowListViewColumns(newPage.ListViewExtended, newPage.LogType);
+                ShowListViewColumns(newPage.ListViewExtended, newPage.LogParser);
 
                 //Aktywownie menu grupowania 
                 grupyToolStripMenuItem.Enabled = true;
@@ -1096,7 +1097,7 @@ namespace StatlookLogViewer
                     if (control.GetType() == typeof(ListViewExtended))
                     {
                         ListViewExtended ListV = (ListViewExtended)control;
-                        ShowListViewColumns(ListV, LogType.Statlook);
+                        ShowListViewColumns(ListV, new StatlookLogParser());
                     }
                 }
             }
@@ -1142,7 +1143,7 @@ namespace StatlookLogViewer
                     if (control.GetType() == typeof(ListViewExtended))
                     {
                         ListViewExtended ListV = (ListViewExtended)control;
-                        ShowListViewColumns(ListV, LogType.Usm);
+                        ShowListViewColumns(ListV, new UsmLogParser());
                     }
                 }
             }
