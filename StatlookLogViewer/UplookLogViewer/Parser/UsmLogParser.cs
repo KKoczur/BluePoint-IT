@@ -7,6 +7,9 @@ namespace StatlookLogViewer.Parser
 {
     public class UsmLogParser : ILogParser
     {
+        public string StartLogGroupEntry { get; set; } = "Date";
+        public string EndLogGroupEntry { get; set; } = "----------------------------------------";
+
         public LogErrorPattern[] GetListOfErrors()
         {
             return new List<LogErrorPattern>()

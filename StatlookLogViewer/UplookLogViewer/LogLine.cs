@@ -41,7 +41,7 @@ namespace StatlookLogViewer
                 if (string.Compare(logPattern.TextPattern, lineCaption, true) != 0)
                     continue;
 
-                if (lineCaption != Configuration.STATLOOK_DATE)
+                if (lineCaption != logParser.StartLogGroupEntry)
                 {
                     ListViewItem.SubItems.Add(lineValue);
 

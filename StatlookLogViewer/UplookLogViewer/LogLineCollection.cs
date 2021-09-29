@@ -54,7 +54,7 @@ namespace StatlookLogViewer
                     normalizeSingleLine = normalizeSingleLine.Substring(0, normalizeSingleLine.IndexOf(";"));
 
                     // Dodanie do pojedynczej linii wartości kolumny: Date
-                    logLine.AddLine(Configuration.STATLOOK_DATE, normalizeSingleLine, logParser);
+                    logLine.AddLine(logParser.StartLogGroupEntry, normalizeSingleLine, logParser);
 
                     ListViewGroup tmp_Group = new ListViewGroup(logLine.GroupName, HorizontalAlignment.Left);
 
@@ -81,7 +81,7 @@ namespace StatlookLogViewer
                 }
 
                 //Wykonaj jeśli linia nie zawiera znacznika przerwy 
-                else if (!singleLine.Contains(Configuration.STATLOOK_BREAK))
+                else if (!singleLine.Contains(logParser.EndLogGroupEntry))
                 {
                     foreach (string textPattern in (logParser as ILogParser).GetTextPatterns())
                     {
@@ -96,7 +96,7 @@ namespace StatlookLogViewer
                         }
                     }
                 }
-                else if (singleLine.StartsWith(Configuration.STATLOOK_BREAK))
+                else if (singleLine.StartsWith(logParser.EndLogGroupEntry))
                 {
                     //Wykonaj jeśli linia zawiera znacznika przerwy 
                     //Dodanie pojedynczej linii do pliku wynikowego analizy 

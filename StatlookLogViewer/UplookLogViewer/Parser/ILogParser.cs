@@ -7,6 +7,10 @@ namespace StatlookLogViewer.Parser
 {
     public interface ILogParser
     {
+        string StartLogGroupEntry { get; set; }
+
+        string EndLogGroupEntry { get; set; }
+
         IEnumerable<ILogPattern> GetLogPatterns();
 
         LogErrorPattern[] GetListOfErrors();

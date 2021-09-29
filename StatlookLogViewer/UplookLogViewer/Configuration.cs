@@ -20,10 +20,6 @@ namespace StatlookLogViewer
 
         public const string LOG_FILE_EXTENSIONS = "Log files (*.log)|*.log|Text files (*.txt)|*.txt| Zip files (*.zip)|*.zip| All files (*.*)|*.*";
         public const string ZIP_FILE_EXTENSION = ".zip";
-        public const string STATLOOK_DATE = "Date";
-        public const string USM_DATE = "Date";
-        public const string STATLOOK_BREAK = "----------------------------------------";
-        public const string USM_BREAK = "----------------------------------------";
 
         #endregion Constans
 
