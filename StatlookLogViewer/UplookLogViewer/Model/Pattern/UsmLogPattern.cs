@@ -28,8 +28,6 @@ namespace StatlookLogViewer.Model.Pattern
 
         #region Properties
 
-        public LogType LogType { get; set; }
-
         /// <summary>
         /// Key name of descriptor
         /// </summary>
