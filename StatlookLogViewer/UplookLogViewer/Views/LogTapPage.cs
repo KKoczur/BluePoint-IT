@@ -78,9 +78,18 @@ namespace StatlookLogViewer.Views
 
         private void AddListViewColumns(ILogPattern[] logPatterns)
         {
-            for (int i = 0; i < logPatterns.Length; i++)
+            ListViewExtended.BeginUpdate();
+
+            try
             {
-                ListViewExtended.Columns.Add(logPatterns[i].TextPattern, -2);
+                foreach (var pattern in logPatterns)
+                {
+                    ListViewExtended.Columns.Add(pattern.TextPattern, -2);
+                }
+            }
+            finally
+            {
+                ListViewExtended.EndUpdate();
             }
         }
 

@@ -9,6 +9,7 @@ using StatlookLogViewer.Views;
 using StatlookLogViewer.Model;
 using StatlookLogViewer.Controller;
 using StatlookLogViewer.Model.Pattern;
+using System.Linq;
 
 namespace StatlookLogViewer
 {
@@ -37,14 +38,14 @@ namespace StatlookLogViewer
 
             _config = Configuration.GetConfiguration();
 
-            ILogPattern[] udes = _config.GetStatlookLogPatterns();
+            ILogPattern[] udes = _config.GetStatlookLogPatterns().ToArray();
 
             foreach (StatlookLogPattern d in udes)
             {
                 show_uplook.Add(d.Show);
             }
 
-            ILogPattern[] usmdes = _config.GetUsmLogPatterns();
+            ILogPattern[] usmdes = _config.GetUsmLogPatterns().ToArray();
 
             foreach (ILogPattern d in usmdes)
             {
@@ -1055,7 +1056,7 @@ namespace StatlookLogViewer
 
         private void ToolStripMenuItemUplook_DropDownItemClicked(object sender, ToolStripItemClickedEventArgs e)
         {
-            ILogPattern[] udes = _config.GetStatlookLogPatterns();
+            ILogPattern[] udes = _config.GetStatlookLogPatterns().ToArray();
 
             ToolStripMenuItem toolStripMenuItem = (ToolStripMenuItem)e.ClickedItem;
 
@@ -1068,7 +1069,7 @@ namespace StatlookLogViewer
                     if (toolStripMenuItem.Name == ud.KeyName)
                     {
                         ud.Show = false;
-                        _config.SetHeaderVisibility(ud.KeyName, false);
+                        _config.SetStatlookHeaderVisibility(ud.KeyName, false);
                     }
                 }
             }
@@ -1080,7 +1081,7 @@ namespace StatlookLogViewer
                     if (toolStripMenuItem.Name == ud.KeyName)
                     {
                         ud.Show = true;
-                        _config.SetHeaderVisibility(ud.KeyName, true);
+                        _config.SetStatlookHeaderVisibility(ud.KeyName, true);
                     }
                 }
             }
@@ -1104,7 +1105,7 @@ namespace StatlookLogViewer
         private void ToolStripMenuItemUSM_DropDownItemClicked(object sender, ToolStripItemClickedEventArgs e)
         {
             ToolStripMenuItem t = (ToolStripMenuItem)e.ClickedItem;
-            ILogPattern[] usmdes = _config.GetUsmLogPatterns();
+            ILogPattern[] usmdes = _config.GetUsmLogPatterns().ToArray();
             if (t.CheckState == CheckState.Checked)
             {
                 t.CheckState = CheckState.Unchecked;
@@ -1113,7 +1114,7 @@ namespace StatlookLogViewer
                     if (t.Name == usmd.KeyName)
                     {
                         usmd.Show = false;
-                        _config.SetHeaderVisibility(usmd.KeyName, false);
+                        _config.SetStatlookHeaderVisibility(usmd.KeyName, false);
                     }
                 }
             }
@@ -1125,7 +1126,7 @@ namespace StatlookLogViewer
                     if (t.Name == usmd.KeyName)
                     {
                         usmd.Show = true;
-                        _config.SetHeaderVisibility(usmd.KeyName, true);
+                        _config.SetStatlookHeaderVisibility(usmd.KeyName, true);
                     }
                 }
             }
@@ -1233,9 +1234,11 @@ namespace StatlookLogViewer
         private void Search()
         {
             TabControl TabC = (TabControl)Controls.Find("tabControlMain", true)[0];
+
             if (TabC.SelectedTab.Name == "tabPageInfo")
             {
                 WypelnijListe();
+
                 ListView LVTmp = new ListView();
                 LVTmp.Items.Clear();
                 //bool find = false;
@@ -1246,8 +1249,7 @@ namespace StatlookLogViewer
                 {
                     for (int colAll = 0; colAll < colCount; colAll++)
                     {
-                        if (listViewFiles.Items[lst12].SubItems[colAll].Text.IndexOf(toolStripTextBox.Text) > -1 |
-                            listViewFiles.Items[lst12].SubItems[colAll].Text.IndexOf(toolStripTextBox.Text, StringComparison.OrdinalIgnoreCase) > -1)
+                        if (listViewFiles.Items[lst12].SubItems[colAll].Text.IndexOf(toolStripTextBox.Text, StringComparison.OrdinalIgnoreCase) > -1)
                         {
                             LVTmp.Items.Add((ListViewItem)listViewFiles.Items[lst12].Clone());
                             break;
@@ -1256,62 +1258,82 @@ namespace StatlookLogViewer
                     }
 
                 }
+
                 listViewFiles.Items.Clear();
                 listViewFiles.Items.AddRange(CloneItems(LVTmp.Items));
             }
             else
             {
                 TabPage TabP = (TabPage)Controls.Find(TabC.SelectedTab.Name, true)[0];
+
                 foreach (Control control in TabP.Controls)
                 {
-                    if (control.GetType() == typeof(ListViewExtended))
+                    if (control.GetType() != typeof(ListViewExtended))
+                        continue;
+
+                    ListViewExtended ListV = (ListViewExtended)control;
+
+                    if (toolStripTextBox.Text?.Length == 0)
                     {
-                        ListViewExtended ListV = (ListViewExtended)control;
-                        if (toolStripTextBox.Text != String.Empty)
+                        ListV.SuspendLayout();
+                        ListV.BeginUpdate();
+
+                        try
                         {
-                            for (int i = 0; i < ListV.Items.Count; i++)
+                            foreach (ListViewItem listViewItem in ListV.Items)
                             {
-                                ListV.Items[i].BackColor = Color.White;
-                            }
-                            int colCount = ListV.Columns.Count;
-                            for (int lst12 = 0; lst12 < ListV.Items.Count; lst12++)
-                            {
-                                for (int colAll = 0; colAll < colCount; colAll++)
-                                {
-                                    if (ListV.Columns[colAll].Width != 0)
-                                    {
-                                        if (ListV.Items[lst12].SubItems[colAll].Text.IndexOf(toolStripTextBox.Text) > -1 |
-                                        ListV.Items[lst12].SubItems[colAll].Text.IndexOf(toolStripTextBox.Text, StringComparison.OrdinalIgnoreCase) > -1)
-                                        {
-                                            ListV.SuspendLayout();
-                                            ListV.BeginUpdate();
-                                            //ListV.SetGroupFooter(ListV.Items[lst12].Group, "Test");
-                                            ListV.SetOneGroupState(ListV.Items[lst12].Group, ListViewGroupState.Collapsible);
-                                            ListV.Items[lst12].BackColor = Color.Aqua;
-                                            ListV.EndUpdate();
-                                            ListV.ResumeLayout();
-                                        }
-                                        else
-                                        {
-                                            //ListV.SetOneGroupState(ListV.Items[lst12].Group, ListViewGroupState.Collapsed);
-                                        }
-                                    }
-                                }
+                                ListV.SetOneGroupState(listViewItem.Group, state: ListViewGroupState.Collapsible | ListViewGroupState.Collapsed);
+                                listViewItem.BackColor = Color.White;
                             }
                         }
-                        else
+                        finally
                         {
-                            for (int i = 0; i < ListV.Items.Count; i++)
-                            {
-                                ListV.SuspendLayout();
-                                ListV.BeginUpdate();
-                                ListV.SetOneGroupState(ListV.Items[i].Group, state: ListViewGroupState.Collapsible
-                                    | ListViewGroupState.Collapsed);
-                                ListV.Items[i].BackColor = Color.White;
-                                ListV.EndUpdate();
-                                ListV.ResumeLayout();
-                            }
+                            ListV.EndUpdate();
+                            ListV.ResumeLayout();
+                        }
+                    }
+                    else
+                    {
+                        for (int i = 0; i < ListV.Items.Count; i++)
+                        {
+                            ListV.Items[i].BackColor = Color.White;
+                        }
 
+                        int colCount = ListV.Columns.Count;
+
+                        foreach (ListViewItem listViewItem in ListV.Items)
+                        {
+                            for (int colAll = 0; colAll < colCount; colAll++)
+                            {
+                                if (ListV.Columns[colAll].Width == 0)
+                                    continue;
+
+                                string listViewSubItemText = listViewItem.SubItems[colAll].Text;
+
+                                if (string.IsNullOrWhiteSpace(listViewSubItemText))
+                                    continue;
+
+                                if (listViewSubItemText.IndexOf(toolStripTextBox.Text, StringComparison.OrdinalIgnoreCase) > -1)
+                                {
+                                    ListV.SuspendLayout();
+                                    ListV.BeginUpdate();
+                                    try
+                                    {
+                                        //ListV.SetGroupFooter(ListV.Items[lst12].Group, "Test");
+                                        ListV.SetOneGroupState(listViewItem.Group, ListViewGroupState.Collapsible);
+                                        listViewItem.BackColor = Color.Aqua;
+                                    }
+                                    finally
+                                    {
+                                        ListV.EndUpdate();
+                                        ListV.ResumeLayout();
+                                    }
+                                }
+                                else
+                                {
+                                    //ListV.SetOneGroupState(ListV.Items[lst12].Group, ListViewGroupState.Collapsed);
+                                }
+                            }
                         }
                     }
                 }

@@ -3,8 +3,6 @@ namespace StatlookLogViewer.Model.Pattern
 {
     public interface ILogPattern
     {
-        public LogType LogType { get; set; }
-
         /// <summary>
         /// Key name of descriptor
         /// </summary>

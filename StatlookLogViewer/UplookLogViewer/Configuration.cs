@@ -1,6 +1,8 @@
 ﻿using StatlookLogViewer.Model;
 using StatlookLogViewer.Model.Pattern;
+using StatlookLogViewer.Parser;
 using System;
+using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Xml.Serialization;
@@ -32,7 +34,8 @@ namespace StatlookLogViewer
         /// </summary>
         public Configuration()
         {
-            LogPatternCollection = new LogPatternCollection();
+            StatlookLogParser = new StatlookLogParser();
+            UsmLogParser = new UsmLogParser();
         }
 
         #endregion Constructors
@@ -41,17 +44,25 @@ namespace StatlookLogViewer
 
         public static void SaveConfig(Configuration c) => Serialize(CONFIG_FILE_NAME, c);
 
-        public ILogPattern[] GetStatlookLogPatterns() => LogPatternCollection.GetStatlookLogPatterns();
+        public ILogPattern[] GetStatlookLogPatterns() => StatlookLogParser.GetLogPatterns().ToArray();
 
-        public string GetStatlookTextPatterns() => string.Join(";", LogPatternCollection.GetStatlookLogPatterns().Select(item => item.TextPattern));
+        public string GetStatlookTextPatterns() => string.Join(";", GetStatlookLogPatterns().Select(item => item.TextPattern));
 
-        public ILogPattern[] GetUsmLogPatterns() => LogPatternCollection.GetUsmLogPatterns();
+        public ILogPattern[] GetUsmLogPatterns() => UsmLogParser.GetLogPatterns().ToArray();
 
-        public string GetUsmTextPatterns() => string.Join(";", LogPatternCollection.GetUsmLogPatterns().Select(item => item.TextPattern));
+        public string GetUsmTextPatterns() => string.Join(";", GetUsmLogPatterns().Select(item => item.TextPattern));
 
-        public void SetHeaderVisibility(string keyName, bool needToShow)
+        public void SetStatlookHeaderVisibility(string keyName, bool needToShow)
         {
-            ILogPattern logPattern = LogPatternCollection.GetHeaderByKeyName(keyName);
+            ILogPattern logPattern = ((ILogParser)StatlookLogParser).GetHeaderByKeyName(keyName);
+
+            if (logPattern != null)
+                logPattern.Show = needToShow;
+        }
+
+        public void SetUsmHeaderVisibility(string keyName, bool needToShow)
+        {
+            ILogPattern logPattern = ((ILogParser)UsmLogParser).GetHeaderByKeyName(keyName);
 
             if (logPattern != null)
                 logPattern.Show = needToShow;
@@ -100,7 +111,8 @@ namespace StatlookLogViewer
 
         #region Properties
 
-        public LogPatternCollection LogPatternCollection { get; set; }
+        public StatlookLogParser StatlookLogParser { get; set; }
+        public UsmLogParser UsmLogParser { get; set; }
 
         public string StatlookLogDirectory { get; set; } = LOG_DIRECTORY_PATH;
         public string UserDirectory { get; set; } = Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData) + LOG_DIRECTORY_PATH;

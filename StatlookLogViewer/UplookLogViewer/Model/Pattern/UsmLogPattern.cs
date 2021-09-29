@@ -7,20 +7,19 @@ namespace StatlookLogViewer.Model.Pattern
     {
         #region Constructors
 
-        public UsmLogPattern(LogType logType, string keyName)
+        public UsmLogPattern( string keyName)
         {
-            LogType = logType;
             KeyName = keyName;
         }
 
-        public UsmLogPattern(LogType logType, string keyName, string textPattern)
-            : this(logType, keyName)
+        public UsmLogPattern( string keyName, string textPattern)
+            : this( keyName)
         {
             TextPattern = textPattern;
         }
 
-        public UsmLogPattern(LogType logType, string keyName, string textPattern, bool show)
-            : this(logType, keyName, textPattern)
+        public UsmLogPattern( string keyName, string textPattern, bool show)
+            : this( keyName, textPattern)
         {
             Show = show;
         }
@@ -48,25 +47,5 @@ namespace StatlookLogViewer.Model.Pattern
 
         #endregion Properties
 
-        #region Methods
-
-        public static ILogPattern[] CreateLogPatterns()
-        {
-            const LogType logType = LogType.Usm;
-
-            var result = new List<ILogPattern>()
-            {
-                new UsmLogPattern(logType, "usmDate", "Date", true),
-                new UsmLogPattern(logType, "usmCode", " Code:", true),
-                new UsmLogPattern(logType, "usmType", " Type:", true),
-                new UsmLogPattern(logType, "usmSession", " Session:", true),
-                new UsmLogPattern(logType, "usmProcess", " Process ID:", true),
-                new UsmLogPattern(logType, "usmDescription", " Description:", true)
-             };
-
-            return result.ToArray();
-        }
-
-        #endregion Methods
     }
 }

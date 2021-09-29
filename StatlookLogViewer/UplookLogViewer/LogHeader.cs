@@ -1,6 +1,7 @@
 ﻿
 using StatlookLogViewer.Model;
 using StatlookLogViewer.Model.Pattern;
+using System.Linq;
 
 namespace StatlookLogViewer
 {
@@ -32,9 +33,9 @@ namespace StatlookLogViewer
 
         #region Methods
 
-        public ILogPattern[] GetStatlookLogPatterns() => _config.GetStatlookLogPatterns();
+        public ILogPattern[] GetStatlookLogPatterns() => _config.GetStatlookLogPatterns().ToArray();
 
-        public ILogPattern[] GetUsmLogPatterns() => _config.GetUsmLogPatterns();
+        public ILogPattern[] GetUsmLogPatterns() => _config.GetUsmLogPatterns().ToArray();
 
         public string[] GetStatlookTextHeaders() => _config.GetStatlookTextPatterns().Split(new char[] { ';' });
 

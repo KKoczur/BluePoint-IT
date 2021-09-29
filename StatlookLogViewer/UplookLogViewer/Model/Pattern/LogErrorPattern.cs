@@ -5,14 +5,13 @@ namespace StatlookLogViewer.Model.Pattern
     {
         #region Constructors
 
-        public LogErrorPattern(LogType logType, string errorTextPattern)
+        public LogErrorPattern( string errorTextPattern)
         {
-            LogType = logType;
             ErrorTextPattern = errorTextPattern;
         }
 
-        public LogErrorPattern(LogType logType, string errorTextPattern, string errorReason)
-            : this(logType, errorTextPattern)
+        public LogErrorPattern(string errorTextPattern, string errorReason)
+            : this(errorTextPattern)
         {
             ErrorReason = errorReason;
         }
@@ -20,11 +19,6 @@ namespace StatlookLogViewer.Model.Pattern
         #endregion Constructors
 
         #region Properties
-
-        /// <summary>
-        /// Log type
-        /// </summary>
-        public LogType LogType { get; set; }
 
         /// <summary>
         /// Text pattern

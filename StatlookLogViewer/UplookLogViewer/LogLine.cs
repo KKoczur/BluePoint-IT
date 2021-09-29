@@ -3,6 +3,7 @@ using System.Windows.Forms;
 using System.Text.RegularExpressions;
 using StatlookLogViewer.Model;
 using StatlookLogViewer.Model.Pattern;
+using StatlookLogViewer.Parser;
 
 namespace StatlookLogViewer
 {
@@ -13,8 +14,6 @@ namespace StatlookLogViewer
         private string _groupName;
 
         private ListViewGroup _listViewGroup = new ListViewGroup();
-
-        private readonly LogErrorPattern[] _listOfAllErrors = (new ErrorCollection()).GetListOfAllErrors();
 
         #endregion Members
 
@@ -32,29 +31,29 @@ namespace StatlookLogViewer
 
         public void AddLine(string lineCaption, string lineValue, LogType logType)
         {
-            ILogPattern[] patterns = null;
+            ILogParser parser = null;
 
             switch (logType)
             {
                 case LogType.Statlook:
                     {
-                        patterns = Headers.GetStatlookLogPatterns();
+                        parser = new StatlookLogParser();
                         break;
                     }
 
                 case LogType.Usm:
                     {
-                        patterns = Headers.GetUsmLogPatterns();
+                        parser = new UsmLogParser();
                         break;
                     }
             }
 
-            AnalyzeLine(lineCaption, lineValue, patterns);
+            AnalyzeLine(lineCaption, lineValue, parser);
         }
 
-        private void AnalyzeLine(string lineCaption, string lineValue, ILogPattern[] logPatterns)
+        private void AnalyzeLine(string lineCaption, string lineValue, ILogParser logParser)
         {
-            foreach (ILogPattern logPattern in logPatterns)
+            foreach (ILogPattern logPattern in logParser.GetLogPatterns())
             {
                 if (string.Compare(logPattern.TextPattern, lineCaption, true) != 0)
                     continue;
@@ -69,7 +68,7 @@ namespace StatlookLogViewer
                     }
                     else
                     {
-                        foreach (LogErrorPattern logErrorPattern in _listOfAllErrors)
+                        foreach (LogErrorPattern logErrorPattern in logParser.GetListOfErrors())
                         {
                             if (lineValue.Contains(logErrorPattern.ErrorTextPattern) && !ListViewItem.Group.Header.Contains(logErrorPattern.ErrorReason))
                             {
