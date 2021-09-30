@@ -11,6 +11,7 @@ using StatlookLogViewer.Controller;
 using StatlookLogViewer.Model.Pattern;
 using System.Linq;
 using StatlookLogViewer.Parser;
+using StatlookkLogViewer.Tools;
 
 namespace StatlookLogViewer
 {
@@ -24,7 +25,6 @@ namespace StatlookLogViewer
         public string _logDirectory;
         public string _userLogDirectory;
         private readonly string[] _fileExtensions;
-        private readonly LogHeader _logHeader = new LogHeader();
         private readonly List<bool> show_uplook = new List<bool>();
         private readonly List<bool> show_usm = new List<bool>();
         private Configuration _config;
@@ -172,7 +172,7 @@ namespace StatlookLogViewer
 
                             listViewItem.SubItems.Add(fileInfo.Name);
                             listViewItem.SubItems.Add(fileInfo.LastWriteTime.ToString());
-                            listViewItem.SubItems.Add(FormatFileSize(fileInfo.Length, false));
+                            listViewItem.SubItems.Add(IOTools.FormatFileSize(fileInfo.Length));
                             listViewItem.SubItems.Add(fileInfo.DirectoryName);
                             listViewFiles.Items.Add(listViewItem);
 
@@ -306,28 +306,6 @@ namespace StatlookLogViewer
                         }
                     }
                 }
-            }
-        }
-
-        private string FormatFileSize(float size, bool useByte)
-        {
-            float tmp_Size = size;
-            string addByte = useByte ? " (bajtów: " + tmp_Size.ToString() + ")" : string.Empty;
-            if ((tmp_Size / 1024) < 1)
-            {
-                return tmp_Size.ToString() + " B";
-            }
-            else if (((tmp_Size / 1024) >= 1) && ((tmp_Size / 1024) < 1024))
-            {
-                return Math.Round(tmp_Size / 1024, 1).ToString() + " KB" + addByte;
-            }
-            else if ((tmp_Size / (1024 * 1024)) >= 1)
-            {
-                return Math.Round(tmp_Size / (1024 * 1024), 1).ToString() + " MB" + addByte;
-            }
-            else
-            {
-                return null;
             }
         }
 
@@ -599,7 +577,7 @@ namespace StatlookLogViewer
                     toolStripSeparator_1.Visible = true;
                     toolStripLabelCreationTime.Text = fileInfo.LastWriteTime.ToString();
                     toolStripSeparator_2.Visible = true;
-                    toolStripLableSize.Text = FormatFileSize(fileInfo.Length, true);
+                    toolStripLableSize.Text = IOTools.FormatFileSize(fileInfo.Length);
                 }
                 else
                 {
@@ -983,19 +961,19 @@ namespace StatlookLogViewer
                     ToolStripMenuItemUplook.Visible = true;
                     ToolStripMenuItemUSM.Visible = false;
                     int j = 0;
-                    foreach (ToolStripMenuItem t in ToolStripMenuItemUplook.DropDownItems)
+                    foreach (ToolStripMenuItem toolStripMenuItem in ToolStripMenuItemUplook.DropDownItems)
                     {
-                        for (int i = 0; i < _logHeader.GetStatlookTextHeaders().Length; i++)
+                        foreach (string textPattern in newPage.LogParser.GetTextPatterns())
                         {
-                            if (t.Name.Equals("uplook" + _logHeader.GetStatlookTextHeaders()[i]))
+                            if (toolStripMenuItem.Name.Equals("uplook" + textPattern))
                             {
                                 if (show_uplook[j])
                                 {
-                                    t.CheckState = CheckState.Checked;
+                                    toolStripMenuItem.CheckState = CheckState.Checked;
                                 }
                                 else
                                 {
-                                    t.CheckState = CheckState.Unchecked;
+                                    toolStripMenuItem.CheckState = CheckState.Unchecked;
                                 }
                                 break;
                             }
@@ -1004,25 +982,25 @@ namespace StatlookLogViewer
                     }
 
                 }
-                if (newPage.LogParser is UsmLogParser)
+                if (newPage.LogParser is UsmLogParser usmLogParser)
                 {
                     ToolStripMenuItemUplook.Visible = false;
                     ToolStripMenuItemUSM.Enabled = true;
                     ToolStripMenuItemUSM.Visible = true;
                     int j = 0;
-                    foreach (ToolStripMenuItem t in ToolStripMenuItemUSM.DropDownItems)
+                    foreach (ToolStripMenuItem toolStripMenuItem in ToolStripMenuItemUSM.DropDownItems)
                     {
-                        for (int i = 0; i < _logHeader.GetUsmTextHeaders().Length; i++)
+                        foreach (string textPattern in newPage.LogParser.GetTextPatterns())
                         {
-                            if (t.Name.Equals("usm" + _logHeader.GetUsmTextHeaders()[i]))
+                            if (toolStripMenuItem.Name.Equals("usm" + textPattern))
                             {
                                 if (show_usm[j])
                                 {
-                                    t.CheckState = CheckState.Checked; ;
+                                    toolStripMenuItem.CheckState = CheckState.Checked; 
                                 }
                                 else
                                 {
-                                    t.CheckState = CheckState.Unchecked; ;
+                                    toolStripMenuItem.CheckState = CheckState.Unchecked; 
                                 }
                                 break;
                             }
@@ -1178,7 +1156,7 @@ namespace StatlookLogViewer
                         rozmiar += files[i].Length;
                     }
 
-                    labelSize.Text = FormatFileSize(rozmiar, true);
+                    labelSize.Text = IOTools.FormatFileSize(rozmiar);
 
                     labelCount.Text = (files.Length).ToString() + " plików, " + directories.Length.ToString() + " folderów";
                 }

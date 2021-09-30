@@ -1,7 +1,6 @@
 ﻿using System;
 using System.Windows.Forms;
 using System.Text.RegularExpressions;
-using StatlookLogViewer.Model;
 using StatlookLogViewer.Model.Pattern;
 using StatlookLogViewer.Parser;
 
@@ -18,8 +17,6 @@ namespace StatlookLogViewer
         #endregion Members
 
         #region Properties
-
-        public LogHeader Headers { get; } = new LogHeader();
 
         public string GroupName => _groupName;
 

@@ -44,6 +44,5 @@ namespace StatlookLogViewer.Model.Pattern
         public bool Show { set; get; }
 
         #endregion Properties
-
     }
 }
