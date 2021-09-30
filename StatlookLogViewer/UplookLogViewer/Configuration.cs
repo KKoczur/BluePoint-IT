@@ -40,17 +40,14 @@ namespace StatlookLogViewer
 
         public static void SaveConfig(Configuration c) => Serialize(CONFIG_FILE_NAME, c);
 
-        public ILogPattern[] GetStatlookLogPatterns() => StatlookLogParser.GetLogPatterns().ToArray();
+        public LogPattern[] GetStatlookLogPatterns() => StatlookLogParser.GetLogPatterns().ToArray();
 
-        public string GetStatlookTextPatterns() => string.Join(";", GetStatlookLogPatterns().Select(item => item.TextPattern));
+        public LogPattern[] GetUsmLogPatterns() => UsmLogParser.GetLogPatterns().ToArray();
 
-        public ILogPattern[] GetUsmLogPatterns() => UsmLogParser.GetLogPatterns().ToArray();
-
-        public string GetUsmTextPatterns() => string.Join(";", GetUsmLogPatterns().Select(item => item.TextPattern));
 
         public void SetStatlookHeaderVisibility(string keyName, bool needToShow)
         {
-            ILogPattern logPattern = ((ILogParser)StatlookLogParser).GetHeaderByKeyName(keyName);
+            LogPattern logPattern = ((ILogParser)StatlookLogParser).GetHeaderByKeyName(keyName);
 
             if (logPattern != null)
                 logPattern.Show = needToShow;
@@ -58,7 +55,7 @@ namespace StatlookLogViewer
 
         public void SetUsmHeaderVisibility(string keyName, bool needToShow)
         {
-            ILogPattern logPattern = ((ILogParser)UsmLogParser).GetHeaderByKeyName(keyName);
+            LogPattern logPattern = ((ILogParser)UsmLogParser).GetHeaderByKeyName(keyName);
 
             if (logPattern != null)
                 logPattern.Show = needToShow;

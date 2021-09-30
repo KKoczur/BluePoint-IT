@@ -7,15 +7,17 @@ namespace StatlookLogViewer.Parser
 {
     public interface ILogParser
     {
+        string UniqueLogKey { get; set; }
+
         string StartLogGroupEntry { get; set; }
 
         string EndLogGroupEntry { get; set; }
 
-        IEnumerable<ILogPattern> GetLogPatterns();
+        IEnumerable<LogPattern> GetLogPatterns();
 
         LogErrorPattern[] GetListOfErrors();
 
-        public ILogPattern GetHeaderByKeyName(string keyName)
+        public LogPattern GetHeaderByKeyName(string keyName)
         {
             return GetLogPatterns().ToList().Find(item => item.KeyName == keyName);
         }

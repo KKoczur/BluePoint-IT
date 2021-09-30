@@ -7,6 +7,8 @@ namespace StatlookLogViewer.Parser
 {
     public class StatlookLogParser : ILogParser
     {
+        public string UniqueLogKey { get; set; } = " Logger:";
+
         public string StartLogGroupEntry { get; set; } = "Date";
 
         public string EndLogGroupEntry { get; set; } = "----------------------------------------";
@@ -22,27 +24,27 @@ namespace StatlookLogViewer.Parser
             }.ToArray();
         }
 
-        public IEnumerable<ILogPattern> GetLogPatterns()
+        public IEnumerable<LogPattern> GetLogPatterns()
         {
-            return new List<ILogPattern>()
+            return new List<LogPattern>()
             {
-                new StatlookLogPattern("uDate", "Date", true),
-                new StatlookLogPattern("uLogger", " Logger:", true),
-                new StatlookLogPattern("uType", " Type:", true),
-                new StatlookLogPattern("uProcess", " Process ID:", true),
-                new StatlookLogPattern("uThread", " Thread ID:", true),
-                new StatlookLogPattern("uDescription", " Description:", true),
-                new StatlookLogPattern("uException", " Exception:", true),
-                new StatlookLogPattern("uMessage", "   Message:", true),
-                new StatlookLogPattern("uMethod", "   Method:", true),
-                new StatlookLogPattern("uStack", "   Stack:", true),
+                new LogPattern("uDate", "Date", true),
+                new LogPattern("uLogger", " Logger:", true),
+                new LogPattern("uType", " Type:", true),
+                new LogPattern("uProcess", " Process ID:", true),
+                new LogPattern("uThread", " Thread ID:", true),
+                new LogPattern("uDescription", " Description:", true),
+                new LogPattern("uException", " Exception:", true),
+                new LogPattern("uMessage", "   Message:", true),
+                new LogPattern("uMethod", "   Method:", true),
+                new LogPattern("uStack", "   Stack:", true),
 
-                new StatlookLogPattern("uEvent", "Event=", false),
-                new StatlookLogPattern("uDocumentId", "DocumentId=", false),
-                new StatlookLogPattern("uBrowser", "Browser=", false),
-                new StatlookLogPattern("uUrl", "Url=", false),
-                new StatlookLogPattern("uTitle", "Title=", false),
-                new StatlookLogPattern("uActive", "Active=", false),
+                new LogPattern("uEvent", "Event=", false),
+                new LogPattern("uDocumentId", "DocumentId=", false),
+                new LogPattern("uBrowser", "Browser=", false),
+                new LogPattern("uUrl", "Url=", false),
+                new LogPattern("uTitle", "Title=", false),
+                new LogPattern("uActive", "Active=", false),
             }.ToArray();
         }
     }

@@ -33,7 +33,7 @@ namespace StatlookLogViewer
 
         private void AnalyzeLine(string lineCaption, string lineValue, ILogParser logParser)
         {
-            foreach (ILogPattern logPattern in logParser.GetLogPatterns())
+            foreach (LogPattern logPattern in logParser.GetLogPatterns())
             {
                 if (string.Compare(logPattern.TextPattern, lineCaption, true) != 0)
                     continue;

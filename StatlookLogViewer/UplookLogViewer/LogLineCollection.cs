@@ -8,6 +8,7 @@ using StatlookLogViewer.Views;
 using StatlookLogViewer.Model;
 using System.Runtime.InteropServices.WindowsRuntime;
 using StatlookLogViewer.Parser;
+using StatlookkLogViewer.Tools;
 
 namespace StatlookLogViewer
 {
@@ -19,15 +20,12 @@ namespace StatlookLogViewer
 
         private readonly List<ListViewItem> _listViewItem = new List<ListViewItem>();
 
-        private readonly Configuration _config;
-
         #endregion Members
 
         #region Constructors
 
         public LogLineCollection()
         {
-            _config = Configuration.GetConfiguration();
         }
 
         #endregion Constructors
@@ -131,17 +129,26 @@ namespace StatlookLogViewer
 
         private ILogParser DetectLogType(string fileFullName)
         {
-            string allFileData = ReadAllFileText(fileFullName);
+            var statlookLogParser = new StatlookLogParser();
+            var usmLogParser = new UsmLogParser();
+
+            var logParserMap = new Dictionary<string, ILogParser>
+            {
+                { statlookLogParser.UniqueLogKey, statlookLogParser },
+                { usmLogParser.UniqueLogKey, usmLogParser }
+            };
+
+            string allFileData = IOTools.ReadAllFileText(fileFullName);
 
             ILogParser logParser = null;
 
-            if (allFileData.Contains(_config.GetStatlookTextPatterns()[1]))
+            foreach (KeyValuePair<string, ILogParser> kvp in logParserMap)
             {
-                logParser =new StatlookLogParser();
-            }
-            else if (allFileData.Contains(_config.GetUsmTextPatterns()[1]))
-            {
-                logParser = new UsmLogParser();
+                if (allFileData.Contains(kvp.Key))
+                {
+                    logParser = kvp.Value;
+                    break;
+                }
             }
 
             return logParser;
@@ -157,23 +164,7 @@ namespace StatlookLogViewer
 
         private ListViewItem[] GetListViewItem() => _listViewItem.ToArray();
 
-        /// <summary>
-        /// Get file text content
-        /// </summary>
-        /// <param name="filePath">File path</param>
-        /// <returns>File text content</returns>
-        private string ReadAllFileText(string filePath)
-        {
-            try
-            {
-                return File.ReadAllText(filePath);
-            }
-            catch (Exception exception)
-            {
-                MessageBox.Show("Error: Could not read file from disk. Original error: " + exception.Message);
-                return string.Empty;
-            }
-        }
+
 
         #endregion Methods
     }

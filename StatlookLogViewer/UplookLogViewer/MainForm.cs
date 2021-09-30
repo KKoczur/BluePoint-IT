@@ -21,7 +21,7 @@ namespace StatlookLogViewer
         #region Members
 
         private readonly ListViewColumnSorter _lvwColumnSorter;
-        public string OSVersion;
+        public string _osVersion;
         public string _logDirectory;
         public string _userLogDirectory;
         private readonly string[] _fileExtensions;
@@ -39,21 +39,21 @@ namespace StatlookLogViewer
 
             _config = Configuration.GetConfiguration();
 
-            ILogPattern[] udes = _config.GetStatlookLogPatterns().ToArray();
+            LogPattern[] udes = _config.GetStatlookLogPatterns().ToArray();
 
-            foreach (StatlookLogPattern d in udes)
+            foreach (LogPattern d in udes)
             {
                 show_uplook.Add(d.Show);
             }
 
-            ILogPattern[] usmdes = _config.GetUsmLogPatterns().ToArray();
+            LogPattern[] usmdes = _config.GetUsmLogPatterns().ToArray();
 
-            foreach (ILogPattern d in usmdes)
+            foreach (LogPattern d in usmdes)
             {
                 show_usm.Add(d.Show);
             }
 
-            OSVersion = Environment.OSVersion.Version.Major.ToString();
+            _osVersion = Environment.OSVersion.Version.Major.ToString();
             _logDirectory = Environment.GetFolderPath(Environment.SpecialFolder.CommonApplicationData) + _config.StatlookLogDirectory;
             _userLogDirectory = _config.UserDirectory;
             _fileExtensions = _config.LogFileExtensions.Split(new char[] { ';' });
@@ -108,6 +108,7 @@ namespace StatlookLogViewer
 
             _lvwColumnSorter = new ListViewColumnSorter();
             this.listViewFiles.ListViewItemSorter = _lvwColumnSorter;
+
             IniTabPageInfo();
         }
 
@@ -228,82 +229,70 @@ namespace StatlookLogViewer
                 Title = "Please select log source file"
             };
 
-            if (openFileDialog.ShowDialog() == DialogResult.OK)
+            if (openFileDialog.ShowDialog() != DialogResult.OK)           
+                return;
+
+            //Otwarcie pojedynczego pliku o rozszerzeniu .zip
+            if ((openFileDialog.FileNames.Length == 1) && (openFileDialog.SafeFileName.Substring(openFileDialog.SafeFileName.Length - 4, 4) == Configuration.ZIP_FILE_EXTENSION))
             {
+                OpenZip openZip = new OpenZip(openFileDialog.FileName);
 
-                //Otwarcie pojedynczego pliku o rozszerzeniu .zip
-                if ((openFileDialog.FileNames.Length == 1) && (openFileDialog.SafeFileName.Substring(openFileDialog.SafeFileName.Length - 4, 4) == Configuration.ZIP_FILE_EXTENSION))
+                using (ZipFile zip = ZipFile.Read(openFileDialog.FileName))
                 {
-                    OpenZip openZip = new OpenZip(openFileDialog.FileName);
-
-                    using (ZipFile zip = ZipFile.Read(openFileDialog.FileName))
+                    int i = 1;
+                    foreach (ZipEntry e in zip)
                     {
-                        int i = 1;
-                        foreach (ZipEntry e in zip)
+                        ListViewItem plikInfo = new ListViewItem
                         {
-                            ListViewItem plikInfo = new ListViewItem
-                            {
-                                Text = i.ToString()
-                            };
-                            plikInfo.SubItems.Add(e.FileName);
-                            plikInfo.SubItems.Add(e.LastModified.ToString());
-                            if ((e.UncompressedSize / 1024) < 1)
-                            {
-                                plikInfo.SubItems.Add(e.UncompressedSize.ToString() + " B");
-                            }
-                            else if (((e.UncompressedSize / 1024) >= 1) && ((e.UncompressedSize / 1024) < 1024))
-                            {
-                                plikInfo.SubItems.Add((e.UncompressedSize / 1024).ToString() + " KB");
-                            }
-                            else if ((e.UncompressedSize / (1024 * 1024)) >= 1)
-                            {
-                                plikInfo.SubItems.Add((e.UncompressedSize / (1024 * 1024)).ToString() + " MB");
-                            }
-                            plikInfo.SubItems.Add(openFileDialog.InitialDirectory);
-                            openZip.DodajItem(plikInfo);
-                            i++;
-                        }
+                            Text = i.ToString()
+                        };
+                        plikInfo.SubItems.Add(e.FileName);
+                        plikInfo.SubItems.Add(e.LastModified.ToString());
+                        plikInfo.SubItems.Add(IOTools.FormatFileSize(e.UncompressedSize));
+                        plikInfo.SubItems.Add(openFileDialog.InitialDirectory);
+                        openZip.DodajItem(plikInfo);
+                        i++;
                     }
-
-                    openZip.ShowDialog(this);
-
                 }
-                else
+
+                openZip.ShowDialog(this);
+
+            }
+            else
+            {
+                for (int i = 0; i < openFileDialog.FileNames.Length; i++)
                 {
-                    for (int i = 0; i < openFileDialog.FileNames.Length; i++)
+                    // Nie przetwarzaj plików o rozszerzeniu .zip
+                    FileInfo fileInfo = new FileInfo(openFileDialog.FileNames[i]);
+
+                    if (fileInfo.Extension == Configuration.ZIP_FILE_EXTENSION)
                     {
-                        // Nie przetwarzaj plików o rozszerzeniu .zip
-                        FileInfo fileInfo = new FileInfo(openFileDialog.FileNames[i]);
-
-                        if (fileInfo.Extension == Configuration.ZIP_FILE_EXTENSION)
+                        Form otworzZip = new OpenZip();
+                        otworzZip.ShowDialog(this);
+                        if (otworzZip.ShowDialog(this) == DialogResult.OK)
                         {
-                            Form otworzZip = new OpenZip();
-                            otworzZip.ShowDialog(this);
-                            if (otworzZip.ShowDialog(this) == DialogResult.OK)
-                            {
-                                //NewPage[] pliki = (NewPage[])otworzZip.nowaKarta.ToArray(typeof(NewPage));
-                                //tabControlMain.Controls.Add(otworzZip.);
-                                //tabControlMain.SelectTab(nowaKarta.nowaZakladka);
-                                //Aktywownie menu grupowania 
-                                grupyToolStripMenuItem.Enabled = true;
-                                zwinToolStripMenuItem.Enabled = true;
-                                rozwinWszystkieToolStripMenuItem.Enabled = true;
-                                //Aktywowanie przycisków grupowania
-                                toolStripButtonCollapsedAll.Enabled = true;
-                                toolStripButtonNormalAll.Enabled = true;
-                                //Aktywowanie przycisków menu File
-                                closeAllWithoutActiveToolStripMenuItem.Enabled = true;
-                                closeAllToolStripMenuItem.Enabled = true;
-                                CollapseAllGroups();
-                                //RozwinGrupy();
-
-                            }
+                            //NewPage[] pliki = (NewPage[])otworzZip.nowaKarta.ToArray(typeof(NewPage));
+                            //tabControlMain.Controls.Add(otworzZip.);
+                            //tabControlMain.SelectTab(nowaKarta.nowaZakladka);
+                            //Aktywownie menu grupowania 
+                            grupyToolStripMenuItem.Enabled = true;
+                            zwinToolStripMenuItem.Enabled = true;
+                            rozwinWszystkieToolStripMenuItem.Enabled = true;
+                            //Aktywowanie przycisków grupowania
+                            toolStripButtonCollapsedAll.Enabled = true;
+                            toolStripButtonNormalAll.Enabled = true;
+                            //Aktywowanie przycisków menu File
+                            closeAllWithoutActiveToolStripMenuItem.Enabled = true;
+                            closeAllToolStripMenuItem.Enabled = true;
+                            CollapseAllGroups();
+                            //RozwinGrupy();
 
                         }
-                        else
-                        {
-                            analizeUplookLog(openFileDialog.FileNames[i], fileInfo.LastWriteTime);
-                        }
+
+                    }
+                    else
+                    {
+                        analizeUplookLog(openFileDialog.FileNames[i], fileInfo.LastWriteTime);
                     }
                 }
             }
@@ -344,7 +333,8 @@ namespace StatlookLogViewer
         private void ChangeGroupState(ListViewGroupState listViewGroupState)
         {
             TabControl TabC = (TabControl)Controls.Find("tabControlMain", true)[0];
-            if (TabC.SelectedTab.Name != "tabPageInfo")
+
+            if (TabC.SelectedTab != tabPageInfo)
             {
                 TabPage TabP = (TabPage)Controls.Find(TabC.SelectedTab.Name, true)[0];
 
@@ -770,7 +760,7 @@ namespace StatlookLogViewer
             {
                 string fileFullPath = GetFileFullPathFromListViewItem(listViewFiles.SelectedItems[0]);
 
-                OpenZip otworzZip = new OpenZip();
+                OpenZip openZip = new OpenZip();
 
                 using (ZipFile zipFile = ZipFile.Read(fileFullPath))
                 {
@@ -784,27 +774,16 @@ namespace StatlookLogViewer
                         };
 
                         plikInfo.SubItems.Add(e1.FileName);
-                        plikInfo.SubItems.Add(e1.LastModified.ToString());
-                        if ((e1.UncompressedSize / 1024) < 1)
-                        {
-                            plikInfo.SubItems.Add(e1.UncompressedSize.ToString() + " B");
-                        }
-                        else if (((e1.UncompressedSize / 1024) >= 1) && ((e1.UncompressedSize / 1024) < 1024))
-                        {
-                            plikInfo.SubItems.Add((e1.UncompressedSize / 1024).ToString() + " KB");
-                        }
-                        else if ((e1.UncompressedSize / (1024 * 1024)) >= 1)
-                        {
-                            plikInfo.SubItems.Add((e1.UncompressedSize / (1024 * 1024)).ToString() + " MB");
-                        }
+                        plikInfo.SubItems.Add(e1.LastModified.ToString());                     
+                        plikInfo.SubItems.Add(IOTools.FormatFileSize(e1.UncompressedSize));
                         plikInfo.SubItems.Add(fileFullPath);
-                        otworzZip.DodajItem(plikInfo);
+                        openZip.DodajItem(plikInfo);
                         i++;
                     }
                     //listViewFiles.Items.Add(plikInfo);
                 }
 
-                otworzZip.ShowDialog(this);
+                openZip.ShowDialog(this);
             }
             else
             {
@@ -982,7 +961,7 @@ namespace StatlookLogViewer
                     }
 
                 }
-                if (newPage.LogParser is UsmLogParser usmLogParser)
+                if (newPage.LogParser is UsmLogParser )
                 {
                     ToolStripMenuItemUplook.Visible = false;
                     ToolStripMenuItemUSM.Enabled = true;
@@ -1035,7 +1014,7 @@ namespace StatlookLogViewer
 
         private void ToolStripMenuItemUplook_DropDownItemClicked(object sender, ToolStripItemClickedEventArgs e)
         {
-            ILogPattern[] udes = _config.GetStatlookLogPatterns().ToArray();
+            LogPattern[] udes = _config.GetStatlookLogPatterns().ToArray();
 
             ToolStripMenuItem toolStripMenuItem = (ToolStripMenuItem)e.ClickedItem;
 
@@ -1043,7 +1022,7 @@ namespace StatlookLogViewer
             {
                 toolStripMenuItem.CheckState = CheckState.Unchecked;
 
-                foreach (StatlookLogPattern ud in udes)
+                foreach (LogPattern ud in udes)
                 {
                     if (toolStripMenuItem.Name == ud.KeyName)
                     {
@@ -1055,7 +1034,7 @@ namespace StatlookLogViewer
             else
             {
                 toolStripMenuItem.CheckState = CheckState.Checked;
-                foreach (StatlookLogPattern ud in udes)
+                foreach (LogPattern ud in udes)
                 {
                     if (toolStripMenuItem.Name == ud.KeyName)
                     {
@@ -1084,11 +1063,11 @@ namespace StatlookLogViewer
         private void ToolStripMenuItemUSM_DropDownItemClicked(object sender, ToolStripItemClickedEventArgs e)
         {
             ToolStripMenuItem t = (ToolStripMenuItem)e.ClickedItem;
-            ILogPattern[] usmdes = _config.GetUsmLogPatterns().ToArray();
+            LogPattern[] usmdes = _config.GetUsmLogPatterns().ToArray();
             if (t.CheckState == CheckState.Checked)
             {
                 t.CheckState = CheckState.Unchecked;
-                foreach (StatlookLogPattern usmd in usmdes)
+                foreach (LogPattern usmd in usmdes)
                 {
                     if (t.Name == usmd.KeyName)
                     {
@@ -1100,7 +1079,7 @@ namespace StatlookLogViewer
             else
             {
                 t.CheckState = CheckState.Checked;
-                foreach (StatlookLogPattern usmd in usmdes)
+                foreach (LogPattern usmd in usmdes)
                 {
                     if (t.Name == usmd.KeyName)
                     {

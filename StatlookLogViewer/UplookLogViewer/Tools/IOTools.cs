@@ -1,4 +1,8 @@
 ﻿
+using System;
+using System.IO;
+using System.Windows.Forms;
+
 namespace StatlookkLogViewer.Tools
 {
     public static class IOTools
@@ -14,6 +18,24 @@ namespace StatlookkLogViewer.Tools
             }
 
             return string.Format("{0:0.##} {1}", fileSize, sizes[order]);
+        }
+
+        /// <summary>
+        /// Get file text content
+        /// </summary>
+        /// <param name="filePath">File path</param>
+        /// <returns>File text content</returns>
+        public static string ReadAllFileText(string filePath)
+        {
+            try
+            {
+                return File.ReadAllText(filePath);
+            }
+            catch (Exception exception)
+            {
+                MessageBox.Show("Error: Could not read file from disk. Original error: " + exception.Message);
+                return string.Empty;
+            }
         }
 
     }

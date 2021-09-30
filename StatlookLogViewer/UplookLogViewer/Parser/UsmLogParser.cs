@@ -7,7 +7,10 @@ namespace StatlookLogViewer.Parser
 {
     public class UsmLogParser : ILogParser
     {
+        public string UniqueLogKey { get; set; } = " Code:";
+
         public string StartLogGroupEntry { get; set; } = "Date";
+
         public string EndLogGroupEntry { get; set; } = "----------------------------------------";
 
         public LogErrorPattern[] GetListOfErrors()
@@ -19,16 +22,16 @@ namespace StatlookLogViewer.Parser
             }.ToArray();
         }
 
-        public IEnumerable<ILogPattern> GetLogPatterns()
+        public IEnumerable<LogPattern> GetLogPatterns()
         {
-            return new List<ILogPattern>()
+            return new List<LogPattern>()
             {
-                new UsmLogPattern( "usmDate", "Date", true),
-                new UsmLogPattern( "usmCode", " Code:", true),
-                new UsmLogPattern( "usmType", " Type:", true),
-                new UsmLogPattern( "usmSession", " Session:", true),
-                new UsmLogPattern( "usmProcess", " Process ID:", true),
-                new UsmLogPattern( "usmDescription", " Description:", true)
+                new LogPattern( "usmDate", "Date", true),
+                new LogPattern( "usmCode", " Code:", true),
+                new LogPattern( "usmType", " Type:", true),
+                new LogPattern( "usmSession", " Session:", true),
+                new LogPattern( "usmProcess", " Process ID:", true),
+                new LogPattern( "usmDescription", " Description:", true)
              }.ToArray();
         }
     }

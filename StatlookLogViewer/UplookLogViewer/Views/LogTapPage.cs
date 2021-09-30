@@ -1,8 +1,5 @@
 ﻿using StatlookLogViewer.Controller;
-using StatlookLogViewer.Model;
-using StatlookLogViewer.Model.Pattern;
 using StatlookLogViewer.Parser;
-using System.Collections.Generic;
 using System.IO;
 using System.Windows.Forms;
 
@@ -12,14 +9,12 @@ namespace StatlookLogViewer.Views
     {
         private readonly ListViewColumnSorter _lvwColumnSorter = new ListViewColumnSorter();
 
-        private readonly Configuration _config;
-
         /// <summary>
         /// Create new page
         /// </summary>
         /// <param name="index">Index</param>
         /// <param name="fileNameWithPath">Page name</param>
-        /// <param name="logType">Type of log</param>
+        /// <param name="logParser">Log parser</param>
         public LogTapPage(int index, string fileNameWithPath, ILogParser logParser)
         {
             string fileName = Path.GetFileName(fileNameWithPath);

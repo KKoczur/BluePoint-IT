@@ -3,22 +3,22 @@ using System.Collections.Generic;
 
 namespace StatlookLogViewer.Model.Pattern
 {
-    public class StatlookLogPattern : ILogPattern
+    public class LogPattern 
     {
         #region Constructors
 
-        public StatlookLogPattern( string keyName)
+        public LogPattern( string keyName)
         {
             KeyName = keyName;
         }
 
-        public StatlookLogPattern( string keyName, string textPattern)
+        public LogPattern( string keyName, string textPattern)
             : this( keyName)
         {
             TextPattern = textPattern;
         }
 
-        public StatlookLogPattern(string keyName, string textPattern, bool show)
+        public LogPattern(string keyName, string textPattern, bool show)
             : this( keyName, textPattern)
         {
             Show = show;
