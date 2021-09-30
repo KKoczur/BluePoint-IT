@@ -6,7 +6,7 @@ using StatlookLogViewer.Parser;
 
 namespace StatlookLogViewer
 {
-    internal class LogLine
+    internal class SingleLogLine
     {
         #region Members
 
@@ -62,10 +62,9 @@ namespace StatlookLogViewer
                     break;
                 }
 
-                DateTime tmp_DateTime = DateTime.Parse(lineValue);
-                string myHourTime = tmp_DateTime.Hour.ToString();
+                DateTime dateTime = DateTime.Parse(lineValue);
 
-                _groupName = GetNameOfGroupByHourTime(myHourTime);
+                _groupName = GetNameOfGroupByHourTime(dateTime);
                 ListViewItem.Text = lineValue;
                 _listViewGroup = new ListViewGroup(_groupName, HorizontalAlignment.Left);
                 ListViewItem.Group = _listViewGroup;
@@ -76,7 +75,13 @@ namespace StatlookLogViewer
             }
         }
 
-        private string GetNameOfGroupByHourTime(string myHourTime) => myHourTime.Length < 2 ? $"0{myHourTime}:00-0{myHourTime}:59" : $"{myHourTime}:00-{myHourTime}:59";
+        private string GetNameOfGroupByHourTime(DateTime dateTime)
+        {
+            string hourTime = dateTime.Hour.ToString();
+            string hourPart = hourTime.Length < 2 ? $"0{hourTime}:00-0{hourTime}:59" : $"{hourTime}:00-{hourTime}:59";
+
+            return $"{dateTime.ToShortDateString()} ({hourPart})";
+        }
 
 
         #endregion Methods

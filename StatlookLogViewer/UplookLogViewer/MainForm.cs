@@ -1014,7 +1014,7 @@ namespace StatlookLogViewer
 
         private void ToolStripMenuItemUplook_DropDownItemClicked(object sender, ToolStripItemClickedEventArgs e)
         {
-            LogPattern[] udes = _config.GetStatlookLogPatterns().ToArray();
+            var logParser = new StatlookLogParser();    
 
             ToolStripMenuItem toolStripMenuItem = (ToolStripMenuItem)e.ClickedItem;
 
@@ -1022,30 +1022,31 @@ namespace StatlookLogViewer
             {
                 toolStripMenuItem.CheckState = CheckState.Unchecked;
 
-                foreach (LogPattern ud in udes)
+                foreach (LogPattern logPattern in logParser.GetLogPatterns())
                 {
-                    if (toolStripMenuItem.Name == ud.KeyName)
+                    if (toolStripMenuItem.Name == logPattern.KeyName)
                     {
-                        ud.Show = false;
-                        _config.SetStatlookHeaderVisibility(ud.KeyName, false);
+                        logPattern.Show = false;
+                        _config.SetStatlookHeaderVisibility(logPattern.KeyName, false);
                     }
                 }
             }
             else
             {
                 toolStripMenuItem.CheckState = CheckState.Checked;
-                foreach (LogPattern ud in udes)
+                foreach (LogPattern logPattern in logParser.GetLogPatterns())
                 {
-                    if (toolStripMenuItem.Name == ud.KeyName)
+                    if (toolStripMenuItem.Name == logPattern.KeyName)
                     {
-                        ud.Show = true;
-                        _config.SetStatlookHeaderVisibility(ud.KeyName, true);
+                        logPattern.Show = true;
+                        _config.SetStatlookHeaderVisibility(logPattern.KeyName, true);
                     }
                 }
             }
 
             TabControl TabC = (TabControl)Controls.Find("tabControlMain", true)[0];
-            if (TabC.SelectedTab.Name != "tabPageInfo")
+
+            if (TabC.SelectedTab != tabPageInfo)
             {
                 TabPage TabP = (TabPage)Controls.Find(TabC.SelectedTab.Name, true)[0];
 
@@ -1053,8 +1054,8 @@ namespace StatlookLogViewer
                 {
                     if (control.GetType() == typeof(ListViewExtended))
                     {
-                        ListViewExtended ListV = (ListViewExtended)control;
-                        ShowListViewColumns(ListV, new StatlookLogParser());
+                        ListViewExtended listViewExtended = (ListViewExtended)control;
+                        ShowListViewColumns(listViewExtended, logParser);
                     }
                 }
             }
@@ -1062,29 +1063,32 @@ namespace StatlookLogViewer
 
         private void ToolStripMenuItemUSM_DropDownItemClicked(object sender, ToolStripItemClickedEventArgs e)
         {
-            ToolStripMenuItem t = (ToolStripMenuItem)e.ClickedItem;
-            LogPattern[] usmdes = _config.GetUsmLogPatterns().ToArray();
-            if (t.CheckState == CheckState.Checked)
+            ToolStripMenuItem toolStripMenuItem = (ToolStripMenuItem)e.ClickedItem;
+
+            var logParser = new UsmLogParser();
+
+            if (toolStripMenuItem.CheckState == CheckState.Checked)
             {
-                t.CheckState = CheckState.Unchecked;
-                foreach (LogPattern usmd in usmdes)
+                toolStripMenuItem.CheckState = CheckState.Unchecked;
+
+                foreach (LogPattern usmd in logParser.GetLogPatterns())
                 {
-                    if (t.Name == usmd.KeyName)
+                    if (toolStripMenuItem.Name == usmd.KeyName)
                     {
                         usmd.Show = false;
-                        _config.SetStatlookHeaderVisibility(usmd.KeyName, false);
+                        _config.SetUsmHeaderVisibility(usmd.KeyName, false);
                     }
                 }
             }
             else
             {
-                t.CheckState = CheckState.Checked;
-                foreach (LogPattern usmd in usmdes)
+                toolStripMenuItem.CheckState = CheckState.Checked;
+                foreach (LogPattern usmd in logParser.GetLogPatterns())
                 {
-                    if (t.Name == usmd.KeyName)
+                    if (toolStripMenuItem.Name == usmd.KeyName)
                     {
                         usmd.Show = true;
-                        _config.SetStatlookHeaderVisibility(usmd.KeyName, true);
+                        _config.SetUsmHeaderVisibility(usmd.KeyName, true);
                     }
                 }
             }
@@ -1096,11 +1100,10 @@ namespace StatlookLogViewer
 
                 foreach (Control control in TabP.Controls)
                 {
-                    string kk = control.ToString();
                     if (control.GetType() == typeof(ListViewExtended))
                     {
                         ListViewExtended ListV = (ListViewExtended)control;
-                        ShowListViewColumns(ListV, new UsmLogParser());
+                        ShowListViewColumns(ListV, logParser);
                     }
                 }
             }
@@ -1193,7 +1196,7 @@ namespace StatlookLogViewer
         {
             TabControl TabC = (TabControl)Controls.Find("tabControlMain", true)[0];
 
-            if (TabC.SelectedTab.Name == "tabPageInfo")
+            if (TabC.SelectedTab== tabPageInfo)
             {
                 WypelnijListe();
 

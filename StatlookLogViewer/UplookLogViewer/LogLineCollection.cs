@@ -16,7 +16,7 @@ namespace StatlookLogViewer
     {
         #region Members
 
-        private readonly List<LogLine> _logLineCollection = new List<LogLine>();
+        private readonly List<SingleLogLine> _logLineCollection = new List<SingleLogLine>();
 
         private readonly List<ListViewItem> _listViewItem = new List<ListViewItem>();
 
@@ -40,14 +40,14 @@ namespace StatlookLogViewer
 
             ListViewExtended listViewExtended = newTabPage.ListViewExtended;
 
-            LogLine logLine = new LogLine();
+            SingleLogLine logLine = new SingleLogLine();
 
             foreach (string singleLine in File.ReadAllLines(fileFullName))
             {
                 //Wyrażenie regularne do sprawdzenia czy wpis logu nie zaczyna się od daty
                 if (Regex.IsMatch(singleLine, @"(?<rok>\d{4})\.(?<miesiac>\d{2})\.(?<dzien>\d{2})\b"))
                 {
-                    logLine = new LogLine();
+                    logLine = new SingleLogLine();
                     string normalizeSingleLine = singleLine + ";";
                     normalizeSingleLine = normalizeSingleLine.Substring(0, normalizeSingleLine.IndexOf(";"));
 
@@ -121,7 +121,7 @@ namespace StatlookLogViewer
             return newTabPage;
         }
 
-        private void AddLine(LogLine logLine)
+        private void AddLine(SingleLogLine logLine)
         {
             _logLineCollection.Add(logLine);
             _listViewItem.Add(logLine.ListViewItem);
