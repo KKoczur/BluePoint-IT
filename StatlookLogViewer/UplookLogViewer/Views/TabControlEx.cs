@@ -25,7 +25,7 @@ namespace StatlookLogViewer.Views
                 r.Width = 16;
                 r.Height = 16;
                 Brush b = new SolidBrush(Color.Blue);
-                Font f = new Font(this.Font, FontStyle.Bold);
+                Font f = new(this.Font, FontStyle.Bold);
                 e.Graphics.DrawImage(StatlookLogViewer.Properties.Resources.info_16, r);
                 string titel = this.TabPages[e.Index].Text.Substring(6, TabPages[e.Index].Text.Length - 6);
                 e.Graphics.DrawString(titel, f, b, new PointF(r.X + 16, r.Y));

@@ -936,8 +936,8 @@ namespace StatlookLogViewer
 
                 if (newPage.LogParser is StatlookLogParser)
                 {
-                    ToolStripMenuItemUplook.Enabled = true;
                     ToolStripMenuItemUplook.Visible = true;
+                    ToolStripMenuItemUplook.Enabled = true;
                     ToolStripMenuItemUSM.Visible = false;
                     int j = 0;
                     foreach (ToolStripMenuItem toolStripMenuItem in ToolStripMenuItemUplook.DropDownItems)
@@ -961,7 +961,7 @@ namespace StatlookLogViewer
                     }
 
                 }
-                if (newPage.LogParser is UsmLogParser )
+                else if (newPage.LogParser is UsmLogParser )
                 {
                     ToolStripMenuItemUplook.Visible = false;
                     ToolStripMenuItemUSM.Enabled = true;
