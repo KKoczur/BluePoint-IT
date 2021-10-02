@@ -67,7 +67,7 @@ namespace StatlookLogViewer
             {
                 // Create a new configuration object
                 // and initialize some variables
-                Configuration c = new Configuration();
+                Configuration c = new();
 
                 // Serialize the configuration object to a file
                 Serialize(CONFIG_FILE_NAME, c);
@@ -84,7 +84,7 @@ namespace StatlookLogViewer
 
         private static void Serialize(string file, Configuration c)
         {
-            XmlSerializer xs = new XmlSerializer(c.GetType());
+            XmlSerializer xs = new(c.GetType());
             StreamWriter writer = File.CreateText(file);
             xs.Serialize(writer, c);
             writer.Flush();
@@ -93,7 +93,7 @@ namespace StatlookLogViewer
 
         private static Configuration Deserialize(string file)
         {
-            XmlSerializer xs = new XmlSerializer(typeof(Configuration));
+            XmlSerializer xs = new(typeof(Configuration));
             StreamReader reader = File.OpenText(file);
             Configuration c = (Configuration)xs.Deserialize(reader);
             reader.Close();

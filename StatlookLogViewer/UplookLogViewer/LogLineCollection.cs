@@ -16,9 +16,7 @@ namespace StatlookLogViewer
     {
         #region Members
 
-        private readonly List<SingleLogLine> _logLineCollection = new List<SingleLogLine>();
-
-        private readonly List<ListViewItem> _listViewItem = new List<ListViewItem>();
+        private readonly List<ListViewItem> _listViewItem = new();
 
         #endregion Members
 
@@ -32,17 +30,17 @@ namespace StatlookLogViewer
 
         #region Methods
 
-        public LogTapPage AnalyzeLogFile(string fileFullName)
+        public LogTapPage AnalyzeLogFile(string filePath)
         {
-            ILogParser logParser = DetectLogType(fileFullName);
+            ILogParser logParser = DetectLogParser(filePath);
 
-            LogTapPage newTabPage = CreateNewTabPage(fileFullName, logParser);
+            LogTapPage newTabPage = CreateNewTabPage(filePath, logParser);
 
             ListViewExtended listViewExtended = newTabPage.ListViewExtended;
 
-            SingleLogLine logLine = new SingleLogLine();
+            SingleLogLine logLine = new();
 
-            foreach (string singleLine in File.ReadAllLines(fileFullName))
+            foreach (string singleLine in File.ReadAllLines(filePath))
             {
                 //Wyrażenie regularne do sprawdzenia czy wpis logu nie zaczyna się od daty
                 if (Regex.IsMatch(singleLine, @"(?<rok>\d{4})\.(?<miesiac>\d{2})\.(?<dzien>\d{2})\b"))
@@ -54,26 +52,26 @@ namespace StatlookLogViewer
                     // Dodanie do pojedynczej linii wartości kolumny: Date
                     logLine.AddLine(logParser.StartLogGroupEntry, normalizeSingleLine, logParser);
 
-                    ListViewGroup tmp_Group = new ListViewGroup(logLine.GroupName, HorizontalAlignment.Left);
+                    ListViewGroup listViewGroup = new(logLine.GroupName, HorizontalAlignment.Left);
 
                     if (listViewExtended.Groups.Count == 0)
                     {
-                        listViewExtended.Groups.Add(tmp_Group);
-                        logLine.ListViewItem.Group = tmp_Group;
-                        logLine.ListViewItem.Group.Name = tmp_Group.ToString();
+                        listViewExtended.Groups.Add(listViewGroup);
+                        logLine.ListViewItem.Group = listViewGroup;
+                        logLine.ListViewItem.Group.Name = listViewGroup.ToString();
                     }
                     else
                     {
-                        if (listViewExtended.Groups[listViewExtended.Groups.Count - 1].Name.Equals(tmp_Group.ToString()))
+                        if (listViewExtended.Groups[listViewExtended.Groups.Count - 1].Name.Equals(listViewGroup.ToString()))
                         {
                             logLine.ListViewItem.Group = listViewExtended.Groups[listViewExtended.Groups.Count - 1];
                             logLine.ListViewItem.Group.Name = listViewExtended.Groups[listViewExtended.Groups.Count - 1].Name;
                         }
                         else
                         {
-                            listViewExtended.Groups.Add(tmp_Group);
-                            logLine.ListViewItem.Group = tmp_Group;
-                            logLine.ListViewItem.Group.Name = tmp_Group.ToString();
+                            listViewExtended.Groups.Add(listViewGroup);
+                            logLine.ListViewItem.Group = listViewGroup;
+                            logLine.ListViewItem.Group.Name = listViewGroup.ToString();
                         }
                     }
                 }
@@ -98,51 +96,45 @@ namespace StatlookLogViewer
                 {
                     //Wykonaj jeśli linia zawiera znacznika przerwy 
                     //Dodanie pojedynczej linii do pliku wynikowego analizy 
-                    AddLine(logLine);
+                    AddSingleLine(logLine);
                 }
 
             }
 
-            listViewExtended.BeginUpdate();
-            listViewExtended.SuspendLayout();
-            try
-            {
-
-                //dodanie całego zakresu danych 
-                listViewExtended.Items.AddRange(GetListViewItem());
-            }
-            finally
-            {
-
-                listViewExtended.EndUpdate();
-                listViewExtended.ResumeLayout();
-            }
+            SetListViewItems(listViewExtended);
 
             return newTabPage;
         }
 
-        private void AddLine(SingleLogLine logLine)
+        private void SetListViewItems(ListViewExtended listViewExtended)
         {
-            _logLineCollection.Add(logLine);
+            listViewExtended.BeginUpdate();
+            listViewExtended.SuspendLayout();
+            try
+            {
+                ListViewItem[] listViewItemCollection = GetListViewItem();
+
+                listViewExtended.Items.AddRange(listViewItemCollection);
+            }
+            finally
+            {
+                listViewExtended.EndUpdate();
+                listViewExtended.ResumeLayout();
+            }
+        }
+
+        private void AddSingleLine(SingleLogLine logLine)
+        {
             _listViewItem.Add(logLine.ListViewItem);
         }
 
-        private ILogParser DetectLogType(string fileFullName)
+        private static ILogParser DetectLogParser(string filePath)
         {
-            var statlookLogParser = new StatlookLogParser();
-            var usmLogParser = new UsmLogParser();
-
-            var logParserMap = new Dictionary<string, ILogParser>
-            {
-                { statlookLogParser.UniqueLogKey, statlookLogParser },
-                { usmLogParser.UniqueLogKey, usmLogParser }
-            };
-
-            string allFileData = IOTools.ReadAllFileText(fileFullName);
+           string allFileData = IOTools.ReadAllFileText(filePath);
 
             ILogParser logParser = null;
 
-            foreach (KeyValuePair<string, ILogParser> kvp in logParserMap)
+            foreach (KeyValuePair<string, ILogParser> kvp in GetLogPatserMap())
             {
                 if (allFileData.Contains(kvp.Key))
                 {
@@ -154,9 +146,22 @@ namespace StatlookLogViewer
             return logParser;
         }
 
-        private LogTapPage CreateNewTabPage(string fileNameWithPath, ILogParser logParser)
+        private static Dictionary<string, ILogParser> GetLogPatserMap()
         {
-            return new LogTapPage(0, fileNameWithPath, logParser)
+            var statlookLogParser = new StatlookLogParser();
+            var usmLogParser = new UsmLogParser();
+
+            var logParserMap = new Dictionary<string, ILogParser>
+            {
+                { statlookLogParser.UniqueLogKey, statlookLogParser },
+                { usmLogParser.UniqueLogKey, usmLogParser }
+            };
+            return logParserMap;
+        }
+
+        private static LogTapPage CreateNewTabPage(string filePath, ILogParser logParser)
+        {
+            return new LogTapPage(0, filePath, logParser)
             {
                 LogParser = logParser
             };
