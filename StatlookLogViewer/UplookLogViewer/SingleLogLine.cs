@@ -62,7 +62,7 @@ namespace StatlookLogViewer
                     break;
                 }
 
-                DateTime dateTime = DateTime.Parse(lineValue);
+                 DateTime.TryParse(lineValue,out DateTime dateTime);
 
                 _groupName = GetNameOfGroupByHourTime(dateTime);
                 ListViewItem.Text = lineValue;

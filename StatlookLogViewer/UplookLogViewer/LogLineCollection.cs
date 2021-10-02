@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Linq;
 using System.Collections.Generic;
 using System.Text;
 using System.Text.RegularExpressions;
@@ -40,6 +41,8 @@ namespace StatlookLogViewer
 
             SingleLogLine logLine = new();
 
+            List<ListViewGroup> group = new(); 
+
             foreach (string singleLine in File.ReadAllLines(filePath))
             {
                 //Wyrażenie regularne do sprawdzenia czy wpis logu nie zaczyna się od daty
@@ -54,24 +57,23 @@ namespace StatlookLogViewer
 
                     ListViewGroup listViewGroup = new(logLine.GroupName, HorizontalAlignment.Left);
 
-                    if (listViewExtended.Groups.Count == 0)
+                    if (group.Count == 0)
                     {
-                        listViewExtended.Groups.Add(listViewGroup);
+                        group.Add(listViewGroup);
                         logLine.ListViewItem.Group = listViewGroup;
-                        logLine.ListViewItem.Group.Name = listViewGroup.ToString();
                     }
                     else
                     {
-                        if (listViewExtended.Groups[listViewExtended.Groups.Count - 1].Name.Equals(listViewGroup.ToString()))
+                        ListViewGroup lastListViewGroup = group.Last();
+
+                        if (string.Compare(lastListViewGroup.Header, listViewGroup.Header)==0)
                         {
-                            logLine.ListViewItem.Group = listViewExtended.Groups[listViewExtended.Groups.Count - 1];
-                            logLine.ListViewItem.Group.Name = listViewExtended.Groups[listViewExtended.Groups.Count - 1].Name;
+                            logLine.ListViewItem.Group = lastListViewGroup;
                         }
                         else
                         {
-                            listViewExtended.Groups.Add(listViewGroup);
+                            group.Add(listViewGroup);
                             logLine.ListViewItem.Group = listViewGroup;
-                            logLine.ListViewItem.Group.Name = listViewGroup.ToString();
                         }
                     }
                 }
@@ -100,6 +102,8 @@ namespace StatlookLogViewer
                 }
 
             }
+
+            listViewExtended.Groups.AddRange(group.ToArray());
 
             SetListViewItems(listViewExtended);
 
