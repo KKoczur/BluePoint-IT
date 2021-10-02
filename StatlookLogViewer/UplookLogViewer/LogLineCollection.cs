@@ -33,7 +33,9 @@ namespace StatlookLogViewer
 
         public LogTapPage AnalyzeLogFile(string filePath)
         {
-            ILogParser logParser = DetectLogParser(filePath);
+            (ILogParser,string[]) logParserDetectorResult = DetectLogParser(filePath);
+
+            ILogParser logParser = logParserDetectorResult.Item1;
 
             LogTapPage newTabPage = CreateNewTabPage(filePath, logParser);
 
@@ -43,7 +45,7 @@ namespace StatlookLogViewer
 
             List<ListViewGroup> group = new(); 
 
-            foreach (string singleLine in File.ReadAllLines(filePath))
+            foreach (string singleLine in logParserDetectorResult.Item2)
             {
                 //Wyrażenie regularne do sprawdzenia czy wpis logu nie zaczyna się od daty
                 if (Regex.IsMatch(singleLine, @"(?<rok>\d{4})\.(?<miesiac>\d{2})\.(?<dzien>\d{2})\b"))
@@ -100,7 +102,6 @@ namespace StatlookLogViewer
                     //Dodanie pojedynczej linii do pliku wynikowego analizy 
                     AddSingleLine(logLine);
                 }
-
             }
 
             listViewExtended.Groups.AddRange(group.ToArray());
@@ -132,25 +133,29 @@ namespace StatlookLogViewer
             _listViewItem.Add(logLine.ListViewItem);
         }
 
-        private static ILogParser DetectLogParser(string filePath)
+        private static (ILogParser,string[]) DetectLogParser(string filePath)
         {
-           string allFileData = IOTools.ReadAllFileText(filePath);
+           string[] allFileLines= IOTools.ReadAllLines(filePath);
 
             ILogParser logParser = null;
 
-            foreach (KeyValuePair<string, ILogParser> kvp in GetLogPatserMap())
+            foreach (KeyValuePair<string, ILogParser> kvp in GetLogParserMap())
             {
-                if (allFileData.Contains(kvp.Key))
+                foreach (string line in allFileLines)
                 {
-                    logParser = kvp.Value;
-                    break;
+                    if (line.Contains(kvp.Key))
+                    {
+                        logParser = kvp.Value;
+                        return (logParser, allFileLines);
+                    }
                 }
             }
 
-            return logParser;
+            return (logParser, allFileLines);
+           
         }
 
-        private static Dictionary<string, ILogParser> GetLogPatserMap()
+        private static Dictionary<string, ILogParser> GetLogParserMap()
         {
             var statlookLogParser = new StatlookLogParser();
             var usmLogParser = new UsmLogParser();

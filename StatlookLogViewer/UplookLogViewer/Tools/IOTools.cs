@@ -38,5 +38,23 @@ namespace StatlookkLogViewer.Tools
             }
         }
 
+        /// <summary>
+        /// Get file text content
+        /// </summary>
+        /// <param name="filePath">File path</param>
+        /// <returns>File text content</returns>
+        public static string[] ReadAllLines(string filePath)
+        {
+            try
+            {
+                return File.ReadAllLines(filePath);
+            }
+            catch (Exception exception)
+            {
+                MessageBox.Show("Error: Could not read file from disk. Original error: " + exception.Message);
+                return Array.Empty<string>();
+            }
+        }
+
     }
 }
