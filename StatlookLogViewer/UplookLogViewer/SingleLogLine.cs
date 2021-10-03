@@ -12,7 +12,7 @@ namespace StatlookLogViewer
 
         private string _groupName;
 
-        private ListViewGroup _listViewGroup = new ListViewGroup();
+        private ListViewGroup _listViewGroup = new();
 
         #endregion Members
 
@@ -75,7 +75,7 @@ namespace StatlookLogViewer
             }
         }
 
-        private string GetNameOfGroupByHourTime(DateTime dateTime)
+        private static string GetNameOfGroupByHourTime(DateTime dateTime)
         {
             string hourTime = dateTime.Hour.ToString();
             string hourPart = hourTime.Length < 2 ? $"0{hourTime}:00-0{hourTime}:59" : $"{hourTime}:00-{hourTime}:59";

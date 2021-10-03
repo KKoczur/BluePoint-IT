@@ -33,17 +33,15 @@ namespace StatlookLogViewer
 
         public LogTapPage AnalyzeLogFile(string filePath)
         {
-            (ILogParser,string[]) logParserDetectorResult = DetectLogParser(filePath);
+            (ILogParser, string[]) logParserDetectorResult = DetectLogParser(filePath);
 
             ILogParser logParser = logParserDetectorResult.Item1;
 
             LogTapPage newTabPage = CreateNewTabPage(filePath, logParser);
 
-            ListViewExtended listViewExtended = newTabPage.ListViewExtended;
-
             SingleLogLine logLine = new();
 
-            List<ListViewGroup> group = new(); 
+            List<ListViewGroup> group = new();
 
             foreach (string singleLine in logParserDetectorResult.Item2)
             {
@@ -51,6 +49,7 @@ namespace StatlookLogViewer
                 if (Regex.IsMatch(singleLine, @"(?<rok>\d{4})\.(?<miesiac>\d{2})\.(?<dzien>\d{2})\b"))
                 {
                     logLine = new SingleLogLine();
+
                     string normalizeSingleLine = singleLine + ";";
                     normalizeSingleLine = normalizeSingleLine.Substring(0, normalizeSingleLine.IndexOf(";"));
 
@@ -68,7 +67,7 @@ namespace StatlookLogViewer
                     {
                         ListViewGroup lastListViewGroup = group.Last();
 
-                        if (string.Compare(lastListViewGroup.Header, listViewGroup.Header)==0)
+                        if (string.Compare(lastListViewGroup.Header, listViewGroup.Header) == 0)
                         {
                             logLine.ListViewItem.Group = lastListViewGroup;
                         }
@@ -83,7 +82,7 @@ namespace StatlookLogViewer
                 //Wykonaj jeśli linia nie zawiera znacznika przerwy 
                 else if (!singleLine.Contains(logParser.EndLogGroupEntry))
                 {
-                    foreach (string textPattern in (logParser as ILogParser).GetTextPatterns())
+                    foreach (string textPattern in logParser.GetTextPatterns())
                     {
                         if (singleLine.StartsWith(textPattern))
                         {
@@ -104,28 +103,13 @@ namespace StatlookLogViewer
                 }
             }
 
-            listViewExtended.Groups.AddRange(group.ToArray());
+            newTabPage.SetListViewGroups(group);
 
-            SetListViewItems(listViewExtended);
+            ListViewItem[] listViewItemCollection = GetListViewItem();
+
+            newTabPage.SetListViewItems(listViewItemCollection);
 
             return newTabPage;
-        }
-
-        private void SetListViewItems(ListViewExtended listViewExtended)
-        {
-            listViewExtended.BeginUpdate();
-            listViewExtended.SuspendLayout();
-            try
-            {
-                ListViewItem[] listViewItemCollection = GetListViewItem();
-
-                listViewExtended.Items.AddRange(listViewItemCollection);
-            }
-            finally
-            {
-                listViewExtended.EndUpdate();
-                listViewExtended.ResumeLayout();
-            }
         }
 
         private void AddSingleLine(SingleLogLine logLine)

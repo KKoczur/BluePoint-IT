@@ -1,5 +1,6 @@
 ﻿using StatlookLogViewer.Controller;
 using StatlookLogViewer.Parser;
+using System.Collections.Generic;
 using System.IO;
 using System.Windows.Forms;
 
@@ -9,35 +10,37 @@ namespace StatlookLogViewer.Views
     {
         private readonly ListViewColumnSorter _lvwColumnSorter = new ListViewColumnSorter();
 
+        #region Constructors
+
         /// <summary>
         /// Create new page
         /// </summary>
         /// <param name="index">Index</param>
-        /// <param name="fileNameWithPath">Page name</param>
+        /// <param name="filePath">Page name</param>
         /// <param name="logParser">Log parser</param>
-        public LogTapPage(int index, string fileNameWithPath, ILogParser logParser)
+        public LogTapPage(int index, string filePath, ILogParser logParser)
         {
-            string fileName = Path.GetFileName(fileNameWithPath);
+            string fileName = Path.GetFileName(filePath);
 
             LogParser = logParser;
 
             AddListViewColumns(LogParser);
 
-            ListViewExtended.ListViewItemSorter = _lvwColumnSorter;
+            _listViewExtended.ListViewItemSorter = _lvwColumnSorter;
 
-            ListViewExtended.Dock = DockStyle.Fill;
-            ListViewExtended.GridLines = true;
-            ListViewExtended.Location = new System.Drawing.Point(3, 3);
-            ListViewExtended.Name = fileNameWithPath;
-            ListViewExtended.Size = new System.Drawing.Size(988, 604);
-            ListViewExtended.TabIndex = index;
-            ListViewExtended.UseCompatibleStateImageBehavior = false;
-            ListViewExtended.View = View.Details;
-            ListViewExtended.GridLines = true;
-            ListViewExtended.FullRowSelect = true;
-            ListViewExtended.ListViewItemSorter = null;
-            ListViewExtended.SetGroupState(ListViewGroupState.Collapsible);
-            ListViewExtended.ColumnClick += listViewFiles_ColumnClick;
+            _listViewExtended.Dock = DockStyle.Fill;
+            _listViewExtended.GridLines = true;
+            _listViewExtended.Location = new System.Drawing.Point(3, 3);
+            _listViewExtended.Name = filePath;
+            _listViewExtended.Size = new System.Drawing.Size(988, 604);
+            _listViewExtended.TabIndex = index;
+            _listViewExtended.UseCompatibleStateImageBehavior = false;
+            _listViewExtended.View = View.Details;
+            _listViewExtended.GridLines = true;
+            _listViewExtended.FullRowSelect = true;
+            _listViewExtended.ListViewItemSorter = null;
+            _listViewExtended.SetGroupState(ListViewGroupState.Collapsible);
+            _listViewExtended.ColumnClick += ListViewFiles_ColumnClick;
 
 
 
@@ -48,40 +51,86 @@ namespace StatlookLogViewer.Views
             TabIndex = index;
             Text = "      " + fileName;
             UseVisualStyleBackColor = true;
-            ToolTipText = fileNameWithPath;
-            Tag = fileNameWithPath;
-            Controls.Add(ListViewExtended);
+            ToolTipText = filePath;
+            Tag = filePath;
+            Controls.Add(_listViewExtended);
 
+        }
+
+        #endregion Constructors
+
+        #region Members
+
+        private readonly ListViewExtended _listViewExtended  = new();
+
+        #endregion Members
+
+        public void SetListViewGroups( List<ListViewGroup> group)
+        {
+            _listViewExtended.Groups.AddRange(group.ToArray());
+        }
+
+        public void SetListViewItems(ListViewItem[] listViewItemCollection)
+        {
+            _listViewExtended.BeginUpdate();
+            _listViewExtended.SuspendLayout();
+            try
+            {
+                _listViewExtended.Items.AddRange(listViewItemCollection);
+            }
+            finally
+            {
+                _listViewExtended.EndUpdate();
+                _listViewExtended.ResumeLayout();
+            }
         }
 
         private void AddListViewColumns(ILogParser logParser)
         {
-            ListViewExtended.BeginUpdate();
+            _listViewExtended.BeginUpdate();
 
             try
             {
                 foreach (var pattern in logParser.GetLogPatterns())
                 {
-                    ListViewExtended.Columns.Add(pattern.TextPattern, -2);
+                    _listViewExtended.Columns.Add(pattern.TextPattern, -2);
                 }
             }
             finally
             {
-                ListViewExtended.EndUpdate();
+                _listViewExtended.EndUpdate();
+            }
+        }
+
+        public void SetListViewColumnsColumnsVisibility(ToolStripItemCollection toolStripItemCollection)
+        {
+            // Loop through and size each column header to fit the column header text.
+            foreach (ColumnHeader columnHeader in _listViewExtended.Columns)
+            {
+                foreach (ToolStripMenuItem toolStripMenuItem in toolStripItemCollection)
+                {
+                    if (string.Compare(columnHeader.Text, toolStripMenuItem.Text, true) == 0)
+                    {
+                        if (toolStripMenuItem.CheckState == CheckState.Checked)
+                            columnHeader.Width = -2;
+                        else
+                            columnHeader.Width = 0;
+                    }
+                }
             }
         }
 
         #region Properties
 
-        public ListViewExtended ListViewExtended { get; } = new ListViewExtended();
-
         public ILogParser LogParser { get; set; }
 
         #endregion Properties
 
-        private void listViewFiles_ColumnClick(object sender, ColumnClickEventArgs e)
+        #region Event Handlers
+
+        private void ListViewFiles_ColumnClick(object sender, ColumnClickEventArgs e)
         {
-            ListViewExtended.BeginUpdate();
+            _listViewExtended.BeginUpdate();
 
             try
             {
@@ -107,28 +156,14 @@ namespace StatlookLogViewer.Views
                     }
                 }
 
-                ListViewExtended.Sort();
+                _listViewExtended.Sort();
             }
             finally
             {
-                ListViewExtended.EndUpdate();
+                _listViewExtended.EndUpdate();
             }
         }
 
-        private void CheckColumnsVisibility(ListView listView, bool[] show)
-        {
-            // Loop through and size each column header to fit the column header text.
-
-            int j = 0;
-            foreach (ColumnHeader columnHeader in listView.Columns)
-            {
-                if (show[j])
-                    columnHeader.Width = -2;
-                else
-                    columnHeader.Width = 0;
-                j++;
-            }
-
-        }
+        #endregion Event Handlers
     }
 }

@@ -268,8 +268,10 @@ namespace StatlookLogViewer
             }
         }
 
-        private void ShowListViewColumns(ListView listView, ILogParser logParser)
+        private void ShowListViewColumns(LogTapPage logTapPage)
         {
+            ILogParser logParser = logTapPage.LogParser;
+
             ToolStripItemCollection toolStripItemCollection = null;
 
             if (logParser is StatlookLogParser)
@@ -280,20 +282,7 @@ namespace StatlookLogViewer
             if (toolStripItemCollection == null)
                 return;
 
-            // Loop through and size each column header to fit the column header text.
-            foreach (ColumnHeader columnHeader in listView.Columns)
-            {
-                foreach (ToolStripMenuItem toolStripMenuItem in toolStripItemCollection)
-                {
-                    if (string.Compare(columnHeader.Text, toolStripMenuItem.Text, true) == 0)
-                    {
-                        if (toolStripMenuItem.CheckState == CheckState.Checked)
-                            columnHeader.Width = -2;
-                        else
-                            columnHeader.Width = 0;
-                    }
-                }
-            }
+            logTapPage.SetListViewColumnsColumnsVisibility(toolStripItemCollection);
         }
 
         private void CollapseAllGroups() => ChangeGroupState(ListViewGroupState.Collapsed);
@@ -493,7 +482,6 @@ namespace StatlookLogViewer
                 //Aktywowanie przycisku zamykania zakładki
                 toolStripButtonClose.Enabled = true;
 
-                //TabPage TabP = (TabPage)Controls.Find(TabC.SelectedTab.Name, true)[0];
                 LogTapPage tabPage = Controls.Find(tabControl.SelectedTab.Name, true)[0] as LogTapPage;
 
                 foreach (Control control in tabPage.Controls)
@@ -511,9 +499,7 @@ namespace StatlookLogViewer
                             ToolStripMenuItemUSM.Visible = true;
                         }
 
-                        ListViewExtended listViewExtended = (ListViewExtended)control;
-
-                        ShowListViewColumns(listViewExtended, tabPage.LogParser);
+                        ShowListViewColumns(tabPage);
                     }
                 }
 
@@ -950,7 +936,7 @@ namespace StatlookLogViewer
 
                 tabControlMain.Controls.Add(newPage);
                 tabControlMain.SelectTab(newPage);
-                ShowListViewColumns(newPage.ListViewExtended, newPage.LogParser);
+                ShowListViewColumns(newPage);
 
                 //Aktywownie menu grupowania 
                 grupyToolStripMenuItem.Enabled = true;
@@ -1010,14 +996,13 @@ namespace StatlookLogViewer
 
             if (tabControl.SelectedTab != tabPageInfo)
             {
-                TabPage TabP = (TabPage)Controls.Find(tabControl.SelectedTab.Name, true)[0];
+                LogTapPage tabPage = Controls.Find(tabControl.SelectedTab.Name, true)[0] as LogTapPage;
 
-                foreach (Control control in TabP.Controls)
+                foreach (Control control in tabPage.Controls)
                 {
                     if (control.GetType() == typeof(ListViewExtended))
                     {
-                        ListViewExtended listViewExtended = (ListViewExtended)control;
-                        ShowListViewColumns(listViewExtended, logParser);
+                        ShowListViewColumns(tabPage);
                     }
                 }
             }
@@ -1055,17 +1040,17 @@ namespace StatlookLogViewer
                 }
             }
 
-            TabControl TabC = (TabControl)Controls.Find("tabControlMain", true)[0];
-            if (TabC.SelectedTab.Name != "tabPageInfo")
-            {
-                TabPage TabP = (TabPage)Controls.Find(TabC.SelectedTab.Name, true)[0];
+            TabControl tabControl = (TabControl)Controls.Find("tabControlMain", true)[0];
 
-                foreach (Control control in TabP.Controls)
+            if (tabControl.SelectedTab.Name != "tabPageInfo")
+            {
+                LogTapPage tabPage = Controls.Find(tabControl.SelectedTab.Name, true)[0] as LogTapPage;
+
+                foreach (Control control in tabPage.Controls)
                 {
                     if (control.GetType() == typeof(ListViewExtended))
                     {
-                        ListViewExtended ListV = (ListViewExtended)control;
-                        ShowListViewColumns(ListV, logParser);
+                        ShowListViewColumns(tabPage);
                     }
                 }
             }
@@ -1076,7 +1061,7 @@ namespace StatlookLogViewer
         {
             try
             {
-                DirectoryInfo s = new DirectoryInfo(directoryLogPath);
+                DirectoryInfo s = new(directoryLogPath);
 
                 if (s.Exists)
                 {
@@ -1162,7 +1147,8 @@ namespace StatlookLogViewer
             {
                 WypelnijListe();
 
-                ListView LVTmp = new ListView();
+                ListView LVTmp = new();
+
                 LVTmp.Items.Clear();
                 //bool find = false;
 
