@@ -43,18 +43,18 @@ namespace StatlookLogViewer
 
             List<ListViewGroup> group = new();
 
-            foreach (string singleLine in logParserDetectorResult.Item2)
+            foreach (string line in logParserDetectorResult.Item2)
             {
                 //Wyrażenie regularne do sprawdzenia czy wpis logu nie zaczyna się od daty
-                if (Regex.IsMatch(singleLine, @"(?<rok>\d{4})\.(?<miesiac>\d{2})\.(?<dzien>\d{2})\b"))
+                if (Regex.IsMatch(line, @"(?<rok>\d{4})\.(?<miesiac>\d{2})\.(?<dzien>\d{2})\b"))
                 {
                     logLine = new SingleLogLine();
 
-                    string normalizeSingleLine = singleLine + ";";
-                    normalizeSingleLine = normalizeSingleLine.Substring(0, normalizeSingleLine.IndexOf(";"));
+                    string normalizeLine = line + ";";
+                    normalizeLine = normalizeLine.Substring(0, normalizeLine.IndexOf(";"));
 
                     // Dodanie do pojedynczej linii wartości kolumny: Date
-                    logLine.AddLine(logParser.StartLogGroupEntry, normalizeSingleLine, logParser);
+                    logLine.AnalyzeLine(logParser.StartLogGroupEntry, normalizeLine, logParser);
 
                     ListViewGroup listViewGroup = new(logLine.GroupName, HorizontalAlignment.Left);
 
@@ -80,22 +80,22 @@ namespace StatlookLogViewer
                 }
 
                 //Wykonaj jeśli linia nie zawiera znacznika przerwy 
-                else if (!singleLine.Contains(logParser.EndLogGroupEntry))
+                else if (!line.Contains(logParser.EndLogGroupEntry))
                 {
                     foreach (string textPattern in logParser.GetTextPatterns())
                     {
-                        if (singleLine.StartsWith(textPattern))
+                        if (line.StartsWith(textPattern))
                         {
-                            string normalizeSingleLine = singleLine + ";";
+                            string normalizeSingleLine = line + ";";
                             normalizeSingleLine = normalizeSingleLine.Remove(0, textPattern.Length);
                             normalizeSingleLine = normalizeSingleLine.TrimStart();
                             normalizeSingleLine = normalizeSingleLine.Substring(0, normalizeSingleLine.IndexOf(";"));
-                            logLine.AddLine(textPattern, normalizeSingleLine, logParser);
+                            logLine.AnalyzeLine(textPattern, normalizeSingleLine, logParser);
                             break;
                         }
                     }
                 }
-                else if (singleLine.StartsWith(logParser.EndLogGroupEntry))
+                else if (line.StartsWith(logParser.EndLogGroupEntry))
                 {
                     //Wykonaj jeśli linia zawiera znacznika przerwy 
                     //Dodanie pojedynczej linii do pliku wynikowego analizy 

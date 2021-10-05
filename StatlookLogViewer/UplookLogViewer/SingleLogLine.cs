@@ -26,12 +26,7 @@ namespace StatlookLogViewer
 
         #region Methods
 
-        public void AddLine(string lineCaption, string lineValue, ILogParser logParser)
-        {
-            AnalyzeLine(lineCaption, lineValue, logParser);
-        }
-
-        private void AnalyzeLine(string lineCaption, string lineValue, ILogParser logParser)
+        public void AnalyzeLine(string lineCaption, string lineValue, ILogParser logParser)
         {
             foreach (LogPattern logPattern in logParser.GetLogPatterns())
             {
@@ -57,20 +52,18 @@ namespace StatlookLogViewer
                         }
                     }
 
-                    logPattern.TextPattern = lineValue;
 
                     break;
                 }
 
                  DateTime.TryParse(lineValue,out DateTime dateTime);
 
-                _groupName = GetNameOfGroupByHourTime(dateTime);
                 ListViewItem.Text = lineValue;
+                _groupName = GetNameOfGroupByHourTime(dateTime);
                 _listViewGroup = new ListViewGroup(_groupName, HorizontalAlignment.Left);
                 ListViewItem.Group = _listViewGroup;
                 ListViewItem.Group.Name = _groupName;
                 ListViewItem.Group.Header = _groupName;
-                logPattern.TextPattern = lineValue;
                 break;
             }
         }
