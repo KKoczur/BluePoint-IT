@@ -8,17 +8,7 @@ namespace StatlookLogViewer
 {
     internal class SingleLogLine
     {
-        #region Members
-
-        private string _groupName;
-
-        private ListViewGroup _listViewGroup = new();
-
-        #endregion Members
-
         #region Properties
-
-        public string GroupName => _groupName;
 
         public ListViewItem ListViewItem { get; } = new ListViewItem();
 
@@ -59,11 +49,8 @@ namespace StatlookLogViewer
                  DateTime.TryParse(lineValue,out DateTime dateTime);
 
                 ListViewItem.Text = lineValue;
-                _groupName = GetNameOfGroupByHourTime(dateTime);
-                _listViewGroup = new ListViewGroup(_groupName, HorizontalAlignment.Left);
-                ListViewItem.Group = _listViewGroup;
-                ListViewItem.Group.Name = _groupName;
-                ListViewItem.Group.Header = _groupName;
+                ListViewItem.Group = new ListViewGroup(GetNameOfGroupByHourTime(dateTime), HorizontalAlignment.Left);
+
                 break;
             }
         }

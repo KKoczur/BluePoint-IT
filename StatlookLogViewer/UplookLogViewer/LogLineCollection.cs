@@ -56,7 +56,7 @@ namespace StatlookLogViewer
                     // Dodanie do pojedynczej linii wartości kolumny: Date
                     logLine.AnalyzeLine(logParser.StartLogGroupEntry, normalizeLine, logParser);
 
-                    ListViewGroup listViewGroup = new(logLine.GroupName, HorizontalAlignment.Left);
+                    ListViewGroup listViewGroup = logLine.ListViewItem.Group;
 
                     if (group.Count == 0)
                     {
