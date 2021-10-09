@@ -233,7 +233,7 @@
             // 
             resources.ApplyResources(this.refreshToolStripMenuItem, "refreshToolStripMenuItem");
             this.refreshToolStripMenuItem.Name = "refreshToolStripMenuItem";
-            this.refreshToolStripMenuItem.Click += new System.EventHandler(this.refreshToolStripMenuItem_Click);
+            this.refreshToolStripMenuItem.Click += new System.EventHandler(this.RefreshToolStripMenuItem_Click);
             // 
             // toolStripSeparator11
             // 
@@ -717,7 +717,7 @@
             // 
             resources.ApplyResources(this.toolStripMenuItemDeleteFile, "toolStripMenuItemDeleteFile");
             this.toolStripMenuItemDeleteFile.Name = "toolStripMenuItemDeleteFile";
-            this.toolStripMenuItemDeleteFile.Click += new System.EventHandler(this.toolStripMenuItemDeleteFile_Click);
+            this.toolStripMenuItemDeleteFile.Click += new System.EventHandler(this.ToolStripMenuItemDeleteFile_Click);
             // 
             // toolStripSeparator9
             // 
@@ -728,19 +728,19 @@
             // 
             this.toolStripMenuItemCopyFileName.Name = "toolStripMenuItemCopyFileName";
             resources.ApplyResources(this.toolStripMenuItemCopyFileName, "toolStripMenuItemCopyFileName");
-            this.toolStripMenuItemCopyFileName.Click += new System.EventHandler(this.toolStripMenuItemCopyFileName_Click);
+            this.toolStripMenuItemCopyFileName.Click += new System.EventHandler(this.ToolStripMenuItemCopyFileName_Click);
             // 
             // toolStripMenuItemCopyFilePath
             // 
             this.toolStripMenuItemCopyFilePath.Name = "toolStripMenuItemCopyFilePath";
             resources.ApplyResources(this.toolStripMenuItemCopyFilePath, "toolStripMenuItemCopyFilePath");
-            this.toolStripMenuItemCopyFilePath.Click += new System.EventHandler(this.toolStripMenuItemCopyFilePath_Click);
+            this.toolStripMenuItemCopyFilePath.Click += new System.EventHandler(this.ToolStripMenuItemCopyFilePath_Click);
             // 
             // toolStripMenuItemCopyCatalogPath
             // 
             this.toolStripMenuItemCopyCatalogPath.Name = "toolStripMenuItemCopyCatalogPath";
             resources.ApplyResources(this.toolStripMenuItemCopyCatalogPath, "toolStripMenuItemCopyCatalogPath");
-            this.toolStripMenuItemCopyCatalogPath.Click += new System.EventHandler(this.toolStripMenuItemCopyCatalogPath_Click);
+            this.toolStripMenuItemCopyCatalogPath.Click += new System.EventHandler(this.ToolStripMenuItemCopyCatalogPath_Click);
             // 
             // toolStripSeparator12
             // 
@@ -790,7 +790,7 @@
             // 
             resources.ApplyResources(this.toolStripMenuItem7, "toolStripMenuItem7");
             this.toolStripMenuItem7.Name = "toolStripMenuItem7";
-            this.toolStripMenuItem7.Click += new System.EventHandler(this.toolStripMenuItem7_Click);
+            this.toolStripMenuItem7.Click += new System.EventHandler(this.ToolStripMenuItem7_Click);
             // 
             // toolStripSeparator8
             // 
@@ -801,19 +801,19 @@
             // 
             this.toolStripMenuItem4.Name = "toolStripMenuItem4";
             resources.ApplyResources(this.toolStripMenuItem4, "toolStripMenuItem4");
-            this.toolStripMenuItem4.Click += new System.EventHandler(this.toolStripMenuItem4_Click);
+            this.toolStripMenuItem4.Click += new System.EventHandler(this.ToolStripMenuItem4_Click);
             // 
             // toolStripMenuItem5
             // 
             this.toolStripMenuItem5.Name = "toolStripMenuItem5";
             resources.ApplyResources(this.toolStripMenuItem5, "toolStripMenuItem5");
-            this.toolStripMenuItem5.Click += new System.EventHandler(this.toolStripMenuItem5_Click);
+            this.toolStripMenuItem5.Click += new System.EventHandler(this.ToolStripMenuItem5_Click);
             // 
             // toolStripMenuItem6
             // 
             this.toolStripMenuItem6.Name = "toolStripMenuItem6";
             resources.ApplyResources(this.toolStripMenuItem6, "toolStripMenuItem6");
-            this.toolStripMenuItem6.Click += new System.EventHandler(this.toolStripMenuItem6_Click);
+            this.toolStripMenuItem6.Click += new System.EventHandler(this.ToolStripMenuItem6_Click);
             // 
             // toolStripSeparator10
             // 

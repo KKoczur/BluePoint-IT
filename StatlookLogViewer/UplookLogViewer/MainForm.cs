@@ -20,7 +20,7 @@ namespace StatlookLogViewer
     {
         #region Members
 
-        private readonly ListViewColumnSorter _lvwColumnSorter;
+        private readonly ListViewColumnSorter _lvwColumnSorter = new ();
         public string _logDirectory;
         public string _userLogDirectory;
         private readonly string[] _fileExtensions;
@@ -60,9 +60,7 @@ namespace StatlookLogViewer
             CreateToolStripMenuItem(ToolStripMenuItemUplook, udes);
             CreateToolStripMenuItem(ToolStripMenuItemUSM, usmdes);
 
-
-            _lvwColumnSorter = new ListViewColumnSorter();
-            this.listViewFiles.ListViewItemSorter = _lvwColumnSorter;
+            listViewFiles.ListViewItemSorter = _lvwColumnSorter;
 
             IniTabPageInfo();
         }
@@ -124,22 +122,22 @@ namespace StatlookLogViewer
                 {
                     if (di.Exists && showCatalog[j])
                     {
-                        var fileCollection = new List<FileInfo>();
+                        var fileInfoCollection = new List<FileInfo>();
 
                         foreach (string ext in _fileExtensions)
                         {
                             if (di.FullName != "C:\\")
                             {
-                                fileCollection.AddRange(di.GetFiles(ext, SearchOption.AllDirectories));
+                                fileInfoCollection.AddRange(di.GetFiles(ext, SearchOption.AllDirectories));
                             }
                             else
                             {
-                                fileCollection.AddRange(di.GetFiles(ext, SearchOption.TopDirectoryOnly));
+                                fileInfoCollection.AddRange(di.GetFiles(ext, SearchOption.TopDirectoryOnly));
                             }
                         }
 
                         int i = 0;
-                        foreach (FileInfo fileInfo in fileCollection)
+                        foreach (FileInfo fileInfo in fileInfoCollection)
                         {
                             var listViewItem = new ListViewItem
                             {
@@ -507,7 +505,7 @@ namespace StatlookLogViewer
                     }
                 }
 
-                FileInfo fileInfo = new FileInfo(tabControl.SelectedTab.Tag.ToString());
+                FileInfo fileInfo = new(tabControl.SelectedTab.Tag.ToString());
 
                 if (fileInfo.Exists)
                 {
@@ -660,46 +658,51 @@ namespace StatlookLogViewer
             }
         }
 
-        private void toolStripMenuItem4_Click(object sender, EventArgs e)
+        private void ToolStripMenuItem4_Click(object sender, EventArgs e)
         {
             FileInfo fileInfo = GetFileInfoForSelectedTab();
             Clipboard.SetText(fileInfo.Name);
         }
 
-        private void toolStripMenuItem5_Click(object sender, EventArgs e)
+        private void ToolStripMenuItem5_Click(object sender, EventArgs e)
         {
             FileInfo fileInfo = GetFileInfoForSelectedTab();
             Clipboard.SetText(fileInfo.FullName);
         }
 
-        private void toolStripMenuItem6_Click(object sender, EventArgs e)
+        private void ToolStripMenuItem6_Click(object sender, EventArgs e)
         {
             FileInfo fileInfo = GetFileInfoForSelectedTab();
             Clipboard.SetText(fileInfo.DirectoryName);
         }
 
-        private void toolStripMenuItem7_Click(object sender, EventArgs e)
+        private void ToolStripMenuItem7_Click(object sender, EventArgs e)
         {
             FileInfo fileInfo = GetFileInfoForSelectedTab();
 
             if (MessageBox.Show($"Really delete file: {fileInfo.FullName} ?", "Confirm delete", MessageBoxButtons.YesNo, MessageBoxIcon.Warning) == DialogResult.Yes)
             {
-                if (fileInfo.Exists)
+                if (!fileInfo.Exists)
+                    return;
+
+                try
                 {
-                    try
-                    {
-                        tabControlMain.TabPages.Remove(tabControlMain.SelectedTab);
-                        fileInfo.Delete();
-                        listViewFiles.Items.Clear();
-                        IniTabPageInfo();
-                    }
-                    catch (Exception ex)
-                    {
-                        MessageBox.Show("Error : " + ex.Message, "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
-                    }
+                    RemoveSelectedTab();
+                    fileInfo.Delete();
+                    listViewFiles.Items.Clear();
+                    IniTabPageInfo();
+                }
+                catch (Exception exception)
+                {
+                    MessageBox.Show("Error : " + exception.Message, "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
                 }
             }
 
+        }
+
+        private void RemoveSelectedTab()
+        {
+            tabControlMain.TabPages.Remove(tabControlMain.SelectedTab);
         }
 
         private void toolStripMenuItemOpenFile_Click(object sender, EventArgs e)
@@ -756,7 +759,7 @@ namespace StatlookLogViewer
             }
         }
 
-        private void toolStripMenuItemDeleteFile_Click(object sender, EventArgs e)
+        private void ToolStripMenuItemDeleteFile_Click(object sender, EventArgs e)
         {
             foreach (ListViewItem listViewItem in listViewFiles.SelectedItems)
             {
@@ -766,82 +769,84 @@ namespace StatlookLogViewer
 
                 if (MessageBox.Show("Really delete file: " + fileFullPath + " ?", "Confirm delete", MessageBoxButtons.YesNo, MessageBoxIcon.Warning) == DialogResult.Yes)
                 {
-                    if (fileInfo.Exists)
+                    if (!fileInfo.Exists)
                     {
-                        try
-                        {
-                            fileInfo.Delete();
-                            listViewFiles.Items.Clear();
-                            IniTabPageInfo();
-                        }
-                        catch (Exception ex)
-                        {
-                            MessageBox.Show("Error : " + ex.Message,
-                            "Error",
-                            MessageBoxButtons.OK,
-                            MessageBoxIcon.Error);
-                        }
+                        continue;
+                    }
+                    try
+                    {
+                        fileInfo.Delete();
+                        listViewFiles.Items.Clear();
+                        IniTabPageInfo();
+                    }
+                    catch (Exception ex)
+                    {
+                        MessageBox.Show("Error : " + ex.Message, "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
                     }
                 }
             }
         }
 
-        private void toolStripMenuItemCopyFileName_Click(object sender, EventArgs e)
-        {
-            string fileNamesText = string.Empty;
-
-            foreach (ListViewItem listViewItem in listViewFiles.SelectedItems)
-            {
-                string fileFullPath = GetFileFullPathFromListViewItem(listViewItem);
-
-                FileInfo fileInfo = new(fileFullPath);
-                fileNamesText += fileInfo.Name + Environment.NewLine;
-            }
-
-            Clipboard.SetText(fileNamesText, TextDataFormat.UnicodeText);
-        }
-
         private void toolStripMenuItem3_Click_1(object sender, EventArgs e)
         {
-            string fileFullName = tabControlMain.SelectedTab.ToolTipText;
-            FileInfo fileInfo = new FileInfo(fileFullName);
+            string filePath = tabControlMain.SelectedTab.ToolTipText;
+            FileInfo fileInfo = new(filePath);
             Clipboard.SetText(fileInfo.Name);
             System.Diagnostics.Process.Start("explorer.exe", fileInfo.DirectoryName);
         }
 
-        private void toolStripMenuItemCopyFilePath_Click(object sender, EventArgs e)
+        private void ToolStripMenuItemCopyFileName_Click(object sender, EventArgs e)
         {
-            string fileFullNamesText = string.Empty;
+            FileInfo[] fileCollection = GetListViewSelectedFiles();
 
-            foreach (ListViewItem listViewItem in listViewFiles.SelectedItems)
-            {
-                string fileFullPath = GetFileFullPathFromListViewItem(listViewItem);
+            string filesNameText = default;
 
-                FileInfo fileInfo = new(fileFullPath);
-                fileFullNamesText += fileInfo.FullName + Environment.NewLine;
-            }
+            foreach (FileInfo fileInfo in fileCollection)
+                filesNameText += fileInfo.Name + Environment.NewLine;
 
-            Clipboard.SetText(fileFullNamesText, TextDataFormat.UnicodeText);
+            Clipboard.SetText(filesNameText, TextDataFormat.UnicodeText);
         }
 
-        private void toolStripMenuItemCopyCatalogPath_Click(object sender, EventArgs e)
+        private void ToolStripMenuItemCopyFilePath_Click(object sender, EventArgs e)
         {
-            string fileDirectoryNamesText = string.Empty;
+            FileInfo[] fileCollection = GetListViewSelectedFiles();
 
-            foreach (ListViewItem listViewItem in listViewFiles.SelectedItems)
-            {
-                string fileFullPath = GetFileFullPathFromListViewItem(listViewItem);
+            string filesFullNameText = default;
 
-                FileInfo fileInfo = new(fileFullPath);
-                fileDirectoryNamesText += fileInfo.DirectoryName + Environment.NewLine;
-            }
+            foreach (FileInfo fileInfo in fileCollection)
+                filesFullNameText += fileInfo.FullName + Environment.NewLine;
+
+            Clipboard.SetText(filesFullNameText, TextDataFormat.UnicodeText);
+        }
+
+        private void ToolStripMenuItemCopyCatalogPath_Click(object sender, EventArgs e)
+        {
+            FileInfo[] fileCollection = GetListViewSelectedFiles();
+
+            string fileDirectoryNamesText = default;
+
+            foreach (FileInfo fileInfo in fileCollection)        
+                fileDirectoryNamesText += fileInfo.DirectoryName + Environment.NewLine;           
 
             Clipboard.SetText(fileDirectoryNamesText, TextDataFormat.UnicodeText);
         }
 
-        private void refreshToolStripMenuItem_Click(object sender, EventArgs e)
+        FileInfo[] GetListViewSelectedFiles()
         {
-            listViewFiles.Items.Clear();
+            List<FileInfo> files = new();
+
+            foreach (ListViewItem listViewItem in listViewFiles.SelectedItems)
+            {
+                string filePath = GetFileFullPathFromListViewItem(listViewItem);
+
+                files.Add(new FileInfo(filePath));
+            }
+
+            return files.ToArray(); 
+        }
+
+        private void RefreshToolStripMenuItem_Click(object sender, EventArgs e)
+        {
             IniTabPageInfo();
         }
 
@@ -861,7 +866,7 @@ namespace StatlookLogViewer
 
         private void openContainFolderToolStripMenuItem_Click(object sender, EventArgs e)
         {
-            foreach (ListViewItem listViewItem in this.listViewFiles.SelectedItems)
+            foreach (ListViewItem listViewItem in listViewFiles.SelectedItems)
             {
                 string filePath = GetFileFullPathFromListViewItem(listViewItem);
 
