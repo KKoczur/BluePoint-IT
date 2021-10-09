@@ -44,6 +44,7 @@ namespace StatlookLogViewer
 
                Text = lineValue;
                Group = new ListViewGroup(GetNameOfGroupByHourTime(dateTime), HorizontalAlignment.Left);
+                Group.CollapsedState = ListViewGroupCollapsedState.Collapsed;
 
                 break;
             }

@@ -59,7 +59,6 @@ namespace StatlookLogViewer
                     if (group.Count == 0)
                     {
                         group.Add(listViewGroup);
-                        logListViewItem.Group = listViewGroup;
                     }
                     else
                     {
@@ -72,7 +71,6 @@ namespace StatlookLogViewer
                         else
                         {
                             group.Add(listViewGroup);
-                            logListViewItem.Group = listViewGroup;
                         }
                     }
                 }

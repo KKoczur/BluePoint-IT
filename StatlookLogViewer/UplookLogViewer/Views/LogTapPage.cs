@@ -8,7 +8,7 @@ namespace StatlookLogViewer.Views
 {
     public class LogTapPage : TabPage
     {
-        private readonly ListViewColumnSorter _lvwColumnSorter = new ListViewColumnSorter();
+        private readonly ListViewColumnSorter _lvwColumnSorter = new();
 
         #region Constructors
 
@@ -22,25 +22,9 @@ namespace StatlookLogViewer.Views
         {
             LogParser = logParser;
 
+            _listViewExtended = CreateListViewExtended(filePath, index);
+
             AddListViewColumns(LogParser);
-
-            _listViewExtended.ListViewItemSorter = _lvwColumnSorter;
-
-            _listViewExtended.Dock = DockStyle.Fill;
-            _listViewExtended.GridLines = true;
-            _listViewExtended.Location = new System.Drawing.Point(3, 3);
-            _listViewExtended.Name = filePath;
-            _listViewExtended.Size = new System.Drawing.Size(988, 604);
-            _listViewExtended.TabIndex = index;
-            _listViewExtended.UseCompatibleStateImageBehavior = false;
-            _listViewExtended.View = View.Details;
-            _listViewExtended.GridLines = true;
-            _listViewExtended.FullRowSelect = true;
-            _listViewExtended.ListViewItemSorter = null;
-            _listViewExtended.SetGroupState(ListViewGroupState.Collapsible);
-            _listViewExtended.ColumnClick += ListViewFiles_ColumnClick;
-
-
 
             Location = new System.Drawing.Point(4, 22);
 
@@ -53,15 +37,15 @@ namespace StatlookLogViewer.Views
             UseVisualStyleBackColor = true;
             ToolTipText = filePath;
             Tag = filePath;
-            Controls.Add(_listViewExtended);
 
+            Controls.Add(_listViewExtended);
         }
 
         #endregion Constructors
 
         #region Members
 
-        private readonly ListViewExtended _listViewExtended  = new();
+        private readonly ListViewExtended _listViewExtended ;
 
         #endregion Members
 
@@ -93,6 +77,27 @@ namespace StatlookLogViewer.Views
                 _listViewExtended.EndUpdate();
                 _listViewExtended.ResumeLayout();
             }
+        }
+
+        private ListViewExtended CreateListViewExtended(string filePath ,int tabIndex)
+        {
+            ListViewExtended listViewExtended = new();
+            listViewExtended.ListViewItemSorter = _lvwColumnSorter;
+            listViewExtended.Dock = DockStyle.Fill;
+            listViewExtended.GridLines = true;
+            listViewExtended.Location = new System.Drawing.Point(3, 3);
+            listViewExtended.Name = filePath;
+            listViewExtended.Size = new System.Drawing.Size(988, 604);
+            listViewExtended.TabIndex = tabIndex;
+            listViewExtended.UseCompatibleStateImageBehavior = false;
+            listViewExtended.View = View.Details;
+            listViewExtended.GridLines = true;
+            listViewExtended.FullRowSelect = true;
+            listViewExtended.ListViewItemSorter = null;
+            listViewExtended.SetGroupState(ListViewGroupState.Collapsible);
+            listViewExtended.ColumnClick += ListViewFiles_ColumnClick;
+
+            return listViewExtended;
         }
 
         private void AddListViewColumns(ILogParser logParser)
