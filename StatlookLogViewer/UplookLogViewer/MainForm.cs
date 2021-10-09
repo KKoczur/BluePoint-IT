@@ -6,12 +6,12 @@ using System.IO;
 using Ionic.Zip;
 using System.Collections.Generic;
 using StatlookLogViewer.Views;
-using StatlookLogViewer.Model;
 using StatlookLogViewer.Controller;
 using StatlookLogViewer.Model.Pattern;
 using System.Linq;
 using StatlookLogViewer.Parser;
 using StatlookkLogViewer.Tools;
+using static System.Windows.Forms.ListView;
 
 namespace StatlookLogViewer
 {
@@ -69,6 +69,8 @@ namespace StatlookLogViewer
 
         private static void CreateToolStripMenuItem(ToolStripMenuItem rootMenu, LogPattern[] logPatterns)
         {
+            List<ToolStripMenuItem> toolStripMenuItemCollection = new();
+
             foreach (LogPattern logPattern in logPatterns)
             {
                 ToolStripMenuItem toolStripMenuItem = new()
@@ -78,8 +80,11 @@ namespace StatlookLogViewer
                     Size = new Size(152, 22),
                     Text = logPattern.TextPattern
                 };
-                rootMenu.DropDownItems.Add(toolStripMenuItem);
+
+                toolStripMenuItemCollection.Add(toolStripMenuItem);
             }
+
+            rootMenu.DropDownItems.AddRange(toolStripMenuItemCollection.ToArray());
         }
 
         #endregion Constructors
@@ -233,7 +238,7 @@ namespace StatlookLogViewer
                 for (int i = 0; i < openFileDialog.FileNames.Length; i++)
                 {
                     // Nie przetwarzaj plików o rozszerzeniu .zip
-                    FileInfo fileInfo = new FileInfo(openFileDialog.FileNames[i]);
+                    FileInfo fileInfo = new(openFileDialog.FileNames[i]);
 
                     if (fileInfo.Extension == Configuration.ZIP_FILE_EXTENSION)
                     {
@@ -353,7 +358,6 @@ namespace StatlookLogViewer
         /// <summary>
         /// Wyświetla pytanie i zamyka główne okno programu 
         /// </summary>
-
         private void MainForm_FormClosing(object sender, FormClosingEventArgs e)
         {
             if (MessageBox.Show("Czy na pewno chcesz zamknąć aplikację?", "Zamknij", MessageBoxButtons.YesNo, MessageBoxIcon.Question) == DialogResult.No)
@@ -1063,32 +1067,32 @@ namespace StatlookLogViewer
             {
                 DirectoryInfo s = new(directoryLogPath);
 
-                if (s.Exists)
+                if (!s.Exists)
+                    return;
+
+                DirectoryInfo[] directories = s.GetDirectories();
+
+                label.Text = s.FullName;
+
+                ArrayList myfileinfos = new ArrayList();
+
+                foreach (string ext in _fileExtensions)
                 {
-                    DirectoryInfo[] directories = s.GetDirectories();
-
-                    label.Text = s.FullName;
-
-                    ArrayList myfileinfos = new ArrayList();
-
-                    foreach (string ext in _fileExtensions)
-                    {
-                        myfileinfos.AddRange(s.GetFiles(ext, SearchOption.AllDirectories));
-                    }
-
-                    FileInfo[] files = (FileInfo[])myfileinfos.ToArray(typeof(FileInfo));
-
-                    float rozmiar = 0;
-
-                    for (int i = 0; i < files.Length; i++)
-                    {
-                        rozmiar += files[i].Length;
-                    }
-
-                    labelSize.Text = IOTools.FormatFileSize(rozmiar);
-
-                    labelCount.Text = (files.Length).ToString() + " plików, " + directories.Length.ToString() + " folderów";
+                    myfileinfos.AddRange(s.GetFiles(ext, SearchOption.AllDirectories));
                 }
+
+                FileInfo[] files = (FileInfo[])myfileinfos.ToArray(typeof(FileInfo));
+
+                float rozmiar = 0;
+
+                for (int i = 0; i < files.Length; i++)
+                {
+                    rozmiar += files[i].Length;
+                }
+
+                labelSize.Text = IOTools.FormatFileSize(rozmiar);
+
+                labelCount.Text = (files.Length).ToString() + " plików, " + directories.Length.ToString() + " folderów";
             }
             catch
             {
@@ -1111,15 +1115,14 @@ namespace StatlookLogViewer
             WypelnijListe();
         }
 
-        private static ListViewItem[] CloneItems(ListView.ListViewItemCollection items)
+        private static ListViewItem[] CloneItems(ListViewItemCollection items)
         {
-            ListViewItem[] nodes = new ListViewItem[items.Count];
+            List<ListViewItem> nodes = new();
 
-            for (int i = 0; i < items.Count; i++)
-            {
-                nodes[i] = items[i].Clone() as ListViewItem;
-            }
-            return nodes;
+            foreach (ListViewItem listViewItem in items)
+                nodes.Add(listViewItem.Clone() as ListViewItem);
+
+            return nodes.ToArray();
         }
 
         private void toolStripTextBox1_TextChanged(object sender, EventArgs e)
@@ -1128,10 +1131,8 @@ namespace StatlookLogViewer
             timerFind.Enabled = true;
         }
 
-        private void DelayedSearch()
-        {
-            timerFind.Start();
-        }
+        private void DelayedSearch() => timerFind.Start();
+
 
         private void timerFind_Tick(object sender, EventArgs e)
         {
