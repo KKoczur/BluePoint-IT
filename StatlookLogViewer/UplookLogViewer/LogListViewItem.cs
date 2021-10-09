@@ -6,14 +6,8 @@ using StatlookLogViewer.Parser;
 
 namespace StatlookLogViewer
 {
-    internal class SingleLogLine
+    internal class LogListViewItem : ListViewItem
     {
-        #region Properties
-
-        public ListViewItem ListViewItem { get; } = new ListViewItem();
-
-        #endregion Properties
-
         #region Methods
 
         public void AnalyzeLine(string lineCaption, string lineValue, ILogParser logParser)
@@ -25,19 +19,19 @@ namespace StatlookLogViewer
 
                 if (lineCaption != logParser.StartLogGroupEntry)
                 {
-                    ListViewItem.SubItems.Add(lineValue);
+                    SubItems.Add(lineValue);
 
                     if (Regex.IsMatch(lineValue, @"(?<NR_1>\d{1})\.(?<NR_2>\d{1})\.(?<NR_3>\d{1})\b został uruchomiony.") || Regex.IsMatch(lineValue, @"(?<NR_1>\d{1})\.(?<NR_2>\d{1})\.(?<NR_3>\d{1})\b started"))
                     {
-                        ListViewItem.Group.Header = $"{ListViewItem.Group.Name} ({lineValue})";
+                        Group.Header = $"{Group.Name} ({lineValue})";
                     }
                     else
                     {
                         foreach (LogErrorPattern logErrorPattern in logParser.GetListOfErrors())
                         {
-                            if (lineValue.Contains(logErrorPattern.ErrorTextPattern) && !ListViewItem.Group.Header.Contains(logErrorPattern.ErrorReason))
+                            if (lineValue.Contains(logErrorPattern.ErrorTextPattern) && !Group.Header.Contains(logErrorPattern.ErrorReason))
                             {
-                                ListViewItem.Group.Header += " ( " + logErrorPattern.ErrorReason + " )";
+                                Group.Header += " ( " + logErrorPattern.ErrorReason + " )";
                             }
                         }
                     }
@@ -48,14 +42,14 @@ namespace StatlookLogViewer
 
                  DateTime.TryParse(lineValue,out DateTime dateTime);
 
-                ListViewItem.Text = lineValue;
-                ListViewItem.Group = new ListViewGroup(GetNameOfGroupByHourTime(dateTime), HorizontalAlignment.Left);
+               Text = lineValue;
+               Group = new ListViewGroup(GetNameOfGroupByHourTime(dateTime), HorizontalAlignment.Left);
 
                 break;
             }
         }
 
-        private static string GetNameOfGroupByHourTime(DateTime dateTime)
+        static string GetNameOfGroupByHourTime(DateTime dateTime)
         {
             string hourTime = dateTime.Hour.ToString();
             string hourPart = hourTime.Length < 2 ? $"0{hourTime}:00-0{hourTime}:59" : $"{hourTime}:00-{hourTime}:59";

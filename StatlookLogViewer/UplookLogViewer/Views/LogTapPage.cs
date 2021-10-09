@@ -20,8 +20,6 @@ namespace StatlookLogViewer.Views
         /// <param name="logParser">Log parser</param>
         public LogTapPage(int index, string filePath, ILogParser logParser)
         {
-            string fileName = Path.GetFileName(filePath);
-
             LogParser = logParser;
 
             AddListViewColumns(LogParser);
@@ -45,6 +43,8 @@ namespace StatlookLogViewer.Views
 
 
             Location = new System.Drawing.Point(4, 22);
+
+            string fileName = Path.GetFileName(filePath);
             Name = fileName;
             Padding = new Padding(3);
             Size = new System.Drawing.Size(994, 610);
@@ -67,7 +67,17 @@ namespace StatlookLogViewer.Views
 
         public void SetListViewGroups( List<ListViewGroup> group)
         {
-            _listViewExtended.Groups.AddRange(group.ToArray());
+            _listViewExtended.BeginUpdate();
+            _listViewExtended.SuspendLayout();
+            try
+            {
+                _listViewExtended.Groups.AddRange(group.ToArray());
+            }
+            finally
+            {
+                _listViewExtended.EndUpdate();
+                _listViewExtended.ResumeLayout();
+            }
         }
 
         public void SetListViewItems(ListViewItem[] listViewItemCollection)
@@ -88,17 +98,23 @@ namespace StatlookLogViewer.Views
         private void AddListViewColumns(ILogParser logParser)
         {
             _listViewExtended.BeginUpdate();
+            _listViewExtended.SuspendLayout();
 
             try
             {
+                List<ColumnHeader> columnHeaders = new ();
+
                 foreach (var pattern in logParser.GetLogPatterns())
                 {
-                    _listViewExtended.Columns.Add(pattern.TextPattern, -2);
+                    columnHeaders.Add(new ColumnHeader() { Text = pattern.TextPattern, Width = -2 });
                 }
+
+                _listViewExtended.Columns.AddRange(columnHeaders.ToArray());
             }
             finally
             {
                 _listViewExtended.EndUpdate();
+                _listViewExtended.ResumeLayout();
             }
         }
 
