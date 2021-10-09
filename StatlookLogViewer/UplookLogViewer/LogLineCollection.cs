@@ -153,10 +153,7 @@ namespace StatlookLogViewer
 
         private static LogTapPage CreateNewTabPage(string filePath, ILogParser logParser)
         {
-            return new LogTapPage(0, filePath, logParser)
-            {
-                LogParser = logParser
-            };
+            return new LogTapPage(0, filePath, logParser);
         }
 
         private ListViewItem[] GetListViewItem() => _listViewItem.ToArray();

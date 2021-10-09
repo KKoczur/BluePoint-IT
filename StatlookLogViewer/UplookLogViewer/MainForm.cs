@@ -817,7 +817,7 @@ namespace StatlookLogViewer
             {
                 string fileFullPath = GetFileFullPathFromListViewItem(listViewItem);
 
-                FileInfo fileInfo = new FileInfo(fileFullPath);
+                FileInfo fileInfo = new(fileFullPath);
                 fileFullNamesText += fileInfo.FullName + Environment.NewLine;
             }
 
@@ -832,7 +832,7 @@ namespace StatlookLogViewer
             {
                 string fileFullPath = GetFileFullPathFromListViewItem(listViewItem);
 
-                FileInfo fileInfo = new FileInfo(fileFullPath);
+                FileInfo fileInfo = new(fileFullPath);
                 fileDirectoryNamesText += fileInfo.DirectoryName + Environment.NewLine;
             }
 
@@ -863,9 +863,9 @@ namespace StatlookLogViewer
         {
             foreach (ListViewItem listViewItem in this.listViewFiles.SelectedItems)
             {
-                string fileFullPath = GetFileFullPathFromListViewItem(listViewItem);
+                string filePath = GetFileFullPathFromListViewItem(listViewItem);
 
-                FileInfo fileInfo = new(fileFullPath);
+                FileInfo fileInfo = new(filePath);
 
                 System.Diagnostics.Process.Start("explorer.exe", fileInfo.DirectoryName);
             }
