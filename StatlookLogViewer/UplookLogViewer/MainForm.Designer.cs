@@ -74,7 +74,7 @@
             this.toolStripTextBox = new System.Windows.Forms.ToolStripTextBox();
             this.toolStripLabel1 = new System.Windows.Forms.ToolStripLabel();
             this.tableLayoutPanelFiles = new System.Windows.Forms.TableLayoutPanel();
-            this.tabControlMain = new StatlookLogViewer.Views.TabControlEx();
+            this._tabControlMain = new StatlookLogViewer.Views.TabControlEx();
             this.tabPageInfo = new System.Windows.Forms.TabPage();
             this.splitContainerInfo = new System.Windows.Forms.SplitContainer();
             this.groupBoxOptions = new System.Windows.Forms.GroupBox();
@@ -140,7 +140,7 @@
             this.tableLayoutPanelMain.SuspendLayout();
             this.toolStripMain.SuspendLayout();
             this.tableLayoutPanelFiles.SuspendLayout();
-            this.tabControlMain.SuspendLayout();
+            this._tabControlMain.SuspendLayout();
             this.tabPageInfo.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.splitContainerInfo)).BeginInit();
             this.splitContainerInfo.Panel1.SuspendLayout();
@@ -215,7 +215,7 @@
             // 
             resources.ApplyResources(this.exitToolStripMenuItem1, "exitToolStripMenuItem1");
             this.exitToolStripMenuItem1.Name = "exitToolStripMenuItem1";
-            this.exitToolStripMenuItem1.Click += new System.EventHandler(this.exitToolStripMenuItem1_Click);
+            this.exitToolStripMenuItem1.Click += new System.EventHandler(this.ExitToolStripMenuItem1_Click);
             // 
             // viewToolStripMenuItem
             // 
@@ -288,7 +288,7 @@
             // 
             resources.ApplyResources(this.analizeToolStripMenuItem2, "analizeToolStripMenuItem2");
             this.analizeToolStripMenuItem2.Name = "analizeToolStripMenuItem2";
-            this.analizeToolStripMenuItem2.Click += new System.EventHandler(this.analizeToolStripMenuItem2_Click);
+            this.analizeToolStripMenuItem2.Click += new System.EventHandler(this.AnalizeToolStripMenuItem2_Click);
             // 
             // aboutToolStripMenuItem1
             // 
@@ -314,7 +314,7 @@
             // 
             this.exitToolStripMenuItem.Name = "exitToolStripMenuItem";
             resources.ApplyResources(this.exitToolStripMenuItem, "exitToolStripMenuItem");
-            this.exitToolStripMenuItem.Click += new System.EventHandler(this.exitToolStripMenuItem_Click);
+            this.exitToolStripMenuItem.Click += new System.EventHandler(this.ExitToolStripMenuItem_Click);
             // 
             // analizeToolStripMenuItem
             // 
@@ -379,7 +379,7 @@
             resources.ApplyResources(this.toolStripButton2, "toolStripButton2");
             this.toolStripButton2.Name = "toolStripButton2";
             this.toolStripButton2.Tag = "";
-            this.toolStripButton2.Click += new System.EventHandler(this.toolStripButton2_Click);
+            this.toolStripButton2.Click += new System.EventHandler(this.ToolStripButton2_Click);
             // 
             // toolStripSeparator4
             // 
@@ -418,7 +418,7 @@
             // 
             resources.ApplyResources(this.toolStripButton3, "toolStripButton3");
             this.toolStripButton3.Name = "toolStripButton3";
-            this.toolStripButton3.Click += new System.EventHandler(this.toolStripButton3_Click);
+            this.toolStripButton3.Click += new System.EventHandler(this.ToolStripButton3_Click);
             // 
             // toolStripSeparator13
             // 
@@ -431,7 +431,7 @@
             resources.ApplyResources(this.toolStripTextBox, "toolStripTextBox");
             this.toolStripTextBox.Margin = new System.Windows.Forms.Padding(1, 0, 10, 0);
             this.toolStripTextBox.Name = "toolStripTextBox";
-            this.toolStripTextBox.TextChanged += new System.EventHandler(this.toolStripTextBox1_TextChanged);
+            this.toolStripTextBox.TextChanged += new System.EventHandler(this.ToolStripTextBox1_TextChanged);
             // 
             // toolStripLabel1
             // 
@@ -442,18 +442,18 @@
             // tableLayoutPanelFiles
             // 
             resources.ApplyResources(this.tableLayoutPanelFiles, "tableLayoutPanelFiles");
-            this.tableLayoutPanelFiles.Controls.Add(this.tabControlMain, 1, 0);
+            this.tableLayoutPanelFiles.Controls.Add(this._tabControlMain, 1, 0);
             this.tableLayoutPanelFiles.Name = "tableLayoutPanelFiles";
             // 
             // tabControlMain
             // 
-            this.tabControlMain.Controls.Add(this.tabPageInfo);
-            resources.ApplyResources(this.tabControlMain, "tabControlMain");
-            this.tabControlMain.DrawMode = System.Windows.Forms.TabDrawMode.OwnerDrawFixed;
-            this.tabControlMain.Name = "tabControlMain";
-            this.tabControlMain.SelectedIndex = 0;
-            this.tabControlMain.SelectedIndexChanged += new System.EventHandler(this.tabControlMain_SelectedIndexChanged);
-            this.tabControlMain.MouseUp += new System.Windows.Forms.MouseEventHandler(this.tabControlMain_MouseUp);
+            this._tabControlMain.Controls.Add(this.tabPageInfo);
+            resources.ApplyResources(this._tabControlMain, "tabControlMain");
+            this._tabControlMain.DrawMode = System.Windows.Forms.TabDrawMode.OwnerDrawFixed;
+            this._tabControlMain.Name = "tabControlMain";
+            this._tabControlMain.SelectedIndex = 0;
+            this._tabControlMain.SelectedIndexChanged += new System.EventHandler(this.tabControlMain_SelectedIndexChanged);
+            this._tabControlMain.MouseUp += new System.Windows.Forms.MouseEventHandler(this.tabControlMain_MouseUp);
             // 
             // tabPageInfo
             // 
@@ -497,7 +497,7 @@
             this.checkBoxUser.CheckState = System.Windows.Forms.CheckState.Checked;
             this.checkBoxUser.Name = "checkBoxUser";
             this.checkBoxUser.UseVisualStyleBackColor = true;
-            this.checkBoxUser.CheckedChanged += new System.EventHandler(this.checkBoxUser_CheckedChanged);
+            this.checkBoxUser.CheckedChanged += new System.EventHandler(this.CheckBoxUser_CheckedChanged);
             // 
             // checkBoxLogs
             // 
@@ -506,7 +506,7 @@
             this.checkBoxLogs.CheckState = System.Windows.Forms.CheckState.Checked;
             this.checkBoxLogs.Name = "checkBoxLogs";
             this.checkBoxLogs.UseVisualStyleBackColor = true;
-            this.checkBoxLogs.CheckedChanged += new System.EventHandler(this.checkBoxLogs_CheckedChanged);
+            this.checkBoxLogs.CheckedChanged += new System.EventHandler(this.CheckBoxLogs_CheckedChanged);
             // 
             // groupBoxUser
             // 
@@ -608,8 +608,8 @@
             this.listViewFiles.Name = "listViewFiles";
             this.listViewFiles.UseCompatibleStateImageBehavior = false;
             this.listViewFiles.View = System.Windows.Forms.View.Details;
-            this.listViewFiles.ColumnClick += new System.Windows.Forms.ColumnClickEventHandler(this.listViewFiles_ColumnClick);
-            this.listViewFiles.DoubleClick += new System.EventHandler(this.listViewFiles_DoubleClick);
+            this.listViewFiles.ColumnClick += new System.Windows.Forms.ColumnClickEventHandler(this.ListViewFiles_ColumnClick);
+            this.listViewFiles.DoubleClick += new System.EventHandler(this.ListViewFiles_DoubleClick);
             this.listViewFiles.MouseClick += new System.Windows.Forms.MouseEventHandler(this.listViewFiles_MouseClick);
             // 
             // columnHeaderLn1
@@ -823,7 +823,7 @@
             // 
             resources.ApplyResources(this.toolStripMenuItem3, "toolStripMenuItem3");
             this.toolStripMenuItem3.Name = "toolStripMenuItem3";
-            this.toolStripMenuItem3.Click += new System.EventHandler(this.toolStripMenuItem3_Click_1);
+            this.toolStripMenuItem3.Click += new System.EventHandler(this.ToolStripMenuItem3_Click_1);
             // 
             // tabPageAnalized
             // 
@@ -847,7 +847,7 @@
             // timerFind
             // 
             this.timerFind.Interval = 1000;
-            this.timerFind.Tick += new System.EventHandler(this.timerFind_Tick);
+            this.timerFind.Tick += new System.EventHandler(this.TimerFind_Tick);
             // 
             // openToolStripMenuItem
             // 
@@ -877,7 +877,7 @@
             this.toolStripMain.ResumeLayout(false);
             this.toolStripMain.PerformLayout();
             this.tableLayoutPanelFiles.ResumeLayout(false);
-            this.tabControlMain.ResumeLayout(false);
+            this._tabControlMain.ResumeLayout(false);
             this.tabPageInfo.ResumeLayout(false);
             this.splitContainerInfo.Panel1.ResumeLayout(false);
             this.splitContainerInfo.Panel2.ResumeLayout(false);
@@ -963,7 +963,7 @@
         private System.Windows.Forms.ToolStripButton toolStripButtonClose;
         private System.Windows.Forms.ToolStripSeparator toolStripSeparator5;
         private System.Windows.Forms.ToolStripButton toolStripButton3;
-        private StatlookLogViewer.Views.TabControlEx tabControlMain;
+        private StatlookLogViewer.Views.TabControlEx _tabControlMain;
         private System.Windows.Forms.TabPage tabPageInfo;
         private System.Windows.Forms.ContextMenuStrip contextMenuStripList;
         private System.Windows.Forms.ToolStripMenuItem toolStripMenuItemOpenFile;

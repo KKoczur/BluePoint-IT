@@ -75,7 +75,7 @@ namespace StatlookLogViewer
             }
         }
 
-        public void DodajItem(ListViewItem listViewItem)
+        public void AddItem(ListViewItem listViewItem)
         {
             listViewFiles.Items.Add(listViewItem);
 
