@@ -147,6 +147,7 @@ namespace StatlookLogViewer
 
             foreach (Type objectType  in assembly.GetTypes())
             {
+
                 if (objectType.GetInterfaces().Contains(typeof(ILogParser)))
                 {
                     var logParser = (ILogParser)Activator.CreateInstance(objectType );

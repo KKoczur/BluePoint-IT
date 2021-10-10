@@ -605,7 +605,6 @@
             resources.ApplyResources(this.listViewFiles, "listViewFiles");
             this.listViewFiles.FullRowSelect = true;
             this.listViewFiles.GridLines = true;
-            this.listViewFiles.HideSelection = false;
             this.listViewFiles.Name = "listViewFiles";
             this.listViewFiles.UseCompatibleStateImageBehavior = false;
             this.listViewFiles.View = System.Windows.Forms.View.Details;
