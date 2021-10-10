@@ -10,6 +10,7 @@ using StatlookLogViewer.Model;
 using System.Runtime.InteropServices.WindowsRuntime;
 using StatlookLogViewer.Parser;
 using StatlookkLogViewer.Tools;
+using System.Reflection;
 
 namespace StatlookLogViewer
 {
@@ -140,25 +141,27 @@ namespace StatlookLogViewer
 
         private static Dictionary<string, ILogParser> GetLogParserMap()
         {
-            var statlookLogParser = new StatlookLogParser();
-            var usmLogParser = new UsmLogParser();
+            var logParserMap = new Dictionary<string, ILogParser>();
 
-            var logParserMap = new Dictionary<string, ILogParser>
+            Assembly assembly = Assembly.GetExecutingAssembly();
+
+            foreach (Type objectType  in assembly.GetTypes())
             {
-                { statlookLogParser.UniqueLogKey, statlookLogParser },
-                { usmLogParser.UniqueLogKey, usmLogParser }
-            };
+                //if the type implements IPerson, create it:
+                if (objectType.GetInterfaces().Contains(typeof(ILogParser)))
+                {
+                    var logParser = (ILogParser)Activator.CreateInstance(objectType );
+
+                    logParserMap.Add(logParser.UniqueLogKey, logParser);
+                }
+            }
+
             return logParserMap;
         }
 
-        private static LogTapPage CreateNewTabPage(string filePath, ILogParser logParser)
-        {
-            return new LogTapPage(0, filePath, logParser);
-        }
+        private static LogTapPage CreateNewTabPage(string filePath, ILogParser logParser) => new(0, filePath, logParser);
 
         private ListViewItem[] GetListViewItem() => _listViewItem.ToArray();
-
-
 
         #endregion Methods
     }
