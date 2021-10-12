@@ -139,7 +139,7 @@ namespace StatlookLogViewer
            
         }
 
-        private static Dictionary<string, ILogParser> GetLogParserMap()
+        public static Dictionary<string, ILogParser> GetLogParserMap()
         {
             var logParserMap = new Dictionary<string, ILogParser>();
 

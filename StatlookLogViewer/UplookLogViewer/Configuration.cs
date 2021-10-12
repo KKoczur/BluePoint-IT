@@ -30,8 +30,6 @@ namespace StatlookLogViewer
         /// </summary>
         public Configuration()
         {
-            StatlookLogParser = new StatlookLogParser();
-            UsmLogParser = new UsmLogParser();
         }
 
         #endregion Constructors
@@ -39,27 +37,6 @@ namespace StatlookLogViewer
         #region Methods
 
         public static void SaveConfig(Configuration c) => Serialize(CONFIG_FILE_NAME, c);
-
-        public LogPattern[] GetStatlookLogPatterns() => StatlookLogParser.GetLogPatterns().ToArray();
-
-        public LogPattern[] GetUsmLogPatterns() => UsmLogParser.GetLogPatterns().ToArray();
-
-
-        public void SetStatlookHeaderVisibility(string keyName, bool needToShow)
-        {
-            LogPattern logPattern = ((ILogParser)StatlookLogParser).GetHeaderByKeyName(keyName);
-
-            if (logPattern != null)
-                logPattern.Show = needToShow;
-        }
-
-        public void SetUsmHeaderVisibility(string keyName, bool needToShow)
-        {
-            LogPattern logPattern = ((ILogParser)UsmLogParser).GetHeaderByKeyName(keyName);
-
-            if (logPattern != null)
-                logPattern.Show = needToShow;
-        }
 
         public static Configuration GetConfiguration()
         {
@@ -103,9 +80,6 @@ namespace StatlookLogViewer
         #endregion Methods
 
         #region Properties
-
-        public StatlookLogParser StatlookLogParser { get; set; }
-        public UsmLogParser UsmLogParser { get; set; }
 
         public string StatlookLogDirectory { get; set; } = LOG_DIRECTORY_PATH;
         public string UserDirectory { get; set; } = Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData) + LOG_DIRECTORY_PATH;

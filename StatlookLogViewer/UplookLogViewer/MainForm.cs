@@ -24,8 +24,9 @@ namespace StatlookLogViewer
         public string _logDirectory;
         public string _userLogDirectory;
         private readonly string[] _fileExtensions;
-        private readonly List<bool> show_uplook = new();
-        private readonly List<bool> show_usm = new();
+        private readonly Dictionary<string, ILogParser> _logParserMap;
+        private readonly Dictionary<string, List<Tuple<string, bool>>> _columnToShowParserMap = new();
+
         private Configuration _config;
 
         #endregion Members
@@ -38,18 +39,18 @@ namespace StatlookLogViewer
 
             _config = Configuration.GetConfiguration();
 
-            LogPattern[] udes = _config.GetStatlookLogPatterns().ToArray();
+            _logParserMap = LogLineCollection.GetLogParserMap();
 
-            foreach (LogPattern d in udes)
+            foreach (KeyValuePair<string,ILogParser> parser in _logParserMap)
             {
-                show_uplook.Add(d.Show);
-            }
+                List<Tuple<string, bool>> columnToShow = new();
 
-            LogPattern[] usmdes = _config.GetUsmLogPatterns().ToArray();
+                foreach (LogPattern pattern in parser.Value.GetLogPatterns())
+                {
+                    columnToShow.Add(Tuple.Create(pattern.KeyName, pattern.Show));
+                }
 
-            foreach (LogPattern d in usmdes)
-            {
-                show_usm.Add(d.Show);
+                _columnToShowParserMap.Add(parser.Key, columnToShow);
             }
 
             _logDirectory = Environment.GetFolderPath(Environment.SpecialFolder.CommonApplicationData) + _config.StatlookLogDirectory;
@@ -57,8 +58,8 @@ namespace StatlookLogViewer
             _fileExtensions = _config.LogFileExtensions.Split(new char[] { ';' });
 
             // Utworzenie menu widocznosci kolumn
-            CreateToolStripMenuItem(ToolStripMenuItemUplook, udes);
-            CreateToolStripMenuItem(ToolStripMenuItemUSM, usmdes);
+            CreateToolStripMenuItem(ToolStripMenuItemUplook, _logParserMap.Values.Where(item => item is StatlookLogParser).FirstOrDefault().GetLogPatterns().ToArray());
+            CreateToolStripMenuItem(ToolStripMenuItemUSM, _logParserMap.Values.Where(item => item is UsmLogParser).FirstOrDefault().GetLogPatterns().ToArray());
 
             listViewFiles.ListViewItemSorter = _lvwColumnSorter;
 
@@ -890,14 +891,15 @@ namespace StatlookLogViewer
                     ToolStripMenuItemUplook.Enabled = true;
                     ToolStripMenuItemUSM.Visible = false;
 
-                    int j = 0;
+                    _columnToShowParserMap.TryGetValue(newPage.LogParser.UniqueLogKey, out List<Tuple<string, bool>> columnToShowCollection);
+
                     foreach (ToolStripMenuItem toolStripMenuItem in ToolStripMenuItemUplook.DropDownItems)
                     {
-                        foreach (LogPattern logPattern in newPage.LogParser.GetLogPatterns())
+                        foreach (Tuple<string, bool> columnToShow in columnToShowCollection)
                         {
-                            if (string.Compare(toolStripMenuItem.Name, logPattern.KeyName) == 0)
+                            if (string.Compare(toolStripMenuItem.Name, columnToShow.Item1) == 0)
                             {
-                                if (show_uplook[j])
+                                if (columnToShow.Item2)
                                 {
                                     toolStripMenuItem.CheckState = CheckState.Checked;
                                 }
@@ -908,7 +910,6 @@ namespace StatlookLogViewer
                                 break;
                             }
                         }
-                        j++;
                     }
 
                 }
@@ -917,25 +918,26 @@ namespace StatlookLogViewer
                     ToolStripMenuItemUSM.Enabled = true;
                     ToolStripMenuItemUSM.Visible = true;
                     ToolStripMenuItemUplook.Visible = false;
-                    int j = 0;
+
+                    _columnToShowParserMap.TryGetValue(newPage.LogParser.UniqueLogKey, out List<Tuple<string, bool>> columnToShowCollection);
+
                     foreach (ToolStripMenuItem toolStripMenuItem in ToolStripMenuItemUSM.DropDownItems)
                     {
-                        foreach (LogPattern logPattern in newPage.LogParser.GetLogPatterns())
+                        foreach (Tuple<string, bool> columnToShow in columnToShowCollection)
                         {
-                            if (string.Compare(toolStripMenuItem.Name, logPattern.KeyName) == 0)
+                            if (string.Compare(toolStripMenuItem.Name, columnToShow.Item1) == 0)
                             {
-                                if (show_usm[j])
+                                if (columnToShow.Item2)
                                 {
-                                    toolStripMenuItem.CheckState = CheckState.Checked; 
+                                    toolStripMenuItem.CheckState = CheckState.Checked;
                                 }
                                 else
                                 {
-                                    toolStripMenuItem.CheckState = CheckState.Unchecked; 
+                                    toolStripMenuItem.CheckState = CheckState.Unchecked;
                                 }
                                 break;
                             }
                         }
-                        j++;
                     }
                 }
 
@@ -980,7 +982,6 @@ namespace StatlookLogViewer
                     if (toolStripMenuItem.Name == logPattern.KeyName)
                     {
                         logPattern.Show = false;
-                        _config.SetStatlookHeaderVisibility(logPattern.KeyName, false);
                     }
                 }
             }
@@ -992,7 +993,6 @@ namespace StatlookLogViewer
                     if (toolStripMenuItem.Name == logPattern.KeyName)
                     {
                         logPattern.Show = true;
-                        _config.SetStatlookHeaderVisibility(logPattern.KeyName, true);
                     }
                 }
             }
@@ -1028,7 +1028,6 @@ namespace StatlookLogViewer
                     if (toolStripMenuItem.Name == usmd.KeyName)
                     {
                         usmd.Show = false;
-                        _config.SetUsmHeaderVisibility(usmd.KeyName, false);
                     }
                 }
             }
@@ -1040,7 +1039,6 @@ namespace StatlookLogViewer
                     if (toolStripMenuItem.Name == usmd.KeyName)
                     {
                         usmd.Show = true;
-                        _config.SetUsmHeaderVisibility(usmd.KeyName, true);
                     }
                 }
             }
