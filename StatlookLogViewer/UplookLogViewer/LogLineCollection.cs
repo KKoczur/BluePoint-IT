@@ -1,16 +1,12 @@
-﻿using System;
-using System.Linq;
+﻿using StatlookkLogViewer.Tools;
+using StatlookLogViewer.Parser;
+using StatlookLogViewer.Views;
+using System;
 using System.Collections.Generic;
-using System.Text;
+using System.Linq;
+using System.Reflection;
 using System.Text.RegularExpressions;
 using System.Windows.Forms;
-using System.IO;
-using StatlookLogViewer.Views;
-using StatlookLogViewer.Model;
-using System.Runtime.InteropServices.WindowsRuntime;
-using StatlookLogViewer.Parser;
-using StatlookkLogViewer.Tools;
-using System.Reflection;
 
 namespace StatlookLogViewer
 {
@@ -117,9 +113,9 @@ namespace StatlookLogViewer
                 _listViewItem.Add(logListViewItem);
         }
 
-        private static (ILogParser,string[]) DetectLogParser(string filePath)
+        private static (ILogParser, string[]) DetectLogParser(string filePath)
         {
-           string[] allFileLines= IOTools.ReadAllLines(filePath);
+            string[] allFileLines = IOTools.ReadAllLines(filePath);
 
             ILogParser logParser = null;
 
@@ -136,7 +132,7 @@ namespace StatlookLogViewer
             }
 
             return (logParser, allFileLines);
-           
+
         }
 
         public static Dictionary<string, ILogParser> GetLogParserMap()
@@ -145,12 +141,12 @@ namespace StatlookLogViewer
 
             Assembly assembly = Assembly.GetExecutingAssembly();
 
-            foreach (Type objectType  in assembly.GetTypes())
+            foreach (Type objectType in assembly.GetTypes())
             {
 
                 if (objectType.GetInterfaces().Contains(typeof(ILogParser)))
                 {
-                    var logParser = (ILogParser)Activator.CreateInstance(objectType );
+                    var logParser = (ILogParser)Activator.CreateInstance(objectType);
 
                     logParserMap.Add(logParser.UniqueLogKey, logParser);
                 }

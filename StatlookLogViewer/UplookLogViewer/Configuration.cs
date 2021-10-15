@@ -1,10 +1,5 @@
-﻿using StatlookLogViewer.Model;
-using StatlookLogViewer.Model.Pattern;
-using StatlookLogViewer.Parser;
-using System;
-using System.Collections.Generic;
+﻿using System;
 using System.IO;
-using System.Linq;
 using System.Xml.Serialization;
 
 namespace StatlookLogViewer

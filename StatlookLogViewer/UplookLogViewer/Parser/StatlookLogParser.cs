@@ -1,7 +1,5 @@
 ﻿using StatlookLogViewer.Model.Pattern;
-using System;
 using System.Collections.Generic;
-using System.Text;
 
 namespace StatlookLogViewer.Parser
 {
@@ -16,7 +14,7 @@ namespace StatlookLogViewer.Parser
         public LogErrorPattern[] GetListOfErrors()
         {
             return new List<LogErrorPattern>()
-            { 
+            {
                 new LogErrorPattern( "80070424", "Brak zainstalowanej usługi: uplook system monitor."),
                 new LogErrorPattern( "80040154", "Brak zainstalowanej usługi: uplook system monitor."),
                 new LogErrorPattern( "ServerNeedsUpdate", "Nieaktualna wersja agenta lub serwera."),

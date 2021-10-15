@@ -1,26 +1,25 @@
-﻿using System;
-using System.Collections;
-using System.Drawing;
-using System.Windows.Forms;
-using System.IO;
-using Ionic.Zip;
-using System.Collections.Generic;
-using StatlookLogViewer.Views;
+﻿using Ionic.Zip;
+using StatlookkLogViewer.Tools;
 using StatlookLogViewer.Controller;
 using StatlookLogViewer.Model.Pattern;
-using System.Linq;
 using StatlookLogViewer.Parser;
-using StatlookkLogViewer.Tools;
+using StatlookLogViewer.Views;
+using System;
+using System.Collections;
+using System.Collections.Generic;
+using System.Drawing;
+using System.IO;
+using System.Linq;
+using System.Windows.Forms;
 using static System.Windows.Forms.ListView;
 
 namespace StatlookLogViewer
 {
-
     public partial class MainForm : Form
     {
         #region Members
 
-        private readonly ListViewColumnSorter _lvwColumnSorter = new ();
+        private readonly ListViewColumnSorter _lvwColumnSorter = new();
         public string _logDirectory;
         public string _userLogDirectory;
         private readonly string[] _fileExtensions;
@@ -41,7 +40,7 @@ namespace StatlookLogViewer
 
             _logParserMap = LogLineCollection.GetLogParserMap();
 
-            foreach (KeyValuePair<string,ILogParser> parser in _logParserMap)
+            foreach (KeyValuePair<string, ILogParser> parser in _logParserMap)
             {
                 List<Tuple<string, bool>> columnToShow = new();
 
@@ -203,7 +202,7 @@ namespace StatlookLogViewer
                 Title = "Please select log source file"
             };
 
-            if (openFileDialog.ShowDialog() != DialogResult.OK)           
+            if (openFileDialog.ShowDialog() != DialogResult.OK)
                 return;
 
             //Otwarcie pojedynczego pliku o rozszerzeniu .zip
@@ -726,7 +725,7 @@ namespace StatlookLogViewer
                         };
 
                         plikInfo.SubItems.Add(e1.FileName);
-                        plikInfo.SubItems.Add(e1.LastModified.ToString());                     
+                        plikInfo.SubItems.Add(e1.LastModified.ToString());
                         plikInfo.SubItems.Add(IOTools.FormatFileSize(e1.UncompressedSize));
                         plikInfo.SubItems.Add(fileFullPath);
                         openZip.AddItem(plikInfo);
@@ -824,8 +823,8 @@ namespace StatlookLogViewer
 
             string fileDirectoryNamesText = default;
 
-            foreach (FileInfo fileInfo in fileCollection)        
-                fileDirectoryNamesText += fileInfo.DirectoryName + Environment.NewLine;           
+            foreach (FileInfo fileInfo in fileCollection)
+                fileDirectoryNamesText += fileInfo.DirectoryName + Environment.NewLine;
 
             Clipboard.SetText(fileDirectoryNamesText, TextDataFormat.UnicodeText);
         }
@@ -841,7 +840,7 @@ namespace StatlookLogViewer
                 files.Add(new FileInfo(filePath));
             }
 
-            return files.ToArray(); 
+            return files.ToArray();
         }
 
         private void RefreshToolStripMenuItem_Click(object sender, EventArgs e)
@@ -913,7 +912,7 @@ namespace StatlookLogViewer
                     }
 
                 }
-                else if (newPage.LogParser is UsmLogParser )
+                else if (newPage.LogParser is UsmLogParser)
                 {
                     ToolStripMenuItemUSM.Enabled = true;
                     ToolStripMenuItemUSM.Visible = true;
@@ -969,7 +968,7 @@ namespace StatlookLogViewer
 
         private void ToolStripMenuItemUplook_DropDownItemClicked(object sender, ToolStripItemClickedEventArgs e)
         {
-            var logParser = new StatlookLogParser();    
+            var logParser = new StatlookLogParser();
 
             ToolStripMenuItem toolStripMenuItem = (ToolStripMenuItem)e.ClickedItem;
 

@@ -1,25 +1,22 @@
-﻿
-using System.Collections.Generic;
-
-namespace StatlookLogViewer.Model.Pattern
+﻿namespace StatlookLogViewer.Model.Pattern
 {
-    public class LogPattern 
+    public class LogPattern
     {
         #region Constructors
 
-        public LogPattern( string keyName)
+        public LogPattern(string keyName)
         {
             KeyName = keyName;
         }
 
-        public LogPattern( string keyName, string textPattern)
-            : this( keyName)
+        public LogPattern(string keyName, string textPattern)
+            : this(keyName)
         {
             TextPattern = textPattern;
         }
 
         public LogPattern(string keyName, string textPattern, bool show)
-            : this( keyName, textPattern)
+            : this(keyName, textPattern)
         {
             Show = show;
         }

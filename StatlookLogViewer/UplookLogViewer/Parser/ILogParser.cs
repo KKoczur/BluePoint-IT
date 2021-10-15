@@ -1,7 +1,6 @@
 ﻿using StatlookLogViewer.Model.Pattern;
-using System.Linq;
 using System.Collections.Generic;
-using System.Text;
+using System.Linq;
 
 namespace StatlookLogViewer.Parser
 {

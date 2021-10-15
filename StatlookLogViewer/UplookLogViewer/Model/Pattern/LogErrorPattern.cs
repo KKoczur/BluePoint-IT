@@ -5,7 +5,7 @@ namespace StatlookLogViewer.Model.Pattern
     {
         #region Constructors
 
-        public LogErrorPattern( string errorTextPattern)
+        public LogErrorPattern(string errorTextPattern)
         {
             ErrorTextPattern = errorTextPattern;
         }
