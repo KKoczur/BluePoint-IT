@@ -25,6 +25,7 @@ namespace StatlookLogViewer
         private readonly string[] _fileExtensions;
         private readonly Dictionary<string, ILogParser> _logParserMap;
         private readonly Dictionary<string, List<Tuple<string, bool>>> _columnToShowParserMap = new();
+        private readonly Dictionary<string, ToolStripMenuItem> _toolStripMenuItemFilterColumnMap = new();
 
         private Configuration _config;
 
@@ -50,23 +51,39 @@ namespace StatlookLogViewer
                 }
 
                 _columnToShowParserMap.Add(parser.Key, columnToShow);
+
+
+                // Utworzenie menu widocznosci kolumn
+                CreateToolStripMenuItem(parser.Value);
             }
 
             _logDirectory = Environment.GetFolderPath(Environment.SpecialFolder.CommonApplicationData) + _config.StatlookLogDirectory;
             _userLogDirectory = _config.UserDirectory;
             _fileExtensions = _config.LogFileExtensions.Split(new char[] { ';' });
 
-            // Utworzenie menu widocznosci kolumn
-            CreateToolStripMenuItem(ToolStripMenuItemUplook, _logParserMap.Values.Where(item => item is StatlookLogParser).FirstOrDefault().GetLogPatterns().ToArray());
-            CreateToolStripMenuItem(ToolStripMenuItemUSM, _logParserMap.Values.Where(item => item is UsmLogParser).FirstOrDefault().GetLogPatterns().ToArray());
 
             listViewFiles.ListViewItemSorter = _lvwColumnSorter;
 
             IniTabPageInfo();
         }
 
-        private static void CreateToolStripMenuItem(ToolStripMenuItem rootMenu, LogPattern[] logPatterns)
+        private void CreateToolStripMenuItem(ILogParser? logParser)
         {
+            LogPattern[] logPatterns = logParser?.GetLogPatterns().ToArray();
+
+            ToolStripMenuItem rootMenu = new()
+            {
+                Name = logParser.UniqueLogKey,
+                Text = logParser.UniqueLogKey
+            };
+
+            rootMenu.DropDownItemClicked += new System.Windows.Forms.ToolStripItemClickedEventHandler(this.ToolStripMenuItemUplook_DropDownItemClicked);
+
+            _toolStripMenuItemFilterColumnMap.Add(logParser.UniqueLogKey, rootMenu);
+            viewToolStripMenuItem.DropDownItems.Add(rootMenu);
+
+
+
             List<ToolStripMenuItem> toolStripMenuItemCollection = new();
 
             foreach (LogPattern logPattern in logPatterns)
@@ -275,17 +292,8 @@ namespace StatlookLogViewer
         {
             ILogParser logParser = logTapPage.LogParser;
 
-            ToolStripItemCollection toolStripItemCollection = null;
-
-            if (logParser is StatlookLogParser)
-                toolStripItemCollection = ToolStripMenuItemUplook.DropDownItems;
-            else if (logParser is UsmLogParser)
-                toolStripItemCollection = ToolStripMenuItemUSM.DropDownItems;
-
-            if (toolStripItemCollection == null)
-                return;
-
-            logTapPage.SetListViewColumnsColumnsVisibility(toolStripItemCollection);
+            if (_toolStripMenuItemFilterColumnMap.TryGetValue(logParser.UniqueLogKey, out ToolStripMenuItem rootMenu))
+                logTapPage.SetListViewColumnsColumnsVisibility(rootMenu.DropDownItems);
         }
 
         private void CollapseAllGroups() => ChangeGroupState(ListViewGroupState.Collapsed);
@@ -457,7 +465,7 @@ namespace StatlookLogViewer
                 toolStripTextBox.Text = string.Empty;
 
                 //Wyłącznie menu widocznosci kolumn(atrapa)
-                toolStripMenuItemGeneral.Visible = false;
+                //toolStripMenuItemGeneral.Visible = false;
 
                 //Włączenie przycisku Close page
                 closeToolStripMenuItem1.Enabled = true;
@@ -485,15 +493,17 @@ namespace StatlookLogViewer
                 {
                     if (control.GetType() == typeof(ListViewExtended))
                     {
-                        if (tabPage.LogParser is StatlookLogParser)
+
+                        foreach (var item in _toolStripMenuItemFilterColumnMap)
                         {
-                            ToolStripMenuItemUplook.Visible = true;
-                            ToolStripMenuItemUSM.Visible = false;
-                        }
-                        else if (tabPage.LogParser is UsmLogParser)
-                        {
-                            ToolStripMenuItemUplook.Visible = false;
-                            ToolStripMenuItemUSM.Visible = true;
+                            if (item.Key == tabPage.LogParser.UniqueLogKey)
+                            {
+                                item.Value.Visible = item.Value.Enabled = true;
+                            }
+                            else
+                            {
+                                item.Value.Visible = item.Value.Enabled = false;
+                            }
                         }
 
                         ShowListViewColumns(tabPage);
@@ -528,11 +538,10 @@ namespace StatlookLogViewer
                 //Deaktywacja przycisków menu File
                 closeAllToolStripMenuItem.Enabled = false;
                 closeAllWithoutActiveToolStripMenuItem.Enabled = false;
-                //Wyłączenie menu widocznosci kolumn
-                ToolStripMenuItemUplook.Visible = false;
-                ToolStripMenuItemUSM.Visible = false;
-                //Aktywowanie menu widocznosci kolumn(atrapa)
-                toolStripMenuItemGeneral.Visible = true;
+
+                foreach (var item in _toolStripMenuItemFilterColumnMap)
+                    item.Value.Visible = false;
+
                 //Wyłączenie menu grupowania 
                 grupyToolStripMenuItem.Enabled = false;
                 zwinToolStripMenuItem.Enabled = false;
@@ -567,10 +576,7 @@ namespace StatlookLogViewer
 
         private void toolStripButtonClose_Click(object sender, EventArgs e)
         {
-            if (_tabControlMain.SelectedTab.Name == "tabPageInfo")
-                toolStripMenuItemGeneral.Visible = true;
-            else
-                ClosePage();
+            ClosePage();
         }
 
 
@@ -623,7 +629,6 @@ namespace StatlookLogViewer
         {
             if (_tabControlMain.SelectedTab != tabPageInfo)
             {
-                toolStripMenuItemGeneral.Visible = false;
                 int selectedIndex = _tabControlMain.SelectedIndex;
                 _tabControlMain.TabPages.Remove(_tabControlMain.SelectedTab);
                 if (_tabControlMain.TabPages.Count > 1)
@@ -638,10 +643,7 @@ namespace StatlookLogViewer
                     }
                 }
             }
-            else
-            {
-                toolStripMenuItemGeneral.Visible = true;
-            }
+
         }
 
         private void toolStripMenuItem2_Click(object sender, EventArgs e)
@@ -884,61 +886,44 @@ namespace StatlookLogViewer
 
                 LogTapPage newPage = logLineCollection.AnalyzeLogFile(filePath);
 
-                if (newPage.LogParser is StatlookLogParser)
+
+                ToolStripMenuItem rootMenu = null;
+
+                foreach (var item in _toolStripMenuItemFilterColumnMap)
                 {
-                    ToolStripMenuItemUplook.Visible = true;
-                    ToolStripMenuItemUplook.Enabled = true;
-                    ToolStripMenuItemUSM.Visible = false;
-
-                    _columnToShowParserMap.TryGetValue(newPage.LogParser.UniqueLogKey, out List<Tuple<string, bool>> columnToShowCollection);
-
-                    foreach (ToolStripMenuItem toolStripMenuItem in ToolStripMenuItemUplook.DropDownItems)
+                    if (newPage.LogParser.UniqueLogKey == item.Key)
                     {
-                        foreach (Tuple<string, bool> columnToShow in columnToShowCollection)
-                        {
-                            if (string.Compare(toolStripMenuItem.Name, columnToShow.Item1) == 0)
-                            {
-                                if (columnToShow.Item2)
-                                {
-                                    toolStripMenuItem.CheckState = CheckState.Checked;
-                                }
-                                else
-                                {
-                                    toolStripMenuItem.CheckState = CheckState.Unchecked;
-                                }
-                                break;
-                            }
-                        }
+                        item.Value.Visible = item.Value.Enabled = true;
+                        rootMenu = item.Value;
                     }
-
-                }
-                else if (newPage.LogParser is UsmLogParser)
-                {
-                    ToolStripMenuItemUSM.Enabled = true;
-                    ToolStripMenuItemUSM.Visible = true;
-                    ToolStripMenuItemUplook.Visible = false;
-
-                    _columnToShowParserMap.TryGetValue(newPage.LogParser.UniqueLogKey, out List<Tuple<string, bool>> columnToShowCollection);
-
-                    foreach (ToolStripMenuItem toolStripMenuItem in ToolStripMenuItemUSM.DropDownItems)
+                    else
                     {
-                        foreach (Tuple<string, bool> columnToShow in columnToShowCollection)
+                        item.Value.Visible = item.Value.Enabled = false;
+                    }
+                }
+
+                _columnToShowParserMap.TryGetValue(newPage.LogParser.UniqueLogKey, out List<Tuple<string, bool>> columnToShowCollection);
+
+                foreach (ToolStripMenuItem toolStripMenuItem in rootMenu.DropDownItems)
+                {
+                    foreach (Tuple<string, bool> columnToShow in columnToShowCollection)
+                    {
+                        if (string.Compare(toolStripMenuItem.Name, columnToShow.Item1) == 0)
                         {
-                            if (string.Compare(toolStripMenuItem.Name, columnToShow.Item1) == 0)
+                            if (columnToShow.Item2)
                             {
-                                if (columnToShow.Item2)
-                                {
-                                    toolStripMenuItem.CheckState = CheckState.Checked;
-                                }
-                                else
-                                {
-                                    toolStripMenuItem.CheckState = CheckState.Unchecked;
-                                }
-                                break;
+                                toolStripMenuItem.CheckState = CheckState.Checked;
                             }
+                            else
+                            {
+                                toolStripMenuItem.CheckState = CheckState.Unchecked;
+                            }
+                            break;
                         }
                     }
                 }
+
+
 
                 _tabControlMain.Controls.Add(newPage);
                 _tabControlMain.SelectTab(newPage);

@@ -41,9 +41,6 @@
             this.viewToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.refreshToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.toolStripSeparator11 = new System.Windows.Forms.ToolStripSeparator();
-            this.toolStripMenuItemGeneral = new System.Windows.Forms.ToolStripMenuItem();
-            this.ToolStripMenuItemUplook = new System.Windows.Forms.ToolStripMenuItem();
-            this.ToolStripMenuItemUSM = new System.Windows.Forms.ToolStripMenuItem();
             this.grupyToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.zwinToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.rozwinWszystkieToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
@@ -222,9 +219,6 @@
             this.viewToolStripMenuItem.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
             this.refreshToolStripMenuItem,
             this.toolStripSeparator11,
-            this.toolStripMenuItemGeneral,
-            this.ToolStripMenuItemUplook,
-            this.ToolStripMenuItemUSM,
             this.grupyToolStripMenuItem});
             this.viewToolStripMenuItem.Name = "viewToolStripMenuItem";
             resources.ApplyResources(this.viewToolStripMenuItem, "viewToolStripMenuItem");
@@ -239,23 +233,6 @@
             // 
             this.toolStripSeparator11.Name = "toolStripSeparator11";
             resources.ApplyResources(this.toolStripSeparator11, "toolStripSeparator11");
-            // 
-            // toolStripMenuItemGeneral
-            // 
-            resources.ApplyResources(this.toolStripMenuItemGeneral, "toolStripMenuItemGeneral");
-            this.toolStripMenuItemGeneral.Name = "toolStripMenuItemGeneral";
-            // 
-            // ToolStripMenuItemUplook
-            // 
-            resources.ApplyResources(this.ToolStripMenuItemUplook, "ToolStripMenuItemUplook");
-            this.ToolStripMenuItemUplook.Name = "ToolStripMenuItemUplook";
-            this.ToolStripMenuItemUplook.DropDownItemClicked += new System.Windows.Forms.ToolStripItemClickedEventHandler(this.ToolStripMenuItemUplook_DropDownItemClicked);
-            // 
-            // ToolStripMenuItemUSM
-            // 
-            resources.ApplyResources(this.ToolStripMenuItemUSM, "ToolStripMenuItemUSM");
-            this.ToolStripMenuItemUSM.Name = "ToolStripMenuItemUSM";
-            this.ToolStripMenuItemUSM.DropDownItemClicked += new System.Windows.Forms.ToolStripItemClickedEventHandler(this.ToolStripMenuItemUSM_DropDownItemClicked);
             // 
             // grupyToolStripMenuItem
             // 
@@ -445,12 +422,12 @@
             this.tableLayoutPanelFiles.Controls.Add(this._tabControlMain, 1, 0);
             this.tableLayoutPanelFiles.Name = "tableLayoutPanelFiles";
             // 
-            // tabControlMain
+            // _tabControlMain
             // 
             this._tabControlMain.Controls.Add(this.tabPageInfo);
-            resources.ApplyResources(this._tabControlMain, "tabControlMain");
+            resources.ApplyResources(this._tabControlMain, "_tabControlMain");
             this._tabControlMain.DrawMode = System.Windows.Forms.TabDrawMode.OwnerDrawFixed;
-            this._tabControlMain.Name = "tabControlMain";
+            this._tabControlMain.Name = "_tabControlMain";
             this._tabControlMain.SelectedIndex = 0;
             this._tabControlMain.SelectedIndexChanged += new System.EventHandler(this.tabControlMain_SelectedIndexChanged);
             this._tabControlMain.MouseUp += new System.Windows.Forms.MouseEventHandler(this.tabControlMain_MouseUp);
@@ -927,7 +904,6 @@
         private System.Windows.Forms.ColumnHeader columnHeader2;
         private System.Windows.Forms.Label labelStatus;
         private System.Windows.Forms.ToolStripMenuItem viewToolStripMenuItem;
-        private System.Windows.Forms.ToolStripMenuItem ToolStripMenuItemUplook;
         /*private System.Windows.Forms.ToolStripMenuItem dateToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem loggerToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem threaToolStripMenuItem;
@@ -1007,8 +983,6 @@
         private System.Windows.Forms.ToolStripLabel toolStripLabelCreationTime;
         private System.Windows.Forms.ToolStripSeparator toolStripSeparator_2;
         private System.Windows.Forms.ToolStripLabel toolStripLableSize;
-        private System.Windows.Forms.ToolStripMenuItem ToolStripMenuItemUSM;
-        private System.Windows.Forms.ToolStripMenuItem toolStripMenuItemGeneral;
         private System.Windows.Forms.GroupBox groupBoxOptions;
         private System.Windows.Forms.CheckBox checkBoxUser;
         private System.Windows.Forms.CheckBox checkBoxLogs;
