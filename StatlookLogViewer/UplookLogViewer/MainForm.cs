@@ -225,22 +225,22 @@ namespace StatlookLogViewer
             //Otwarcie pojedynczego pliku o rozszerzeniu .zip
             if ((openFileDialog.FileNames.Length == 1) && (openFileDialog.SafeFileName.Substring(openFileDialog.SafeFileName.Length - 4, 4) == Configuration.ZIP_FILE_EXTENSION))
             {
-                OpenZip openZip = new(openFileDialog.FileName);
+                using OpenZip openZip = new(openFileDialog.FileName);
 
-                using (ZipFile zip = ZipFile.Read(openFileDialog.FileName))
+                using (ZipFile zipFile = ZipFile.Read(openFileDialog.FileName))
                 {
                     int i = 1;
-                    foreach (ZipEntry e in zip)
+                    foreach (ZipEntry e in zipFile)
                     {
-                        ListViewItem plikInfo = new()
+                        ListViewItem listViewItem = new()
                         {
                             Text = i.ToString()
                         };
-                        plikInfo.SubItems.Add(e.FileName);
-                        plikInfo.SubItems.Add(e.LastModified.ToString());
-                        plikInfo.SubItems.Add(IOTools.FormatFileSize(e.UncompressedSize));
-                        plikInfo.SubItems.Add(openFileDialog.InitialDirectory);
-                        openZip.AddItem(plikInfo);
+                        listViewItem.SubItems.Add(e.FileName);
+                        listViewItem.SubItems.Add(e.LastModified.ToString());
+                        listViewItem.SubItems.Add(IOTools.FormatFileSize(e.UncompressedSize));
+                        listViewItem.SubItems.Add(openFileDialog.InitialDirectory);
+                        openZip.AddItem(listViewItem);
                         i++;
                     }
                 }
@@ -282,7 +282,7 @@ namespace StatlookLogViewer
                     }
                     else
                     {
-                        analizeUplookLog(filePath, fileInfo.LastWriteTime);
+                        AnalizeLog(filePath, fileInfo.LastWriteTime);
                     }
                 }
             }
@@ -354,7 +354,7 @@ namespace StatlookLogViewer
 
         #region Event Handlers
 
-        private void openFileToolStripMenuItem_Click(object sender, EventArgs e) => OpenLogFile();
+        private void OpenFileToolStripMenuItem_Click(object sender, EventArgs e) => OpenLogFile();
 
         private void ToolStripButton2_Click(object sender, EventArgs e) => OpenLogFile();
 
@@ -450,12 +450,12 @@ namespace StatlookLogViewer
                 {
                     DateTime.TryParse(listViewItem.SubItems[2].Text, out DateTime lastWriteTime);
 
-                    analizeUplookLog(filePath, lastWriteTime);
+                    AnalizeLog(filePath, lastWriteTime);
                 }
             }
         }
 
-        private void tabControlMain_SelectedIndexChanged(object sender, EventArgs e)
+        private void TabControlMain_SelectedIndexChanged(object sender, EventArgs e)
         {
             TabPage selectedTabPage = GetSelectedTabPage();
 
@@ -580,7 +580,7 @@ namespace StatlookLogViewer
         }
 
 
-        private void closeAllToolStripMenuItem_Click(object sender, EventArgs e)
+        private void CloseAllToolStripMenuItem_Click(object sender, EventArgs e)
         {
             for (int i = 0; i < _tabControlMain.TabCount; i++)
             {
@@ -591,9 +591,10 @@ namespace StatlookLogViewer
             }
         }
 
-        private void closeAllWithoutActiveToolStripMenuItem_Click(object sender, EventArgs e)
+        private void CloseAllWithoutActiveToolStripMenuItem_Click(object sender, EventArgs e)
         {
             int selectedIndex = _tabControlMain.SelectedIndex;
+
             for (int i = _tabControlMain.TabCount - 1; i > 0; i--)
             {
                 if ((i != 0) && (i != selectedIndex))
@@ -603,44 +604,44 @@ namespace StatlookLogViewer
             }
         }
 
-        private void tabControlMain_MouseUp(object sender, MouseEventArgs e)
+        private void TabControlMain_MouseUp(object sender, MouseEventArgs e)
         {
-            if (e.Button == MouseButtons.Right)
-            {
-                int tabIndex;
-                for (tabIndex = 0; tabIndex <= _tabControlMain.TabCount - 1; tabIndex++)
-                {
-                    if (_tabControlMain.GetTabRect(tabIndex).Contains(e.Location))
-                    {
-                        _tabControlMain.SelectedIndex = tabIndex;
+            if (e.Button != MouseButtons.Right)
+                return;
 
-                        if (_tabControlMain.SelectedIndex != 0)
-                        {
-                            contextMenuStripPage.Show(_tabControlMain, e.Location);
-                        }
+            int tabIndex;
+
+            for (tabIndex = 0; tabIndex <= _tabControlMain.TabCount - 1; tabIndex++)
+            {
+                if (_tabControlMain.GetTabRect(tabIndex).Contains(e.Location))
+                {
+                    _tabControlMain.SelectedIndex = tabIndex;
+
+                    if (_tabControlMain.SelectedIndex != 0)
+                    {
+                        contextMenuStripPage.Show(_tabControlMain, e.Location);
                     }
                 }
-
             }
 
         }
 
         private void toolStripMenuItem3_Click(object sender, EventArgs e)
         {
-            if (_tabControlMain.SelectedTab != tabPageInfo)
+            if (_tabControlMain.SelectedTab == tabPageInfo)
+                return;
+
+            int selectedIndex = _tabControlMain.SelectedIndex;
+            _tabControlMain.TabPages.Remove(_tabControlMain.SelectedTab);
+            if (_tabControlMain.TabPages.Count > 1)
             {
-                int selectedIndex = _tabControlMain.SelectedIndex;
-                _tabControlMain.TabPages.Remove(_tabControlMain.SelectedTab);
-                if (_tabControlMain.TabPages.Count > 1)
+                if (selectedIndex == _tabControlMain.TabPages.Count)
                 {
-                    if (selectedIndex == _tabControlMain.TabPages.Count)
-                    {
-                        _tabControlMain.SelectedIndex = selectedIndex - 1;
-                    }
-                    else
-                    {
-                        _tabControlMain.SelectedIndex = selectedIndex;
-                    }
+                    _tabControlMain.SelectedIndex = selectedIndex - 1;
+                }
+                else
+                {
+                    _tabControlMain.SelectedIndex = selectedIndex;
                 }
             }
 
@@ -706,14 +707,14 @@ namespace StatlookLogViewer
             _tabControlMain.TabPages.Remove(_tabControlMain.SelectedTab);
         }
 
-        private void toolStripMenuItemOpenFile_Click(object sender, EventArgs e)
+        private void ToolStripMenuItemOpenFile_Click(object sender, EventArgs e)
         {
             //Otwarcie pojedynczego pliku o rozszerzeniu .zip z poziomu listy plików w zakładce Info
             if ((listViewFiles.SelectedItems.Count == 1) && (listViewFiles.SelectedItems[0].SubItems[1].Text.Substring(listViewFiles.SelectedItems[0].SubItems[1].Text.Length - 4, 4) == ".zip"))
             {
                 string fileFullPath = GetFilePathFromListViewItem(listViewFiles.SelectedItems[0]);
 
-                OpenZip openZip = new();
+                using OpenZip openZip = new();
 
                 using (ZipFile zipFile = ZipFile.Read(fileFullPath))
                 {
@@ -721,16 +722,16 @@ namespace StatlookLogViewer
 
                     foreach (ZipEntry e1 in zipFile)
                     {
-                        ListViewItem plikInfo = new()
+                        ListViewItem listViewItem = new()
                         {
                             Text = i.ToString()
                         };
 
-                        plikInfo.SubItems.Add(e1.FileName);
-                        plikInfo.SubItems.Add(e1.LastModified.ToString());
-                        plikInfo.SubItems.Add(IOTools.FormatFileSize(e1.UncompressedSize));
-                        plikInfo.SubItems.Add(fileFullPath);
-                        openZip.AddItem(plikInfo);
+                        listViewItem.SubItems.Add(e1.FileName);
+                        listViewItem.SubItems.Add(e1.LastModified.ToString());
+                        listViewItem.SubItems.Add(IOTools.FormatFileSize(e1.UncompressedSize));
+                        listViewItem.SubItems.Add(fileFullPath);
+                        openZip.AddItem(listViewItem);
                         i++;
                     }
                     //listViewFiles.Items.Add(plikInfo);
@@ -754,7 +755,7 @@ namespace StatlookLogViewer
                     }
                     else
                     {
-                        analizeUplookLog(fileInfo.FullName, fileInfo.LastWriteTime);
+                        AnalizeLog(fileInfo.FullName, fileInfo.LastWriteTime);
                     }
                 }
             }
@@ -876,7 +877,7 @@ namespace StatlookLogViewer
             }
         }
 
-        private void analizeUplookLog(string filePath, DateTime lastWriteTime)
+        private void AnalizeLog(string filePath, DateTime lastWriteTime)
         {
             string fileName = Path.GetFileName(filePath);
 
@@ -1029,7 +1030,7 @@ namespace StatlookLogViewer
 
             TabPage selectedTabPage = GetSelectedTabPage();
 
-            if (selectedTabPage.Name != "tabPageInfo")
+            if (selectedTabPage != tabPageInfo)
             {
                 LogTapPage tabPage = Controls.Find(selectedTabPage.Name, true)[0] as LogTapPage;
 
@@ -1060,9 +1061,7 @@ namespace StatlookLogViewer
                 ArrayList myfileinfos = new();
 
                 foreach (string ext in _fileExtensions)
-                {
                     myfileinfos.AddRange(s.GetFiles(ext, SearchOption.AllDirectories));
-                }
 
                 FileInfo[] fileCollection = (FileInfo[])myfileinfos.ToArray(typeof(FileInfo));
 
@@ -1070,7 +1069,7 @@ namespace StatlookLogViewer
 
                 labelSize.Text = IOTools.FormatFileSize(totalSize);
 
-                labelCount.Text = (fileCollection.Length).ToString() + " plików, " + directoryCollection.Length.ToString() + " folderów";
+                labelCount.Text = (fileCollection.Length).ToString() + " files, " + directoryCollection.Length.ToString() + " directories";
             }
             catch
             {
@@ -1086,9 +1085,7 @@ namespace StatlookLogViewer
             float totalSize = 0;
 
             foreach (FileInfo file in filesCollection)
-            {
                 totalSize += file.Length;
-            }
 
             return totalSize;
         }
@@ -1129,13 +1126,9 @@ namespace StatlookLogViewer
             TabPage selectedTabPage = GetSelectedTabPage();
 
             if (selectedTabPage == tabPageInfo)
-            {
                 SearchInDashboardView();
-            }
             else
-            {
                 SearchInLogFileView(selectedTabPage);
-            }
 
         }
 

@@ -178,7 +178,7 @@
             // 
             resources.ApplyResources(this.openFileToolStripMenuItem, "openFileToolStripMenuItem");
             this.openFileToolStripMenuItem.Name = "openFileToolStripMenuItem";
-            this.openFileToolStripMenuItem.Click += new System.EventHandler(this.openFileToolStripMenuItem_Click);
+            this.openFileToolStripMenuItem.Click += new System.EventHandler(this.OpenFileToolStripMenuItem_Click);
             // 
             // toolStripSeparator6
             // 
@@ -195,13 +195,13 @@
             // 
             resources.ApplyResources(this.closeAllToolStripMenuItem, "closeAllToolStripMenuItem");
             this.closeAllToolStripMenuItem.Name = "closeAllToolStripMenuItem";
-            this.closeAllToolStripMenuItem.Click += new System.EventHandler(this.closeAllToolStripMenuItem_Click);
+            this.closeAllToolStripMenuItem.Click += new System.EventHandler(this.CloseAllToolStripMenuItem_Click);
             // 
             // closeAllWithoutActiveToolStripMenuItem
             // 
             resources.ApplyResources(this.closeAllWithoutActiveToolStripMenuItem, "closeAllWithoutActiveToolStripMenuItem");
             this.closeAllWithoutActiveToolStripMenuItem.Name = "closeAllWithoutActiveToolStripMenuItem";
-            this.closeAllWithoutActiveToolStripMenuItem.Click += new System.EventHandler(this.closeAllWithoutActiveToolStripMenuItem_Click);
+            this.closeAllWithoutActiveToolStripMenuItem.Click += new System.EventHandler(this.CloseAllWithoutActiveToolStripMenuItem_Click);
             // 
             // toolStripSeparator2
             // 
@@ -429,8 +429,8 @@
             this._tabControlMain.DrawMode = System.Windows.Forms.TabDrawMode.OwnerDrawFixed;
             this._tabControlMain.Name = "_tabControlMain";
             this._tabControlMain.SelectedIndex = 0;
-            this._tabControlMain.SelectedIndexChanged += new System.EventHandler(this.tabControlMain_SelectedIndexChanged);
-            this._tabControlMain.MouseUp += new System.Windows.Forms.MouseEventHandler(this.tabControlMain_MouseUp);
+            this._tabControlMain.SelectedIndexChanged += new System.EventHandler(this.TabControlMain_SelectedIndexChanged);
+            this._tabControlMain.MouseUp += new System.Windows.Forms.MouseEventHandler(this.TabControlMain_MouseUp);
             // 
             // tabPageInfo
             // 
@@ -687,7 +687,7 @@
             // 
             resources.ApplyResources(this.toolStripMenuItemOpenFile, "toolStripMenuItemOpenFile");
             this.toolStripMenuItemOpenFile.Name = "toolStripMenuItemOpenFile";
-            this.toolStripMenuItemOpenFile.Click += new System.EventHandler(this.toolStripMenuItemOpenFile_Click);
+            this.toolStripMenuItemOpenFile.Click += new System.EventHandler(this.ToolStripMenuItemOpenFile_Click);
             // 
             // toolStripMenuItemDeleteFile
             // 
