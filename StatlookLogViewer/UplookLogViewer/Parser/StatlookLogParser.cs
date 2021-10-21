@@ -18,7 +18,8 @@ namespace StatlookLogViewer.Parser
                 new LogErrorPattern( "80070424", "Brak zainstalowanej usługi: uplook system monitor."),
                 new LogErrorPattern( "80040154", "Brak zainstalowanej usługi: uplook system monitor."),
                 new LogErrorPattern( "ServerNeedsUpdate", "Nieaktualna wersja agenta lub serwera."),
-                new LogErrorPattern( "57P03", "The database system is shutting down.")
+                new LogErrorPattern( "57P03", "The database system is shutting down."),
+                new LogErrorPattern( "InvalidLoginSession", "Invalid login Session.")
             }.ToArray();
         }
 
