@@ -28,8 +28,6 @@
         /// </summary>
         private void InitializeComponent()
         {
-            System.Windows.Forms.TreeNode treeNode1 = new System.Windows.Forms.TreeNode("Ogólne");
-            System.Windows.Forms.TreeNode treeNode2 = new System.Windows.Forms.TreeNode("Deskryptory");
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(Options));
             this.buttonOptionsSave = new System.Windows.Forms.Button();
             this.buttonOptionsCancel = new System.Windows.Forms.Button();
@@ -44,77 +42,57 @@
             // 
             // buttonOptionsSave
             // 
-            this.buttonOptionsSave.Location = new System.Drawing.Point(537, 433);
+            resources.ApplyResources(this.buttonOptionsSave, "buttonOptionsSave");
             this.buttonOptionsSave.Name = "buttonOptionsSave";
-            this.buttonOptionsSave.Size = new System.Drawing.Size(75, 23);
-            this.buttonOptionsSave.TabIndex = 0;
-            this.buttonOptionsSave.Text = "Save";
             this.buttonOptionsSave.UseVisualStyleBackColor = true;
             this.buttonOptionsSave.Click += new System.EventHandler(this.buttonOptionsSave_Click);
             // 
             // buttonOptionsCancel
             // 
-            this.buttonOptionsCancel.Location = new System.Drawing.Point(618, 433);
+            resources.ApplyResources(this.buttonOptionsCancel, "buttonOptionsCancel");
             this.buttonOptionsCancel.Name = "buttonOptionsCancel";
-            this.buttonOptionsCancel.Size = new System.Drawing.Size(75, 23);
-            this.buttonOptionsCancel.TabIndex = 1;
-            this.buttonOptionsCancel.Text = "Cancel";
             this.buttonOptionsCancel.UseVisualStyleBackColor = true;
             this.buttonOptionsCancel.Click += new System.EventHandler(this.buttonOptionsCancel_Click);
             // 
             // splitContainerOptions
             // 
-            this.splitContainerOptions.Location = new System.Drawing.Point(12, 12);
+            resources.ApplyResources(this.splitContainerOptions, "splitContainerOptions");
             this.splitContainerOptions.Name = "splitContainerOptions";
             // 
             // splitContainerOptions.Panel1
             // 
+            resources.ApplyResources(this.splitContainerOptions.Panel1, "splitContainerOptions.Panel1");
             this.splitContainerOptions.Panel1.Controls.Add(this.treeViewOptions);
             // 
             // splitContainerOptions.Panel2
             // 
+            resources.ApplyResources(this.splitContainerOptions.Panel2, "splitContainerOptions.Panel2");
             this.splitContainerOptions.Panel2.Controls.Add(this.oCatalogs);
-            this.splitContainerOptions.Size = new System.Drawing.Size(672, 415);
-            this.splitContainerOptions.SplitterDistance = 208;
-            this.splitContainerOptions.TabIndex = 2;
             // 
             // treeViewOptions
             // 
-            this.treeViewOptions.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.treeViewOptions.Location = new System.Drawing.Point(0, 0);
+            resources.ApplyResources(this.treeViewOptions, "treeViewOptions");
             this.treeViewOptions.Name = "treeViewOptions";
-            treeNode1.Name = "NCatalogs";
-            treeNode1.Text = "Ogólne";
-            treeNode2.Name = "Node0";
-            treeNode2.Text = "Deskryptory";
             this.treeViewOptions.Nodes.AddRange(new System.Windows.Forms.TreeNode[] {
-            treeNode1,
-            treeNode2});
-            this.treeViewOptions.Size = new System.Drawing.Size(208, 415);
-            this.treeViewOptions.TabIndex = 0;
+            ((System.Windows.Forms.TreeNode)(resources.GetObject("treeViewOptions.Nodes"))),
+            ((System.Windows.Forms.TreeNode)(resources.GetObject("treeViewOptions.Nodes1")))});
             this.treeViewOptions.AfterSelect += new System.Windows.Forms.TreeViewEventHandler(this.treeViewOptions_AfterSelect);
             // 
             // oCatalogs
             // 
+            resources.ApplyResources(this.oCatalogs, "oCatalogs");
             this.oCatalogs.BackColor = System.Drawing.SystemColors.Control;
-            this.oCatalogs.Location = new System.Drawing.Point(16, 15);
             this.oCatalogs.Name = "oCatalogs";
-            this.oCatalogs.Size = new System.Drawing.Size(430, 80);
-            this.oCatalogs.TabIndex = 0;
             // 
             // Options
             // 
-            this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
+            resources.ApplyResources(this, "$this");
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(696, 462);
             this.Controls.Add(this.splitContainerOptions);
             this.Controls.Add(this.buttonOptionsCancel);
             this.Controls.Add(this.buttonOptionsSave);
             this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedDialog;
-            this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
             this.Name = "Options";
-            this.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;
-            this.Text = "Options";
             this.splitContainerOptions.Panel1.ResumeLayout(false);
             this.splitContainerOptions.Panel2.ResumeLayout(false);
             ((System.ComponentModel.ISupportInitialize)(this.splitContainerOptions)).EndInit();
