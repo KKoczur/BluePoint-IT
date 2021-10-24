@@ -7,9 +7,12 @@ using StatlookLogViewer.Views;
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using System.ComponentModel;
 using System.Drawing;
+using System.Globalization;
 using System.IO;
 using System.Linq;
+using System.Threading;
 using System.Windows.Forms;
 using static System.Windows.Forms.ListView;
 
@@ -38,6 +41,9 @@ namespace StatlookLogViewer
             InitializeComponent();
 
             _config = Configuration.GetConfiguration();
+
+            if (string.Compare(_config.CurrentLanguage, "en-us") != 0)
+                ChangeLanguage(_config.CurrentLanguage);
 
             _logParserMap = LogLineCollection.GetLogParserMap();
 
@@ -348,6 +354,45 @@ namespace StatlookLogViewer
                     _tabControlMain.SelectedIndex = selectedTapPageIndex;
                 }
             }
+        }
+
+        /// <summary>
+        /// Change language
+        /// </summary>
+        /// <param name="lang">Language code</param>
+        private void ChangeLanguage(string lang)
+        {
+            Thread.CurrentThread.CurrentUICulture = CultureInfo.GetCultureInfo(lang);
+            ApplyResourceToControl(
+            this,
+            new ComponentResourceManager(typeof(MainForm)),
+            new CultureInfo(lang));
+
+            _config.CurrentLanguage = lang;
+        }
+
+        private void ApplyResourceToControl(
+           Control control,
+           ComponentResourceManager cmp,
+           CultureInfo cultureInfo)
+            {
+                foreach (Control child in control.Controls)
+                {
+                    //Store current position and size of the control
+                    var childSize = child.Size;
+                    var childLoc = child.Location;
+                    //Apply CultureInfo to child control
+                    ApplyResourceToControl(child, cmp, cultureInfo);
+                    //Restore position and size
+                    child.Location = childLoc;
+                    child.Size = childSize;
+                }
+                //Do the same with the parent control
+                var parentSize = control.Size;
+                var parentLoc = control.Location;
+                cmp.ApplyResources(control, control.Name, cultureInfo);
+                control.Location = parentLoc;
+                control.Size = parentSize;
         }
 
         #endregion Methods
@@ -1255,7 +1300,14 @@ namespace StatlookLogViewer
             }
         }
 
+        private void EnglishToolStripMenuItem_Click(object sender, EventArgs e) 
+            => ChangeLanguage("en-us");
+
+        private void PolishToolStripMenuItem_Click(object sender, EventArgs e) 
+            => ChangeLanguage("pl-pl");
+
         #endregion Event Handlers
+
     }
 
 }

@@ -29,6 +29,30 @@
         {
             this.components = new System.ComponentModel.Container();
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(MainForm));
+            this.splitContainerInfo = new System.Windows.Forms.SplitContainer();
+            this.groupBoxOptions = new System.Windows.Forms.GroupBox();
+            this.checkBoxUser = new System.Windows.Forms.CheckBox();
+            this.checkBoxLogs = new System.Windows.Forms.CheckBox();
+            this.groupBoxUser = new System.Windows.Forms.GroupBox();
+            this.labelFilesCountValueUser = new System.Windows.Forms.Label();
+            this.labelFilesCountUser = new System.Windows.Forms.Label();
+            this.label3 = new System.Windows.Forms.Label();
+            this.labelFilesSizeUser = new System.Windows.Forms.Label();
+            this.labelFilesSizeValueUser = new System.Windows.Forms.Label();
+            this.labelUserPathValue = new System.Windows.Forms.Label();
+            this.groupBoxCatalogUplook = new System.Windows.Forms.GroupBox();
+            this.labelFilesCountValue = new System.Windows.Forms.Label();
+            this.labelFilesCount = new System.Windows.Forms.Label();
+            this.labelLogsPath = new System.Windows.Forms.Label();
+            this.labelFilesSize = new System.Windows.Forms.Label();
+            this.labelFilesSizeValue = new System.Windows.Forms.Label();
+            this.labelLogsPathValue = new System.Windows.Forms.Label();
+            this.listViewFiles = new System.Windows.Forms.ListView();
+            this.columnHeaderLn1 = new System.Windows.Forms.ColumnHeader();
+            this.columnHeaderFileName = new System.Windows.Forms.ColumnHeader();
+            this.columnHeaderDate = new System.Windows.Forms.ColumnHeader();
+            this.columnHeaderSize = new System.Windows.Forms.ColumnHeader();
+            this.columnHeaderPath1 = new System.Windows.Forms.ColumnHeader();
             this.menuMainStrip = new System.Windows.Forms.MenuStrip();
             this.toolStripMenuItem1 = new System.Windows.Forms.ToolStripMenuItem();
             this.openFileToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
@@ -46,6 +70,9 @@
             this.rozwinWszystkieToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.toolsToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.analizeToolStripMenuItem2 = new System.Windows.Forms.ToolStripMenuItem();
+            this.languagesToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.englishToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.polishToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.aboutToolStripMenuItem1 = new System.Windows.Forms.ToolStripMenuItem();
             this.fileToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.closeToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
@@ -73,30 +100,6 @@
             this.tableLayoutPanelFiles = new System.Windows.Forms.TableLayoutPanel();
             this._tabControlMain = new StatlookLogViewer.Views.TabControlEx();
             this.tabPageInfo = new System.Windows.Forms.TabPage();
-            this.splitContainerInfo = new System.Windows.Forms.SplitContainer();
-            this.groupBoxOptions = new System.Windows.Forms.GroupBox();
-            this.checkBoxUser = new System.Windows.Forms.CheckBox();
-            this.checkBoxLogs = new System.Windows.Forms.CheckBox();
-            this.groupBoxUser = new System.Windows.Forms.GroupBox();
-            this.labelFilesCountValueUser = new System.Windows.Forms.Label();
-            this.labelFilesCountUser = new System.Windows.Forms.Label();
-            this.label3 = new System.Windows.Forms.Label();
-            this.labelFilesSizeUser = new System.Windows.Forms.Label();
-            this.labelFilesSizeValueUser = new System.Windows.Forms.Label();
-            this.labelUserPathValue = new System.Windows.Forms.Label();
-            this.groupBoxCatalogUplook = new System.Windows.Forms.GroupBox();
-            this.labelFilesCountValue = new System.Windows.Forms.Label();
-            this.labelFilesCount = new System.Windows.Forms.Label();
-            this.labelLogsPath = new System.Windows.Forms.Label();
-            this.labelFilesSize = new System.Windows.Forms.Label();
-            this.labelFilesSizeValue = new System.Windows.Forms.Label();
-            this.labelLogsPathValue = new System.Windows.Forms.Label();
-            this.listViewFiles = new System.Windows.Forms.ListView();
-            this.columnHeaderLn1 = new System.Windows.Forms.ColumnHeader();
-            this.columnHeaderFileName = new System.Windows.Forms.ColumnHeader();
-            this.columnHeaderDate = new System.Windows.Forms.ColumnHeader();
-            this.columnHeaderSize = new System.Windows.Forms.ColumnHeader();
-            this.columnHeaderPath1 = new System.Windows.Forms.ColumnHeader();
             this.toolStripButton = new System.Windows.Forms.ToolStrip();
             this.toolStripButtonIcon = new System.Windows.Forms.ToolStripButton();
             this.toolStripStatusReady = new System.Windows.Forms.ToolStripLabel();
@@ -133,12 +136,6 @@
             this.timerFind = new System.Windows.Forms.Timer(this.components);
             this.openToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.toolStripButton1 = new System.Windows.Forms.ToolStripButton();
-            this.menuMainStrip.SuspendLayout();
-            this.tableLayoutPanelMain.SuspendLayout();
-            this.toolStripMain.SuspendLayout();
-            this.tableLayoutPanelFiles.SuspendLayout();
-            this._tabControlMain.SuspendLayout();
-            this.tabPageInfo.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.splitContainerInfo)).BeginInit();
             this.splitContainerInfo.Panel1.SuspendLayout();
             this.splitContainerInfo.Panel2.SuspendLayout();
@@ -146,10 +143,187 @@
             this.groupBoxOptions.SuspendLayout();
             this.groupBoxUser.SuspendLayout();
             this.groupBoxCatalogUplook.SuspendLayout();
+            this.menuMainStrip.SuspendLayout();
+            this.tableLayoutPanelMain.SuspendLayout();
+            this.toolStripMain.SuspendLayout();
+            this.tableLayoutPanelFiles.SuspendLayout();
+            this._tabControlMain.SuspendLayout();
+            this.tabPageInfo.SuspendLayout();
             this.toolStripButton.SuspendLayout();
             this.contextMenuStripList.SuspendLayout();
             this.contextMenuStripPage.SuspendLayout();
             this.SuspendLayout();
+            // 
+            // splitContainerInfo
+            // 
+            resources.ApplyResources(this.splitContainerInfo, "splitContainerInfo");
+            this.splitContainerInfo.Cursor = System.Windows.Forms.Cursors.HSplit;
+            this.splitContainerInfo.FixedPanel = System.Windows.Forms.FixedPanel.Panel1;
+            this.splitContainerInfo.Name = "splitContainerInfo";
+            // 
+            // splitContainerInfo.Panel1
+            // 
+            resources.ApplyResources(this.splitContainerInfo.Panel1, "splitContainerInfo.Panel1");
+            this.splitContainerInfo.Panel1.BackColor = System.Drawing.Color.Transparent;
+            this.splitContainerInfo.Panel1.Controls.Add(this.groupBoxOptions);
+            this.splitContainerInfo.Panel1.Controls.Add(this.groupBoxUser);
+            this.splitContainerInfo.Panel1.Controls.Add(this.groupBoxCatalogUplook);
+            // 
+            // splitContainerInfo.Panel2
+            // 
+            resources.ApplyResources(this.splitContainerInfo.Panel2, "splitContainerInfo.Panel2");
+            this.splitContainerInfo.Panel2.Controls.Add(this.listViewFiles);
+            // 
+            // groupBoxOptions
+            // 
+            resources.ApplyResources(this.groupBoxOptions, "groupBoxOptions");
+            this.groupBoxOptions.BackColor = System.Drawing.Color.White;
+            this.groupBoxOptions.Controls.Add(this.checkBoxUser);
+            this.groupBoxOptions.Controls.Add(this.checkBoxLogs);
+            this.groupBoxOptions.Name = "groupBoxOptions";
+            this.groupBoxOptions.TabStop = false;
+            // 
+            // checkBoxUser
+            // 
+            resources.ApplyResources(this.checkBoxUser, "checkBoxUser");
+            this.checkBoxUser.Checked = true;
+            this.checkBoxUser.CheckState = System.Windows.Forms.CheckState.Checked;
+            this.checkBoxUser.Name = "checkBoxUser";
+            this.checkBoxUser.UseVisualStyleBackColor = true;
+            this.checkBoxUser.CheckedChanged += new System.EventHandler(this.CheckBoxUser_CheckedChanged);
+            // 
+            // checkBoxLogs
+            // 
+            resources.ApplyResources(this.checkBoxLogs, "checkBoxLogs");
+            this.checkBoxLogs.Checked = true;
+            this.checkBoxLogs.CheckState = System.Windows.Forms.CheckState.Checked;
+            this.checkBoxLogs.Name = "checkBoxLogs";
+            this.checkBoxLogs.UseVisualStyleBackColor = true;
+            this.checkBoxLogs.CheckedChanged += new System.EventHandler(this.CheckBoxLogs_CheckedChanged);
+            // 
+            // groupBoxUser
+            // 
+            resources.ApplyResources(this.groupBoxUser, "groupBoxUser");
+            this.groupBoxUser.BackColor = System.Drawing.Color.White;
+            this.groupBoxUser.Controls.Add(this.labelFilesCountValueUser);
+            this.groupBoxUser.Controls.Add(this.labelFilesCountUser);
+            this.groupBoxUser.Controls.Add(this.label3);
+            this.groupBoxUser.Controls.Add(this.labelFilesSizeUser);
+            this.groupBoxUser.Controls.Add(this.labelFilesSizeValueUser);
+            this.groupBoxUser.Controls.Add(this.labelUserPathValue);
+            this.groupBoxUser.Name = "groupBoxUser";
+            this.groupBoxUser.TabStop = false;
+            // 
+            // labelFilesCountValueUser
+            // 
+            resources.ApplyResources(this.labelFilesCountValueUser, "labelFilesCountValueUser");
+            this.labelFilesCountValueUser.Name = "labelFilesCountValueUser";
+            // 
+            // labelFilesCountUser
+            // 
+            resources.ApplyResources(this.labelFilesCountUser, "labelFilesCountUser");
+            this.labelFilesCountUser.Name = "labelFilesCountUser";
+            // 
+            // label3
+            // 
+            resources.ApplyResources(this.label3, "label3");
+            this.label3.Name = "label3";
+            // 
+            // labelFilesSizeUser
+            // 
+            resources.ApplyResources(this.labelFilesSizeUser, "labelFilesSizeUser");
+            this.labelFilesSizeUser.Name = "labelFilesSizeUser";
+            // 
+            // labelFilesSizeValueUser
+            // 
+            resources.ApplyResources(this.labelFilesSizeValueUser, "labelFilesSizeValueUser");
+            this.labelFilesSizeValueUser.Name = "labelFilesSizeValueUser";
+            // 
+            // labelUserPathValue
+            // 
+            resources.ApplyResources(this.labelUserPathValue, "labelUserPathValue");
+            this.labelUserPathValue.Name = "labelUserPathValue";
+            // 
+            // groupBoxCatalogUplook
+            // 
+            resources.ApplyResources(this.groupBoxCatalogUplook, "groupBoxCatalogUplook");
+            this.groupBoxCatalogUplook.BackColor = System.Drawing.Color.White;
+            this.groupBoxCatalogUplook.Controls.Add(this.labelFilesCountValue);
+            this.groupBoxCatalogUplook.Controls.Add(this.labelFilesCount);
+            this.groupBoxCatalogUplook.Controls.Add(this.labelLogsPath);
+            this.groupBoxCatalogUplook.Controls.Add(this.labelFilesSize);
+            this.groupBoxCatalogUplook.Controls.Add(this.labelFilesSizeValue);
+            this.groupBoxCatalogUplook.Controls.Add(this.labelLogsPathValue);
+            this.groupBoxCatalogUplook.Name = "groupBoxCatalogUplook";
+            this.groupBoxCatalogUplook.TabStop = false;
+            // 
+            // labelFilesCountValue
+            // 
+            resources.ApplyResources(this.labelFilesCountValue, "labelFilesCountValue");
+            this.labelFilesCountValue.Name = "labelFilesCountValue";
+            // 
+            // labelFilesCount
+            // 
+            resources.ApplyResources(this.labelFilesCount, "labelFilesCount");
+            this.labelFilesCount.Name = "labelFilesCount";
+            // 
+            // labelLogsPath
+            // 
+            resources.ApplyResources(this.labelLogsPath, "labelLogsPath");
+            this.labelLogsPath.Name = "labelLogsPath";
+            // 
+            // labelFilesSize
+            // 
+            resources.ApplyResources(this.labelFilesSize, "labelFilesSize");
+            this.labelFilesSize.Name = "labelFilesSize";
+            // 
+            // labelFilesSizeValue
+            // 
+            resources.ApplyResources(this.labelFilesSizeValue, "labelFilesSizeValue");
+            this.labelFilesSizeValue.Name = "labelFilesSizeValue";
+            // 
+            // labelLogsPathValue
+            // 
+            resources.ApplyResources(this.labelLogsPathValue, "labelLogsPathValue");
+            this.labelLogsPathValue.Name = "labelLogsPathValue";
+            // 
+            // listViewFiles
+            // 
+            resources.ApplyResources(this.listViewFiles, "listViewFiles");
+            this.listViewFiles.Columns.AddRange(new System.Windows.Forms.ColumnHeader[] {
+            this.columnHeaderLn1,
+            this.columnHeaderFileName,
+            this.columnHeaderDate,
+            this.columnHeaderSize,
+            this.columnHeaderPath1});
+            this.listViewFiles.FullRowSelect = true;
+            this.listViewFiles.GridLines = true;
+            this.listViewFiles.Name = "listViewFiles";
+            this.listViewFiles.UseCompatibleStateImageBehavior = false;
+            this.listViewFiles.View = System.Windows.Forms.View.Details;
+            this.listViewFiles.ColumnClick += new System.Windows.Forms.ColumnClickEventHandler(this.ListViewFiles_ColumnClick);
+            this.listViewFiles.DoubleClick += new System.EventHandler(this.ListViewFiles_DoubleClick);
+            this.listViewFiles.MouseClick += new System.Windows.Forms.MouseEventHandler(this.listViewFiles_MouseClick);
+            // 
+            // columnHeaderLn1
+            // 
+            resources.ApplyResources(this.columnHeaderLn1, "columnHeaderLn1");
+            // 
+            // columnHeaderFileName
+            // 
+            resources.ApplyResources(this.columnHeaderFileName, "columnHeaderFileName");
+            // 
+            // columnHeaderDate
+            // 
+            resources.ApplyResources(this.columnHeaderDate, "columnHeaderDate");
+            // 
+            // columnHeaderSize
+            // 
+            resources.ApplyResources(this.columnHeaderSize, "columnHeaderSize");
+            // 
+            // columnHeaderPath1
+            // 
+            resources.ApplyResources(this.columnHeaderPath1, "columnHeaderPath1");
             // 
             // menuMainStrip
             // 
@@ -258,7 +432,8 @@
             // 
             resources.ApplyResources(this.toolsToolStripMenuItem, "toolsToolStripMenuItem");
             this.toolsToolStripMenuItem.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
-            this.analizeToolStripMenuItem2});
+            this.analizeToolStripMenuItem2,
+            this.languagesToolStripMenuItem});
             this.toolsToolStripMenuItem.Name = "toolsToolStripMenuItem";
             // 
             // analizeToolStripMenuItem2
@@ -266,6 +441,26 @@
             resources.ApplyResources(this.analizeToolStripMenuItem2, "analizeToolStripMenuItem2");
             this.analizeToolStripMenuItem2.Name = "analizeToolStripMenuItem2";
             this.analizeToolStripMenuItem2.Click += new System.EventHandler(this.AnalizeToolStripMenuItem2_Click);
+            // 
+            // languagesToolStripMenuItem
+            // 
+            resources.ApplyResources(this.languagesToolStripMenuItem, "languagesToolStripMenuItem");
+            this.languagesToolStripMenuItem.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
+            this.englishToolStripMenuItem,
+            this.polishToolStripMenuItem});
+            this.languagesToolStripMenuItem.Name = "languagesToolStripMenuItem";
+            // 
+            // englishToolStripMenuItem
+            // 
+            resources.ApplyResources(this.englishToolStripMenuItem, "englishToolStripMenuItem");
+            this.englishToolStripMenuItem.Name = "englishToolStripMenuItem";
+            this.englishToolStripMenuItem.Click += new System.EventHandler(this.EnglishToolStripMenuItem_Click);
+            // 
+            // polishToolStripMenuItem
+            // 
+            resources.ApplyResources(this.polishToolStripMenuItem, "polishToolStripMenuItem");
+            this.polishToolStripMenuItem.Name = "polishToolStripMenuItem";
+            this.polishToolStripMenuItem.Click += new System.EventHandler(this.PolishToolStripMenuItem_Click);
             // 
             // aboutToolStripMenuItem1
             // 
@@ -439,177 +634,6 @@
             this.tabPageInfo.Controls.Add(this.splitContainerInfo);
             this.tabPageInfo.Name = "tabPageInfo";
             this.tabPageInfo.Tag = "Info";
-            // 
-            // splitContainerInfo
-            // 
-            resources.ApplyResources(this.splitContainerInfo, "splitContainerInfo");
-            this.splitContainerInfo.Cursor = System.Windows.Forms.Cursors.HSplit;
-            this.splitContainerInfo.FixedPanel = System.Windows.Forms.FixedPanel.Panel1;
-            this.splitContainerInfo.Name = "splitContainerInfo";
-            // 
-            // splitContainerInfo.Panel1
-            // 
-            resources.ApplyResources(this.splitContainerInfo.Panel1, "splitContainerInfo.Panel1");
-            this.splitContainerInfo.Panel1.BackColor = System.Drawing.Color.Transparent;
-            this.splitContainerInfo.Panel1.Controls.Add(this.groupBoxOptions);
-            this.splitContainerInfo.Panel1.Controls.Add(this.groupBoxUser);
-            this.splitContainerInfo.Panel1.Controls.Add(this.groupBoxCatalogUplook);
-            // 
-            // splitContainerInfo.Panel2
-            // 
-            resources.ApplyResources(this.splitContainerInfo.Panel2, "splitContainerInfo.Panel2");
-            this.splitContainerInfo.Panel2.Controls.Add(this.listViewFiles);
-            // 
-            // groupBoxOptions
-            // 
-            resources.ApplyResources(this.groupBoxOptions, "groupBoxOptions");
-            this.groupBoxOptions.BackColor = System.Drawing.Color.White;
-            this.groupBoxOptions.Controls.Add(this.checkBoxUser);
-            this.groupBoxOptions.Controls.Add(this.checkBoxLogs);
-            this.groupBoxOptions.Name = "groupBoxOptions";
-            this.groupBoxOptions.TabStop = false;
-            // 
-            // checkBoxUser
-            // 
-            resources.ApplyResources(this.checkBoxUser, "checkBoxUser");
-            this.checkBoxUser.Checked = true;
-            this.checkBoxUser.CheckState = System.Windows.Forms.CheckState.Checked;
-            this.checkBoxUser.Name = "checkBoxUser";
-            this.checkBoxUser.UseVisualStyleBackColor = true;
-            this.checkBoxUser.CheckedChanged += new System.EventHandler(this.CheckBoxUser_CheckedChanged);
-            // 
-            // checkBoxLogs
-            // 
-            resources.ApplyResources(this.checkBoxLogs, "checkBoxLogs");
-            this.checkBoxLogs.Checked = true;
-            this.checkBoxLogs.CheckState = System.Windows.Forms.CheckState.Checked;
-            this.checkBoxLogs.Name = "checkBoxLogs";
-            this.checkBoxLogs.UseVisualStyleBackColor = true;
-            this.checkBoxLogs.CheckedChanged += new System.EventHandler(this.CheckBoxLogs_CheckedChanged);
-            // 
-            // groupBoxUser
-            // 
-            resources.ApplyResources(this.groupBoxUser, "groupBoxUser");
-            this.groupBoxUser.BackColor = System.Drawing.Color.White;
-            this.groupBoxUser.Controls.Add(this.labelFilesCountValueUser);
-            this.groupBoxUser.Controls.Add(this.labelFilesCountUser);
-            this.groupBoxUser.Controls.Add(this.label3);
-            this.groupBoxUser.Controls.Add(this.labelFilesSizeUser);
-            this.groupBoxUser.Controls.Add(this.labelFilesSizeValueUser);
-            this.groupBoxUser.Controls.Add(this.labelUserPathValue);
-            this.groupBoxUser.Name = "groupBoxUser";
-            this.groupBoxUser.TabStop = false;
-            // 
-            // labelFilesCountValueUser
-            // 
-            resources.ApplyResources(this.labelFilesCountValueUser, "labelFilesCountValueUser");
-            this.labelFilesCountValueUser.Name = "labelFilesCountValueUser";
-            // 
-            // labelFilesCountUser
-            // 
-            resources.ApplyResources(this.labelFilesCountUser, "labelFilesCountUser");
-            this.labelFilesCountUser.Name = "labelFilesCountUser";
-            // 
-            // label3
-            // 
-            resources.ApplyResources(this.label3, "label3");
-            this.label3.Name = "label3";
-            // 
-            // labelFilesSizeUser
-            // 
-            resources.ApplyResources(this.labelFilesSizeUser, "labelFilesSizeUser");
-            this.labelFilesSizeUser.Name = "labelFilesSizeUser";
-            // 
-            // labelFilesSizeValueUser
-            // 
-            resources.ApplyResources(this.labelFilesSizeValueUser, "labelFilesSizeValueUser");
-            this.labelFilesSizeValueUser.Name = "labelFilesSizeValueUser";
-            // 
-            // labelUserPathValue
-            // 
-            resources.ApplyResources(this.labelUserPathValue, "labelUserPathValue");
-            this.labelUserPathValue.Name = "labelUserPathValue";
-            // 
-            // groupBoxCatalogUplook
-            // 
-            resources.ApplyResources(this.groupBoxCatalogUplook, "groupBoxCatalogUplook");
-            this.groupBoxCatalogUplook.BackColor = System.Drawing.Color.White;
-            this.groupBoxCatalogUplook.Controls.Add(this.labelFilesCountValue);
-            this.groupBoxCatalogUplook.Controls.Add(this.labelFilesCount);
-            this.groupBoxCatalogUplook.Controls.Add(this.labelLogsPath);
-            this.groupBoxCatalogUplook.Controls.Add(this.labelFilesSize);
-            this.groupBoxCatalogUplook.Controls.Add(this.labelFilesSizeValue);
-            this.groupBoxCatalogUplook.Controls.Add(this.labelLogsPathValue);
-            this.groupBoxCatalogUplook.Name = "groupBoxCatalogUplook";
-            this.groupBoxCatalogUplook.TabStop = false;
-            // 
-            // labelFilesCountValue
-            // 
-            resources.ApplyResources(this.labelFilesCountValue, "labelFilesCountValue");
-            this.labelFilesCountValue.Name = "labelFilesCountValue";
-            // 
-            // labelFilesCount
-            // 
-            resources.ApplyResources(this.labelFilesCount, "labelFilesCount");
-            this.labelFilesCount.Name = "labelFilesCount";
-            // 
-            // labelLogsPath
-            // 
-            resources.ApplyResources(this.labelLogsPath, "labelLogsPath");
-            this.labelLogsPath.Name = "labelLogsPath";
-            // 
-            // labelFilesSize
-            // 
-            resources.ApplyResources(this.labelFilesSize, "labelFilesSize");
-            this.labelFilesSize.Name = "labelFilesSize";
-            // 
-            // labelFilesSizeValue
-            // 
-            resources.ApplyResources(this.labelFilesSizeValue, "labelFilesSizeValue");
-            this.labelFilesSizeValue.Name = "labelFilesSizeValue";
-            // 
-            // labelLogsPathValue
-            // 
-            resources.ApplyResources(this.labelLogsPathValue, "labelLogsPathValue");
-            this.labelLogsPathValue.Name = "labelLogsPathValue";
-            // 
-            // listViewFiles
-            // 
-            resources.ApplyResources(this.listViewFiles, "listViewFiles");
-            this.listViewFiles.Columns.AddRange(new System.Windows.Forms.ColumnHeader[] {
-            this.columnHeaderLn1,
-            this.columnHeaderFileName,
-            this.columnHeaderDate,
-            this.columnHeaderSize,
-            this.columnHeaderPath1});
-            this.listViewFiles.FullRowSelect = true;
-            this.listViewFiles.GridLines = true;
-            this.listViewFiles.Name = "listViewFiles";
-            this.listViewFiles.UseCompatibleStateImageBehavior = false;
-            this.listViewFiles.View = System.Windows.Forms.View.Details;
-            this.listViewFiles.ColumnClick += new System.Windows.Forms.ColumnClickEventHandler(this.ListViewFiles_ColumnClick);
-            this.listViewFiles.DoubleClick += new System.EventHandler(this.ListViewFiles_DoubleClick);
-            this.listViewFiles.MouseClick += new System.Windows.Forms.MouseEventHandler(this.listViewFiles_MouseClick);
-            // 
-            // columnHeaderLn1
-            // 
-            resources.ApplyResources(this.columnHeaderLn1, "columnHeaderLn1");
-            // 
-            // columnHeaderFileName
-            // 
-            resources.ApplyResources(this.columnHeaderFileName, "columnHeaderFileName");
-            // 
-            // columnHeaderDate
-            // 
-            resources.ApplyResources(this.columnHeaderDate, "columnHeaderDate");
-            // 
-            // columnHeaderSize
-            // 
-            resources.ApplyResources(this.columnHeaderSize, "columnHeaderSize");
-            // 
-            // columnHeaderPath1
-            // 
-            resources.ApplyResources(this.columnHeaderPath1, "columnHeaderPath1");
             // 
             // toolStripButton
             // 
@@ -849,15 +873,6 @@
             this.Name = "MainForm";
             this.WindowState = System.Windows.Forms.FormWindowState.Maximized;
             this.FormClosing += new System.Windows.Forms.FormClosingEventHandler(this.MainForm_FormClosing);
-            this.menuMainStrip.ResumeLayout(false);
-            this.menuMainStrip.PerformLayout();
-            this.tableLayoutPanelMain.ResumeLayout(false);
-            this.tableLayoutPanelMain.PerformLayout();
-            this.toolStripMain.ResumeLayout(false);
-            this.toolStripMain.PerformLayout();
-            this.tableLayoutPanelFiles.ResumeLayout(false);
-            this._tabControlMain.ResumeLayout(false);
-            this.tabPageInfo.ResumeLayout(false);
             this.splitContainerInfo.Panel1.ResumeLayout(false);
             this.splitContainerInfo.Panel2.ResumeLayout(false);
             ((System.ComponentModel.ISupportInitialize)(this.splitContainerInfo)).EndInit();
@@ -868,6 +883,15 @@
             this.groupBoxUser.PerformLayout();
             this.groupBoxCatalogUplook.ResumeLayout(false);
             this.groupBoxCatalogUplook.PerformLayout();
+            this.menuMainStrip.ResumeLayout(false);
+            this.menuMainStrip.PerformLayout();
+            this.tableLayoutPanelMain.ResumeLayout(false);
+            this.tableLayoutPanelMain.PerformLayout();
+            this.toolStripMain.ResumeLayout(false);
+            this.toolStripMain.PerformLayout();
+            this.tableLayoutPanelFiles.ResumeLayout(false);
+            this._tabControlMain.ResumeLayout(false);
+            this.tabPageInfo.ResumeLayout(false);
             this.toolStripButton.ResumeLayout(false);
             this.toolStripButton.PerformLayout();
             this.contextMenuStripList.ResumeLayout(false);
@@ -993,7 +1017,9 @@
         private System.Windows.Forms.ToolStripSeparator toolStripSeparator13;
         private System.Windows.Forms.ToolStripSeparator toolStripSeparator14;
         private System.Windows.Forms.ToolStripSeparator toolStripSeparator15;
-
+        private System.Windows.Forms.ToolStripMenuItem languagesToolStripMenuItem;
+        private System.Windows.Forms.ToolStripMenuItem englishToolStripMenuItem;
+        private System.Windows.Forms.ToolStripMenuItem polishToolStripMenuItem;
     }
 }
 

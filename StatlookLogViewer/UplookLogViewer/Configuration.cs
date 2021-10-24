@@ -80,6 +80,8 @@ namespace StatlookLogViewer
         public string UserDirectory { get; set; } = Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData) + LOG_DIRECTORY_PATH;
         public string LogFileExtensions { get; set; } = "*.log;*.zip";
 
+        public string CurrentLanguage { get; set; } = "en-us";
+
         #endregion Properties
     }
 }
