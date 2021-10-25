@@ -176,7 +176,7 @@ namespace StatlookLogViewer
                             i++;
                         }
                         toolStripButtonIcon.Image = Properties.Resources.ok_16;
-                        toolStripStatusReady.Text = "Ready";
+                        toolStripStatusReady.Text = Properties.Resources.Ready;
                     }
                     j++;
                 }
