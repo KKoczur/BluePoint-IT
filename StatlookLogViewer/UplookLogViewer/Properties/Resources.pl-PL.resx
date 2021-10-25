@@ -117,7 +117,19 @@
   <resheader name="writer">
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
+  <data name="Close" xml:space="preserve">
+    <value>Zamknij</value>
+  </data>
+  <data name="CloseApplicationQuestion" xml:space="preserve">
+    <value>Czy na pewno chcesz zamknąć aplikację?</value>
+  </data>
+  <data name="Error" xml:space="preserve">
+    <value>Błąd</value>
+  </data>
   <data name="Ready" xml:space="preserve">
     <value>Gotowe</value>
+  </data>
+  <data name="SelectLogSourceTitle" xml:space="preserve">
+    <value>Wybierz plik źródłowy loga</value>
   </data>
 </root>

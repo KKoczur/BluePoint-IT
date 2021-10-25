@@ -39,7 +39,7 @@ namespace StatlookLogViewer.Properties {
         public static global::System.Resources.ResourceManager ResourceManager {
             get {
                 if (object.ReferenceEquals(resourceMan, null)) {
-                    global::System.Resources.ResourceManager temp = new global::System.Resources.ResourceManager("UplookLogViewer.Properties.Resources", typeof(Resources).Assembly);
+                    global::System.Resources.ResourceManager temp = new global::System.Resources.ResourceManager("StatlookLogViewer.Properties.Resources", typeof(Resources).Assembly);
                     resourceMan = temp;
                 }
                 return resourceMan;
@@ -81,6 +81,15 @@ namespace StatlookLogViewer.Properties {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Close.
+        /// </summary>
+        public static string Close {
+            get {
+                return ResourceManager.GetString("Close", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized resource of type System.Drawing.Bitmap.
         /// </summary>
         public static System.Drawing.Bitmap close_16 {
@@ -97,6 +106,24 @@ namespace StatlookLogViewer.Properties {
             get {
                 object obj = ResourceManager.GetObject("close2_16", resourceCulture);
                 return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Are you sure you want to close the application?.
+        /// </summary>
+        public static string CloseApplicationQuestion {
+            get {
+                return ResourceManager.GetString("CloseApplicationQuestion", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Error.
+        /// </summary>
+        public static string Error {
+            get {
+                return ResourceManager.GetString("Error", resourceCulture);
             }
         }
         
@@ -216,6 +243,15 @@ namespace StatlookLogViewer.Properties {
             get {
                 object obj = ResourceManager.GetObject("refresh_16", resourceCulture);
                 return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Please select log source file.
+        /// </summary>
+        public static string SelectLogSourceTitle {
+            get {
+                return ResourceManager.GetString("SelectLogSourceTitle", resourceCulture);
             }
         }
     }

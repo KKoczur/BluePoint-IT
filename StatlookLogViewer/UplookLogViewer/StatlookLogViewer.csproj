@@ -2,8 +2,8 @@
   <PropertyGroup>
     <TargetFramework>net6.0-windows10.0.20348.0</TargetFramework>
     <OutputType>WinExe</OutputType>
-    <RootNamespace>UplookLogViewer</RootNamespace>
-    <AssemblyName>UplookLogViewer</AssemblyName>
+    <RootNamespace>StatlookLogViewer</RootNamespace>
+    <AssemblyName>StatlookLogViewer</AssemblyName>
     <ApplicationIcon>Resources\UplookLogo.ico</ApplicationIcon>
     <GenerateAssemblyInfo>false</GenerateAssemblyInfo>
     <UseWindowsForms>true</UseWindowsForms>
@@ -15,6 +15,11 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
+    <Compile Update="Properties\Settings.Designer.cs">
+      <DesignTimeSharedInput>True</DesignTimeSharedInput>
+      <AutoGen>True</AutoGen>
+      <DependentUpon>Settings.settings</DependentUpon>
+    </Compile>
     <Compile Update="Views\ListViewExtended.cs">
       <SubType>Component</SubType>
     </Compile>
@@ -49,5 +54,11 @@
       <Generator>PublicResXFileCodeGenerator</Generator>
       <LastGenOutput>Resources.Designer.cs</LastGenOutput>
     </EmbeddedResource>
+  </ItemGroup>
+  <ItemGroup>
+    <None Update="Properties\Settings.settings">
+      <Generator>SettingsSingleFileGenerator</Generator>
+      <LastGenOutput>Settings.Designer.cs</LastGenOutput>
+    </None>
   </ItemGroup>
 </Project>

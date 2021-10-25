@@ -33,7 +33,7 @@ namespace StatlookLogViewer.Views
             Padding = new Padding(3);
             Size = new System.Drawing.Size(994, 610);
             TabIndex = index;
-            Text = "      " + fileName;
+            Text = $"      {fileName}";
             UseVisualStyleBackColor = true;
             ToolTipText = filePath;
             Tag = filePath;

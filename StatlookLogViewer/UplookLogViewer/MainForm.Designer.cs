@@ -303,7 +303,7 @@
             this.listViewFiles.View = System.Windows.Forms.View.Details;
             this.listViewFiles.ColumnClick += new System.Windows.Forms.ColumnClickEventHandler(this.ListViewFiles_ColumnClick);
             this.listViewFiles.DoubleClick += new System.EventHandler(this.ListViewFiles_DoubleClick);
-            this.listViewFiles.MouseClick += new System.Windows.Forms.MouseEventHandler(this.listViewFiles_MouseClick);
+            this.listViewFiles.MouseClick += new System.Windows.Forms.MouseEventHandler(this.ListViewFiles_MouseClick);
             // 
             // columnHeaderLn1
             // 
@@ -363,7 +363,7 @@
             // 
             resources.ApplyResources(this.closeToolStripMenuItem1, "closeToolStripMenuItem1");
             this.closeToolStripMenuItem1.Name = "closeToolStripMenuItem1";
-            this.closeToolStripMenuItem1.Click += new System.EventHandler(this.closeToolStripMenuItem1_Click_1);
+            this.closeToolStripMenuItem1.Click += new System.EventHandler(this.CloseToolStripMenuItem1_Click_1);
             // 
             // closeAllToolStripMenuItem
             // 
@@ -420,13 +420,13 @@
             // 
             resources.ApplyResources(this.zwinToolStripMenuItem, "zwinToolStripMenuItem");
             this.zwinToolStripMenuItem.Name = "zwinToolStripMenuItem";
-            this.zwinToolStripMenuItem.Click += new System.EventHandler(this.zwinToolStripMenuItem_Click);
+            this.zwinToolStripMenuItem.Click += new System.EventHandler(this.CollapseAllGroupsToolStripMenuItem_Click);
             // 
             // rozwinWszystkieToolStripMenuItem
             // 
             resources.ApplyResources(this.rozwinWszystkieToolStripMenuItem, "rozwinWszystkieToolStripMenuItem");
             this.rozwinWszystkieToolStripMenuItem.Name = "rozwinWszystkieToolStripMenuItem";
-            this.rozwinWszystkieToolStripMenuItem.Click += new System.EventHandler(this.rozwinWszystkieToolStripMenuItem_Click);
+            this.rozwinWszystkieToolStripMenuItem.Click += new System.EventHandler(this.ExpandAllGroupsToolStripMenuItem_Click);
             // 
             // toolsToolStripMenuItem
             // 
@@ -562,13 +562,13 @@
             // 
             resources.ApplyResources(this.toolStripButtonCollapsedAll, "toolStripButtonCollapsedAll");
             this.toolStripButtonCollapsedAll.Name = "toolStripButtonCollapsedAll";
-            this.toolStripButtonCollapsedAll.Click += new System.EventHandler(this.toolStripButtonCollapsedAll_Click);
+            this.toolStripButtonCollapsedAll.Click += new System.EventHandler(this.ToolStripButtonCollapsedAll_Click);
             // 
             // toolStripButtonNormalAll
             // 
             resources.ApplyResources(this.toolStripButtonNormalAll, "toolStripButtonNormalAll");
             this.toolStripButtonNormalAll.Name = "toolStripButtonNormalAll";
-            this.toolStripButtonNormalAll.Click += new System.EventHandler(this.toolStripButtonNormalAll_Click);
+            this.toolStripButtonNormalAll.Click += new System.EventHandler(this.ToolStripButtonNormalAll_Click);
             // 
             // toolStripSeparator3
             // 
@@ -579,7 +579,7 @@
             // 
             resources.ApplyResources(this.toolStripButtonClose, "toolStripButtonClose");
             this.toolStripButtonClose.Name = "toolStripButtonClose";
-            this.toolStripButtonClose.Click += new System.EventHandler(this.toolStripButtonClose_Click);
+            this.toolStripButtonClose.Click += new System.EventHandler(this.ToolStripButtonClose_Click);
             // 
             // toolStripSeparator5
             // 
@@ -753,7 +753,7 @@
             // 
             resources.ApplyResources(this.openContainFolderToolStripMenuItem, "openContainFolderToolStripMenuItem");
             this.openContainFolderToolStripMenuItem.Name = "openContainFolderToolStripMenuItem";
-            this.openContainFolderToolStripMenuItem.Click += new System.EventHandler(this.openContainFolderToolStripMenuItem_Click);
+            this.openContainFolderToolStripMenuItem.Click += new System.EventHandler(this.OpenContainFolderToolStripMenuItem_Click);
             // 
             // contextMenuStripPage
             // 
@@ -775,7 +775,7 @@
             // 
             resources.ApplyResources(this.toolStripMenuItemClose, "toolStripMenuItemClose");
             this.toolStripMenuItemClose.Name = "toolStripMenuItemClose";
-            this.toolStripMenuItemClose.Click += new System.EventHandler(this.toolStripMenuItem3_Click);
+            this.toolStripMenuItemClose.Click += new System.EventHandler(this.ToolStripMenuItem3_Click);
             // 
             // toolStripMenuItem2
             // 

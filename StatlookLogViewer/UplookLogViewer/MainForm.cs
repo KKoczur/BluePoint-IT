@@ -222,7 +222,7 @@ namespace StatlookLogViewer
             {
                 Multiselect = true,
                 Filter = Configuration.LOG_FILE_EXTENSIONS,
-                Title = "Please select log source file"
+                Title = Properties.Resources.SelectLogSourceTitle
             };
 
             if (openFileDialog.ShowDialog() != DialogResult.OK)
@@ -270,9 +270,6 @@ namespace StatlookLogViewer
                         if (openZip.ShowDialog(this) != DialogResult.OK)
                             continue;
 
-                        //NewPage[] pliki = (NewPage[])otworzZip.nowaKarta.ToArray(typeof(NewPage));
-                        //tabControlMain.Controls.Add(otworzZip.);
-                        //tabControlMain.SelectTab(nowaKarta.nowaZakladka);
                         //Aktywownie menu grupowania 
                         grupyToolStripMenuItem.Enabled = true;
                         zwinToolStripMenuItem.Enabled = true;
@@ -399,23 +396,28 @@ namespace StatlookLogViewer
 
         #region Event Handlers
 
-        private void OpenFileToolStripMenuItem_Click(object sender, EventArgs e) => OpenLogFile();
+        private void OpenFileToolStripMenuItem_Click(object sender, EventArgs e) 
+            => OpenLogFile();
 
-        private void ToolStripButton2_Click(object sender, EventArgs e) => OpenLogFile();
+        private void ToolStripButton2_Click(object sender, EventArgs e) 
+            => OpenLogFile();
 
         private void MainForm_FormClosing(object sender, FormClosingEventArgs e)
         {
-            if (MessageBox.Show("Czy na pewno chcesz zamknąć aplikację?", "Zamknij", MessageBoxButtons.YesNo, MessageBoxIcon.Question) == DialogResult.No)
+            if (MessageBox.Show(Properties.Resources.CloseApplicationQuestion, Properties.Resources.Close, MessageBoxButtons.YesNo, MessageBoxIcon.Question) == DialogResult.No)
                 e.Cancel = true;
             else
                 Configuration.SaveConfig(_config);
         }
 
-        private void ExitToolStripMenuItem1_Click(object sender, EventArgs e) => Close();
+        private void ExitToolStripMenuItem1_Click(object sender, EventArgs e) 
+            => Close();
 
-        private void ToolStripButton3_Click(object sender, EventArgs e) => Close();
+        private void ToolStripButton3_Click(object sender, EventArgs e) 
+            => Close();
 
-        private void ExitToolStripMenuItem_Click(object sender, EventArgs e) => Close();
+        private void ExitToolStripMenuItem_Click(object sender, EventArgs e) 
+            => Close();
 
         private void ListViewFiles_ColumnClick(object sender, ColumnClickEventArgs e)
         {
@@ -493,7 +495,7 @@ namespace StatlookLogViewer
                 }
                 else
                 {
-                    DateTime.TryParse(listViewItem.SubItems[2].Text, out DateTime lastWriteTime);
+                    _ = DateTime.TryParse(listViewItem.SubItems[2].Text, out DateTime lastWriteTime);
 
                     AnalizeLog(filePath, lastWriteTime);
                 }
@@ -508,9 +510,6 @@ namespace StatlookLogViewer
             {
                 //Wyzerowanie paska wyszukiwania
                 toolStripTextBox.Text = string.Empty;
-
-                //Wyłącznie menu widocznosci kolumn(atrapa)
-                //toolStripMenuItemGeneral.Visible = false;
 
                 //Włączenie przycisku Close page
                 closeToolStripMenuItem1.Enabled = true;
@@ -568,12 +567,12 @@ namespace StatlookLogViewer
                 }
                 else
                 {
-                    MessageBox.Show($"File {fileInfo.FullName} does not exist.", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                    MessageBox.Show($"File {fileInfo.FullName} does not exist.", Properties.Resources.Error, MessageBoxButtons.OK, MessageBoxIcon.Error);
                 }
             }
             else
             {
-                toolStripStatusReady.Text = "Ready";
+                toolStripStatusReady.Text = Properties.Resources.Ready;
                 toolStripSeparator_1.Visible = false;
                 toolStripLabelCreationTime.Text = string.Empty;
                 toolStripSeparator_2.Visible = false;
@@ -603,15 +602,17 @@ namespace StatlookLogViewer
         private TabPage GetSelectedTabPage() => _tabControlMain.SelectedTab;
 
 
-        private void zwinToolStripMenuItem_Click(object sender, EventArgs e) => CollapseAllGroups();
+        private void CollapseAllGroupsToolStripMenuItem_Click(object sender, EventArgs e) 
+            => CollapseAllGroups();
 
-        private void rozwinWszystkieToolStripMenuItem_Click(object sender, EventArgs e) => ExpandAllGroups();
+        private void ExpandAllGroupsToolStripMenuItem_Click(object sender, EventArgs e) 
+            => ExpandAllGroups();
 
-        private void toolStripButtonCollapsedAll_Click(object sender, EventArgs e) => CollapseAllGroups();
+        private void ToolStripButtonCollapsedAll_Click(object sender, EventArgs e) => CollapseAllGroups();
 
-        private void toolStripButtonNormalAll_Click(object sender, EventArgs e) => ExpandAllGroups();
+        private void ToolStripButtonNormalAll_Click(object sender, EventArgs e) => ExpandAllGroups();
 
-        private void closeToolStripMenuItem1_Click_1(object sender, EventArgs e)
+        private void CloseToolStripMenuItem1_Click_1(object sender, EventArgs e)
         {
             if (_tabControlMain.SelectedTab == tabPageInfo)
                 return;
@@ -619,10 +620,7 @@ namespace StatlookLogViewer
             ClosePage();
         }
 
-        private void toolStripButtonClose_Click(object sender, EventArgs e)
-        {
-            ClosePage();
-        }
+        private void ToolStripButtonClose_Click(object sender, EventArgs e) => ClosePage();
 
 
         private void CloseAllToolStripMenuItem_Click(object sender, EventArgs e)
@@ -671,7 +669,7 @@ namespace StatlookLogViewer
 
         }
 
-        private void toolStripMenuItem3_Click(object sender, EventArgs e)
+        private void ToolStripMenuItem3_Click(object sender, EventArgs e)
         {
             if (_tabControlMain.SelectedTab == tabPageInfo)
                 return;
@@ -741,7 +739,7 @@ namespace StatlookLogViewer
                 }
                 catch (Exception exception)
                 {
-                    MessageBox.Show("Error : " + exception.Message, "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                    MessageBox.Show($"{Properties.Resources.Error} : {exception.Message}", Properties.Resources.Error, MessageBoxButtons.OK, MessageBoxIcon.Error);
                 }
             }
 
@@ -828,7 +826,7 @@ namespace StatlookLogViewer
                 }
                 catch (Exception ex)
                 {
-                    MessageBox.Show("Error : " + ex.Message, "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                    MessageBox.Show($"{Properties.Resources.Error} : {ex.Message}", Properties.Resources.Error, MessageBoxButtons.OK, MessageBoxIcon.Error);
                 }
             }
         }
@@ -891,12 +889,11 @@ namespace StatlookLogViewer
             return files.ToArray();
         }
 
-        private void RefreshToolStripMenuItem_Click(object sender, EventArgs e)
-        {
-            IniTabPageInfo();
-        }
+        private void RefreshToolStripMenuItem_Click(object sender, EventArgs e) 
+            => IniTabPageInfo();
 
-        private void listViewFiles_MouseClick(object sender, MouseEventArgs e)
+
+        private void ListViewFiles_MouseClick(object sender, MouseEventArgs e)
         {
             if (e.Button == MouseButtons.Right && listViewFiles.SelectedItems.Count > 1)
             {
@@ -910,7 +907,7 @@ namespace StatlookLogViewer
             }
         }
 
-        private void openContainFolderToolStripMenuItem_Click(object sender, EventArgs e)
+        private void OpenContainFolderToolStripMenuItem_Click(object sender, EventArgs e)
         {
             foreach (ListViewItem listViewItem in listViewFiles.SelectedItems)
             {
@@ -1135,11 +1132,12 @@ namespace StatlookLogViewer
             return totalSize;
         }
 
-        private void CheckBoxLogs_CheckedChanged(object sender, EventArgs e) => WypelnijListe();
+        private void CheckBoxLogs_CheckedChanged(object sender, EventArgs e) 
+            => WypelnijListe();
 
-        private void CheckBoxUSM_CheckedChanged(object sender, EventArgs e) => WypelnijListe();
 
-        private void CheckBoxUser_CheckedChanged(object sender, EventArgs e) => WypelnijListe();
+        private void CheckBoxUser_CheckedChanged(object sender, EventArgs e) 
+            => WypelnijListe();
 
         private static ListViewItem[] CloneItems(ListViewItemCollection items)
         {
@@ -1166,6 +1164,11 @@ namespace StatlookLogViewer
             timerFind.Enabled = false;
             Search();
         }
+
+        #endregion Event Handlers
+
+        #region Private Methods
+
         private void Search()
         {
             TabPage selectedTabPage = GetSelectedTabPage();
@@ -1306,7 +1309,7 @@ namespace StatlookLogViewer
         private void PolishToolStripMenuItem_Click(object sender, EventArgs e) 
             => ChangeLanguage("pl-pl");
 
-        #endregion Event Handlers
+        #endregion Private Methods
 
     }
 
