@@ -128,22 +128,23 @@ namespace StatlookLogViewer
         {
             listViewFiles.Items.Clear();
 
-            var directoryInfo = new DirectoryInfo[]{
-            new DirectoryInfo(_logDirectory),
-            new DirectoryInfo(_userLogDirectory)
+            var directoryInfoCollection = new DirectoryInfo[]
+            {
+                new DirectoryInfo(_logDirectory),
+                new DirectoryInfo(_userLogDirectory)
             };
 
-            bool[] showCatalog = new bool[]{
-            checkBoxLogs.Checked,
-            checkBoxUser.Checked
+            bool[] showDirectories = new bool[]{
+                checkBoxLogs.Checked,
+                checkBoxUser.Checked
             };
 
             try
             {
                 int j = 0;
-                foreach (DirectoryInfo di in directoryInfo)
+                foreach (DirectoryInfo di in directoryInfoCollection)
                 {
-                    if (di.Exists && showCatalog[j])
+                    if (di.Exists && showDirectories[j])
                     {
                         var fileInfoCollection = new List<FileInfo>();
 
@@ -182,17 +183,8 @@ namespace StatlookLogViewer
                 }
 
                 // Loop through and size each column header to fit the column header text.
-                foreach (ColumnHeader ch in this.listViewFiles.Columns)
-                {
-                    if (ch.Index == 0)
-                    {
-                        ch.Width = 0;
-                    }
-                    else
-                    {
-                        ch.Width = -2;
-                    }
-                }
+                foreach (ColumnHeader columnHeader in this.listViewFiles.Columns)
+                    columnHeader.Width = (columnHeader.Index == 0) ? 0 : -2;
             }
             catch (Exception exception)
             {
@@ -608,9 +600,11 @@ namespace StatlookLogViewer
         private void ExpandAllGroupsToolStripMenuItem_Click(object sender, EventArgs e) 
             => ExpandAllGroups();
 
-        private void ToolStripButtonCollapsedAll_Click(object sender, EventArgs e) => CollapseAllGroups();
+        private void ToolStripButtonCollapsedAll_Click(object sender, EventArgs e) 
+            => CollapseAllGroups();
 
-        private void ToolStripButtonNormalAll_Click(object sender, EventArgs e) => ExpandAllGroups();
+        private void ToolStripButtonNormalAll_Click(object sender, EventArgs e) 
+            => ExpandAllGroups();
 
         private void CloseToolStripMenuItem1_Click_1(object sender, EventArgs e)
         {
