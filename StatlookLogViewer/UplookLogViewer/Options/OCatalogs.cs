@@ -10,7 +10,7 @@ namespace StatlookLogViewer
             InitializeComponent();
         }
 
-        private void buttonUserCatalog_Click(object sender, EventArgs e)
+        private void ButtonUserCatalog_Click(object sender, EventArgs e)
         {
             using var folderBrowserDialog = new FolderBrowserDialog();
 

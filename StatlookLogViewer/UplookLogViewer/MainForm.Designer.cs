@@ -363,7 +363,7 @@
             // 
             resources.ApplyResources(this.closeToolStripMenuItem1, "closeToolStripMenuItem1");
             this.closeToolStripMenuItem1.Name = "closeToolStripMenuItem1";
-            this.closeToolStripMenuItem1.Click += new System.EventHandler(this.CloseToolStripMenuItem1_Click_1);
+            this.closeToolStripMenuItem1.Click += new System.EventHandler(this.CloseToolStripMenuItem_Click);
             // 
             // closeAllToolStripMenuItem
             // 

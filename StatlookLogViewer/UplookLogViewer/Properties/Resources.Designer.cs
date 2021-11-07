@@ -119,11 +119,38 @@ namespace StatlookLogViewer.Properties {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Confirm delete.
+        /// </summary>
+        public static string ConfirmDeleteCaption {
+            get {
+                return ResourceManager.GetString("ConfirmDeleteCaption", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Really delete file: {0} ?.
+        /// </summary>
+        public static string ConfirmDeletePrompt {
+            get {
+                return ResourceManager.GetString("ConfirmDeletePrompt", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Error.
         /// </summary>
         public static string Error {
             get {
                 return ResourceManager.GetString("Error", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to File {0} does not exist..
+        /// </summary>
+        public static string FileDoesNotExist {
+            get {
+                return ResourceManager.GetString("FileDoesNotExist", resourceCulture);
             }
         }
         

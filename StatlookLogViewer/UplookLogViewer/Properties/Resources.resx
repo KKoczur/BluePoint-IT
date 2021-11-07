@@ -178,4 +178,13 @@
   <data name="SelectLogSourceTitle" xml:space="preserve">
     <value>Please select log source file</value>
   </data>
+  <data name="FileDoesNotExist" xml:space="preserve">
+    <value>File {0} does not exist.</value>
+  </data>
+  <data name="ConfirmDeleteCaption" xml:space="preserve">
+    <value>Confirm delete</value>
+  </data>
+  <data name="ConfirmDeletePrompt" xml:space="preserve">
+    <value>Really delete file: {0} ?</value>
+  </data>
 </root>

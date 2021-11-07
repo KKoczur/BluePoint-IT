@@ -1,8 +1,8 @@
-﻿using System;
-using System.Windows.Forms;
-using System.Text.RegularExpressions;
-using StatlookLogViewer.Model.Pattern;
+﻿using StatlookLogViewer.Model.Pattern;
 using StatlookLogViewer.Parser;
+using System;
+using System.Text.RegularExpressions;
+using System.Windows.Forms;
 
 namespace StatlookLogViewer
 {
@@ -40,11 +40,14 @@ namespace StatlookLogViewer
                     break;
                 }
 
-                 DateTime.TryParse(lineValue,out DateTime dateTime);
+                _ = DateTime.TryParse(lineValue, out DateTime dateTime);
 
-               Text = lineValue;
-               Group = new ListViewGroup(GetNameOfGroupByHourTime(dateTime), HorizontalAlignment.Left);
-                Group.CollapsedState = ListViewGroupCollapsedState.Collapsed;
+                Text = lineValue;
+
+                Group = new ListViewGroup(GetNameOfGroupByHourTime(dateTime), HorizontalAlignment.Left)
+                {
+                    CollapsedState = ListViewGroupCollapsedState.Collapsed
+                };
 
                 break;
             }

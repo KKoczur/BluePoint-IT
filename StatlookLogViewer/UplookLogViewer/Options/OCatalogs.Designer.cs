@@ -65,7 +65,7 @@
             this.buttonUserCatalog.TabIndex = 2;
             this.buttonUserCatalog.Text = "...";
             this.buttonUserCatalog.UseVisualStyleBackColor = true;
-            this.buttonUserCatalog.Click += new System.EventHandler(this.buttonUserCatalog_Click);
+            this.buttonUserCatalog.Click += new System.EventHandler(this.ButtonUserCatalog_Click);
             // 
             // textBoxUserCatalog
             // 
