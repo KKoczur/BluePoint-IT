@@ -69,8 +69,6 @@ namespace StatlookLogViewer
 
 
             listViewFiles.ListViewItemSorter = _lvwColumnSorter;
-
-            IniTabPageInfo();
         }
 
         private void CreateToolStripMenuItem(ILogParser? logParser)
@@ -622,6 +620,13 @@ namespace StatlookLogViewer
 
         private TabPage GetSelectedTabPage() => _tabControlMain.SelectedTab;
 
+        /// <summary>
+        /// Main form loaded
+        /// </summary>
+        private void MainForm_Load(object sender, EventArgs e)
+        {
+            IniTabPageInfo();
+        }
 
         private void CollapseAllGroupsToolStripMenuItem_Click(object sender, EventArgs e)
             => CollapseAllGroups();
