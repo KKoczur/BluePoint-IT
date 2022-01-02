@@ -45,7 +45,7 @@ namespace StatlookLogViewer
             if (string.Compare(_config.CurrentLanguage, "en-us") != 0)
                 ChangeLanguage(_config.CurrentLanguage);
 
-            _logParserMap = LogLineCollection.GetLogParserMap();
+            _logParserMap = LogParserTools.GetLogParserMap();
 
             foreach (KeyValuePair<string, ILogParser> parser in _logParserMap)
             {
@@ -311,12 +311,12 @@ namespace StatlookLogViewer
         }
 
         private void CollapseAllGroups()
-            => ChangeGroupState(ListViewGroupState.Collapsed);
+            => ChangeGroupState(StatlookLogViewer.Views.ListViewGroupState.Collapsed);
 
         private void ExpandAllGroups()
-            => ChangeGroupState(ListViewGroupState.Normal);
+            => ChangeGroupState(StatlookLogViewer.Views.ListViewGroupState.Normal);
 
-        private void ChangeGroupState(ListViewGroupState listViewGroupState)
+        private void ChangeGroupState(StatlookLogViewer.Views.ListViewGroupState listViewGroupState)
         {
             TabPage selectedTabPage = GetSelectedTabPage();
 
@@ -336,7 +336,7 @@ namespace StatlookLogViewer
 
                     try
                     {
-                        listViewExtended.SetGroupState(ListViewGroupState.Collapsible | listViewGroupState);
+                        listViewExtended.SetGroupState(StatlookLogViewer.Views.ListViewGroupState.Collapsible | listViewGroupState);
                     }
                     finally
                     {
@@ -952,7 +952,7 @@ namespace StatlookLogViewer
             {
                 LogLineCollection logLineCollection = new();
 
-                LogTapPage newPage = logLineCollection.AnalyzeLogFile(filePath);
+                LogTapPage newPage = logLineCollection.GetLogTapePage(filePath);
 
 
                 ToolStripMenuItem rootMenu = null;
@@ -1225,7 +1225,7 @@ namespace StatlookLogViewer
                     {
                         foreach (ListViewItem listViewItem in listViewExtended.Items)
                         {
-                            listViewExtended.SetOneGroupState(listViewItem.Group, state: ListViewGroupState.Collapsible | ListViewGroupState.Collapsed);
+                            listViewExtended.SetOneGroupState(listViewItem.Group, state: StatlookLogViewer.Views.ListViewGroupState.Collapsible | StatlookLogViewer.Views.ListViewGroupState.Collapsed);
                             listViewItem.BackColor = Color.White;
                         }
                     }
@@ -1263,7 +1263,7 @@ namespace StatlookLogViewer
                                 try
                                 {
                                     //ListV.SetGroupFooter(ListV.Items[lst12].Group, "Test");
-                                    listViewExtended.SetOneGroupState(listViewItem.Group, ListViewGroupState.Collapsible);
+                                    listViewExtended.SetOneGroupState(listViewItem.Group, StatlookLogViewer.Views.ListViewGroupState.Collapsible);
                                     listViewItem.BackColor = Color.Aqua;
                                 }
                                 finally

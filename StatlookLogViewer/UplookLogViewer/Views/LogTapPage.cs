@@ -41,15 +41,26 @@ namespace StatlookLogViewer.Views
             Controls.Add(_listViewExtended);
         }
 
+        /// <summary>
+        /// Create new page
+        /// </summary>
+        public LogTapPage(string filePath, ILogParser logParser, List<ListViewGroup> groups, List<ListViewItem> listViewItems)
+            : this(0, filePath, logParser)
+        {
+            this.SetListViewGroups(groups);
+
+            this.SetListViewItems(listViewItems.ToArray());
+        }
+
         #endregion Constructors
 
         #region Members
 
-        private readonly ListViewExtended _listViewExtended ;
+        private readonly ListViewExtended _listViewExtended;
 
         #endregion Members
 
-        public void SetListViewGroups( List<ListViewGroup> group)
+        public void SetListViewGroups(List<ListViewGroup> group)
         {
             _listViewExtended.BeginUpdate();
             _listViewExtended.SuspendLayout();
@@ -79,7 +90,7 @@ namespace StatlookLogViewer.Views
             }
         }
 
-        private ListViewExtended CreateListViewExtended(string filePath ,int tabIndex)
+        private ListViewExtended CreateListViewExtended(string filePath, int tabIndex)
         {
             ListViewExtended listViewExtended = new();
             listViewExtended.ListViewItemSorter = _lvwColumnSorter;
@@ -107,7 +118,7 @@ namespace StatlookLogViewer.Views
 
             try
             {
-                List<ColumnHeader> columnHeaders = new ();
+                List<ColumnHeader> columnHeaders = new();
 
                 foreach (var pattern in logParser.GetLogPatterns())
                 {

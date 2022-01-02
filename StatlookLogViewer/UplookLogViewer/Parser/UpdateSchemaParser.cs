@@ -7,9 +7,9 @@ namespace StatlookLogViewer.Parser
     {
         public string UniqueLogKey { get; set; } = "Update Database Schema";
 
-        public string StartLogGroupEntry { get; set; } = "startTime";
+        public string StartLogGroupEntry { get; set; } = "	Start time:";
 
-        public string EndLogGroupEntry { get; set; } = "--------------------------------------------------------------------------------";
+        public string EndLogGroupEntry { get; set; } = "	--------------------------------------------------------------------------------";
 
         public LogErrorPattern[] GetListOfErrors()
         {

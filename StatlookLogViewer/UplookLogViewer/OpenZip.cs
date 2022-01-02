@@ -115,7 +115,7 @@ namespace StatlookLogViewer
 
                 DateTime.TryParse(item.SubItems[2].Text, out DateTime lastWriteTime);
 
-                m_nowaKarta.Add(logLineCollection.AnalyzeLogFile(fileFullPath));
+                m_nowaKarta.Add(logLineCollection.GetLogTapePage(fileFullPath));
             }
 
             DialogResult = DialogResult.OK;
