@@ -116,8 +116,8 @@
             this.listViewFiles.TabIndex = 4;
             this.listViewFiles.UseCompatibleStateImageBehavior = false;
             this.listViewFiles.View = System.Windows.Forms.View.Details;
-            this.listViewFiles.MouseClick += new System.Windows.Forms.MouseEventHandler(this.listViewFiles_MouseClick);
-            this.listViewFiles.MouseDoubleClick += new System.Windows.Forms.MouseEventHandler(this.listViewFiles_MouseDoubleClick);
+            this.listViewFiles.MouseClick += new System.Windows.Forms.MouseEventHandler(this.ListViewFiles_MouseClick);
+            this.listViewFiles.MouseDoubleClick += new System.Windows.Forms.MouseEventHandler(this.ListViewFiles_MouseDoubleClick);
             // 
             // columnHeaderLn1
             // 
@@ -152,7 +152,7 @@
             this.checkBoxSelectAll.TabIndex = 5;
             this.checkBoxSelectAll.Text = "Select All";
             this.checkBoxSelectAll.UseVisualStyleBackColor = true;
-            this.checkBoxSelectAll.Click += new System.EventHandler(this.checkBoxSelectAll_Click);
+            this.checkBoxSelectAll.Click += new System.EventHandler(this.CheckBoxSelectAll_Click);
             // 
             // OpenZip
             // 

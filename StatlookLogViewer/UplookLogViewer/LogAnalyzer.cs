@@ -9,19 +9,16 @@ using System.Windows.Forms;
 
 namespace StatlookLogViewer
 {
-    internal class LogLineCollection
+    internal static class LogAnalyzer
     {
         #region Constructors
 
-        public LogLineCollection()
-        {
-        }
 
         #endregion Constructors
 
         #region Methods
 
-        public LogTapPage GetLogTapePage(string filePath)
+        public static LogTapPage GetLogTapePage(string filePath)
         {
 
             (List<ListViewGroup> groups, List<ListViewItem> listViewItems, ILogParser logParser) = AnalyzeLogFile(filePath);
@@ -30,7 +27,7 @@ namespace StatlookLogViewer
 
         }
 
-        public (List<ListViewGroup> groups, List<ListViewItem> listViewItems, ILogParser logParser) AnalyzeLogFile(string filePath)
+        static (List<ListViewGroup> groups, List<ListViewItem> listViewItems, ILogParser logParser) AnalyzeLogFile(string filePath)
         {
             (ILogParser, string[]) logParserDetectorResult = LogParserTools.DetectLogParser(filePath);
 

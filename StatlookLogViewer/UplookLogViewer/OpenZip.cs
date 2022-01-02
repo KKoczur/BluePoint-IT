@@ -1,8 +1,8 @@
-﻿using System;
-using System.Windows.Forms;
+﻿using Ionic.Zip;
+using System;
 using System.Collections;
 using System.IO;
-using Ionic.Zip;
+using System.Windows.Forms;
 
 namespace StatlookLogViewer
 {
@@ -53,7 +53,7 @@ namespace StatlookLogViewer
 
         }
 
-        private void checkBoxSelectAll_Click(object sender, EventArgs e)
+        private void CheckBoxSelectAll_Click(object sender, EventArgs e)
         {
             if (checkBoxSelectAll.Checked)
             {
@@ -86,7 +86,7 @@ namespace StatlookLogViewer
             }
         }
 
-        private void listViewFiles_MouseClick(object sender, MouseEventArgs e)
+        private void ListViewFiles_MouseClick(object sender, MouseEventArgs e)
         {
             if (e.Button == MouseButtons.Left)
             {
@@ -94,8 +94,8 @@ namespace StatlookLogViewer
             }
         }
 
-        private void listViewFiles_MouseDoubleClick(object sender, MouseEventArgs e)
-        { 
+        private void ListViewFiles_MouseDoubleClick(object sender, MouseEventArgs e)
+        {
             foreach (ListViewItem item in listViewFiles.SelectedItems)
             {
                 string fileName = item.SubItems[1].Text;
@@ -109,13 +109,11 @@ namespace StatlookLogViewer
                     }
                 }
 
-                FileInfo fileInfo = new FileInfo(fileFullPath);
+                FileInfo fileInfo = new(fileFullPath);
 
-                var logLineCollection = new LogLineCollection();
+                _ = DateTime.TryParse(item.SubItems[2].Text, out DateTime lastWriteTime);
 
-                DateTime.TryParse(item.SubItems[2].Text, out DateTime lastWriteTime);
-
-                m_nowaKarta.Add(logLineCollection.GetLogTapePage(fileFullPath));
+                m_nowaKarta.Add(LogAnalyzer.GetLogTapePage(fileFullPath));
             }
 
             DialogResult = DialogResult.OK;

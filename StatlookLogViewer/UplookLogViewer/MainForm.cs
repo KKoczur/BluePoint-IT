@@ -950,10 +950,7 @@ namespace StatlookLogViewer
 
             if (_tabControlMain.Controls.Find(fileName, false).Length == 0)
             {
-                LogLineCollection logLineCollection = new();
-
-                LogTapPage newPage = logLineCollection.GetLogTapePage(filePath);
-
+                LogTapPage newPage = LogAnalyzer.GetLogTapePage(filePath);
 
                 ToolStripMenuItem rootMenu = null;
 
