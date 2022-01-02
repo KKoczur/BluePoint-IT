@@ -1,5 +1,7 @@
-﻿using StatlookLogViewer.Parser;
+﻿using StatlookLogViewer.Model.Pattern;
+using StatlookLogViewer.Parser;
 using StatlookLogViewer.Views;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text.RegularExpressions;
@@ -38,7 +40,7 @@ namespace StatlookLogViewer
 
             List<ListViewItem> listViewItemCollection = new();
 
-            LogListViewItem logListViewItem = new();
+            ListViewItem currentListViewItem = new();
 
             List<ListViewGroup> groups = new();
 
@@ -47,15 +49,15 @@ namespace StatlookLogViewer
                 //Wyrażenie regularne do sprawdzenia czy wpis logu nie zaczyna się od daty
                 if (Regex.IsMatch(line, @"(?<rok>\d{4})\.(?<miesiac>\d{2})\.(?<dzien>\d{2})\b"))
                 {
-                    logListViewItem = new LogListViewItem();
+                    currentListViewItem = new ListViewItem();
 
                     string normalizeLine = line + ";";
                     normalizeLine = normalizeLine[..normalizeLine.IndexOf(";")];
 
                     // Dodanie do pojedynczej linii wartości kolumny: Date
-                    logListViewItem.AnalyzeLine(logParser.StartLogGroupEntry, normalizeLine, logParser);
+                    AnalyzeLine(currentListViewItem, logParser.StartLogGroupEntry, normalizeLine, logParser);
 
-                    ListViewGroup listViewGroup = logListViewItem.Group;
+                    ListViewGroup listViewGroup = currentListViewItem.Group;
 
                     if (groups.Count == 0)
                     {
@@ -67,7 +69,7 @@ namespace StatlookLogViewer
 
                         if (string.Compare(lastListViewGroup.Header, listViewGroup.Header) == 0)
                         {
-                            logListViewItem.Group = lastListViewGroup;
+                            currentListViewItem.Group = lastListViewGroup;
                         }
                         else
                         {
@@ -87,7 +89,7 @@ namespace StatlookLogViewer
                             normalizeSingleLine = normalizeSingleLine.Remove(0, textPattern.Length);
                             normalizeSingleLine = normalizeSingleLine.TrimStart();
                             normalizeSingleLine = normalizeSingleLine[..normalizeSingleLine.IndexOf(";")];
-                            logListViewItem.AnalyzeLine(textPattern, normalizeSingleLine, logParser);
+                            AnalyzeLine(currentListViewItem, textPattern, normalizeSingleLine, logParser);
                             break;
                         }
                     }
@@ -96,11 +98,62 @@ namespace StatlookLogViewer
                 {
                     //Wykonaj jeśli linia zawiera znacznika nowej grupy 
                     //Dodanie pojedynczej linii do pliku wynikowego analizy 
-                    listViewItemCollection.Add(logListViewItem);
+                    listViewItemCollection.Add(currentListViewItem);
                 }
             }
 
             return (groups, listViewItemCollection, logParser);
+        }
+
+        static void AnalyzeLine(ListViewItem listViewItem, string lineCaption, string lineValue, ILogParser logParser)
+        {
+            foreach (LogPattern logPattern in logParser.GetLogPatterns())
+            {
+                if (string.Compare(logPattern.TextPattern, lineCaption, true) != 0)
+                    continue;
+
+                if (lineCaption != logParser.StartLogGroupEntry)
+                {
+                    listViewItem.SubItems.Add(lineValue);
+
+                    if (Regex.IsMatch(lineValue, @"(?<NR_1>\d{1})\.(?<NR_2>\d{1})\.(?<NR_3>\d{1})\b został uruchomiony.") || Regex.IsMatch(lineValue, @"(?<NR_1>\d{1})\.(?<NR_2>\d{1})\.(?<NR_3>\d{1})\b started"))
+                    {
+                        listViewItem.Group.Header = $"{listViewItem.Group.Name} ({lineValue})";
+                    }
+                    else
+                    {
+                        foreach (LogErrorPattern logErrorPattern in logParser.GetListOfErrors())
+                        {
+                            if (lineValue.Contains(logErrorPattern.ErrorTextPattern) && !listViewItem.Group.Header.Contains(logErrorPattern.ErrorReason))
+                            {
+                                listViewItem.Group.Header += " ( " + logErrorPattern.ErrorReason + " )";
+                            }
+                        }
+                    }
+
+
+                    break;
+                }
+
+                _ = DateTime.TryParse(lineValue, out DateTime dateTime);
+
+                listViewItem.Text = lineValue;
+
+                listViewItem.Group = new ListViewGroup(GetNameOfGroupByHourTime(dateTime), HorizontalAlignment.Left)
+                {
+                    CollapsedState = ListViewGroupCollapsedState.Collapsed
+                };
+
+                break;
+            }
+        }
+
+        static string GetNameOfGroupByHourTime(DateTime dateTime)
+        {
+            string hourTime = dateTime.Hour.ToString();
+            string hourPart = hourTime.Length < 2 ? $"0{hourTime}:00-0{hourTime}:59" : $"{hourTime}:00-{hourTime}:59";
+
+            return $"{dateTime.ToShortDateString()} ({hourPart})";
         }
 
         #endregion Methods
