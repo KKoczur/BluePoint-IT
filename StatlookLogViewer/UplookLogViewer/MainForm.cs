@@ -23,8 +23,8 @@ namespace StatlookLogViewer
         #region Members
 
         private readonly ListViewColumnSorter _lvwColumnSorter = new();
-        public string _logDirectory;
-        public string _userLogDirectory;
+        public string _logDirectoryPath;
+        public string _userLogDirectoryPath;
         private readonly string[] _fileExtensions;
         private readonly Dictionary<string, ILogParser> _logParserMap;
         private readonly Dictionary<string, List<Tuple<string, bool>>> _columnToShowParserMap = new();
@@ -63,8 +63,8 @@ namespace StatlookLogViewer
                 CreateToolStripMenuItem(parser.Value);
             }
 
-            _logDirectory = Environment.GetFolderPath(Environment.SpecialFolder.CommonApplicationData) + _config.StatlookLogDirectory;
-            _userLogDirectory = _config.UserDirectory;
+            _logDirectoryPath = Environment.GetFolderPath(Environment.SpecialFolder.CommonApplicationData) + _config.StatlookLogDirectory;
+            _userLogDirectoryPath = _config.UserDirectory;
             _fileExtensions = _config.LogFileExtensions.Split(new char[] { ';' });
 
 
@@ -110,59 +110,54 @@ namespace StatlookLogViewer
 
         #region Methods
 
-        //Wypełnia listę informacjami o plikach logów
+        /// <summary>
+        /// Set init tab page info
+        /// </summary>
         private void IniTabPageInfo()
         {
             //Podaje informacje o katalogu "Logs"
-            SetDashboardData(_logDirectory, labelLogsPathValue, labelFilesSizeValue, labelFilesCountValue);
+            SetDashboardData(_logDirectoryPath, labelLogsPathValue, labelFilesSizeValue, labelFilesCountValue);
 
             //Podaje informacje statystyczne o katalogu usera
-            SetDashboardData(_userLogDirectory, labelUserPathValue, labelFilesSizeValueUser, labelFilesCountValueUser);
+            SetDashboardData(_userLogDirectoryPath, labelUserPathValue, labelFilesSizeValueUser, labelFilesCountValueUser);
 
-            WypelnijListe();
+            SetFilesInfoGridViewData();
         }
 
-        private void WypelnijListe()
+        private void SetFilesInfoGridViewData()
         {
             listViewFiles.Items.Clear();
 
-            var directoryInfoCollection = new DirectoryInfo[]
+            List<(DirectoryInfo directoryInfo, bool include)> directoryInfoCollection = new()
             {
-                new DirectoryInfo(_logDirectory),
-                new DirectoryInfo(_userLogDirectory)
-            };
-
-            bool[] showDirectories = new bool[]{
-                checkBoxLogs.Checked,
-                checkBoxUser.Checked
+                (new DirectoryInfo(_logDirectoryPath), checkBoxLogs.Checked),
+                (new DirectoryInfo(_userLogDirectoryPath), checkBoxUser.Checked)
             };
 
             try
             {
-                int j = 0;
 
-                foreach (DirectoryInfo directoryInfo in directoryInfoCollection)
+                foreach (var (directoryInfo, include) in directoryInfoCollection)
                 {
-                    if (directoryInfo.Exists && showDirectories[j])
+                    if (directoryInfo.Exists && include)
                     {
                         List<FileInfo> fileInfoCollection = GetFileInfoCollectionForSelectedDirectory(directoryInfo);
 
                         SetFileInfoCollection(fileInfoCollection);
-
-                        toolStripButtonIcon.Image = Properties.Resources.ok_16;
-                        toolStripStatusReady.Text = Properties.Resources.Ready;
                     }
-                    j++;
                 }
 
                 // Loop through and size each column header to fit the column header text.
-                foreach (ColumnHeader columnHeader in this.listViewFiles.Columns)
+                foreach (ColumnHeader columnHeader in listViewFiles.Columns)
                     columnHeader.Width = (columnHeader.Index == 0) ? 0 : -2;
             }
             catch (Exception exception)
             {
                 MessageBox.Show(exception.ToString());
             }
+
+            toolStripButtonIcon.Image = Properties.Resources.ok_16;
+            toolStripStatusReady.Text = Properties.Resources.Ready;
         }
 
         private void SetFileInfoCollection(List<FileInfo> fileInfoCollection)
@@ -172,6 +167,7 @@ namespace StatlookLogViewer
             ListViewItemCollection listViewItemCollection = new(listViewFiles);
 
             int i = 1;
+
             foreach (FileInfo fileInfo in fileInfoCollection)
             {
                 var listViewItem = new ListViewItem
@@ -624,9 +620,8 @@ namespace StatlookLogViewer
         /// Main form loaded
         /// </summary>
         private void MainForm_Load(object sender, EventArgs e)
-        {
-            IniTabPageInfo();
-        }
+          => IniTabPageInfo();
+
 
         private void CollapseAllGroupsToolStripMenuItem_Click(object sender, EventArgs e)
             => CollapseAllGroups();
@@ -715,7 +710,7 @@ namespace StatlookLogViewer
 
         }
 
-        private void toolStripMenuItem2_Click(object sender, EventArgs e)
+        private void ToolStripMenuItem2_Click(object sender, EventArgs e)
         {
             int tabCount = _tabControlMain.TabCount - 1;
             int selectedIndex = _tabControlMain.SelectedIndex;
@@ -1155,11 +1150,11 @@ namespace StatlookLogViewer
         }
 
         private void CheckBoxLogs_CheckedChanged(object sender, EventArgs e)
-            => WypelnijListe();
+            => SetFilesInfoGridViewData();
 
 
         private void CheckBoxUser_CheckedChanged(object sender, EventArgs e)
-            => WypelnijListe();
+            => SetFilesInfoGridViewData();
 
         private static ListViewItem[] CloneItems(ListViewItemCollection items)
         {
@@ -1281,7 +1276,7 @@ namespace StatlookLogViewer
 
         private void SearchInDashboardView()
         {
-            WypelnijListe();
+            SetFilesInfoGridViewData();
 
             ListView listView = new();
 
