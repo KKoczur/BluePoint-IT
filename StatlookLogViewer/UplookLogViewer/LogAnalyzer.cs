@@ -44,7 +44,7 @@ namespace StatlookLogViewer
             foreach (string line in allFileLines)
             {
                 //Wyrażenie regularne do sprawdzenia czy wpis logu nie zaczyna się od daty
-                if (Regex.IsMatch(line, @"(?<rok>\d{4})\.(?<miesiac>\d{2})\.(?<dzien>\d{2})\b"))
+                if (DateTime.TryParse(line, out DateTime _))
                 {
                     currentListViewItem = new ListViewItem();
 

@@ -115,10 +115,8 @@ namespace StatlookLogViewer
         /// </summary>
         private void IniTabPageInfo()
         {
-            //Podaje informacje o katalogu "Logs"
             SetDashboardData(_logDirectoryPath, labelLogsPathValue, labelFilesSizeValue, labelFilesCountValue);
 
-            //Podaje informacje statystyczne o katalogu usera
             SetDashboardData(_userLogDirectoryPath, labelUserPathValue, labelFilesSizeValueUser, labelFilesCountValueUser);
 
             SetFilesInfoGridViewData();
@@ -481,7 +479,7 @@ namespace StatlookLogViewer
 
                 FileInfo fileInfo = new(filePath);
 
-                //Nie przetwarzaj plików o rozszerzeniu .zip
+                // Nie przetwarzaj plików o rozszerzeniu .zip
                 if (fileInfo.Extension == Configuration.ZIP_FILE_EXTENSION)
                 {
                     using var openZip = new OpenZip();
