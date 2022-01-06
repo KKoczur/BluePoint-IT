@@ -9,6 +9,9 @@
     <UseWindowsForms>true</UseWindowsForms>
   </PropertyGroup>
   <ItemGroup>
+    <None Remove="Options\OCatalogs.cs~RF6001de9.TMP" />
+  </ItemGroup>
+  <ItemGroup>
     <Reference Include="ICSharpCode.SharpZipLib, Version=0.86.0.518, Culture=neutral, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
       <HintPath>..\..\..\C#\Biblioteki\SharpZipLib_0860_Bin\netcf-20\ICSharpCode.SharpZipLib.dll</HintPath>
