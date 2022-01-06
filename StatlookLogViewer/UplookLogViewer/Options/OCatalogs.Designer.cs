@@ -1,4 +1,4 @@
-﻿namespace StatlookLogViewer
+﻿namespace StatlookLogViewer.Options
 {
     partial class OCatalogs
     {

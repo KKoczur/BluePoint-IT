@@ -1187,7 +1187,7 @@ namespace StatlookLogViewer
         {
             try
             {
-                using var options = new Options();
+                using var options = new Options.Options();
 
                 if (options.ShowDialog(this) != DialogResult.OK)
                     return;

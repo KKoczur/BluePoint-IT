@@ -1,24 +1,24 @@
-﻿using System;
-using System.IO;
-using System.Collections;
-using System.Windows.Forms;
-using ICSharpCode.SharpZipLib.Zip;
+﻿using ICSharpCode.SharpZipLib.Zip;
 using StatlookLogViewer.Model;
+using System;
+using System.Collections;
+using System.IO;
+using System.Windows.Forms;
 
 namespace StatlookLogViewer.Tools
 {
     public static class ZipUtil
     {
-        private static readonly string fileSeperator = "/";
+        private const string FileSeperator = "/";
 
         /**
         * Create a new zip file
         */
         public static ZipHandle CreateZip(string name)
         {
-            ZipHandle handle = new ZipHandle();
+            var handle = new ZipHandle();
             Stream _out = new FileStream(name, FileMode.Create);
-            handle._out = new ZipOutputStream(_out);
+            handle.Out = new ZipOutputStream(_out);
             return handle;
         }
 
@@ -27,8 +27,10 @@ namespace StatlookLogViewer.Tools
         */
         public static ZipHandle OpenZip(string name)
         {
-            ZipHandle handle = new ZipHandle();
-            handle._in = new ZipFile(name);
+            var handle = new ZipHandle
+            {
+                In = new ZipFile(name)
+            };
             return handle;
         }
 
@@ -37,10 +39,8 @@ namespace StatlookLogViewer.Tools
         */
         public static void CloseZip(ZipHandle handle)
         {
-            if (handle._in != null)
-                handle._in.Close();
-            if (handle._out != null)
-                handle._out.Close();
+            handle.In?.Close();
+            handle.Out?.Close();
         }
 
         /**
@@ -48,20 +48,22 @@ namespace StatlookLogViewer.Tools
         */
         public static void InsertFile(string src, string dst, ZipHandle dest)
         {
-            byte[] buffer = new byte[5000];
-            int read;
-            if (dst == null)
-                dst = src;
-            else if (dst.Equals(""))
-                dst = src;
+            var buffer = new byte[5000];
+            switch (dst)
+            {
+                case null:
+                case "":
+                    dst = src;
+                    break;
+            }
             dst = ConvertToEntryName(dst);
-            ZipOutputStream outputZip = dest._out;
-            ZipEntry entry = new ZipEntry(dst);
+            var outputZip = dest.Out;
+            var entry = new ZipEntry(dst);
             outputZip.PutNextEntry(entry);
-            FileStream input = new FileStream(src, FileMode.Open);
+            var input = new FileStream(src, FileMode.Open);
             do
             {
-                read = input.Read(buffer, 0, 5000);
+                var read = input.Read(buffer, 0, 5000);
                 outputZip.Write(buffer, 0, read);
             }
             while (input.Position < input.Length);
@@ -74,41 +76,34 @@ namespace StatlookLogViewer.Tools
         */
         public static void InsertDirectory(string path, string dst, ZipHandle dest)
         {
-            string[] files;
-
-            if (path.Equals("") || path == null)
+            if (path.Equals(""))
                 return;
-            if (dst == null)
-                dst = "";
-            else
-                dst = ConvertToEntryName(dst);
+            dst = dst == null ? "" : ConvertToEntryName(dst);
+
             if (File.Exists(path))
             {
                 InsertFile(path, dst, dest);
             }
             else
             {
-                files = Directory.GetFiles(path);
-                for (int i = 0; i < files.Length; i++)
+                var files = Directory.GetFiles(path);
+                foreach (var file in files)
                 {
-
-                    InsertFile(files[i],
-                        (!dst.Equals("") && !dst.EndsWith(fileSeperator)) ?
-                        dst + fileSeperator + ExtractFileName(files[i]) :
-                        dst + ExtractFileName(files[i])
+                    InsertFile(file,
+                        (!dst.Equals("") && !dst.EndsWith(FileSeperator)) ?
+                            dst + FileSeperator + ExtractFileName(file) :
+                            dst + ExtractFileName(file)
                         , dest);
                 }
 
                 files = Directory.GetDirectories(path);
-                if (files == null)
-                    return;
-                for (int i = 0; i < files.Length; i++)
+                foreach (var file in files)
                 {
                     InsertDirectory(
-                            files[i],
-                            (!dst.Equals("") && !dst.EndsWith(fileSeperator)) ?
-                        dst + fileSeperator + ExtractFileName(files[i]) + fileSeperator :
-                        dst + ExtractFileName(files[i]) + fileSeperator,
+                        file,
+                        (!dst.Equals("") && !dst.EndsWith(FileSeperator)) ?
+                            dst + FileSeperator + ExtractFileName(file) + FileSeperator :
+                            dst + ExtractFileName(file) + FileSeperator,
                         dest);
                 }
             }
@@ -120,7 +115,7 @@ namespace StatlookLogViewer.Tools
         */
         public static string ConvertToEntryName(string fileName)
         {
-            return fileName.Replace('\\', fileSeperator[0]);
+            return fileName.Replace('\\', FileSeperator[0]);
         }
 
         /**
@@ -128,7 +123,7 @@ namespace StatlookLogViewer.Tools
         */
         public static bool ContainsFile(ZipHandle handle, string file)
         {
-            if (handle._in.GetEntry(file) != null)
+            if (handle.In.GetEntry(file) != null)
                 return true;
             return false;
         }
@@ -138,16 +133,16 @@ namespace StatlookLogViewer.Tools
         */
         public static byte[] GetFileContent(ZipHandle handle, string file)
         {
-            ZipEntry entry = handle._in.GetEntry(file);
+            var entry = handle.In.GetEntry(file);
             byte[] content = null;
             try
             {
-                Stream input = handle._in.GetInputStream(entry);
+                var input = handle.In.GetInputStream(entry);
                 content = new byte[(int)entry.Size];
-                int index = 0;
+                var index = 0;
                 while (input.Position < input.Length)
                 {
-                    int length = input.Read(content, index, content.Length - index);
+                    var length = input.Read(content, index, content.Length - index);
                     if (length <= 0)
                         break;
                     index += length;
@@ -166,7 +161,7 @@ namespace StatlookLogViewer.Tools
         */
         public static Stream GetInputStream(ZipHandle handle, string file)
         {
-            return handle._in.GetInputStream(handle._in.GetEntry(file));
+            return handle.In.GetInputStream(handle.In.GetEntry(file));
         }
 
         /**
@@ -174,16 +169,16 @@ namespace StatlookLogViewer.Tools
         */
         public static void ExtractFile(ZipHandle handle, string output, string file)
         {
-            byte[] content = GetFileContent(handle, file);
-            int index = file.LastIndexOf(fileSeperator[0]);
+            var content = GetFileContent(handle, file);
+            var index = file.LastIndexOf(FileSeperator[0]);
             if (index == -1)
                 index = file.LastIndexOf('\\');
             if (!output.EndsWith(System.IO.Path.DirectorySeparatorChar + ""))
                 output = output + System.IO.Path.DirectorySeparatorChar;
-            string output_file = output + file.Substring(index + 1, file.Length - (index + 1));
+            var output_file = output + file.Substring(index + 1, file.Length - (index + 1));
             try
             {
-                FileStream fstream = new FileStream(output_file, FileMode.Create);
+                var fstream = new FileStream(output_file, FileMode.Create);
                 fstream.Write(content, 0, content.Length);
                 fstream.Close();
             }
@@ -199,16 +194,16 @@ namespace StatlookLogViewer.Tools
          */
         public static string[] GetEntriesByExtensions(ZipHandle handle, string ext)
         {
-            IEnumerator _enum = handle._in.GetEnumerator();
-            ArrayList list = new ArrayList();
+            var _enum = handle.In.GetEnumerator();
+            var list = new ArrayList();
             while (_enum.MoveNext())
             {
-                string name = ((ZipEntry)_enum.Current).Name;
+                var name = ((ZipEntry)_enum.Current).Name;
                 if (name.EndsWith(ext))
                     list.Add(name);
             }
-            string[] files = new string[list.Count];
-            for (int i = 0; i < files.Length; i++)
+            var files = new string[list.Count];
+            for (var i = 0; i < files.Length; i++)
                 files[i] = (string)list[i];
             return files;
         }
@@ -216,23 +211,15 @@ namespace StatlookLogViewer.Tools
         private static string ExtractFileName(string path)
         {
             path = path.Replace("\\", "/");
-            int idx = path.LastIndexOf(fileSeperator);
-            if (idx > -1)
-            {
-                return path.Substring(idx + 1);
-            }
-            return "";
+            var idx = path.LastIndexOf(FileSeperator, StringComparison.Ordinal);
+            return idx > -1 ? path.Substring(idx + 1) : "";
         }
 
         private static string ExtractDirectoryPath(string path)
         {
             path = path.Replace("\\", "/");
-            int idx = path.LastIndexOf(fileSeperator);
-            if (idx > -1)
-            {
-                return path.Substring(0, idx);
-            }
-            return "";
+            var idx = path.LastIndexOf(FileSeperator);
+            return idx > -1 ? path.Substring(0, idx) : "";
         }
     }
 }

@@ -1,8 +1,7 @@
 ﻿using System;
 using System.Windows.Forms;
 
-
-namespace StatlookLogViewer
+namespace StatlookLogViewer.Options
 {
     public partial class Options : Form
     {
@@ -39,7 +38,7 @@ namespace StatlookLogViewer
 
         private void treeViewOptions_AfterSelect(object sender, TreeViewEventArgs e)
         {
-            if (e.Node.Name == "NCatalogs")
+            if (e.Node != null && e.Node.Name == "NCatalogs")
             {
                 this.oCatalogs.Dock = DockStyle.Fill;
                 TextBox txUplook = (TextBox)(oCatalogs.Controls.Find("textBoxUplookCatalog", true))[0];

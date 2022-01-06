@@ -22,10 +22,10 @@ namespace StatlookLogViewer.Parser
         {
             return new List<LogPattern>()
             {
-                new LogPattern( "startTime", "	Start time:", true),
-                new LogPattern( "duration", "	Duration:", true),
-                new LogPattern( "conditionalExpressionResult", "	Conditional expression result:", true),
-                new LogPattern( "status", "	Status:", true)
+                new( "startTime", "	Start time:", true),
+                new( "duration", "	Duration:", true),
+                new( "conditionalExpressionResult", "	Conditional expression result:", true),
+                new( "status", "	Status:", true)
              }.ToArray();
         }
     }

@@ -88,7 +88,7 @@ namespace StatlookLogViewer
                 }
             }
 
-            return (groups, listViewItemCollection, logParser: logParser);
+            return (groups, listViewItemCollection, logParser);
         }
 
         private static void AnalyzeLine(ListViewItem listViewItem, string lineCaption, string lineValue, ILogParser logParser)

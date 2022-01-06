@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Windows.Forms;
 
-namespace StatlookLogViewer
+namespace StatlookLogViewer.Options
 {
     public partial class OCatalogs : UserControl
     {

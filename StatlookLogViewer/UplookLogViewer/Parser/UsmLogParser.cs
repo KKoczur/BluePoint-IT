@@ -15,8 +15,8 @@ namespace StatlookLogViewer.Parser
         {
             return new List<LogErrorPattern>()
             {
-                new LogErrorPattern("1089", "Couldn't read information about process."),
-                new LogErrorPattern( "1060", "Couldn't save information about created process")
+                new("1089", "Couldn't read information about process."),
+                new( "1060", "Couldn't save information about created process")
             }.ToArray();
         }
 
@@ -24,12 +24,12 @@ namespace StatlookLogViewer.Parser
         {
             return new List<LogPattern>()
             {
-                new LogPattern( "usmDate", "Date", true),
-                new LogPattern( "usmCode", " Code:", true),
-                new LogPattern( "usmType", " Type:", true),
-                new LogPattern( "usmSession", " Session:", true),
-                new LogPattern( "usmProcess", " Process ID:", true),
-                new LogPattern( "usmDescription", " Description:", true)
+                new( "usmDate", "Date", true),
+                new( "usmCode", " Code:", true),
+                new( "usmType", " Type:", true),
+                new( "usmSession", " Session:", true),
+                new( "usmProcess", " Process ID:", true),
+                new( "usmDescription", " Description:", true)
              }.ToArray();
         }
     }

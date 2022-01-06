@@ -1,5 +1,5 @@
-﻿using System.Windows.Forms;
-using System.Drawing;
+﻿using System.Drawing;
+using System.Windows.Forms;
 
 namespace StatlookLogViewer.Views
 {
@@ -67,24 +67,24 @@ namespace StatlookLogViewer.Views
 
         private void CloseTab(int i)
         {
-            int PageNumber = SelectedIndex;
+            var pageNumber = SelectedIndex;
             if (PreRemoveTabPage != null)
             {
-                bool closeIt = PreRemoveTabPage(i);
+                var closeIt = PreRemoveTabPage(i);
                 if (!closeIt)
                     return;
             }
             TabPages.Remove(TabPages[i]);
-            if (TabPages.Count > 1)
+
+            if (TabPages.Count <= 1) return;
+
+            if (pageNumber == TabPages.Count)
             {
-                if (PageNumber == TabPages.Count)
-                {
-                    SelectedIndex = PageNumber - 1;
-                }
-                else
-                {
-                    SelectedIndex = PageNumber;
-                }
+                SelectedIndex = pageNumber - 1;
+            }
+            else
+            {
+                SelectedIndex = pageNumber;
             }
         }
     }

@@ -8,14 +8,14 @@ namespace StatlookLogViewer
 {
     public partial class OpenZip : Form
     {
-        public ArrayList m_nowaKarta;
+        private readonly ArrayList m_nowaKarta;
         private readonly string _zip;
-        public static string ZipTmpDirectory = "\\A plus C Systems\\uplook3\\TMP\\";
-        public static string ZipDirectory;
+        private static readonly string ZipTmpDirectory = "\\A plus C Systems\\uplook3\\TMP\\";
+        private static string _zipDirectory;
 
         public OpenZip()
         {
-            ZipDirectory = System.Environment.GetFolderPath(Environment.SpecialFolder.CommonApplicationData) + ZipTmpDirectory;
+            _zipDirectory = System.Environment.GetFolderPath(Environment.SpecialFolder.CommonApplicationData) + ZipTmpDirectory;
             InitializeComponent();
             m_nowaKarta = new ArrayList();
         }
@@ -33,11 +33,11 @@ namespace StatlookLogViewer
         {
             foreach (ListViewItem listViewItem in listViewFiles.SelectedItems)
             {
-                string fileName = listViewItem.SubItems[1].Text;
-                string filePath = listViewItem.SubItems[4].Text;
-                string fullName = filePath + "\\" + fileName;
+                var fileName = listViewItem.SubItems[1].Text;
+                var filePath = listViewItem.SubItems[4].Text;
+                var fullName = filePath + "\\" + fileName;
 
-                FileInfo fileInfo = new FileInfo(fullName);
+                var fileInfo = new FileInfo(fullName);
 
                 //Nie przetwarzaj plików o rozszerzeniu .zip
                 if (fileInfo.Extension == ".zip")
@@ -80,7 +80,7 @@ namespace StatlookLogViewer
             listViewFiles.Items.Add(listViewItem);
 
             // Loop through and size each column header to fit the column header text.
-            foreach (ColumnHeader ch in this.listViewFiles.Columns)
+            foreach (ColumnHeader ch in listViewFiles.Columns)
             {
                 ch.Width = -2;
             }
@@ -88,30 +88,27 @@ namespace StatlookLogViewer
 
         private void ListViewFiles_MouseClick(object sender, MouseEventArgs e)
         {
-            if (e.Button == MouseButtons.Left)
-            {
-                checkBoxSelectAll.Checked = false;
-            }
+            if (e.Button != MouseButtons.Left) return;
+
+            checkBoxSelectAll.Checked = false;
         }
 
         private void ListViewFiles_MouseDoubleClick(object sender, MouseEventArgs e)
         {
             foreach (ListViewItem item in listViewFiles.SelectedItems)
             {
-                string fileName = item.SubItems[1].Text;
-                string fileFullPath = item.SubItems[4].Text + "\\" + item.SubItems[1].Text;
+                var fileName = item.SubItems[1].Text;
+                var fileFullPath = item.SubItems[4].Text + "\\" + item.SubItems[1].Text;
 
-                using (ZipFile zip = ZipFile.Read(_zip))
+                using (var zip = ZipFile.Read(_zip))
                 {
-                    foreach (ZipEntry e1 in zip)
+                    foreach (var e1 in zip)
                     {
                         // e1.Extract(ZipDirectory, true);  // overwrite == true  
                     }
                 }
 
-                FileInfo fileInfo = new(fileFullPath);
-
-                _ = DateTime.TryParse(item.SubItems[2].Text, out DateTime lastWriteTime);
+                _ = DateTime.TryParse(item.SubItems[2].Text, out _);
 
                 m_nowaKarta.Add(LogAnalyzer.GetLogTapePage(fileFullPath));
             }

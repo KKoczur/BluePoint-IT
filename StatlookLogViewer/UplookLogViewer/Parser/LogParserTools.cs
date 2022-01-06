@@ -10,43 +10,22 @@ namespace StatlookLogViewer.Parser
     {
         public static Dictionary<string, ILogParser> GetLogParserMap()
         {
-            var logParserMap = new Dictionary<string, ILogParser>();
+            var assembly = Assembly.GetExecutingAssembly();
 
-            Assembly assembly = Assembly.GetExecutingAssembly();
-
-            foreach (Type objectType in assembly.GetTypes())
-            {
-
-                if (objectType.GetInterfaces().Contains(typeof(ILogParser)))
-                {
-                    var logParser = (ILogParser)Activator.CreateInstance(objectType);
-
-                    logParserMap.Add(logParser.UniqueLogKey, logParser);
-                }
-            }
-
-            return logParserMap;
+            return (from objectType in assembly.GetTypes() where objectType.GetInterfaces().Contains(typeof(ILogParser)) select (ILogParser)Activator.CreateInstance(objectType)).ToDictionary(logParser => logParser.UniqueLogKey);
         }
 
         public static (ILogParser, string[]) DetectLogParser(string filePath)
         {
-            string[] allFileLines = IOTools.ReadAllLines(filePath);
+            var allFileLines = IOTools.ReadAllLines(filePath);
 
-            ILogParser logParser = null;
-
-            foreach (KeyValuePair<string, ILogParser> kvp in LogParserTools.GetLogParserMap())
+            foreach (var kvp in from kvp in GetLogParserMap() from line in allFileLines where line.Contains(kvp.Key) select kvp)
             {
-                foreach (string line in allFileLines)
-                {
-                    if (line.Contains(kvp.Key))
-                    {
-                        logParser = kvp.Value;
-                        return (logParser, allFileLines);
-                    }
-                }
+                var logParser = kvp.Value;
+                return (logParser, allFileLines);
             }
 
-            return (logParser, allFileLines);
+            return (null, allFileLines);
 
         }
     }

@@ -1,12 +1,14 @@
 ﻿using StatlookLogViewer.Controller;
 using StatlookLogViewer.Parser;
+using System;
 using System.Collections.Generic;
 using System.IO;
+using System.Linq;
 using System.Windows.Forms;
 
 namespace StatlookLogViewer.Views
 {
-    public class LogTapPage : TabPage
+    public sealed class LogTapPage : TabPage
     {
         private readonly ListViewColumnSorter _lvwColumnSorter = new();
 
@@ -28,12 +30,12 @@ namespace StatlookLogViewer.Views
 
             Location = new System.Drawing.Point(4, 22);
 
-            string fileName = Path.GetFileName(filePath);
+            var fileName = Path.GetFileName(filePath);
             Name = fileName;
             Padding = new Padding(3);
             Size = new System.Drawing.Size(994, 610);
             TabIndex = index;
-            Text = $"      {fileName}";
+            Text = $@"      {fileName}";
             UseVisualStyleBackColor = true;
             ToolTipText = filePath;
             Tag = filePath;
@@ -118,14 +120,7 @@ namespace StatlookLogViewer.Views
 
             try
             {
-                List<ColumnHeader> columnHeaders = new();
-
-                foreach (var pattern in logParser.GetLogPatterns())
-                {
-                    columnHeaders.Add(new ColumnHeader() { Text = pattern.TextPattern, Width = -2 });
-                }
-
-                _listViewExtended.Columns.AddRange(columnHeaders.ToArray());
+                _listViewExtended.Columns.AddRange(logParser.GetLogPatterns().Select(pattern => new ColumnHeader() { Text = pattern.TextPattern, Width = -2 }).ToArray());
             }
             finally
             {
@@ -141,13 +136,12 @@ namespace StatlookLogViewer.Views
             {
                 foreach (ToolStripMenuItem toolStripMenuItem in toolStripItemCollection)
                 {
-                    if (string.Compare(columnHeader.Text, toolStripMenuItem.Text, true) == 0)
-                    {
-                        if (toolStripMenuItem.CheckState == CheckState.Checked)
-                            columnHeader.Width = -2;
-                        else
-                            columnHeader.Width = 0;
-                    }
+                    if (String.Compare(columnHeader.Text, toolStripMenuItem.Text, StringComparison.OrdinalIgnoreCase) != 0) continue;
+
+                    if (toolStripMenuItem.CheckState == CheckState.Checked)
+                        columnHeader.Width = -2;
+                    else
+                        columnHeader.Width = 0;
                 }
             }
         }
@@ -169,14 +163,7 @@ namespace StatlookLogViewer.Views
                 if (e.Column == _lvwColumnSorter.SortColumn)
                 {
                     // Reverse the current sort direction for this column.
-                    if (_lvwColumnSorter.Order == SortOrder.Ascending)
-                    {
-                        _lvwColumnSorter.Order = SortOrder.Descending;
-                    }
-                    else
-                    {
-                        _lvwColumnSorter.Order = SortOrder.Ascending;
-                    }
+                    _lvwColumnSorter.Order = _lvwColumnSorter.Order == SortOrder.Ascending ? SortOrder.Descending : SortOrder.Ascending;
                 }
                 else
                 {

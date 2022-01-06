@@ -16,11 +16,6 @@ namespace StatlookLogViewer.Parser
 
         LogErrorPattern[] GetListOfErrors();
 
-        public LogPattern GetHeaderByKeyName(string keyName)
-        {
-            return GetLogPatterns().ToList().Find(item => item.KeyName == keyName);
-        }
-
         public IEnumerable<string> GetTextPatterns() => GetLogPatterns().Select(item => item.TextPattern);
     }
 }

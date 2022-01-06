@@ -4,7 +4,7 @@ namespace StatlookLogViewer.Model
 {
     public class ZipHandle
     {
-        public ZipFile _in;
-        public ZipOutputStream _out;
+        public ZipFile In;
+        public ZipOutputStream Out;
     }
 }
