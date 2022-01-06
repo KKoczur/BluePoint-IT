@@ -1,5 +1,4 @@
-﻿using StatlookLogViewer.Model.Pattern;
-using StatlookLogViewer.Parser;
+﻿using StatlookLogViewer.Parser;
 using StatlookLogViewer.Views;
 using System;
 using System.Collections.Generic;
@@ -11,29 +10,20 @@ namespace StatlookLogViewer
 {
     internal static class LogAnalyzer
     {
-        #region Constructors
-
-
-        #endregion Constructors
-
         #region Methods
 
         public static LogTapPage GetLogTapePage(string filePath)
         {
 
-            (List<ListViewGroup> groups, List<ListViewItem> listViewItems, ILogParser logParser) = AnalyzeLogFile(filePath);
+            var (groups, listViewItems, logParser) = AnalyzeLogFile(filePath);
 
             return new LogTapPage(filePath, logParser, groups, listViewItems);
 
         }
 
-        static (List<ListViewGroup> groups, List<ListViewItem> listViewItems, ILogParser logParser) AnalyzeLogFile(string filePath)
+        private static (List<ListViewGroup> groups, List<ListViewItem> listViewItems, ILogParser logParser) AnalyzeLogFile(string filePath)
         {
-            (ILogParser, string[]) logParserDetectorResult = LogParserTools.DetectLogParser(filePath);
-
-            ILogParser logParser = logParserDetectorResult.Item1;
-
-            string[] allFileLines = logParserDetectorResult.Item2;
+            var (logParser, allFileLines) = LogParserTools.DetectLogParser(filePath);
 
             List<ListViewItem> listViewItemCollection = new();
 
@@ -41,20 +31,20 @@ namespace StatlookLogViewer
 
             List<ListViewGroup> groups = new();
 
-            foreach (string line in allFileLines)
+            foreach (var line in allFileLines)
             {
                 //Wyrażenie regularne do sprawdzenia czy wpis logu nie zaczyna się od daty
-                if (DateTime.TryParse(line, out DateTime _))
+                if (DateTime.TryParse(line, out _))
                 {
                     currentListViewItem = new ListViewItem();
 
-                    string normalizeLine = line + ";";
-                    normalizeLine = normalizeLine[..normalizeLine.IndexOf(";")];
+                    var normalizeLine = line + ";";
+                    normalizeLine = normalizeLine[..normalizeLine.IndexOf(";", StringComparison.Ordinal)];
 
                     // Dodanie do pojedynczej linii wartości kolumny: Date
                     AnalyzeLine(currentListViewItem, logParser.StartLogGroupEntry, normalizeLine, logParser);
 
-                    ListViewGroup listViewGroup = currentListViewItem.Group;
+                    var listViewGroup = currentListViewItem.Group;
 
                     if (groups.Count == 0)
                     {
@@ -62,9 +52,9 @@ namespace StatlookLogViewer
                     }
                     else
                     {
-                        ListViewGroup lastListViewGroup = groups.Last();
+                        var lastListViewGroup = groups.Last();
 
-                        if (string.Compare(lastListViewGroup.Header, listViewGroup.Header) == 0)
+                        if (string.CompareOrdinal(lastListViewGroup.Header, listViewGroup.Header) == 0)
                         {
                             currentListViewItem.Group = lastListViewGroup;
                         }
@@ -76,22 +66,21 @@ namespace StatlookLogViewer
                 }
 
                 //Wykonaj jeśli linia nie zawiera znacznika przerwy 
-                else if (!line.Contains(logParser.EndLogGroupEntry))
+                else if (line != null && !line.Contains(logParser.EndLogGroupEntry))
                 {
-                    foreach (string textPattern in logParser.GetTextPatterns())
+                    foreach (var textPattern in logParser.GetTextPatterns())
                     {
-                        if (line.StartsWith(textPattern))
-                        {
-                            string normalizeSingleLine = line + ";";
-                            normalizeSingleLine = normalizeSingleLine.Remove(0, textPattern.Length);
-                            normalizeSingleLine = normalizeSingleLine.TrimStart();
-                            normalizeSingleLine = normalizeSingleLine[..normalizeSingleLine.IndexOf(";")];
-                            AnalyzeLine(currentListViewItem, textPattern, normalizeSingleLine, logParser);
-                            break;
-                        }
+                        if (!line.StartsWith(textPattern)) continue;
+
+                        var normalizeSingleLine = line + ";";
+                        normalizeSingleLine = normalizeSingleLine.Remove(0, textPattern.Length);
+                        normalizeSingleLine = normalizeSingleLine.TrimStart();
+                        normalizeSingleLine = normalizeSingleLine[..normalizeSingleLine.IndexOf(";", StringComparison.Ordinal)];
+                        AnalyzeLine(currentListViewItem, textPattern, normalizeSingleLine, logParser);
+                        break;
                     }
                 }
-                else if (line.StartsWith(logParser.EndLogGroupEntry))
+                else if (line != null && line.StartsWith(logParser.EndLogGroupEntry))
                 {
                     //Wykonaj jeśli linia zawiera znacznika nowej grupy 
                     //Dodanie pojedynczej linii do pliku wynikowego analizy 
@@ -99,14 +88,14 @@ namespace StatlookLogViewer
                 }
             }
 
-            return (groups, listViewItemCollection, logParser);
+            return (groups, listViewItemCollection, logParser: logParser);
         }
 
-        static void AnalyzeLine(ListViewItem listViewItem, string lineCaption, string lineValue, ILogParser logParser)
+        private static void AnalyzeLine(ListViewItem listViewItem, string lineCaption, string lineValue, ILogParser logParser)
         {
-            foreach (LogPattern logPattern in logParser.GetLogPatterns())
+            foreach (var logPattern in logParser.GetLogPatterns())
             {
-                if (string.Compare(logPattern.TextPattern, lineCaption, true) != 0)
+                if (string.Compare(logPattern.TextPattern, lineCaption, StringComparison.OrdinalIgnoreCase) != 0)
                     continue;
 
                 if (lineCaption != logParser.StartLogGroupEntry)
@@ -119,7 +108,7 @@ namespace StatlookLogViewer
                     }
                     else
                     {
-                        foreach (LogErrorPattern logErrorPattern in logParser.GetListOfErrors())
+                        foreach (var logErrorPattern in logParser.GetListOfErrors())
                         {
                             if (lineValue.Contains(logErrorPattern.ErrorTextPattern) && !listViewItem.Group.Header.Contains(logErrorPattern.ErrorReason))
                             {
@@ -132,7 +121,7 @@ namespace StatlookLogViewer
                     break;
                 }
 
-                _ = DateTime.TryParse(lineValue, out DateTime dateTime);
+                _ = DateTime.TryParse(lineValue, out var dateTime);
 
                 listViewItem.Text = lineValue;
 
@@ -145,10 +134,10 @@ namespace StatlookLogViewer
             }
         }
 
-        static string GetNameOfGroupByHourTime(DateTime dateTime)
+        private static string GetNameOfGroupByHourTime(DateTime dateTime)
         {
-            string hourTime = dateTime.Hour.ToString();
-            string hourPart = hourTime.Length < 2 ? $"0{hourTime}:00-0{hourTime}:59" : $"{hourTime}:00-{hourTime}:59";
+            var hourTime = dateTime.Hour.ToString();
+            var hourPart = hourTime.Length < 2 ? $"0{hourTime}:00-0{hourTime}:59" : $"{hourTime}:00-{hourTime}:59";
 
             return $"{dateTime.ToShortDateString()} ({hourPart})";
         }

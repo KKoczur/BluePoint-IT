@@ -14,8 +14,8 @@ namespace StatlookLogViewer.Controller
 
         public int Compare(object x, object y)
         {
-            int nx = int.Parse((x as ListViewItem)?.SubItems[_colIndex].Text);
-            int ny = int.Parse((y as ListViewItem)?.SubItems[_colIndex].Text);
+            var nx = int.Parse((x as ListViewItem)?.SubItems[_colIndex].Text ?? string.Empty);
+            var ny = int.Parse((y as ListViewItem)?.SubItems[_colIndex].Text ?? string.Empty);
             return nx.CompareTo(ny);
         }
     }

@@ -1,8 +1,8 @@
 ﻿using System;
-using System.Windows.Forms;
 using System.ComponentModel;
-using System.Runtime.InteropServices;
 using System.Reflection;
+using System.Runtime.InteropServices;
+using System.Windows.Forms;
 
 namespace StatlookLogViewer.Views
 {
@@ -352,6 +352,7 @@ namespace StatlookLogViewer.Views
         SubsetItems = 0x10000
     }
 
+    [Flags]
     public enum ListViewGroupState
     {
         /// <summary>

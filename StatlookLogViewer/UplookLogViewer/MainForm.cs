@@ -1,7 +1,6 @@
 ﻿using Ionic.Zip;
 using StatlookkLogViewer.Tools;
 using StatlookLogViewer.Controller;
-using StatlookLogViewer.Model.Pattern;
 using StatlookLogViewer.Parser;
 using StatlookLogViewer.Views;
 using System;
@@ -23,10 +22,9 @@ namespace StatlookLogViewer
         #region Members
 
         private readonly ListViewColumnSorter _lvwColumnSorter = new();
-        public string _logDirectoryPath;
-        public string _userLogDirectoryPath;
+        private readonly string _logDirectoryPath;
+        private readonly string _userLogDirectoryPath;
         private readonly string[] _fileExtensions;
-        private readonly Dictionary<string, ILogParser> _logParserMap;
         private readonly Dictionary<string, List<Tuple<string, bool>>> _columnToShowParserMap = new();
         private readonly Dictionary<string, ToolStripMenuItem> _toolStripMenuItemFilterColumnMap = new();
 
@@ -42,30 +40,23 @@ namespace StatlookLogViewer
 
             _config = Configuration.GetConfiguration();
 
-            if (string.Compare(_config.CurrentLanguage, "en-us") != 0)
+            if (string.CompareOrdinal(_config.CurrentLanguage, "en-us") != 0)
                 ChangeLanguage(_config.CurrentLanguage);
 
-            _logParserMap = LogParserTools.GetLogParserMap();
+            var logParserMap = LogParserTools.GetLogParserMap() ?? throw new ArgumentNullException("LogParserTools.GetLogParserMap()");
 
-            foreach (KeyValuePair<string, ILogParser> parser in _logParserMap)
+            foreach (var (key, logParser) in logParserMap)
             {
-                List<Tuple<string, bool>> columnToShow = new();
+                var columnToShow = logParser.GetLogPatterns().Select(pattern => Tuple.Create(pattern.KeyName, pattern.Show)).ToList();
 
-                foreach (LogPattern pattern in parser.Value.GetLogPatterns())
-                {
-                    columnToShow.Add(Tuple.Create(pattern.KeyName, pattern.Show));
-                }
+                _columnToShowParserMap.Add(key, columnToShow);
 
-                _columnToShowParserMap.Add(parser.Key, columnToShow);
-
-
-                // Utworzenie menu widocznosci kolumn
-                CreateToolStripMenuItem(parser.Value);
+                CreateToolStripMenuItem(logParser);
             }
 
             _logDirectoryPath = Environment.GetFolderPath(Environment.SpecialFolder.CommonApplicationData) + _config.StatlookLogDirectory;
             _userLogDirectoryPath = _config.UserDirectory;
-            _fileExtensions = _config.LogFileExtensions.Split(new char[] { ';' });
+            _fileExtensions = _config.LogFileExtensions.Split(new[] { ';' });
 
 
             listViewFiles.ListViewItemSorter = _lvwColumnSorter;
@@ -73,7 +64,9 @@ namespace StatlookLogViewer
 
         private void CreateToolStripMenuItem(ILogParser? logParser)
         {
-            LogPattern[] logPatterns = logParser?.GetLogPatterns().ToArray();
+            var logPatterns = logParser?.GetLogPatterns().ToArray();
+
+            if (logParser == null) return;
 
             ToolStripMenuItem rootMenu = new()
             {
@@ -81,29 +74,12 @@ namespace StatlookLogViewer
                 Text = logParser.UniqueLogKey
             };
 
-            rootMenu.DropDownItemClicked += new System.Windows.Forms.ToolStripItemClickedEventHandler(this.ToolStripMenuItemUplook_DropDownItemClicked);
+            rootMenu.DropDownItemClicked += this.ToolStripMenuItemUplook_DropDownItemClicked;
 
             _toolStripMenuItemFilterColumnMap.Add(logParser.UniqueLogKey, rootMenu);
             viewToolStripMenuItem.DropDownItems.Add(rootMenu);
 
-
-
-            List<ToolStripMenuItem> toolStripMenuItemCollection = new();
-
-            foreach (LogPattern logPattern in logPatterns)
-            {
-                ToolStripMenuItem toolStripMenuItem = new()
-                {
-                    Checked = logPattern.Show,
-                    Name = logPattern.KeyName,
-                    Size = new Size(152, 22),
-                    Text = logPattern.TextPattern
-                };
-
-                toolStripMenuItemCollection.Add(toolStripMenuItem);
-            }
-
-            rootMenu.DropDownItems.AddRange(toolStripMenuItemCollection.ToArray());
+            rootMenu.DropDownItems.AddRange(logPatterns.Select(logPattern => new ToolStripMenuItem() { Checked = logPattern.Show, Name = logPattern.KeyName, Size = new Size(152, 22), Text = logPattern.TextPattern }).ToArray());
         }
 
         #endregion Constructors
@@ -137,12 +113,11 @@ namespace StatlookLogViewer
 
                 foreach (var (directoryInfo, include) in directoryInfoCollection)
                 {
-                    if (directoryInfo.Exists && include)
-                    {
-                        List<FileInfo> fileInfoCollection = GetFileInfoCollectionForSelectedDirectory(directoryInfo);
+                    if (!directoryInfo.Exists || !include) continue;
 
-                        SetFileInfoCollection(fileInfoCollection);
-                    }
+                    var fileInfoCollection = GetFileInfoCollectionForSelectedDirectory(directoryInfo);
+
+                    SetFileInfoCollection(fileInfoCollection);
                 }
 
                 // Loop through and size each column header to fit the column header text.
@@ -164,9 +139,9 @@ namespace StatlookLogViewer
 
             ListViewItemCollection listViewItemCollection = new(listViewFiles);
 
-            int i = 1;
+            var i = 1;
 
-            foreach (FileInfo fileInfo in fileInfoCollection)
+            foreach (var fileInfo in fileInfoCollection)
             {
                 var listViewItem = new ListViewItem
                 {
@@ -174,7 +149,7 @@ namespace StatlookLogViewer
                 };
 
                 listViewItem.SubItems.Add(fileInfo.Name);
-                listViewItem.SubItems.Add(fileInfo.LastWriteTime.ToString());
+                listViewItem.SubItems.Add(fileInfo.LastWriteTime.ToString(CultureInfo.CurrentCulture));
                 listViewItem.SubItems.Add(IOTools.FormatFileSize(fileInfo.Length));
                 listViewItem.SubItems.Add(fileInfo.DirectoryName);
                 listViewItemCollection.Add(listViewItem);
@@ -190,16 +165,11 @@ namespace StatlookLogViewer
         {
             var fileInfoCollection = new List<FileInfo>();
 
-            foreach (string ext in _fileExtensions)
+            foreach (var ext in _fileExtensions)
             {
-                if (directoryInfo.FullName != "C:\\")
-                {
-                    fileInfoCollection.AddRange(directoryInfo.GetFiles(ext, SearchOption.AllDirectories));
-                }
-                else
-                {
-                    fileInfoCollection.AddRange(directoryInfo.GetFiles(ext, SearchOption.TopDirectoryOnly));
-                }
+                fileInfoCollection.AddRange(directoryInfo.FullName != "C:\\"
+                    ? directoryInfo.GetFiles(ext, SearchOption.AllDirectories)
+                    : directoryInfo.GetFiles(ext, SearchOption.TopDirectoryOnly));
             }
 
             return fileInfoCollection;
@@ -207,14 +177,14 @@ namespace StatlookLogViewer
 
         private static string GetFilePathFromListViewItem(ListViewItem listViewItem)
         {
-            string fileName = listViewItem.SubItems[1].Text;
-            string path = listViewItem.SubItems[4].Text;
+            var fileName = listViewItem.SubItems[1].Text;
+            var path = listViewItem.SubItems[4].Text;
             return path + "\\" + fileName;
         }
 
         private FileInfo GetFileInfoForSelectedTab()
         {
-            string fileFullName = GetSelectedTabPage().ToolTipText;
+            var fileFullName = GetSelectedTabPage().ToolTipText;
             return new FileInfo(fileFullName);
         }
 
@@ -223,34 +193,34 @@ namespace StatlookLogViewer
         /// </summary>
         private void OpenLogFile()
         {
-            using var openFileDialog = new OpenFileDialog()
+            using var fileDialog = new OpenFileDialog()
             {
                 Multiselect = true,
                 Filter = Configuration.LOG_FILE_EXTENSIONS,
                 Title = Properties.Resources.SelectLogSourceTitle
             };
 
-            if (openFileDialog.ShowDialog() != DialogResult.OK)
+            if (fileDialog.ShowDialog() != DialogResult.OK)
                 return;
 
-            //Otwarcie pojedynczego pliku o rozszerzeniu .zip
-            if ((openFileDialog.FileNames.Length == 1) && (openFileDialog.SafeFileName.Substring(openFileDialog.SafeFileName.Length - 4, 4) == Configuration.ZIP_FILE_EXTENSION))
+            // Otwarcie pojedynczego pliku o rozszerzeniu .zip
+            if ((fileDialog.FileNames.Length == 1) && (fileDialog.SafeFileName?.Substring(fileDialog.SafeFileName.Length - 4, 4) == Configuration.ZIP_FILE_EXTENSION))
             {
-                using OpenZip openZip = new(openFileDialog.FileName);
+                using OpenZip openZip = new(fileDialog.FileName);
 
-                using (ZipFile zipFile = ZipFile.Read(openFileDialog.FileName))
+                using (var zipFile = ZipFile.Read(fileDialog.FileName))
                 {
-                    int i = 1;
-                    foreach (ZipEntry e in zipFile)
+                    var i = 1;
+                    foreach (var e in zipFile)
                     {
                         ListViewItem listViewItem = new()
                         {
                             Text = i.ToString()
                         };
                         listViewItem.SubItems.Add(e.FileName);
-                        listViewItem.SubItems.Add(e.LastModified.ToString());
+                        listViewItem.SubItems.Add(e.LastModified.ToString(CultureInfo.CurrentCulture));
                         listViewItem.SubItems.Add(IOTools.FormatFileSize(e.UncompressedSize));
-                        listViewItem.SubItems.Add(openFileDialog.InitialDirectory);
+                        listViewItem.SubItems.Add(fileDialog.InitialDirectory);
                         openZip.AddItem(listViewItem);
                         i++;
                     }
@@ -261,7 +231,7 @@ namespace StatlookLogViewer
             }
             else
             {
-                foreach (string filePath in openFileDialog.FileNames)
+                foreach (var filePath in fileDialog.FileNames)
                 {
                     // Nie przetwarzaj plików o rozszerzeniu .zip
                     FileInfo fileInfo = new(filePath);
@@ -275,14 +245,13 @@ namespace StatlookLogViewer
                         if (openZip.ShowDialog(this) != DialogResult.OK)
                             continue;
 
-                        //Aktywownie menu grupowania 
                         grupyToolStripMenuItem.Enabled = true;
                         zwinToolStripMenuItem.Enabled = true;
                         rozwinWszystkieToolStripMenuItem.Enabled = true;
-                        //Aktywowanie przycisków grupowania
+
                         toolStripButtonCollapsedAll.Enabled = true;
                         toolStripButtonNormalAll.Enabled = true;
-                        //Aktywowanie przycisków menu File
+
                         closeAllWithoutActiveToolStripMenuItem.Enabled = true;
                         closeAllToolStripMenuItem.Enabled = true;
                         CollapseAllGroups();
@@ -290,7 +259,7 @@ namespace StatlookLogViewer
                     }
                     else
                     {
-                        AnalizeLog(filePath, fileInfo.LastWriteTime);
+                        AnalizeLog(filePath);
                     }
                 }
             }
@@ -298,45 +267,44 @@ namespace StatlookLogViewer
 
         private void ShowListViewColumns(LogTapPage logTapPage)
         {
-            ILogParser logParser = logTapPage.LogParser;
+            var logParser = logTapPage.LogParser;
 
-            if (_toolStripMenuItemFilterColumnMap.TryGetValue(logParser.UniqueLogKey, out ToolStripMenuItem rootMenu))
+            if (_toolStripMenuItemFilterColumnMap.TryGetValue(logParser.UniqueLogKey, out var rootMenu))
                 logTapPage.SetListViewColumnsColumnsVisibility(rootMenu.DropDownItems);
         }
 
         private void CollapseAllGroups()
-            => ChangeGroupState(StatlookLogViewer.Views.ListViewGroupState.Collapsed);
+            => ChangeGroupState(Views.ListViewGroupState.Collapsed);
 
         private void ExpandAllGroups()
-            => ChangeGroupState(StatlookLogViewer.Views.ListViewGroupState.Normal);
+            => ChangeGroupState(Views.ListViewGroupState.Normal);
 
-        private void ChangeGroupState(StatlookLogViewer.Views.ListViewGroupState listViewGroupState)
+        private void ChangeGroupState(Views.ListViewGroupState listViewGroupState)
         {
-            TabPage selectedTabPage = GetSelectedTabPage();
+            var selectedTabPage = GetSelectedTabPage();
 
             if (selectedTabPage == tabPageInfo)
                 return;
 
-            TabPage TabP = (TabPage)Controls.Find(selectedTabPage.Name, true)[0];
+            var tabP = (TabPage)Controls.Find(selectedTabPage.Name, true)[0];
 
-            foreach (Control control in TabP.Controls)
+            foreach (Control control in tabP.Controls)
             {
-                if (control.GetType() == typeof(ListViewExtended))
+                if (control.GetType() != typeof(ListViewExtended)) continue;
+
+                var listViewExtended = (ListViewExtended)control;
+
+                listViewExtended.SuspendLayout();
+                listViewExtended.BeginUpdate();
+
+                try
                 {
-                    ListViewExtended listViewExtended = (ListViewExtended)control;
-
-                    listViewExtended.SuspendLayout();
-                    listViewExtended.BeginUpdate();
-
-                    try
-                    {
-                        listViewExtended.SetGroupState(StatlookLogViewer.Views.ListViewGroupState.Collapsible | listViewGroupState);
-                    }
-                    finally
-                    {
-                        listViewExtended.EndUpdate();
-                        listViewExtended.ResumeLayout();
-                    }
+                    listViewExtended.SetGroupState(Views.ListViewGroupState.Collapsible | listViewGroupState);
+                }
+                finally
+                {
+                    listViewExtended.EndUpdate();
+                    listViewExtended.ResumeLayout();
                 }
             }
         }
@@ -346,20 +314,19 @@ namespace StatlookLogViewer
             if (GetSelectedTabPage() == tabPageInfo)
                 return;
 
-            int selectedTapPageIndex = _tabControlMain.SelectedIndex;
+            var selectedTapPageIndex = _tabControlMain.SelectedIndex;
 
             _tabControlMain.TabPages.Remove(GetSelectedTabPage());
 
-            if (_tabControlMain.TabPages.Count > 1)
+            if (_tabControlMain.TabPages.Count <= 1) return;
+
+            if (selectedTapPageIndex == _tabControlMain.TabPages.Count)
             {
-                if (selectedTapPageIndex == _tabControlMain.TabPages.Count)
-                {
-                    _tabControlMain.SelectedIndex = selectedTapPageIndex - 1;
-                }
-                else
-                {
-                    _tabControlMain.SelectedIndex = selectedTapPageIndex;
-                }
+                _tabControlMain.SelectedIndex = selectedTapPageIndex - 1;
+            }
+            else
+            {
+                _tabControlMain.SelectedIndex = selectedTapPageIndex;
             }
         }
 
@@ -442,14 +409,7 @@ namespace StatlookLogViewer
                 if (e.Column == _lvwColumnSorter.SortColumn)
                 {
                     // Reverse the current sort direction for this column.
-                    if (_lvwColumnSorter.Order == SortOrder.Ascending)
-                    {
-                        _lvwColumnSorter.Order = SortOrder.Descending;
-                    }
-                    else
-                    {
-                        _lvwColumnSorter.Order = SortOrder.Ascending;
-                    }
+                    _lvwColumnSorter.Order = _lvwColumnSorter.Order == SortOrder.Ascending ? SortOrder.Descending : SortOrder.Ascending;
                 }
                 else
                 {
@@ -475,7 +435,7 @@ namespace StatlookLogViewer
         {
             foreach (ListViewItem listViewItem in this.listViewFiles.SelectedItems)
             {
-                string filePath = GetFilePathFromListViewItem(listViewItem);
+                var filePath = GetFilePathFromListViewItem(listViewItem);
 
                 FileInfo fileInfo = new(filePath);
 
@@ -484,11 +444,11 @@ namespace StatlookLogViewer
                 {
                     using var openZip = new OpenZip();
 
-                    using (ZipFile zipFile = ZipFile.Read(fileInfo.FullName))
+                    using (var zipFile = ZipFile.Read(fileInfo.FullName))
                     {
-                        int i = 1;
+                        var i = 1;
 
-                        foreach (ZipEntry zipEntry in zipFile)
+                        foreach (var zipEntry in zipFile)
                         {
                             ListViewItem innerlistViewItem = new()
                             {
@@ -496,7 +456,7 @@ namespace StatlookLogViewer
                             };
 
                             innerlistViewItem.SubItems.Add(zipEntry.FileName);
-                            innerlistViewItem.SubItems.Add(zipEntry.LastModified.ToString());
+                            innerlistViewItem.SubItems.Add(zipEntry.LastModified.ToString(CultureInfo.CurrentCulture));
                             innerlistViewItem.SubItems.Add(IOTools.FormatFileSize(zipEntry.UncompressedSize));
                             innerlistViewItem.SubItems.Add(fileInfo.DirectoryName);
                             openZip.AddItem(innerlistViewItem);
@@ -508,16 +468,14 @@ namespace StatlookLogViewer
                 }
                 else
                 {
-                    _ = DateTime.TryParse(listViewItem.SubItems[2].Text, out DateTime lastWriteTime);
-
-                    AnalizeLog(filePath, lastWriteTime);
+                    AnalizeLog(filePath);
                 }
             }
         }
 
         private void TabControlMain_SelectedIndexChanged(object sender, EventArgs e)
         {
-            TabPage selectedTabPage = GetSelectedTabPage();
+            var selectedTabPage = GetSelectedTabPage();
 
             if (selectedTabPage != tabPageInfo)
             {
@@ -544,22 +502,22 @@ namespace StatlookLogViewer
                 //Aktywowanie przycisku zamykania zakładki
                 toolStripButtonClose.Enabled = true;
 
-                LogTapPage tabPage = Controls.Find(selectedTabPage.Name, true)[0] as LogTapPage;
 
-                foreach (Control control in tabPage.Controls)
+                if (Controls.Find(selectedTabPage.Name, true)[0] is LogTapPage tabPage)
                 {
-                    if (control.GetType() == typeof(ListViewExtended))
+                    foreach (Control control in tabPage.Controls)
                     {
+                        if (control.GetType() != typeof(ListViewExtended)) continue;
 
-                        foreach (var item in _toolStripMenuItemFilterColumnMap)
+                        foreach (var (key, toolStripMenuItem) in _toolStripMenuItemFilterColumnMap)
                         {
-                            if (item.Key == tabPage.LogParser.UniqueLogKey)
+                            if (key == tabPage.LogParser.UniqueLogKey)
                             {
-                                item.Value.Visible = item.Value.Enabled = true;
+                                toolStripMenuItem.Visible = toolStripMenuItem.Enabled = true;
                             }
                             else
                             {
-                                item.Value.Visible = item.Value.Enabled = false;
+                                toolStripMenuItem.Visible = toolStripMenuItem.Enabled = false;
                             }
                         }
 
@@ -567,14 +525,14 @@ namespace StatlookLogViewer
                     }
                 }
 
-                FileInfo fileInfo = new(selectedTabPage.Tag.ToString());
+                FileInfo fileInfo = new(selectedTabPage.Tag.ToString() ?? string.Empty);
 
                 if (fileInfo.Exists)
                 {
                     toolStripButtonIcon.Image = Properties.Resources.ok_16;
                     toolStripStatusReady.Text = fileInfo.FullName;
                     toolStripSeparator_1.Visible = true;
-                    toolStripLabelCreationTime.Text = fileInfo.LastWriteTime.ToString();
+                    toolStripLabelCreationTime.Text = fileInfo.LastWriteTime.ToString(CultureInfo.CurrentCulture);
                     toolStripSeparator_2.Visible = true;
                     toolStripLableSize.Text = IOTools.FormatFileSize(fileInfo.Length);
                 }
@@ -643,7 +601,7 @@ namespace StatlookLogViewer
 
         private void CloseAllToolStripMenuItem_Click(object sender, EventArgs e)
         {
-            for (int i = 0; i < _tabControlMain.TabCount; i++)
+            for (var i = 0; i < _tabControlMain.TabCount; i++)
             {
                 if (i != 0)
                 {
@@ -654,11 +612,11 @@ namespace StatlookLogViewer
 
         private void CloseAllWithoutActiveToolStripMenuItem_Click(object sender, EventArgs e)
         {
-            int selectedIndex = _tabControlMain.SelectedIndex;
+            var selectedIndex = _tabControlMain.SelectedIndex;
 
-            for (int i = _tabControlMain.TabCount - 1; i > 0; i--)
+            for (var i = _tabControlMain.TabCount - 1; i > 0; i--)
             {
-                if ((i != 0) && (i != selectedIndex))
+                if (i != selectedIndex)
                 {
                     _tabControlMain.TabPages.Remove(_tabControlMain.TabPages[i]);
                 }
@@ -674,14 +632,13 @@ namespace StatlookLogViewer
 
             for (tabIndex = 0; tabIndex <= _tabControlMain.TabCount - 1; tabIndex++)
             {
-                if (_tabControlMain.GetTabRect(tabIndex).Contains(e.Location))
-                {
-                    _tabControlMain.SelectedIndex = tabIndex;
+                if (!_tabControlMain.GetTabRect(tabIndex).Contains(e.Location)) continue;
 
-                    if (_tabControlMain.SelectedIndex != 0)
-                    {
-                        contextMenuStripPage.Show(_tabControlMain, e.Location);
-                    }
+                _tabControlMain.SelectedIndex = tabIndex;
+
+                if (_tabControlMain.SelectedIndex != 0)
+                {
+                    contextMenuStripPage.Show(_tabControlMain, e.Location);
                 }
             }
 
@@ -692,29 +649,31 @@ namespace StatlookLogViewer
             if (GetSelectedTabPage() == tabPageInfo)
                 return;
 
-            int selectedIndex = _tabControlMain.SelectedIndex;
+            var selectedIndex = _tabControlMain.SelectedIndex;
             _tabControlMain.TabPages.Remove(GetSelectedTabPage());
-            if (_tabControlMain.TabPages.Count > 1)
+
+            if (_tabControlMain.TabPages.Count <= 1) return;
+
+            if (selectedIndex == _tabControlMain.TabPages.Count)
             {
-                if (selectedIndex == _tabControlMain.TabPages.Count)
-                {
-                    _tabControlMain.SelectedIndex = selectedIndex - 1;
-                }
-                else
-                {
-                    _tabControlMain.SelectedIndex = selectedIndex;
-                }
+                _tabControlMain.SelectedIndex = selectedIndex - 1;
+            }
+            else
+            {
+                _tabControlMain.SelectedIndex = selectedIndex;
             }
 
         }
 
         private void ToolStripMenuItem2_Click(object sender, EventArgs e)
         {
-            int tabCount = _tabControlMain.TabCount - 1;
-            int selectedIndex = _tabControlMain.SelectedIndex;
-            for (int i = tabCount; i > 0; i--)
+            var tabCount = _tabControlMain.TabCount - 1;
+
+            var selectedIndex = _tabControlMain.SelectedIndex;
+
+            for (var i = tabCount; i > 0; i--)
             {
-                if ((i != 0) && (i != selectedIndex))
+                if (i != selectedIndex)
                 {
                     _tabControlMain.TabPages.Remove(_tabControlMain.TabPages[i]);
                 }
@@ -723,42 +682,43 @@ namespace StatlookLogViewer
 
         private void ToolStripMenuItem4_Click(object sender, EventArgs e)
         {
-            FileInfo fileInfo = GetFileInfoForSelectedTab();
+            var fileInfo = GetFileInfoForSelectedTab();
             Clipboard.SetText(fileInfo.Name);
         }
 
         private void ToolStripMenuItem5_Click(object sender, EventArgs e)
         {
-            FileInfo fileInfo = GetFileInfoForSelectedTab();
+            var fileInfo = GetFileInfoForSelectedTab();
             Clipboard.SetText(fileInfo.FullName);
         }
 
         private void ToolStripMenuItem6_Click(object sender, EventArgs e)
         {
-            FileInfo fileInfo = GetFileInfoForSelectedTab();
-            Clipboard.SetText(fileInfo.DirectoryName);
+            var fileInfo = GetFileInfoForSelectedTab();
+            if (fileInfo.DirectoryName != null) Clipboard.SetText(fileInfo.DirectoryName);
         }
 
         private void ToolStripMenuItem7_Click(object sender, EventArgs e)
         {
-            FileInfo fileInfo = GetFileInfoForSelectedTab();
+            var fileInfo = GetFileInfoForSelectedTab();
 
-            if (MessageBox.Show(string.Format(Properties.Resources.ConfirmDeletePrompt, fileInfo.FullName), Properties.Resources.ConfirmDeleteCaption, MessageBoxButtons.YesNo, MessageBoxIcon.Warning) == DialogResult.Yes)
+            if (MessageBox.Show(string.Format(Properties.Resources.ConfirmDeletePrompt, fileInfo.FullName),
+                    Properties.Resources.ConfirmDeleteCaption, MessageBoxButtons.YesNo, MessageBoxIcon.Warning) !=
+                DialogResult.Yes) return;
+
+            if (!fileInfo.Exists)
+                return;
+
+            try
             {
-                if (!fileInfo.Exists)
-                    return;
-
-                try
-                {
-                    RemoveSelectedTab();
-                    fileInfo.Delete();
-                    listViewFiles.Items.Clear();
-                    IniTabPageInfo();
-                }
-                catch (Exception exception)
-                {
-                    MessageBox.Show($"{Properties.Resources.Error} : {exception.Message}", Properties.Resources.Error, MessageBoxButtons.OK, MessageBoxIcon.Error);
-                }
+                RemoveSelectedTab();
+                fileInfo.Delete();
+                listViewFiles.Items.Clear();
+                IniTabPageInfo();
+            }
+            catch (Exception exception)
+            {
+                MessageBox.Show($@"{Properties.Resources.Error} : {exception.Message}", Properties.Resources.Error, MessageBoxButtons.OK, MessageBoxIcon.Error);
             }
 
         }
@@ -773,15 +733,15 @@ namespace StatlookLogViewer
             //Otwarcie pojedynczego pliku o rozszerzeniu .zip z poziomu listy plików w zakładce Info
             if ((listViewFiles.SelectedItems.Count == 1) && (listViewFiles.SelectedItems[0].SubItems[1].Text.Substring(listViewFiles.SelectedItems[0].SubItems[1].Text.Length - 4, 4) == ".zip"))
             {
-                string fileFullPath = GetFilePathFromListViewItem(listViewFiles.SelectedItems[0]);
+                var fileFullPath = GetFilePathFromListViewItem(listViewFiles.SelectedItems[0]);
 
                 using OpenZip openZip = new();
 
-                using (ZipFile zipFile = ZipFile.Read(fileFullPath))
+                using (var zipFile = ZipFile.Read(fileFullPath))
                 {
-                    int i = 1;
+                    var i = 1;
 
-                    foreach (ZipEntry e1 in zipFile)
+                    foreach (var e1 in zipFile)
                     {
                         ListViewItem listViewItem = new()
                         {
@@ -789,7 +749,7 @@ namespace StatlookLogViewer
                         };
 
                         listViewItem.SubItems.Add(e1.FileName);
-                        listViewItem.SubItems.Add(e1.LastModified.ToString());
+                        listViewItem.SubItems.Add(e1.LastModified.ToString(CultureInfo.CurrentCulture));
                         listViewItem.SubItems.Add(IOTools.FormatFileSize(e1.UncompressedSize));
                         listViewItem.SubItems.Add(fileFullPath);
                         openZip.AddItem(listViewItem);
@@ -804,7 +764,7 @@ namespace StatlookLogViewer
             {
                 foreach (ListViewItem listViewItem in listViewFiles.SelectedItems)
                 {
-                    string fileFullPath = GetFilePathFromListViewItem(listViewItem);
+                    var fileFullPath = GetFilePathFromListViewItem(listViewItem);
 
                     FileInfo fileInfo = new(fileFullPath);
 
@@ -816,7 +776,7 @@ namespace StatlookLogViewer
                     }
                     else
                     {
-                        AnalizeLog(fileInfo.FullName, fileInfo.LastWriteTime);
+                        AnalizeLog(fileInfo.FullName);
                     }
                 }
             }
@@ -826,7 +786,7 @@ namespace StatlookLogViewer
         {
             foreach (ListViewItem listViewItem in listViewFiles.SelectedItems)
             {
-                string fileFullPath = GetFilePathFromListViewItem(listViewItem);
+                var fileFullPath = GetFilePathFromListViewItem(listViewItem);
 
                 FileInfo fileInfo = new(fileFullPath);
 
@@ -844,67 +804,51 @@ namespace StatlookLogViewer
                 }
                 catch (Exception ex)
                 {
-                    MessageBox.Show($"{Properties.Resources.Error} : {ex.Message}", Properties.Resources.Error, MessageBoxButtons.OK, MessageBoxIcon.Error);
+                    MessageBox.Show($@"{Properties.Resources.Error} : {ex.Message}", Properties.Resources.Error, MessageBoxButtons.OK, MessageBoxIcon.Error);
                 }
             }
         }
 
         private void ToolStripMenuItem3_Click_1(object sender, EventArgs e)
         {
-            string filePath = GetSelectedTabPage().ToolTipText;
+            var filePath = GetSelectedTabPage().ToolTipText;
             FileInfo fileInfo = new(filePath);
             Clipboard.SetText(fileInfo.Name);
-            System.Diagnostics.Process.Start("explorer.exe", fileInfo.DirectoryName);
+
+            if (fileInfo.DirectoryName != null)
+                System.Diagnostics.Process.Start("explorer.exe", fileInfo.DirectoryName);
         }
 
         private void ToolStripMenuItemCopyFileName_Click(object sender, EventArgs e)
         {
-            FileInfo[] fileCollection = GetListViewSelectedFiles();
+            var fileCollection = GetListViewSelectedFiles();
 
-            string filesNameText = default;
-
-            foreach (FileInfo fileInfo in fileCollection)
-                filesNameText += fileInfo.Name + Environment.NewLine;
+            string filesNameText = fileCollection.Aggregate<FileInfo, string>(default, (current, fileInfo) => current + (fileInfo.Name + Environment.NewLine));
 
             Clipboard.SetText(filesNameText, TextDataFormat.UnicodeText);
         }
 
         private void ToolStripMenuItemCopyFilePath_Click(object sender, EventArgs e)
         {
-            FileInfo[] fileCollection = GetListViewSelectedFiles();
+            var fileCollection = GetListViewSelectedFiles();
 
-            string filesFullNameText = default;
-
-            foreach (FileInfo fileInfo in fileCollection)
-                filesFullNameText += fileInfo.FullName + Environment.NewLine;
+            string filesFullNameText = fileCollection.Aggregate<FileInfo, string>(default, (current, fileInfo) => current + (fileInfo.FullName + Environment.NewLine));
 
             Clipboard.SetText(filesFullNameText, TextDataFormat.UnicodeText);
         }
 
         private void ToolStripMenuItemCopyCatalogPath_Click(object sender, EventArgs e)
         {
-            FileInfo[] fileCollection = GetListViewSelectedFiles();
+            var fileCollection = GetListViewSelectedFiles();
 
-            string fileDirectoryNamesText = default;
+            var fileDirectoryNamesText = fileCollection.Aggregate<FileInfo, string>(default, (current, fileInfo) => current + (fileInfo.DirectoryName + Environment.NewLine));
 
-            foreach (FileInfo fileInfo in fileCollection)
-                fileDirectoryNamesText += fileInfo.DirectoryName + Environment.NewLine;
-
-            Clipboard.SetText(fileDirectoryNamesText, TextDataFormat.UnicodeText);
+            if (fileDirectoryNamesText != null) Clipboard.SetText(fileDirectoryNamesText, TextDataFormat.UnicodeText);
         }
 
-        FileInfo[] GetListViewSelectedFiles()
+        private FileInfo[] GetListViewSelectedFiles()
         {
-            List<FileInfo> files = new();
-
-            foreach (ListViewItem listViewItem in listViewFiles.SelectedItems)
-            {
-                string filePath = GetFilePathFromListViewItem(listViewItem);
-
-                files.Add(new FileInfo(filePath));
-            }
-
-            return files.ToArray();
+            return (from ListViewItem listViewItem in listViewFiles.SelectedItems select GetFilePathFromListViewItem(listViewItem) into filePath select new FileInfo(filePath)).ToArray();
         }
 
         private void RefreshToolStripMenuItem_Click(object sender, EventArgs e)
@@ -913,15 +857,16 @@ namespace StatlookLogViewer
 
         private void ListViewFiles_MouseClick(object sender, MouseEventArgs e)
         {
-            if (e.Button == MouseButtons.Right && listViewFiles.SelectedItems.Count > 1)
+            switch (e.Button)
             {
-                openContainFolderToolStripMenuItem.Enabled = false;
-                contextMenuStripList.Show(MousePosition);
-            }
-            else if (e.Button == MouseButtons.Right && listViewFiles.SelectedItems.Count == 1)
-            {
-                openContainFolderToolStripMenuItem.Enabled = true;
-                contextMenuStripList.Show(MousePosition);
+                case MouseButtons.Right when listViewFiles.SelectedItems.Count > 1:
+                    openContainFolderToolStripMenuItem.Enabled = false;
+                    contextMenuStripList.Show(MousePosition);
+                    break;
+                case MouseButtons.Right when listViewFiles.SelectedItems.Count == 1:
+                    openContainFolderToolStripMenuItem.Enabled = true;
+                    contextMenuStripList.Show(MousePosition);
+                    break;
             }
         }
 
@@ -929,59 +874,56 @@ namespace StatlookLogViewer
         {
             foreach (ListViewItem listViewItem in listViewFiles.SelectedItems)
             {
-                string filePath = GetFilePathFromListViewItem(listViewItem);
+                var filePath = GetFilePathFromListViewItem(listViewItem);
 
                 FileInfo fileInfo = new(filePath);
 
-                System.Diagnostics.Process.Start("explorer.exe", fileInfo.DirectoryName);
+                if (fileInfo.DirectoryName != null)
+                    System.Diagnostics.Process.Start("explorer.exe", fileInfo.DirectoryName);
             }
         }
 
-        private void AnalizeLog(string filePath, DateTime lastWriteTime)
+        private void AnalizeLog(string filePath)
         {
-            string fileName = Path.GetFileName(filePath);
+            var fileName = Path.GetFileName(filePath);
 
             if (_tabControlMain.Controls.Find(fileName, false).Length == 0)
             {
-                LogTapPage newPage = LogAnalyzer.GetLogTapePage(filePath);
+                var newPage = LogAnalyzer.GetLogTapePage(filePath);
 
                 ToolStripMenuItem rootMenu = null;
 
-                foreach (var item in _toolStripMenuItemFilterColumnMap)
+                foreach (var (key, toolStripMenuItem) in _toolStripMenuItemFilterColumnMap)
                 {
-                    if (newPage.LogParser.UniqueLogKey == item.Key)
+                    if (newPage.LogParser.UniqueLogKey == key)
                     {
-                        item.Value.Visible = item.Value.Enabled = true;
-                        rootMenu = item.Value;
+                        toolStripMenuItem.Visible = toolStripMenuItem.Enabled = true;
+                        rootMenu = toolStripMenuItem;
                     }
                     else
                     {
-                        item.Value.Visible = item.Value.Enabled = false;
+                        toolStripMenuItem.Visible = toolStripMenuItem.Enabled = false;
                     }
                 }
 
-                _columnToShowParserMap.TryGetValue(newPage.LogParser.UniqueLogKey, out List<Tuple<string, bool>> columnToShowCollection);
+                _columnToShowParserMap.TryGetValue(newPage.LogParser.UniqueLogKey, out var columnToShowCollection);
 
-                foreach (ToolStripMenuItem toolStripMenuItem in rootMenu.DropDownItems)
+                if (rootMenu != null)
                 {
-                    foreach (Tuple<string, bool> columnToShow in columnToShowCollection)
+                    foreach (ToolStripMenuItem toolStripMenuItem in rootMenu.DropDownItems)
                     {
-                        if (string.Compare(toolStripMenuItem.Name, columnToShow.Item1) == 0)
+                        if (columnToShowCollection == null) continue;
+
+                        foreach (var columnToShow in columnToShowCollection.Where(columnToShow =>
+                                     string.CompareOrdinal(toolStripMenuItem.Name, columnToShow.Item1) == 0))
                         {
-                            if (columnToShow.Item2)
-                            {
-                                toolStripMenuItem.CheckState = CheckState.Checked;
-                            }
-                            else
-                            {
-                                toolStripMenuItem.CheckState = CheckState.Unchecked;
-                            }
+                            toolStripMenuItem.CheckState =
+                                columnToShow.Item2 ? CheckState.Checked : CheckState.Unchecked;
+
                             break;
                         }
                     }
                 }
-
-
 
                 _tabControlMain.Controls.Add(newPage);
                 _tabControlMain.SelectTab(newPage);
@@ -1013,13 +955,13 @@ namespace StatlookLogViewer
         {
             var logParser = new StatlookLogParser();
 
-            ToolStripMenuItem toolStripMenuItem = (ToolStripMenuItem)e.ClickedItem;
+            var toolStripMenuItem = (ToolStripMenuItem)e.ClickedItem;
 
             if (toolStripMenuItem.CheckState == CheckState.Checked)
             {
                 toolStripMenuItem.CheckState = CheckState.Unchecked;
 
-                foreach (LogPattern logPattern in logParser.GetLogPatterns())
+                foreach (var logPattern in logParser.GetLogPatterns())
                 {
                     if (toolStripMenuItem.Name == logPattern.KeyName)
                     {
@@ -1030,7 +972,7 @@ namespace StatlookLogViewer
             else
             {
                 toolStripMenuItem.CheckState = CheckState.Checked;
-                foreach (LogPattern logPattern in logParser.GetLogPatterns())
+                foreach (var logPattern in logParser.GetLogPatterns())
                 {
                     if (toolStripMenuItem.Name == logPattern.KeyName)
                     {
@@ -1039,70 +981,24 @@ namespace StatlookLogViewer
                 }
             }
 
-            TabPage selectedTabPage = GetSelectedTabPage();
+            var selectedTabPage = GetSelectedTabPage();
 
-            if (selectedTabPage != tabPageInfo)
+            if (selectedTabPage == tabPageInfo) return;
+
+            var tabPage = Controls.Find(selectedTabPage.Name, true)[0] as LogTapPage;
+
+            if (tabPage?.Controls == null) return;
+
+            foreach (Control control in tabPage.Controls)
             {
-                LogTapPage tabPage = Controls.Find(selectedTabPage.Name, true)[0] as LogTapPage;
-
-                foreach (Control control in tabPage.Controls)
+                if (control.GetType() == typeof(ListViewExtended))
                 {
-                    if (control.GetType() == typeof(ListViewExtended))
-                    {
-                        ShowListViewColumns(tabPage);
-                    }
+                    ShowListViewColumns(tabPage);
                 }
             }
         }
 
-        private void ToolStripMenuItemUSM_DropDownItemClicked(object sender, ToolStripItemClickedEventArgs e)
-        {
-            ToolStripMenuItem toolStripMenuItem = (ToolStripMenuItem)e.ClickedItem;
-
-            var logParser = new UsmLogParser();
-
-            if (toolStripMenuItem.CheckState == CheckState.Checked)
-            {
-                toolStripMenuItem.CheckState = CheckState.Unchecked;
-
-                foreach (LogPattern usmd in logParser.GetLogPatterns())
-                {
-                    if (toolStripMenuItem.Name == usmd.KeyName)
-                    {
-                        usmd.Show = false;
-                    }
-                }
-            }
-            else
-            {
-                toolStripMenuItem.CheckState = CheckState.Checked;
-                foreach (LogPattern usmd in logParser.GetLogPatterns())
-                {
-                    if (toolStripMenuItem.Name == usmd.KeyName)
-                    {
-                        usmd.Show = true;
-                    }
-                }
-            }
-
-            TabPage selectedTabPage = GetSelectedTabPage();
-
-            if (selectedTabPage != tabPageInfo)
-            {
-                LogTapPage tabPage = Controls.Find(selectedTabPage.Name, true)[0] as LogTapPage;
-
-                foreach (Control control in tabPage.Controls)
-                {
-                    if (control.GetType() == typeof(ListViewExtended))
-                    {
-                        ShowListViewColumns(tabPage);
-                    }
-                }
-            }
-
-        }
-
-        private void SetDashboardData(string directoryLogPath, Label label, Label labelSize, Label labelCount)
+        private void SetDashboardData(string directoryLogPath, Control label, Control labelSize, Control labelCount)
         {
             try
             {
@@ -1111,40 +1007,35 @@ namespace StatlookLogViewer
                 if (!s.Exists)
                     return;
 
-                DirectoryInfo[] directoryCollection = s.GetDirectories();
+                var directoryCollection = s.GetDirectories();
 
                 label.Text = s.FullName;
 
                 ArrayList myfileinfos = new();
 
-                foreach (string ext in _fileExtensions)
+                foreach (var ext in _fileExtensions)
                     myfileinfos.AddRange(s.GetFiles(ext, SearchOption.AllDirectories));
 
-                FileInfo[] fileCollection = (FileInfo[])myfileinfos.ToArray(typeof(FileInfo));
+                var fileCollection = (FileInfo[])myfileinfos.ToArray(typeof(FileInfo));
 
-                float totalSize = GetFilesTotalSize(fileCollection);
+                var totalSize = GetFilesTotalSize(fileCollection);
 
                 labelSize.Text = IOTools.FormatFileSize(totalSize);
 
-                labelCount.Text = (fileCollection.Length).ToString() + " files, " + directoryCollection.Length.ToString() + " directories";
+                labelCount.Text = (fileCollection.Length) + " files, " + directoryCollection.Length.ToString() + " directories";
             }
             catch
             {
-
+                // ignored
             }
         }
 
-        private static float GetFilesTotalSize(FileInfo[] filesCollection)
+        private static float GetFilesTotalSize(IReadOnlyCollection<FileInfo> filesCollection)
         {
-            if (filesCollection?.Length == 0)
+            if (filesCollection?.Count == 0)
                 return 0;
 
-            float totalSize = 0;
-
-            foreach (FileInfo file in filesCollection)
-                totalSize += file.Length;
-
-            return totalSize;
+            return filesCollection?.Aggregate<FileInfo, float>(0, (current, file) => current + file.Length) ?? 0;
         }
 
         private void CheckBoxLogs_CheckedChanged(object sender, EventArgs e)
@@ -1156,12 +1047,7 @@ namespace StatlookLogViewer
 
         private static ListViewItem[] CloneItems(ListViewItemCollection items)
         {
-            List<ListViewItem> nodes = new();
-
-            foreach (ListViewItem listViewItem in items)
-                nodes.Add(listViewItem.Clone() as ListViewItem);
-
-            return nodes.ToArray();
+            return (from ListViewItem listViewItem in items select listViewItem.Clone() as ListViewItem).ToArray();
         }
 
         private void ToolStripTextBox1_TextChanged(object sender, EventArgs e)
@@ -1169,9 +1055,6 @@ namespace StatlookLogViewer
             timerFind.Enabled = false;
             timerFind.Enabled = true;
         }
-
-        private void DelayedSearch() => timerFind.Start();
-
 
         private void TimerFind_Tick(object sender, EventArgs e)
         {
@@ -1186,7 +1069,7 @@ namespace StatlookLogViewer
 
         private void Search()
         {
-            TabPage selectedTabPage = GetSelectedTabPage();
+            var selectedTabPage = GetSelectedTabPage();
 
             if (selectedTabPage == tabPageInfo)
                 SearchInDashboardView();
@@ -1195,16 +1078,16 @@ namespace StatlookLogViewer
 
         }
 
-        private void SearchInLogFileView(TabPage selectedTabPage)
+        private void SearchInLogFileView(Control selectedTabPage)
         {
-            TabPage TabP = (TabPage)Controls.Find(selectedTabPage.Name, true)[0];
+            var tabP = (TabPage)Controls.Find(selectedTabPage.Name, true)[0];
 
-            foreach (Control control in TabP.Controls)
+            foreach (Control control in tabP.Controls)
             {
                 if (control.GetType() != typeof(ListViewExtended))
                     continue;
 
-                ListViewExtended listViewExtended = (ListViewExtended)control;
+                var listViewExtended = (ListViewExtended)control;
 
                 if (toolStripTextBox.Text?.Length == 0)
                 {
@@ -1215,7 +1098,7 @@ namespace StatlookLogViewer
                     {
                         foreach (ListViewItem listViewItem in listViewExtended.Items)
                         {
-                            listViewExtended.SetOneGroupState(listViewItem.Group, state: StatlookLogViewer.Views.ListViewGroupState.Collapsible | StatlookLogViewer.Views.ListViewGroupState.Collapsed);
+                            listViewExtended.SetOneGroupState(listViewItem.Group, state: Views.ListViewGroupState.Collapsible | Views.ListViewGroupState.Collapsed);
                             listViewItem.BackColor = Color.White;
                         }
                     }
@@ -1232,28 +1115,28 @@ namespace StatlookLogViewer
                         listViewItem.BackColor = Color.White;
                     }
 
-                    int colCount = listViewExtended.Columns.Count;
+                    var colCount = listViewExtended.Columns.Count;
 
                     foreach (ListViewItem listViewItem in listViewExtended.Items)
                     {
-                        for (int colAll = 0; colAll < colCount; colAll++)
+                        for (var colAll = 0; colAll < colCount; colAll++)
                         {
                             if (listViewExtended.Columns[colAll].Width == 0)
                                 continue;
 
-                            string listViewSubItemText = listViewItem.SubItems[colAll].Text;
+                            var listViewSubItemText = listViewItem.SubItems[colAll].Text;
 
                             if (string.IsNullOrWhiteSpace(listViewSubItemText))
                                 continue;
 
-                            if (listViewSubItemText.IndexOf(toolStripTextBox.Text, StringComparison.OrdinalIgnoreCase) > -1)
+                            if (toolStripTextBox.Text != null && listViewSubItemText.IndexOf(toolStripTextBox.Text, StringComparison.OrdinalIgnoreCase) > -1)
                             {
                                 listViewExtended.SuspendLayout();
                                 listViewExtended.BeginUpdate();
                                 try
                                 {
                                     //ListV.SetGroupFooter(ListV.Items[lst12].Group, "Test");
-                                    listViewExtended.SetOneGroupState(listViewItem.Group, StatlookLogViewer.Views.ListViewGroupState.Collapsible);
+                                    listViewExtended.SetOneGroupState(listViewItem.Group, Views.ListViewGroupState.Collapsible);
                                     listViewItem.BackColor = Color.Aqua;
                                 }
                                 finally
@@ -1280,17 +1163,17 @@ namespace StatlookLogViewer
 
             listView.Items.Clear();
 
-            int colCount = listViewFiles.Columns.Count;
+            var colCount = listViewFiles.Columns.Count;
 
-            for (int lst12 = 1; lst12 < listViewFiles.Items.Count; lst12++)
+            for (var lst12 = 1; lst12 < listViewFiles.Items.Count; lst12++)
             {
-                for (int colAll = 0; colAll < colCount; colAll++)
+                for (var colAll = 0; colAll < colCount; colAll++)
                 {
-                    if (listViewFiles.Items[lst12].SubItems[colAll].Text.IndexOf(toolStripTextBox.Text, StringComparison.OrdinalIgnoreCase) > -1)
-                    {
-                        listView.Items.Add((ListViewItem)listViewFiles.Items[lst12].Clone());
-                        break;
-                    }
+                    if (listViewFiles.Items[lst12].SubItems[colAll].Text
+                            .IndexOf(toolStripTextBox.Text, StringComparison.OrdinalIgnoreCase) <= -1) continue;
+
+                    listView.Items.Add((ListViewItem)listViewFiles.Items[lst12].Clone());
+                    break;
 
                 }
 
@@ -1313,8 +1196,9 @@ namespace StatlookLogViewer
 
                 IniTabPageInfo();
             }
-            catch (Exception exception)
+            catch (Exception)
             {
+                // ignored
             }
         }
 

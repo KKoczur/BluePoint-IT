@@ -18,16 +18,6 @@ namespace StatlookLogViewer
 
         #endregion Constans
 
-        #region Constructors
-
-        /// <summary>
-        /// Constructor
-        /// </summary>
-        public Configuration()
-        {
-        }
-
-        #endregion Constructors
 
         #region Methods
 
@@ -57,7 +47,7 @@ namespace StatlookLogViewer
         private static void Serialize(string file, Configuration c)
         {
             XmlSerializer xs = new(c.GetType());
-            StreamWriter writer = File.CreateText(file);
+            var writer = File.CreateText(file);
             xs.Serialize(writer, c);
             writer.Flush();
             writer.Close();
@@ -66,8 +56,8 @@ namespace StatlookLogViewer
         private static Configuration Deserialize(string file)
         {
             XmlSerializer xs = new(typeof(Configuration));
-            StreamReader reader = File.OpenText(file);
-            Configuration c = (Configuration)xs.Deserialize(reader);
+            var reader = File.OpenText(file);
+            var c = (Configuration)xs.Deserialize(reader);
             reader.Close();
             return c;
         }
@@ -79,7 +69,6 @@ namespace StatlookLogViewer
         public string StatlookLogDirectory { get; set; } = LOG_DIRECTORY_PATH;
         public string UserDirectory { get; set; } = Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData) + LOG_DIRECTORY_PATH;
         public string LogFileExtensions { get; set; } = "*.log;*.zip";
-
         public string CurrentLanguage { get; set; } = "en-us";
 
         #endregion Properties
