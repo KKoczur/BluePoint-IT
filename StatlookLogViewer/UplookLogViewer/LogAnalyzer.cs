@@ -125,8 +125,10 @@ internal static class LogAnalyzer
 
     private static string GetNameOfGroupByHourTime(DateTime dateTime)
     {
-        var hourTime = dateTime.Hour.ToString();
-        var hourPart = hourTime.Length < 2 ? $"0{hourTime}:00-0{hourTime}:59" : $"{hourTime}:00-{hourTime}:59";
+        var hourFrom = new DateTime(dateTime.Year, dateTime.Month, dateTime.Day, dateTime.Hour, 0, 0);
+        var hourTo = hourFrom.AddMinutes(59);
+
+        var hourPart = $"{hourFrom:HH:mm}-{hourTo:HH:mm}";
 
         return $"{dateTime.ToShortDateString()} ({hourPart})";
     }
