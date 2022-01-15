@@ -101,11 +101,16 @@ public partial class MainForm : Form
     /// </summary>
     private void IniTabPageInfo()
     {
+        DashboardData();
+
+        SetFilesInfoGridViewData();
+    }
+
+    private void DashboardData()
+    {
         SetDashboardData(_logDirectoryPath, labelLogsPathValue, labelFilesSizeValue, labelFilesCountValue);
 
         SetDashboardData(_userLogDirectoryPath, labelUserPathValue, labelFilesSizeValueUser, labelFilesCountValueUser);
-
-        SetFilesInfoGridViewData();
     }
 
     private void SetFilesInfoGridViewData()
@@ -350,6 +355,20 @@ public partial class MainForm : Form
             new CultureInfo(lang));
 
         _config.CurrentLanguage = lang;
+
+        if (string.Compare(lang, "pl-pl", StringComparison.OrdinalIgnoreCase) == 0)
+        {
+            polishToolStripMenuItem.Image = Resources.ok_16;
+            englishToolStripMenuItem.Image = null;
+        }
+        else
+        {
+            polishToolStripMenuItem.Image = null;
+            englishToolStripMenuItem.Image = Resources.ok_16;
+
+        }
+
+        DashboardData();
     }
 
     private void ApplyResourceToControl(
@@ -1134,22 +1153,22 @@ public partial class MainForm : Form
                         if (string.IsNullOrWhiteSpace(listViewSubItemText))
                             continue;
 
-                        if (toolStripTextBox.Text != null &&
-                            listViewSubItemText.IndexOf(toolStripTextBox.Text, StringComparison.OrdinalIgnoreCase) > -1)
+                        if (toolStripTextBox.Text == null ||
+                            listViewSubItemText.IndexOf(toolStripTextBox.Text, StringComparison.OrdinalIgnoreCase) <=
+                            -1) continue;
+
+                        listViewExtended.SuspendLayout();
+                        listViewExtended.BeginUpdate();
+                        try
                         {
-                            listViewExtended.SuspendLayout();
-                            listViewExtended.BeginUpdate();
-                            try
-                            {
-                                //ListV.SetGroupFooter(ListV.Items[lst12].Group, "Test");
-                                listViewExtended.SetOneGroupState(listViewItem.Group, ListViewGroupState.Collapsible);
-                                listViewItem.BackColor = Color.Aqua;
-                            }
-                            finally
-                            {
-                                listViewExtended.EndUpdate();
-                                listViewExtended.ResumeLayout();
-                            }
+                            //ListV.SetGroupFooter(ListV.Items[lst12].Group, "Test");
+                            listViewExtended.SetOneGroupState(listViewItem.Group, ListViewGroupState.Collapsible);
+                            listViewItem.BackColor = Color.Aqua;
+                        }
+                        finally
+                        {
+                            listViewExtended.EndUpdate();
+                            listViewExtended.ResumeLayout();
                         }
                     }
             }
@@ -1202,6 +1221,7 @@ public partial class MainForm : Form
     private void EnglishToolStripMenuItem_Click(object sender, EventArgs e)
     {
         ChangeLanguage("en-us");
+
     }
 
     private void PolishToolStripMenuItem_Click(object sender, EventArgs e)
