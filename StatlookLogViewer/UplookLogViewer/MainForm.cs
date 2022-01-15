@@ -1,8 +1,8 @@
 ﻿using Ionic.Zip;
-using StatlookkLogViewer.Tools;
 using StatlookLogViewer.Controller;
 using StatlookLogViewer.Parser;
 using StatlookLogViewer.Properties;
+using StatlookLogViewer.Tools;
 using StatlookLogViewer.Views;
 using System;
 using System.Collections;
@@ -46,7 +46,7 @@ public partial class MainForm : Form
             ChangeLanguage(_config.CurrentLanguage);
 
         var logParserMap = LogParserTools.GetLogParserMap() ??
-                           throw new ArgumentNullException("LogParserTools.GetLogParserMap()");
+                           throw new ArgumentNullException($"LogParserTools.GetLogParserMap()");
 
         foreach (var (key, logParser) in logParserMap)
         {

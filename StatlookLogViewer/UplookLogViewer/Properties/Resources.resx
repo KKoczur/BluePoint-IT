@@ -187,4 +187,7 @@
   <data name="ConfirmDeletePrompt" xml:space="preserve">
     <value>Really delete file: {0} ?</value>
   </data>
+  <data name="IOTools_ReadAllLines_Error__Could_not_read_file_from_disk__Original_error__" xml:space="preserve">
+	  <value>Error: Could not read file from disk. Original error: </value>
+  </data>
 </root>

@@ -195,6 +195,15 @@ namespace StatlookLogViewer.Properties {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Error: Could not read file from disk. Original error: .
+        /// </summary>
+        public static string IOTools_ReadAllLines_Error__Could_not_read_file_from_disk__Original_error__ {
+            get {
+                return ResourceManager.GetString("IOTools_ReadAllLines_Error__Could_not_read_file_from_disk__Original_error__", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized resource of type System.Drawing.Bitmap.
         /// </summary>
         public static System.Drawing.Bitmap less_16 {

@@ -132,4 +132,7 @@
   <data name="SelectLogSourceTitle" xml:space="preserve">
     <value>Wybierz plik źródłowy loga</value>
   </data>
+  <data name="IOTools_ReadAllLines_Error__Could_not_read_file_from_disk__Original_error__" xml:space="preserve">
+	  <value>Błąd: Nie można odczytać pliku z dysku. Oryginalny błąd:</value>
+  </data>
 </root>

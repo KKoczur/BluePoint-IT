@@ -1,8 +1,9 @@
-﻿using System;
+﻿using StatlookLogViewer.Properties;
+using System;
 using System.IO;
 using System.Windows.Forms;
 
-namespace StatlookkLogViewer.Tools;
+namespace StatlookLogViewer.Tools;
 
 public static class IOTools
 {
@@ -33,7 +34,7 @@ public static class IOTools
         }
         catch (Exception exception)
         {
-            MessageBox.Show("Error: Could not read file from disk. Original error: " + exception.Message);
+            MessageBox.Show(Resources.IOTools_ReadAllLines_Error__Could_not_read_file_from_disk__Original_error__ + exception.Message);
             return Array.Empty<string>();
         }
     }

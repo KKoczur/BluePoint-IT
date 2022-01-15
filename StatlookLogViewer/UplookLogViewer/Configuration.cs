@@ -29,21 +29,20 @@ public class Configuration
 
     public static Configuration GetConfiguration()
     {
-        if (!File.Exists(CONFIG_FILE_NAME))
-        {
-            // Create a new configuration object
-            // and initialize some variables
-            Configuration c = new();
+        if (File.Exists(CONFIG_FILE_NAME)) return Deserialize(CONFIG_FILE_NAME);
 
-            // Serialize the configuration object to a file
-            Serialize(CONFIG_FILE_NAME, c);
 
-            // Read the configuration object from a file
-            return Deserialize(CONFIG_FILE_NAME);
-        }
+        // Create a new configuration object
+        // and initialize some variables
+        Configuration c = new();
+
+        // Serialize the configuration object to a file
+        Serialize(CONFIG_FILE_NAME, c);
 
         // Read the configuration object from a file
         return Deserialize(CONFIG_FILE_NAME);
+
+        // Read the configuration object from a file
     }
 
     private static void Serialize(string file, Configuration c)
