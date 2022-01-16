@@ -1,4 +1,5 @@
-﻿using StatlookLogViewer.Parser;
+﻿using StatlookLogViewer.Model;
+using StatlookLogViewer.Parser;
 using StatlookLogViewer.Views;
 using System;
 using System.Collections.Generic;
@@ -52,11 +53,12 @@ internal static class LogAnalyzer
                 {
                     var lastListViewGroup = groups.Last();
 
-                    if (string.CompareOrdinal(lastListViewGroup.Header, listViewGroup.Header) == 0)
+                    if (string.CompareOrdinal(lastListViewGroup.Name, listViewGroup.Name) == 0)
                         currentListViewItem.Group = lastListViewGroup;
                     else
                         groups.Add(listViewGroup);
                 }
+
             }
 
             //Wykonaj jeśli linia nie zawiera znacznika przerwy 
@@ -78,9 +80,20 @@ internal static class LogAnalyzer
             else if (line != null && line.StartsWith(logParser.EndLogGroupEntry))
             {
                 //Wykonaj jeśli linia zawiera znacznika nowej grupy 
-                //Dodanie pojedynczej linii do pliku wynikowego analizy 
+                //Dodanie pojedynczej linii do pliku wynikowego analizy
                 listViewItemCollection.Add(currentListViewItem);
             }
+
+        foreach (var listViewGroup in groups)
+        {
+            if (listViewGroup.Tag != null)
+            {
+                var logStatsItem = (LogStatsItem)listViewGroup.Tag;
+                listViewGroup.Header = $"{listViewGroup.Header} (E:{logStatsItem.ErrorCount}, I:{logStatsItem.InfoCount}) ";
+
+            }
+        }
+
 
         return (groups, listViewItemCollection, logParser);
     }
@@ -93,6 +106,23 @@ internal static class LogAnalyzer
             if (string.Compare(logPattern.TextPattern, lineCaption, StringComparison.OrdinalIgnoreCase) != 0)
                 continue;
 
+            if (logPattern.IsLogType)
+            {
+                if (listViewItem.Group.Tag != null)
+                {
+                    var logStatsItem = (LogStatsItem)listViewItem.Group.Tag;
+
+                    if (string.Compare(lineValue, "Error", StringComparison.OrdinalIgnoreCase) == 0)
+                        logStatsItem.ErrorCount++;
+                    else
+                    {
+                        logStatsItem.InfoCount++;
+                    }
+
+                }
+
+            }
+
             if (lineCaption != logParser.StartLogGroupEntry)
             {
                 listViewItem.SubItems.Add(lineValue);
@@ -101,22 +131,30 @@ internal static class LogAnalyzer
                     Regex.IsMatch(lineValue, @"(?<NR_1>\d{1})\.(?<NR_2>\d{1})\.(?<NR_3>\d{1})\b started"))
                     listViewItem.Group.Header = $"{listViewItem.Group.Name} ({lineValue})";
                 else
+                {
                     foreach (var logErrorPattern in logParser.GetListOfErrors())
                         if (lineValue.Contains(logErrorPattern.ErrorTextPattern) &&
                             !listViewItem.Group.Header.Contains(logErrorPattern.ErrorReason))
                             listViewItem.Group.Header += " ( " + logErrorPattern.ErrorReason + " )";
+                }
 
 
                 break;
             }
 
+
             _ = DateTime.TryParse(lineValue, out var dateTime);
 
             listViewItem.Text = lineValue;
 
-            listViewItem.Group = new ListViewGroup(GetNameOfGroupByHourTime(dateTime), HorizontalAlignment.Left)
+            var keyAndHeader = GetNameOfGroupByHourTime(dateTime);
+
+            listViewItem.Group = new ListViewGroup(keyAndHeader)
             {
-                CollapsedState = ListViewGroupCollapsedState.Collapsed
+                Name = keyAndHeader,
+                CollapsedState = ListViewGroupCollapsedState.Collapsed,
+                HeaderAlignment = HorizontalAlignment.Left,
+                Tag = new LogStatsItem() { InfoCount = 0, ErrorCount = 0 }
             };
 
             break;

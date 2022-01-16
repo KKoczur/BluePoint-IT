@@ -26,7 +26,7 @@ public class UsmLogParser : ILogParser
         {
             new("usmDate", "Date", true),
             new("usmCode", " Code:", true),
-            new("usmType", " Type:", true),
+            new("usmType", " Type:", true,true),
             new("usmSession", " Session:", true),
             new("usmProcess", " Process ID:", true),
             new("usmDescription", " Description:", true)

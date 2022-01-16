@@ -15,10 +15,11 @@
             TextPattern = textPattern;
         }
 
-        public LogPattern(string keyName, string textPattern, bool show)
+        public LogPattern(string keyName, string textPattern, bool show, bool isLogType = false)
             : this(keyName, textPattern)
         {
             Show = show;
+            IsLogType = isLogType;
         }
 
         #endregion Constructors
@@ -39,6 +40,8 @@
         /// Need to show
         /// </summary>
         public bool Show { set; get; }
+
+        public bool IsLogType { set; get; }
 
         #endregion Properties
     }

@@ -29,7 +29,7 @@ public class StatlookLogParser : ILogParser
         {
             new("uDate", "Date", true),
             new("uLogger", " Logger:", true),
-            new("uType", " Type:", true),
+            new("uType", " Type:", true,true),
             new("uProcess", " PID/TID:", true),
             new("uMessage", " Message:", true),
             new("uException", " Exception:", true),
